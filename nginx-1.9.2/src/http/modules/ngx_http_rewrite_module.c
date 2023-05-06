@@ -10,55 +10,55 @@
 #include <ngx_http.h>
 
 /*
-Ò»£®ÕıÔò±í´ïÊ½Æ¥Åä£¬ÆäÖĞ£º
-* ~ ÎªÇø·Ö´óĞ¡Ğ´Æ¥Åä
-* ~* Îª²»Çø·Ö´óĞ¡Ğ´Æ¥Åä
-* !~ºÍ!~*·Ö±ğÎªÇø·Ö´óĞ¡Ğ´²»Æ¥Åä¼°²»Çø·Ö´óĞ¡Ğ´²»Æ¥Åä
-¶ş£®ÎÄ¼ş¼°Ä¿Â¼Æ¥Åä£¬ÆäÖĞ£º
-* -fºÍ!-fÓÃÀ´ÅĞ¶ÏÊÇ·ñ´æÔÚÎÄ¼ş
-* -dºÍ!-dÓÃÀ´ÅĞ¶ÏÊÇ·ñ´æÔÚÄ¿Â¼
-* -eºÍ!-eÓÃÀ´ÅĞ¶ÏÊÇ·ñ´æÔÚÎÄ¼ş»òÄ¿Â¼
-* -xºÍ!-xÓÃÀ´ÅĞ¶ÏÎÄ¼şÊÇ·ñ¿ÉÖ´ĞĞ
-Èı£®rewriteÖ¸ÁîµÄ×îºóÒ»Ïî²ÎÊıÎªflag±ê¼Ç£¬flag±ê¼ÇÓĞ£º
-1.last    Ïàµ±ÓÚapacheÀïÃæµÄ[L]±ê¼Ç£¬±íÊ¾rewrite¡£
-2.break±¾Ìõ¹æÔòÆ¥ÅäÍê³Éºó£¬ÖÕÖ¹Æ¥Åä£¬²»ÔÙÆ¥ÅäºóÃæµÄ¹æÔò¡£
-3.redirect  ·µ»Ø302ÁÙÊ±ÖØ¶¨Ïò£¬ä¯ÀÀÆ÷µØÖ·»áÏÔÊ¾Ìø×ªºóµÄURLµØÖ·¡£
-4.permanent  ·µ»Ø301ÓÀ¾ÃÖØ¶¨Ïò£¬ä¯ÀÀÆ÷µØÖ·»áÏÔÊ¾Ìø×ªºóµÄURLµØÖ·¡£
+ä¸€ï¼æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…ï¼Œå…¶ä¸­ï¼š
+* ~ ä¸ºåŒºåˆ†å¤§å°å†™åŒ¹é…
+* ~* ä¸ºä¸åŒºåˆ†å¤§å°å†™åŒ¹é…
+* !~å’Œ!~*åˆ†åˆ«ä¸ºåŒºåˆ†å¤§å°å†™ä¸åŒ¹é…åŠä¸åŒºåˆ†å¤§å°å†™ä¸åŒ¹é…
+äºŒï¼æ–‡ä»¶åŠç›®å½•åŒ¹é…ï¼Œå…¶ä¸­ï¼š
+* -få’Œ!-fç”¨æ¥åˆ¤æ–­æ˜¯å¦å­˜åœ¨æ–‡ä»¶
+* -då’Œ!-dç”¨æ¥åˆ¤æ–­æ˜¯å¦å­˜åœ¨ç›®å½•
+* -eå’Œ!-eç”¨æ¥åˆ¤æ–­æ˜¯å¦å­˜åœ¨æ–‡ä»¶æˆ–ç›®å½•
+* -xå’Œ!-xç”¨æ¥åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å¯æ‰§è¡Œ
+ä¸‰ï¼rewriteæŒ‡ä»¤çš„æœ€åä¸€é¡¹å‚æ•°ä¸ºflagæ ‡è®°ï¼Œflagæ ‡è®°æœ‰ï¼š
+1.last    ç›¸å½“äºapacheé‡Œé¢çš„[L]æ ‡è®°ï¼Œè¡¨ç¤ºrewriteã€‚
+2.breakæœ¬æ¡è§„åˆ™åŒ¹é…å®Œæˆåï¼Œç»ˆæ­¢åŒ¹é…ï¼Œä¸å†åŒ¹é…åé¢çš„è§„åˆ™ã€‚
+3.redirect  è¿”å›302ä¸´æ—¶é‡å®šå‘ï¼Œæµè§ˆå™¨åœ°å€ä¼šæ˜¾ç¤ºè·³è½¬åçš„URLåœ°å€ã€‚
+4.permanent  è¿”å›301æ°¸ä¹…é‡å®šå‘ï¼Œæµè§ˆå™¨åœ°å€ä¼šæ˜¾ç¤ºè·³è½¬åçš„URLåœ°å€ã€‚
 
 
-Ê¹ÓÃlastºÍbreakÊµÏÖURIÖØĞ´£¬ä¯ÀÀÆ÷µØÖ·À¸²»±ä¡£¶øÇÒÁ½ÕßÓĞÏ¸Î¢²î±ğ£¬Ê¹ÓÃaliasÖ¸Áî±ØĞëÓÃlast±ê¼Ç;Ê¹ÓÃproxy_passÖ¸ÁîÊ±£¬ĞèÒªÊ¹ÓÃbreak±ê¼Ç¡£Last±ê¼ÇÔÚ±¾Ìõrewrite¹æÔòÖ´ĞĞÍê±Ïºó£¬»á¶ÔÆäËùÔÚserver{......}±êÇ©ÖØĞÂ·¢ÆğÇëÇó£¬¶øbreak±ê¼ÇÔòÔÚ±¾Ìõ¹æÔòÆ¥ÅäÍê³Éºó£¬ÖÕÖ¹Æ¥Åä¡£
-ÀıÈç£ºÈç¹ûÎÒÃÇ½«ÀàËÆURL/photo/123456 ÖØ¶¨Ïòµ½/path/to/photo/12/1234/123456.png
+ä½¿ç”¨lastå’Œbreakå®ç°URIé‡å†™ï¼Œæµè§ˆå™¨åœ°å€æ ä¸å˜ã€‚è€Œä¸”ä¸¤è€…æœ‰ç»†å¾®å·®åˆ«ï¼Œä½¿ç”¨aliasæŒ‡ä»¤å¿…é¡»ç”¨lastæ ‡è®°;ä½¿ç”¨proxy_passæŒ‡ä»¤æ—¶ï¼Œéœ€è¦ä½¿ç”¨breakæ ‡è®°ã€‚Lastæ ‡è®°åœ¨æœ¬æ¡rewriteè§„åˆ™æ‰§è¡Œå®Œæ¯•åï¼Œä¼šå¯¹å…¶æ‰€åœ¨server{......}æ ‡ç­¾é‡æ–°å‘èµ·è¯·æ±‚ï¼Œè€Œbreakæ ‡è®°åˆ™åœ¨æœ¬æ¡è§„åˆ™åŒ¹é…å®Œæˆåï¼Œç»ˆæ­¢åŒ¹é…ã€‚
+ä¾‹å¦‚ï¼šå¦‚æœæˆ‘ä»¬å°†ç±»ä¼¼URL/photo/123456 é‡å®šå‘åˆ°/path/to/photo/12/1234/123456.png
 rewrite "/photo/([0-9]{2})([0-9]{2})([0-9]{2})"/path/to/photo/$1/$1$2/$1$2$3.png ;
 
 
-ËÄ£®NginxRewrite ¹æÔòÏà¹ØÖ¸Áî
+å››ï¼NginxRewrite è§„åˆ™ç›¸å…³æŒ‡ä»¤
 
 
-1.breakÖ¸Áî
-Ê¹ÓÃ»·¾³£ºserver,location,if;
-¸ÃÖ¸ÁîµÄ×÷ÓÃÊÇÍê³Éµ±Ç°µÄ¹æÔò¼¯£¬²»ÔÙ´¦ÀírewriteÖ¸Áî¡£
+1.breakæŒ‡ä»¤
+ä½¿ç”¨ç¯å¢ƒï¼šserver,location,if;
+è¯¥æŒ‡ä»¤çš„ä½œç”¨æ˜¯å®Œæˆå½“å‰çš„è§„åˆ™é›†ï¼Œä¸å†å¤„ç†rewriteæŒ‡ä»¤ã€‚
 
 
-2.ifÖ¸Áî
-Ê¹ÓÃ»·¾³£ºserver,location
-¸ÃÖ¸ÁîÓÃÓÚ¼ì²éÒ»¸öÌõ¼şÊÇ·ñ·ûºÏ£¬Èç¹ûÌõ¼ş·ûºÏ£¬ÔòÖ´ĞĞ´óÀ¨ºÅÄÚµÄÓï¾ä¡£IfÖ¸Áî²»Ö§³ÖÇ¶Ì×£¬²»Ö§³Ö¶à¸öÌõ¼ş&&ºÍ||´¦Àí¡£
+2.ifæŒ‡ä»¤
+ä½¿ç”¨ç¯å¢ƒï¼šserver,location
+è¯¥æŒ‡ä»¤ç”¨äºæ£€æŸ¥ä¸€ä¸ªæ¡ä»¶æ˜¯å¦ç¬¦åˆï¼Œå¦‚æœæ¡ä»¶ç¬¦åˆï¼Œåˆ™æ‰§è¡Œå¤§æ‹¬å·å†…çš„è¯­å¥ã€‚IfæŒ‡ä»¤ä¸æ”¯æŒåµŒå¥—ï¼Œä¸æ”¯æŒå¤šä¸ªæ¡ä»¶&&å’Œ||å¤„ç†ã€‚
 
 
-3.returnÖ¸Áî
-Óï·¨£ºreturncode ;
-Ê¹ÓÃ»·¾³£ºserver,location,if;
-¸ÃÖ¸ÁîÓÃÓÚ½áÊø¹æÔòµÄÖ´ĞĞ²¢·µ»Ø×´Ì¬Âë¸ø¿Í»§¶Ë¡£
-Ê¾Àı£ºÈç¹û·ÃÎÊµÄURLÒÔ".sh"»ò".bash"½áÎ²£¬Ôò·µ»Ø403×´Ì¬Âë
+3.returnæŒ‡ä»¤
+è¯­æ³•ï¼šreturncode ;
+ä½¿ç”¨ç¯å¢ƒï¼šserver,location,if;
+è¯¥æŒ‡ä»¤ç”¨äºç»“æŸè§„åˆ™çš„æ‰§è¡Œå¹¶è¿”å›çŠ¶æ€ç ç»™å®¢æˆ·ç«¯ã€‚
+ç¤ºä¾‹ï¼šå¦‚æœè®¿é—®çš„URLä»¥".sh"æˆ–".bash"ç»“å°¾ï¼Œåˆ™è¿”å›403çŠ¶æ€ç 
 location ~ .*\.(sh|bash)?$
 {
 return 403;
 }
 
 
-4.rewrite Ö¸Áî
-Óï·¨£ºrewriteregex replacement flag
-Ê¹ÓÃ»·¾³£ºserver,location,if
-¸ÃÖ¸Áî¸ù¾İ±í´ïÊ½À´ÖØ¶¨ÏòURI£¬»òÕßĞŞ¸Ä×Ö·û´®¡£Ö¸Áî¸ù¾İÅäÖÃÎÄ¼şÖĞµÄË³ĞòÀ´Ö´ĞĞ¡£×¢ÒâÖØĞ´±í´ïÊ½Ö»¶ÔÏà¶ÔÂ·¾¶ÓĞĞ§¡£Èç¹ûÄãÏëÅä¶ÔÖ÷»úÃû£¬ÄãÓ¦¸ÃÊ¹ÓÃifÓï¾ä£¬Ê¾ÀıÈçÏÂ£º
+4.rewrite æŒ‡ä»¤
+è¯­æ³•ï¼šrewriteregex replacement flag
+ä½¿ç”¨ç¯å¢ƒï¼šserver,location,if
+è¯¥æŒ‡ä»¤æ ¹æ®è¡¨è¾¾å¼æ¥é‡å®šå‘URIï¼Œæˆ–è€…ä¿®æ”¹å­—ç¬¦ä¸²ã€‚æŒ‡ä»¤æ ¹æ®é…ç½®æ–‡ä»¶ä¸­çš„é¡ºåºæ¥æ‰§è¡Œã€‚æ³¨æ„é‡å†™è¡¨è¾¾å¼åªå¯¹ç›¸å¯¹è·¯å¾„æœ‰æ•ˆã€‚å¦‚æœä½ æƒ³é…å¯¹ä¸»æœºåï¼Œä½ åº”è¯¥ä½¿ç”¨ifè¯­å¥ï¼Œç¤ºä¾‹å¦‚ä¸‹ï¼š
 if( $host ~* www\.(.*) )
 {
 set $host_without_www $1;
@@ -66,40 +66,40 @@ rewrite ^(.*)$  http://$host_without_www$1permanent;
 }
 
 
-5.SetÖ¸Áî
-Óï·¨£ºsetvariable value ; Ä¬ÈÏÖµ:none; Ê¹ÓÃ»·¾³£ºserver,location,if;
-¸ÃÖ¸ÁîÓÃÓÚ¶¨ÒåÒ»¸ö±äÁ¿£¬²¢¸ø±äÁ¿¸³Öµ¡£±äÁ¿µÄÖµ¿ÉÒÔÎªÎÄ±¾¡¢±äÁ¿ÒÔ¼°ÎÄ±¾±äÁ¿µÄÁªºÏ¡£
-Ê¾Àı£ºset$varname "hello world";
+5.SetæŒ‡ä»¤
+è¯­æ³•ï¼šsetvariable value ; é»˜è®¤å€¼:none; ä½¿ç”¨ç¯å¢ƒï¼šserver,location,if;
+è¯¥æŒ‡ä»¤ç”¨äºå®šä¹‰ä¸€ä¸ªå˜é‡ï¼Œå¹¶ç»™å˜é‡èµ‹å€¼ã€‚å˜é‡çš„å€¼å¯ä»¥ä¸ºæ–‡æœ¬ã€å˜é‡ä»¥åŠæ–‡æœ¬å˜é‡çš„è”åˆã€‚
+ç¤ºä¾‹ï¼šset$varname "hello world";
 
 
-6.Uninitialized_variable_warnÖ¸Áî
-Óï·¨£ºuninitialized_variable_warnon|off
-Ê¹ÓÃ»·¾³£ºhttp,server,location,if
-¸ÃÖ¸ÁîÓÃÓÚ¿ªÆôºÍ¹Ø±ÕÎ´³õÊ¼»¯±äÁ¿µÄ¾¯¸æĞÅÏ¢£¬Ä¬ÈÏÖµÎª¿ªÆô¡£
+6.Uninitialized_variable_warnæŒ‡ä»¤
+è¯­æ³•ï¼šuninitialized_variable_warnon|off
+ä½¿ç”¨ç¯å¢ƒï¼šhttp,server,location,if
+è¯¥æŒ‡ä»¤ç”¨äºå¼€å¯å’Œå…³é—­æœªåˆå§‹åŒ–å˜é‡çš„è­¦å‘Šä¿¡æ¯ï¼Œé»˜è®¤å€¼ä¸ºå¼€å¯ã€‚
 
  
 
 
-Îå£®NginxµÄRewrite¹æÔò±àĞ´ÊµÀı
-1.µ±·ÃÎÊµÄÎÄ¼şºÍÄ¿Â¼²»´æÔÚÊ±£¬ÖØ¶¨Ïòµ½Ä³¸öphpÎÄ¼ş
+äº”ï¼Nginxçš„Rewriteè§„åˆ™ç¼–å†™å®ä¾‹
+1.å½“è®¿é—®çš„æ–‡ä»¶å’Œç›®å½•ä¸å­˜åœ¨æ—¶ï¼Œé‡å®šå‘åˆ°æŸä¸ªphpæ–‡ä»¶
 if( !-e $request_filename )
 {
 rewrite ^/(.*)$ index.php last;
 }
 
 
-2.Ä¿Â¼¶Ô»» /123456/xxxx  ====>  /xxxx?id=123456
+2.ç›®å½•å¯¹æ¢ /123456/xxxx  ====>  /xxxx?id=123456
 rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
 
 
-3.Èç¹û¿Í»§¶ËÊ¹ÓÃµÄÊÇIEä¯ÀÀÆ÷£¬ÔòÖØ¶¨Ïòµ½/ieÄ¿Â¼ÏÂ
+3.å¦‚æœå®¢æˆ·ç«¯ä½¿ç”¨çš„æ˜¯IEæµè§ˆå™¨ï¼Œåˆ™é‡å®šå‘åˆ°/ieç›®å½•ä¸‹
 if( $http_user_agent  ~ MSIE)
 {
 rewrite ^(.*)$ /ie/$1 break;
 }
 
 
-4.½ûÖ¹·ÃÎÊ¶à¸öÄ¿Â¼
+4.ç¦æ­¢è®¿é—®å¤šä¸ªç›®å½•
 location ~ ^/(cron|templates)/
 {
 deny all;
@@ -107,21 +107,21 @@ break;
 }
 
 
-5.½ûÖ¹·ÃÎÊÒÔ/data¿ªÍ·µÄÎÄ¼ş
+5.ç¦æ­¢è®¿é—®ä»¥/dataå¼€å¤´çš„æ–‡ä»¶
 location ~ ^/data
 {
 deny all;
 }
 
 
-6.½ûÖ¹·ÃÎÊÒÔ.sh,.flv,.mp3ÎªÎÄ¼şºó×ºÃûµÄÎÄ¼ş
+6.ç¦æ­¢è®¿é—®ä»¥.sh,.flv,.mp3ä¸ºæ–‡ä»¶åç¼€åçš„æ–‡ä»¶
 location ~ .*\.(sh|flv|mp3)$
 {
 return 403;
 }
 
 
-7.ÉèÖÃÄ³Ğ©ÀàĞÍÎÄ¼şµÄä¯ÀÀÆ÷»º´æÊ±¼ä
+7.è®¾ç½®æŸäº›ç±»å‹æ–‡ä»¶çš„æµè§ˆå™¨ç¼“å­˜æ—¶é—´
 location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 {
 expires 30d;
@@ -132,8 +132,8 @@ expires 1h;
 }
 
 
-8.¸øfavicon.icoºÍrobots.txtÉèÖÃ¹ıÆÚÊ±¼ä;
-ÕâÀïÎªfavicon.icoÎª99Ìì,robots.txtÎª7Ìì²¢²»¼ÇÂ¼404´íÎóÈÕÖ¾
+8.ç»™favicon.icoå’Œrobots.txtè®¾ç½®è¿‡æœŸæ—¶é—´;
+è¿™é‡Œä¸ºfavicon.icoä¸º99å¤©,robots.txtä¸º7å¤©å¹¶ä¸è®°å½•404é”™è¯¯æ—¥å¿—
 location ~(favicon.ico) {
 log_not_found off;
 expires 99d;
@@ -146,7 +146,7 @@ break;
 }
 
 
-9.Éè¶¨Ä³¸öÎÄ¼şµÄ¹ıÆÚÊ±¼ä;ÕâÀïÎª600Ãë£¬²¢²»¼ÇÂ¼·ÃÎÊÈÕÖ¾
+9.è®¾å®šæŸä¸ªæ–‡ä»¶çš„è¿‡æœŸæ—¶é—´;è¿™é‡Œä¸º600ç§’ï¼Œå¹¶ä¸è®°å½•è®¿é—®æ—¥å¿—
 location ^~ /html/scripts/loadhead_1.js {
 access_log  off;
 root /opt/lampp/htdocs/web;
@@ -155,11 +155,11 @@ break;
 }
 
 
-10.ÎÄ¼ş·´µÁÁ´²¢ÉèÖÃ¹ıÆÚÊ±¼ä
-ÕâÀïµÄreturn412 Îª×Ô¶¨ÒåµÄhttp×´Ì¬Âë£¬Ä¬ÈÏÎª403£¬·½±ãÕÒ³öÕıÈ·µÄµÁÁ´µÄÇëÇó
-¡°rewrite ^/ http://img.linuxidc.net/leech.gif;¡±ÏÔÊ¾Ò»ÕÅ·ÀµÁÁ´Í¼Æ¬
-¡°access_log off;¡±²»¼ÇÂ¼·ÃÎÊÈÕÖ¾£¬¼õÇáÑ¹Á¦
-¡°expires 3d¡±ËùÓĞÎÄ¼ş3ÌìµÄä¯ÀÀÆ÷»º´æ
+10.æ–‡ä»¶åç›—é“¾å¹¶è®¾ç½®è¿‡æœŸæ—¶é—´
+è¿™é‡Œçš„return412 ä¸ºè‡ªå®šä¹‰çš„httpçŠ¶æ€ç ï¼Œé»˜è®¤ä¸º403ï¼Œæ–¹ä¾¿æ‰¾å‡ºæ­£ç¡®çš„ç›—é“¾çš„è¯·æ±‚
+â€œrewrite ^/ http://img.linuxidc.net/leech.gif;â€æ˜¾ç¤ºä¸€å¼ é˜²ç›—é“¾å›¾ç‰‡
+â€œaccess_log off;â€ä¸è®°å½•è®¿é—®æ—¥å¿—ï¼Œå‡è½»å‹åŠ›
+â€œexpires 3dâ€æ‰€æœ‰æ–‡ä»¶3å¤©çš„æµè§ˆå™¨ç¼“å­˜
 
 
 location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ {
@@ -176,7 +176,7 @@ break;
 }
 
 
-11.Ö»ÔÊĞí¹Ì¶¨ip·ÃÎÊÍøÕ¾£¬²¢¼ÓÉÏÃÜÂë
+11.åªå…è®¸å›ºå®šipè®¿é—®ç½‘ç«™ï¼Œå¹¶åŠ ä¸Šå¯†ç 
 
 
 root /opt/htdocs/www;
@@ -184,18 +184,18 @@ allow  208.97.167.194;
 allow  222.33.1.2; 
 allow  231.152.49.4;
 deny  all;
-auth_basic ¡°C1G_ADMIN¡±;
+auth_basic â€œC1G_ADMINâ€;
 auth_basic_user_file htpasswd;
 
 
-12½«¶à¼¶Ä¿Â¼ÏÂµÄÎÄ¼ş×ª³ÉÒ»¸öÎÄ¼ş£¬ÔöÇ¿seoĞ§¹û
-/job-123-456-789.html Ö¸Ïò/job/123/456/789.html
+12å°†å¤šçº§ç›®å½•ä¸‹çš„æ–‡ä»¶è½¬æˆä¸€ä¸ªæ–‡ä»¶ï¼Œå¢å¼ºseoæ•ˆæœ
+/job-123-456-789.html æŒ‡å‘/job/123/456/789.html
 
 
 rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
 
 
-13.ÎÄ¼şºÍÄ¿Â¼²»´æÔÚµÄÊ±ºòÖØ¶¨Ïò£º
+13.æ–‡ä»¶å’Œç›®å½•ä¸å­˜åœ¨çš„æ—¶å€™é‡å®šå‘ï¼š
 
 
 if (!-e $request_filename) {
@@ -203,26 +203,26 @@ proxy_pass http://127.0.0.1;
 }
 
 
-14.½«¸ùÄ¿Â¼ÏÂÄ³¸öÎÄ¼ş¼ĞÖ¸Ïò2¼¶Ä¿Â¼
-Èç/shanghaijob/ Ö¸Ïò /area/shanghai/
-Èç¹ûÄã½«last¸Ä³Épermanent£¬ÄÇÃ´ä¯ÀÀÆ÷µØÖ·À¸ÏÔÊÇ/location/shanghai/
+14.å°†æ ¹ç›®å½•ä¸‹æŸä¸ªæ–‡ä»¶å¤¹æŒ‡å‘2çº§ç›®å½•
+å¦‚/shanghaijob/ æŒ‡å‘ /area/shanghai/
+å¦‚æœä½ å°†lastæ”¹æˆpermanentï¼Œé‚£ä¹ˆæµè§ˆå™¨åœ°å€æ æ˜¾æ˜¯/location/shanghai/
 rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
-ÉÏÃæÀı×ÓÓĞ¸öÎÊÌâÊÇ·ÃÎÊ/shanghaiÊ±½«²»»áÆ¥Åä
+ä¸Šé¢ä¾‹å­æœ‰ä¸ªé—®é¢˜æ˜¯è®¿é—®/shanghaiæ—¶å°†ä¸ä¼šåŒ¹é…
 rewrite ^/([0-9a-z]+)job$ /area/$1/ last;
 rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
-ÕâÑù/shanghai Ò²¿ÉÒÔ·ÃÎÊÁË£¬µ«Ò³ÃæÖĞµÄÏà¶ÔÁ´½ÓÎŞ·¨Ê¹ÓÃ£¬
-Èç./list_1.htmlÕæÊµµØÖ·ÊÇ/area/shanghia/list_1.html»á±ä³É/list_1.html,µ¼ÖÁÎŞ·¨·ÃÎÊ¡£
-ÄÇÎÒ¼ÓÉÏ×Ô¶¯Ìø×ªÒ²ÊÇ²»ĞĞ¿©
-(-d $request_filename)ËüÓĞ¸öÌõ¼şÊÇ±ØĞèÎªÕæÊµÄ¿Â¼£¬¶øÎÒµÄrewrite²»ÊÇµÄ£¬ËùÒÔÃ»ÓĞĞ§¹û
+è¿™æ ·/shanghai ä¹Ÿå¯ä»¥è®¿é—®äº†ï¼Œä½†é¡µé¢ä¸­çš„ç›¸å¯¹é“¾æ¥æ— æ³•ä½¿ç”¨ï¼Œ
+å¦‚./list_1.htmlçœŸå®åœ°å€æ˜¯/area/shanghia/list_1.htmlä¼šå˜æˆ/list_1.html,å¯¼è‡³æ— æ³•è®¿é—®ã€‚
+é‚£æˆ‘åŠ ä¸Šè‡ªåŠ¨è·³è½¬ä¹Ÿæ˜¯ä¸è¡Œå’¯
+(-d $request_filename)å®ƒæœ‰ä¸ªæ¡ä»¶æ˜¯å¿…éœ€ä¸ºçœŸå®ç›®å½•ï¼Œè€Œæˆ‘çš„rewriteä¸æ˜¯çš„ï¼Œæ‰€ä»¥æ²¡æœ‰æ•ˆæœ
 if (-d $request_filename){
 rewrite ^/(.*)([^/])$ http://$host/$1$2/permanent;
 }
-ÖªµÀÔ­Òòºó¾ÍºÃ°ìÁË£¬ÈÃÎÒÊÖ¶¯Ìø×ª°É
+çŸ¥é“åŸå› åå°±å¥½åŠäº†ï¼Œè®©æˆ‘æ‰‹åŠ¨è·³è½¬å§
 rewrite ^/([0-9a-z]+)job$ /$1job/permanent;
 rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
 
 
-15.ÓòÃûÌø×ª
+15.åŸŸåè·³è½¬
 server
 {
 listen      80;
@@ -234,7 +234,7 @@ access_log  off;
 }
 
 
-16.¶àÓòÃû×ªÏò
+16.å¤šåŸŸåè½¬å‘
 server_name  www.linuxidc.comwww.linuxidc.net;
 index index.html index.htm index.php;
 root  /opt/lampp/htdocs;
@@ -243,51 +243,51 @@ rewrite ^(.*) http://www.linuxidc.com$1permanent;
 }
 
 
-Áù£®nginxÈ«¾Ö±äÁ¿
-arg_PARAMETER    #Õâ¸ö±äÁ¿°üº¬GETÇëÇóÖĞ£¬Èç¹ûÓĞ±äÁ¿PARAMETERÊ±µÄÖµ¡£
-args                    #Õâ¸ö±äÁ¿µÈÓÚÇëÇóĞĞÖĞ(GETÇëÇó)µÄ²ÎÊı£¬Èç£ºfoo=123&bar=blahblah;
-binary_remote_addr #¶ş½øÖÆµÄ¿Í»§µØÖ·¡£
-body_bytes_sent    #ÏìÓ¦Ê±ËÍ³öµÄbody×Ö½ÚÊıÊıÁ¿¡£¼´Ê¹Á¬½ÓÖĞ¶Ï£¬Õâ¸öÊı¾İÒ²ÊÇ¾«È·µÄ¡£
-content_length    #ÇëÇóÍ·ÖĞµÄContent-length×Ö¶Î¡£
-content_type      #ÇëÇóÍ·ÖĞµÄContent-Type×Ö¶Î¡£
-cookie_COOKIE    #cookie COOKIE±äÁ¿µÄÖµ
-document_root    #µ±Ç°ÇëÇóÔÚrootÖ¸ÁîÖĞÖ¸¶¨µÄÖµ¡£
-document_uri      #ÓëuriÏàÍ¬¡£
-host                #ÇëÇóÖ÷»úÍ·×Ö¶Î£¬·ñÔòÎª·şÎñÆ÷Ãû³Æ¡£
-hostname          #Set to themachine¡¯s hostname as returned by gethostname
+å…­ï¼nginxå…¨å±€å˜é‡
+arg_PARAMETER    #è¿™ä¸ªå˜é‡åŒ…å«GETè¯·æ±‚ä¸­ï¼Œå¦‚æœæœ‰å˜é‡PARAMETERæ—¶çš„å€¼ã€‚
+args                    #è¿™ä¸ªå˜é‡ç­‰äºè¯·æ±‚è¡Œä¸­(GETè¯·æ±‚)çš„å‚æ•°ï¼Œå¦‚ï¼šfoo=123&bar=blahblah;
+binary_remote_addr #äºŒè¿›åˆ¶çš„å®¢æˆ·åœ°å€ã€‚
+body_bytes_sent    #å“åº”æ—¶é€å‡ºçš„bodyå­—èŠ‚æ•°æ•°é‡ã€‚å³ä½¿è¿æ¥ä¸­æ–­ï¼Œè¿™ä¸ªæ•°æ®ä¹Ÿæ˜¯ç²¾ç¡®çš„ã€‚
+content_length    #è¯·æ±‚å¤´ä¸­çš„Content-lengthå­—æ®µã€‚
+content_type      #è¯·æ±‚å¤´ä¸­çš„Content-Typeå­—æ®µã€‚
+cookie_COOKIE    #cookie COOKIEå˜é‡çš„å€¼
+document_root    #å½“å‰è¯·æ±‚åœ¨rootæŒ‡ä»¤ä¸­æŒ‡å®šçš„å€¼ã€‚
+document_uri      #ä¸uriç›¸åŒã€‚
+host                #è¯·æ±‚ä¸»æœºå¤´å­—æ®µï¼Œå¦åˆ™ä¸ºæœåŠ¡å™¨åç§°ã€‚
+hostname          #Set to themachineâ€™s hostname as returned by gethostname
 http_HEADER
-is_args              #Èç¹ûÓĞargs²ÎÊı£¬Õâ¸ö±äÁ¿µÈÓÚ¡±?¡±£¬·ñÔòµÈÓÚ¡±"£¬¿ÕÖµ¡£
-http_user_agent    #¿Í»§¶ËagentĞÅÏ¢
-http_cookie          #¿Í»§¶ËcookieĞÅÏ¢
-limit_rate            #Õâ¸ö±äÁ¿¿ÉÒÔÏŞÖÆÁ¬½ÓËÙÂÊ¡£
-query_string          #ÓëargsÏàÍ¬¡£
-request_body_file  #¿Í»§¶ËÇëÇóÖ÷ÌåĞÅÏ¢µÄÁÙÊ±ÎÄ¼şÃû¡£
-request_method    #¿Í»§¶ËÇëÇóµÄ¶¯×÷£¬Í¨³£ÎªGET»òPOST¡£
-remote_addr          #¿Í»§¶ËµÄIPµØÖ·¡£
-remote_port          #¿Í»§¶ËµÄ¶Ë¿Ú¡£
-remote_user          #ÒÑ¾­¾­¹ıAuth Basic ModuleÑéÖ¤µÄÓÃ»§Ãû¡£
-request_completion #Èç¹ûÇëÇó½áÊø£¬ÉèÖÃÎªOK. µ±ÇëÇóÎ´½áÊø»òÈç¹û¸ÃÇëÇó²»ÊÇÇëÇóÁ´´®µÄ×îºóÒ»¸öÊ±£¬Îª¿Õ(Empty)¡£
-request_method    #GET»òPOST
-request_filename  #µ±Ç°ÇëÇóµÄÎÄ¼şÂ·¾¶£¬ÓÉroot»òaliasÖ¸ÁîÓëURIÇëÇóÉú³É¡£
-request_uri          #°üº¬ÇëÇó²ÎÊıµÄÔ­Ê¼URI£¬²»°üº¬Ö÷»úÃû£¬Èç£º¡±/foo/bar.php?arg=baz¡±¡£²»ÄÜĞŞ¸Ä¡£
-scheme                #HTTP·½·¨£¨Èçhttp£¬https£©¡£
-server_protocol      #ÇëÇóÊ¹ÓÃµÄĞ­Òé£¬Í¨³£ÊÇHTTP/1.0»òHTTP/1.1¡£
-server_addr          #·şÎñÆ÷µØÖ·£¬ÔÚÍê³ÉÒ»´ÎÏµÍ³µ÷ÓÃºó¿ÉÒÔÈ·¶¨Õâ¸öÖµ¡£
-server_name        #·şÎñÆ÷Ãû³Æ¡£
-server_port          #ÇëÇóµ½´ï·şÎñÆ÷µÄ¶Ë¿ÚºÅ¡£
+is_args              #å¦‚æœæœ‰argså‚æ•°ï¼Œè¿™ä¸ªå˜é‡ç­‰äºâ€?â€ï¼Œå¦åˆ™ç­‰äºâ€"ï¼Œç©ºå€¼ã€‚
+http_user_agent    #å®¢æˆ·ç«¯agentä¿¡æ¯
+http_cookie          #å®¢æˆ·ç«¯cookieä¿¡æ¯
+limit_rate            #è¿™ä¸ªå˜é‡å¯ä»¥é™åˆ¶è¿æ¥é€Ÿç‡ã€‚
+query_string          #ä¸argsç›¸åŒã€‚
+request_body_file  #å®¢æˆ·ç«¯è¯·æ±‚ä¸»ä½“ä¿¡æ¯çš„ä¸´æ—¶æ–‡ä»¶åã€‚
+request_method    #å®¢æˆ·ç«¯è¯·æ±‚çš„åŠ¨ä½œï¼Œé€šå¸¸ä¸ºGETæˆ–POSTã€‚
+remote_addr          #å®¢æˆ·ç«¯çš„IPåœ°å€ã€‚
+remote_port          #å®¢æˆ·ç«¯çš„ç«¯å£ã€‚
+remote_user          #å·²ç»ç»è¿‡Auth Basic ModuleéªŒè¯çš„ç”¨æˆ·åã€‚
+request_completion #å¦‚æœè¯·æ±‚ç»“æŸï¼Œè®¾ç½®ä¸ºOK. å½“è¯·æ±‚æœªç»“æŸæˆ–å¦‚æœè¯¥è¯·æ±‚ä¸æ˜¯è¯·æ±‚é“¾ä¸²çš„æœ€åä¸€ä¸ªæ—¶ï¼Œä¸ºç©º(Empty)ã€‚
+request_method    #GETæˆ–POST
+request_filename  #å½“å‰è¯·æ±‚çš„æ–‡ä»¶è·¯å¾„ï¼Œç”±rootæˆ–aliasæŒ‡ä»¤ä¸URIè¯·æ±‚ç”Ÿæˆã€‚
+request_uri          #åŒ…å«è¯·æ±‚å‚æ•°çš„åŸå§‹URIï¼Œä¸åŒ…å«ä¸»æœºåï¼Œå¦‚ï¼šâ€/foo/bar.php?arg=bazâ€ã€‚ä¸èƒ½ä¿®æ”¹ã€‚
+scheme                #HTTPæ–¹æ³•ï¼ˆå¦‚httpï¼Œhttpsï¼‰ã€‚
+server_protocol      #è¯·æ±‚ä½¿ç”¨çš„åè®®ï¼Œé€šå¸¸æ˜¯HTTP/1.0æˆ–HTTP/1.1ã€‚
+server_addr          #æœåŠ¡å™¨åœ°å€ï¼Œåœ¨å®Œæˆä¸€æ¬¡ç³»ç»Ÿè°ƒç”¨åå¯ä»¥ç¡®å®šè¿™ä¸ªå€¼ã€‚
+server_name        #æœåŠ¡å™¨åç§°ã€‚
+server_port          #è¯·æ±‚åˆ°è¾¾æœåŠ¡å™¨çš„ç«¯å£å·ã€‚
 
 
-Æß£®ApacheºÍNginx¹æÔòµÄ¶ÔÓ¦¹ØÏµ
-ApacheµÄRewriteCond¶ÔÓ¦NginxµÄif
-ApacheµÄRewriteRule¶ÔÓ¦NginxµÄrewrite
-ApacheµÄ[R]¶ÔÓ¦NginxµÄredirect
-ApacheµÄ[P]¶ÔÓ¦NginxµÄlast
-ApacheµÄ[R,L]¶ÔÓ¦NginxµÄredirect
-ApacheµÄ[P,L]¶ÔÓ¦NginxµÄlast
-ApacheµÄ[PT,L]¶ÔÓ¦NginxµÄlast
+ä¸ƒï¼Apacheå’ŒNginxè§„åˆ™çš„å¯¹åº”å…³ç³»
+Apacheçš„RewriteCondå¯¹åº”Nginxçš„if
+Apacheçš„RewriteRuleå¯¹åº”Nginxçš„rewrite
+Apacheçš„[R]å¯¹åº”Nginxçš„redirect
+Apacheçš„[P]å¯¹åº”Nginxçš„last
+Apacheçš„[R,L]å¯¹åº”Nginxçš„redirect
+Apacheçš„[P,L]å¯¹åº”Nginxçš„last
+Apacheçš„[PT,L]å¯¹åº”Nginxçš„last
 
 
-ÀıÈç£ºÔÊĞíÖ¸¶¨µÄÓòÃû·ÃÎÊ±¾Õ¾£¬ÆäËûµÄÓòÃûÒ»ÂÉ×ªÏòwww.linuxidc.net
+ä¾‹å¦‚ï¼šå…è®¸æŒ‡å®šçš„åŸŸåè®¿é—®æœ¬ç«™ï¼Œå…¶ä»–çš„åŸŸåä¸€å¾‹è½¬å‘www.linuxidc.net
   Apache:
 RewriteCond %{HTTP_HOST} !^(.*?)\.aaa\.com$[NC]
 RewriteCond %{HTTP_HOST} !^localhost$ 
@@ -298,22 +298,22 @@ RewriteRule ^/(.*)$ http://www.linuxidc.net[R,L]
   Nginx:
 if( $host ~* ^(.*)\.aaa\.com$ )
 {
-set $allowHost ¡®1¡¯;
+set $allowHost â€˜1â€™;
 }
 if( $host ~* ^localhost )
 {
-set $allowHost ¡®1¡¯;
+set $allowHost â€˜1â€™;
 }
 if( $host ~* ^192\.168\.1\.(.*?)$ )
 {
-set $allowHost ¡®1¡¯;
+set $allowHost â€˜1â€™;
 }
-if( $allowHost !~ ¡®1¡¯ )
+if( $allowHost !~ â€˜1â€™ )
 {
 rewrite ^/(.*)$ http://www.linuxidc.netredirect ;
 }
 
-±¾ÆªÎÄÕÂÀ´Ô´ÓÚ Linux¹«ÉçÍøÕ¾(www.linuxidc.com)  Ô­ÎÄÁ´½Ó£ºhttp://www.linuxidc.com/Linux/2014-01/95493.htm
+æœ¬ç¯‡æ–‡ç« æ¥æºäº Linuxå…¬ç¤¾ç½‘ç«™(www.linuxidc.com)  åŸæ–‡é“¾æ¥ï¼šhttp://www.linuxidc.com/Linux/2014-01/95493.htm
 
 
 
@@ -333,1806 +333,113 @@ rewrite ^/(.*)$ http://www.linuxidc.netredirect ;
 
 
 
-Nginx RewriteÏê½â 
-Nginx RewriteÏê½â
+Nginx Rewriteè¯¦è§£ 
+Nginx Rewriteè¯¦è§£
 
-ÒıÓÃÁ´½Ó£ºhttp://blog.cafeneko.info/2010/10/nginx_rewrite_note/
-
- 
-
-Ô­ÎÄÈçÏÂ£º
+å¼•ç”¨é“¾æ¥ï¼šhttp://blog.cafeneko.info/2010/10/nginx_rewrite_note/
 
  
 
-ÔÚĞÂÖ÷»úµÄÇ¨ÒÆ¹ı³ÌÖĞ,×î´óµÄÀ§ÄÑ¾ÍÊÇWP permalink rewriteµÄÉèÖÃ.
-
-ÒòÎª¾ÉÖ÷»úÊÇÓÃµÄApache, Ê¹ÓÃµÄÊÇWP±¾Éí¾Í¿ÉÒÔ¸ü¸ÄµÄ.htaccess,Ã»ÓĞÌ«´óµÄÄÑ¶È.¶øÕâ´ÎÔÚVPSÉÏÅÜµÄÊÇNginx,Ö÷ÒªÊÇÒòÎªNginxµÄËÙ¶È±ÈApacheÒª¿ìºÜ¶à.
-
-µ«ÊÇÁíÒ»·½Ãæ¾Í²»ÊÇÄÇÃ´Êæ·şÁË,ÒòÎªNginxµÄrewrite¸úApache²»Í¬,¶øÇÒÊÇÔÚ·şÎñÆ÷ÉÏÃæ²ÅÄÜ¸ü¸Ä.
-
-ÏÂÃæÊÇÆä¼äµÄÒ»Ğ©ÑĞ¾¿±Ê¼Ç.(ÒÔÏÂÓÃÀıÈçÎŞÌØ±ğËµÃ÷¾ùÕª×Ônginx wiki)
+åŸæ–‡å¦‚ä¸‹ï¼š
 
  
 
-/1 Nginx rewrite»ù±¾Óï·¨
+åœ¨æ–°ä¸»æœºçš„è¿ç§»è¿‡ç¨‹ä¸­,æœ€å¤§çš„å›°éš¾å°±æ˜¯WP permalink rewriteçš„è®¾ç½®.
+
+å› ä¸ºæ—§ä¸»æœºæ˜¯ç”¨çš„Apache, ä½¿ç”¨çš„æ˜¯WPæœ¬èº«å°±å¯ä»¥æ›´æ”¹çš„.htaccess,æ²¡æœ‰å¤ªå¤§çš„éš¾åº¦.è€Œè¿™æ¬¡åœ¨VPSä¸Šè·‘çš„æ˜¯Nginx,ä¸»è¦æ˜¯å› ä¸ºNginxçš„é€Ÿåº¦æ¯”Apacheè¦å¿«å¾ˆå¤š.
+
+ä½†æ˜¯å¦ä¸€æ–¹é¢å°±ä¸æ˜¯é‚£ä¹ˆèˆ’æœäº†,å› ä¸ºNginxçš„rewriteè·ŸApacheä¸åŒ,è€Œä¸”æ˜¯åœ¨æœåŠ¡å™¨ä¸Šé¢æ‰èƒ½æ›´æ”¹.
+
+ä¸‹é¢æ˜¯å…¶é—´çš„ä¸€äº›ç ”ç©¶ç¬”è®°.(ä»¥ä¸‹ç”¨ä¾‹å¦‚æ— ç‰¹åˆ«è¯´æ˜å‡æ‘˜è‡ªnginx wiki)
+
  
 
-NginxµÄrewriteÓï·¨ÆäÊµºÜ¼òµ¥.ÓÃµ½µÄÖ¸ÁîÎŞ·ÇÊÇÕâ¼¸¸ö
+/1 Nginx rewriteåŸºæœ¬è¯­æ³•
+ 
+
+Nginxçš„rewriteè¯­æ³•å…¶å®å¾ˆç®€å•.ç”¨åˆ°çš„æŒ‡ä»¤æ— éæ˜¯è¿™å‡ ä¸ª
 
 ?set
 ?if
 ?return
 ?break
 ?rewrite
-ÂéÈ¸ËäĞ¡,¿ÉÓù¿ÉÂÜÎåÔà¾ãÈ«.Ö»ÊÇ¼òµ¥µÄ¼¸¸öÖ¸ÁîÈ´¿ÉÒÔ×ö³ö¾ø¶Ô²»ÊäapacheµÄ¼òµ¥Áé»îµÄÅäÖÃ.
+éº»é›€è™½å°,å¯å¾¡å¯èäº”è„ä¿±å…¨.åªæ˜¯ç®€å•çš„å‡ ä¸ªæŒ‡ä»¤å´å¯ä»¥åšå‡ºç»å¯¹ä¸è¾“apacheçš„ç®€å•çµæ´»çš„é…ç½®.
 
 1.set
 
-setÖ÷ÒªÊÇÓÃÀ´ÉèÖÃ±äÁ¿ÓÃµÄ,Ã»Ê²Ã´ÌØ±ğµÄ
+setä¸»è¦æ˜¯ç”¨æ¥è®¾ç½®å˜é‡ç”¨çš„,æ²¡ä»€ä¹ˆç‰¹åˆ«çš„
 
 2.if
 
-ifÖ÷ÒªÓÃÀ´ÅĞ¶ÏÒ»Ğ©ÔÚrewriteÓï¾äÖĞÎŞ·¨Ö±½ÓÆ¥ÅäµÄÌõ¼ş,±ÈÈç¼ì²âÎÄ¼ş´æÔÚÓë·ñ,http header,cookieµÈ,
+ifä¸»è¦ç”¨æ¥åˆ¤æ–­ä¸€äº›åœ¨rewriteè¯­å¥ä¸­æ— æ³•ç›´æ¥åŒ¹é…çš„æ¡ä»¶,æ¯”å¦‚æ£€æµ‹æ–‡ä»¶å­˜åœ¨ä¸å¦,http header,cookieç­‰,
 
-ÓÃ·¨: if(Ìõ¼ş) {¡­}
+ç”¨æ³•: if(æ¡ä»¶) {â€¦}
 
-- µ±if±í´ïÊ½ÖĞµÄÌõ¼şÎªtrue,ÔòÖ´ĞĞif¿éÖĞµÄÓï¾ä
+- å½“ifè¡¨è¾¾å¼ä¸­çš„æ¡ä»¶ä¸ºtrue,åˆ™æ‰§è¡Œifå—ä¸­çš„è¯­å¥
 
-- µ±±í´ïÊ½Ö»ÊÇÒ»¸ö±äÁ¿Ê±,Èç¹ûÖµÎª¿Õ»òÕßÈÎºÎÒÔ0¿ªÍ·µÄ×Ö·û´®¶¼»áµ±×÷false
+- å½“è¡¨è¾¾å¼åªæ˜¯ä¸€ä¸ªå˜é‡æ—¶,å¦‚æœå€¼ä¸ºç©ºæˆ–è€…ä»»ä½•ä»¥0å¼€å¤´çš„å­—ç¬¦ä¸²éƒ½ä¼šå½“ä½œfalse
 
-- Ö±½Ó±È½ÏÄÚÈİÊ±,Ê¹ÓÃ = ºÍ !=
+- ç›´æ¥æ¯”è¾ƒå†…å®¹æ—¶,ä½¿ç”¨ = å’Œ !=
 
-- Ê¹ÓÃÕıÔò±í´ïÊ½Æ¥ÅäÊ±,Ê¹ÓÃ
+- ä½¿ç”¨æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…æ—¶,ä½¿ç”¨
 
-~ ´óĞ¡Ğ´Ãô¸ĞÆ¥Åä   YANG ADD Ó¦¸ÃËãÍêÈ«Æ¥Åä
-~* ´óĞ¡Ğ´²»Ãô¸ĞÆ¥Åä  yang add Ó¦¸ÃÊÇ²»Çø·Ö´óĞ¡Ğ´Æ¥Åä
-!~ ´óĞ¡Ğ´Ãô¸Ğ²»Æ¥Åä   yang add£¬Èç¹ûÍêÈ«Æ¥Åä£¬ÔòÎª¼Ù
-!~* ´óĞ¡Ğ´²»Ãô¸Ğ²»Æ¥Åä yang add Èç¹û²»Çø·Ö´óĞ¡Ğ´Æ¥Åä³É¹¦£¬·µ»Ø¼Ù
+~ å¤§å°å†™æ•æ„ŸåŒ¹é…   YANG ADD åº”è¯¥ç®—å®Œå…¨åŒ¹é…
+~* å¤§å°å†™ä¸æ•æ„ŸåŒ¹é…  yang add åº”è¯¥æ˜¯ä¸åŒºåˆ†å¤§å°å†™åŒ¹é…
+!~ å¤§å°å†™æ•æ„Ÿä¸åŒ¹é…   yang addï¼Œå¦‚æœå®Œå…¨åŒ¹é…ï¼Œåˆ™ä¸ºå‡
+!~* å¤§å°å†™ä¸æ•æ„Ÿä¸åŒ¹é… yang add å¦‚æœä¸åŒºåˆ†å¤§å°å†™åŒ¹é…æˆåŠŸï¼Œè¿”å›å‡
 
-Õâ¼¸¾ä»°¿´ÆğÀ´ÓĞµãÈÆ,×ÜÖ®¼Ç×¡: ~ÎªÕıÔòÆ¥Åä, ºóÖÃ*Îª´óĞ¡Ğ´²»Ãô¸Ğ, Ç°ÖÃ!Îª¡±·Ç¡±²Ù×÷
+è¿™å‡ å¥è¯çœ‹èµ·æ¥æœ‰ç‚¹ç»•,æ€»ä¹‹è®°ä½: ~ä¸ºæ­£åˆ™åŒ¹é…, åç½®*ä¸ºå¤§å°å†™ä¸æ•æ„Ÿ, å‰ç½®!ä¸ºâ€éâ€æ“ä½œ
 
-Ëæ±ãÒ»Ìá,ÒòÎªnginxÊ¹ÓÃ»¨À¨ºÅ{}ÅĞ¶ÏÇø¿é,ËùÒÔµ±ÕıÔòÖĞ°üº¬»¨À¨ºÅÊ±,Ôò±ØĞëÓÃË«ÒıºÅ½«ÕıÔò°üÆğÀ´.¶ÔÏÂÃæ½²µ½µÄrewriteÓï¾äÖĞµÄÕıÔòÒàÊÇÈç´Ë. 
-±ÈÈç ¡°\d{4}\d{2}\.+¡±
+éšä¾¿ä¸€æ,å› ä¸ºnginxä½¿ç”¨èŠ±æ‹¬å·{}åˆ¤æ–­åŒºå—,æ‰€ä»¥å½“æ­£åˆ™ä¸­åŒ…å«èŠ±æ‹¬å·æ—¶,åˆ™å¿…é¡»ç”¨åŒå¼•å·å°†æ­£åˆ™åŒ…èµ·æ¥.å¯¹ä¸‹é¢è®²åˆ°çš„rewriteè¯­å¥ä¸­çš„æ­£åˆ™äº¦æ˜¯å¦‚æ­¤. 
+æ¯”å¦‚ â€œ\d{4}\d{2}\.+â€
 
-- Ê¹ÓÃ-f,-d,-e,-x¼ì²âÎÄ¼şºÍÄ¿Â¼
+- ä½¿ç”¨-f,-d,-e,-xæ£€æµ‹æ–‡ä»¶å’Œç›®å½•
 
--f ¼ì²âÎÄ¼ş´æÔÚ
--d ¼ì²âÄ¿Â¼´æÔÚ
--e ¼ì²âÎÄ¼ş,Ä¿Â¼»òÕß·ûºÅÁ´½Ó´æÔÚ
--x ¼ì²âÎÄ¼ş¿ÉÖ´ĞĞ
+-f æ£€æµ‹æ–‡ä»¶å­˜åœ¨
+-d æ£€æµ‹ç›®å½•å­˜åœ¨
+-e æ£€æµ‹æ–‡ä»¶,ç›®å½•æˆ–è€…ç¬¦å·é“¾æ¥å­˜åœ¨
+-x æ£€æµ‹æ–‡ä»¶å¯æ‰§è¡Œ
 
-¸ú~ÀàËÆ,Ç°ÖÃ!ÔòÎª¡±·Ç¡±²Ù×÷
+è·Ÿ~ç±»ä¼¼,å‰ç½®!åˆ™ä¸ºâ€éâ€æ“ä½œ
 
-¾ÙÀı
+ä¸¾ä¾‹
 
 if ($http_user_agent ~ MSIE) {
   rewrite  ^(.*)$  /msie/$1  break;
-}//Èç¹ûUA°üº¬¡±MSIE¡±,rewrite ÇëÇóµ½/msieÄ¿Â¼ÏÂ
+}//å¦‚æœUAåŒ…å«â€MSIEâ€,rewrite è¯·æ±‚åˆ°/msieç›®å½•ä¸‹
 
 if ($http_cookie ~* "id=([^;] +)(?:;|$)" ) {
   set  $id  $1;
-}//Èç¹ûcookieÆ¥ÅäÕıÔò,ÉèÖÃ±äÁ¿$idµÈÓÚÕıÔòÒıÓÃ²¿·Ö
+}//å¦‚æœcookieåŒ¹é…æ­£åˆ™,è®¾ç½®å˜é‡$idç­‰äºæ­£åˆ™å¼•ç”¨éƒ¨åˆ†
 
 if ($request_method = POST ) {
   return 405;
-}//Èç¹ûÌá½»·½·¨ÎªPOST,Ôò·µ»Ø×´Ì¬405 (Method not allowed)
+}//å¦‚æœæäº¤æ–¹æ³•ä¸ºPOST,åˆ™è¿”å›çŠ¶æ€405 (Method not allowed)
 
 if (!-f $request_filename) {
   break;
   proxy_pass  http://127.0.0.1;
-}//Èç¹ûÇëÇóÎÄ¼şÃû²»´æÔÚ,Ôò·´Ïò´úÀílocalhost
+}//å¦‚æœè¯·æ±‚æ–‡ä»¶åä¸å­˜åœ¨,åˆ™åå‘ä»£ç†localhost
 
 if ($args ~ post=140){
   rewrite ^ http://example.com/ permanent;
-}//Èç¹ûquery stringÖĞ°üº¬¡±post=140¡å,ÓÀ¾ÃÖØ¶¨Ïòµ½example.com
+}//å¦‚æœquery stringä¸­åŒ…å«â€post=140â€³,æ°¸ä¹…é‡å®šå‘åˆ°example.com
 
 3.return
 
-return¿ÉÓÃÀ´Ö±½ÓÉèÖÃHTTP·µ»Ø×´Ì¬,±ÈÈç403,404µÈ(301,302²»¿ÉÓÃreturn·µ»Ø,Õâ¸öÏÂÃæ»áÔÚrewriteÌáµ½)
+returnå¯ç”¨æ¥ç›´æ¥è®¾ç½®HTTPè¿”å›çŠ¶æ€,æ¯”å¦‚403,404ç­‰(301,302ä¸å¯ç”¨returnè¿”å›,è¿™ä¸ªä¸‹é¢ä¼šåœ¨rewriteæåˆ°)
 
 4.break
 
-Á¢¼´Í£Ö¹rewrite¼ì²â,¸úÏÂÃæ½²µ½µÄrewriteµÄbreak flag¹¦ÄÜÊÇÒ»ÑùµÄ,Çø±ğÔÚÓÚÇ°ÕßÊÇÒ»¸öÓï¾ä,ºóÕßÊÇrewriteÓï¾äµÄflag
+ç«‹å³åœæ­¢rewriteæ£€æµ‹,è·Ÿä¸‹é¢è®²åˆ°çš„rewriteçš„break flagåŠŸèƒ½æ˜¯ä¸€æ ·çš„,åŒºåˆ«åœ¨äºå‰è€…æ˜¯ä¸€ä¸ªè¯­å¥,åè€…æ˜¯rewriteè¯­å¥çš„flag
 
 5.rewrite
 
-×îºËĞÄµÄ¹¦ÄÜ(·Ï»°)
+æœ€æ ¸å¿ƒçš„åŠŸèƒ½(åºŸè¯)
 
-ÓÃ·¨: rewrite ÕıÔò Ìæ»» ±êÖ¾Î»
+ç”¨æ³•: rewrite æ­£åˆ™ æ›¿æ¢ æ ‡å¿—ä½
 
-ÆäÖĞ±êÖ¾Î»ÓĞËÄÖÖ
+å…¶ä¸­æ ‡å¿—ä½æœ‰å››ç§
 
-break ¨C Í£Ö¹rewrite¼ì²â,Ò²¾ÍÊÇËµµ±º¬ÓĞbreak flagµÄrewriteÓï¾ä±»Ö´ĞĞÊ±,¸ÃÓï¾ä¾ÍÊÇrewriteµÄ×îÖÕ½á¹û 
-last ¨C Í£Ö¹rewrite¼ì²â,µ«ÊÇ¸úbreakÓĞ±¾ÖÊµÄ²»Í¬,lastµÄÓï¾ä²»Ò»¶¨ÊÇ×îÖÕ½á¹û,ÕâµãºóÃæ»á¸únginxµÄlocationÆ¥ÅäÒ»ÆğÌáµ½ 
-redirect ¨C ·µ»Ø302ÁÙÊ±ÖØ¶¨Ïò,Ò»°ãÓÃÓÚÖØ¶¨Ïòµ½ÍêÕûµÄURL(°üº¬http:²¿·Ö) 
-permanent ¨C ·µ»Ø301ÓÀ¾ÃÖØ¶¨Ïò,Ò»°ãÓÃÓÚÖØ¶¨Ïòµ½ÍêÕûµÄURL(°üº¬http:²¿·Ö)
-
-ÒòÎª301ºÍ302²»ÄÜ¼òµ¥µÄÖ»µ¥´¿·µ»Ø×´Ì¬Âë,»¹±ØĞëÓĞÖØ¶¨ÏòµÄURL,Õâ¾ÍÊÇreturnÖ¸ÁîÎŞ·¨·µ»Ø301,302µÄÔ­ÒòÁË. ×÷ÎªÌæ»»,rewrite¿ÉÒÔ¸üÁé»îµÄÊ¹ÓÃredirectºÍpermanent±êÖ¾ÊµÏÖ301ºÍ302. ±ÈÈçÉÏÒ»ÆªÈÕÖ¾ÖĞÌáµ½µÄBlog°á¼ÒÒª×öµÄÓòÃûÖØ¶¨Ïò,ÔÚnginxÖĞ¾Í»áÕâÃ´Ğ´
-
-rewrite ^(.*)$ http://newdomain.com/ permanent;¾ÙÀıÀ´ËµÒ»ÏÂrewriteµÄÊµ¼ÊÓ¦ÓÃ
-
-rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  last;Èç¹ûÇëÇóÎª /download/eva/media/op1.mp3 ÔòÇëÇó±»rewriteµ½ /download/eva/mp3/op1.mp3
-
-Ê¹ÓÃÆğÀ´¾ÍÊÇÕâÑù,ºÜ¼òµ¥²»ÊÇÃ´? ²»¹ıÒª×¢ÒâµÄÊÇrewriteÓĞºÜ¶àÇ±¹æÔòĞèÒª×¢Òâ
-
-- rewriteµÄÉúĞ§Çø¿éÎªsever, location, if
-
-- rewriteÖ»¶ÔÏà¶ÔÂ·¾¶½øĞĞÆ¥Åä,²»°üº¬hostname ±ÈÈçËµÒÔÉÏÃæ301ÖØ¶¨ÏòµÄÀı×ÓËµÃ÷
-
-rewrite ~* cafeneko\.info http://newdomain.com/ permanent;Õâ¾äÊÇÓÀÔ¶ÎŞ·¨Ö´ĞĞµÄ,ÒÔÕâ¸öURLÎªÀı
-
-http://blog.cafeneko.info/2010/10/neokoseseiki_in_new_home/?utm_source=rss&utm_medium=rss&utm_campaign=neokoseseiki_in_new_home
-
-ÆäÖĞcafeneko.info½Ğ×öhostname,ÔÙÍùºóµ½?ÎªÖ¹½Ğ×öÏà¶ÔÂ·¾¶,?ºóÃæµÄÒ»´®½Ğ×öquery string
-
-¶ÔÓÚrewriteÀ´Ëµ,ÆäÕıÔò±í´ïÊ½½ö¶Ô¡±/2010/10/neokoseseiki_in_new_home¡±ÕâÒ»²¿·Ö½øĞĞÆ¥Åä,¼´²»°üº¬hostname,Ò²²»°üº¬query string .ËùÒÔ³ı·ÇÏà¶ÔÂ·¾¶ÖĞ°üº¬¸úÓòÃûÒ»ÑùµÄstring,·ñÔòÊÇ²»»áÆ¥ÅäµÄ. Èç¹û·ÇÒª×öÓòÃûÆ¥ÅäµÄ»°¾ÍÒªÊ¹ÓÃifÓï¾äÁË,±ÈÈç½øĞĞÈ¥wwwÌø×ª
-
-if ($host ~* ^www\.(cafeneko\.info)) {
-  set $host_without_www $1;
-  rewrite ^(.*)$ http://$host_without_www$1 permanent;
-}- Ê¹ÓÃÏà¶ÔÂ·¾¶rewriteÊ±,»á¸ù¾İHTTP headerÖĞµÄHOST¸únginxµÄserver_nameÆ¥Åäºó½øĞĞrewrite,Èç¹ûHOST²»Æ¥Åä»òÕßÃ»ÓĞHOSTĞÅÏ¢µÄ»°Ôòrewriteµ½server_nameÉèÖÃµÄµÚÒ»¸öÓòÃû,Èç¹ûÃ»ÓĞÉèÖÃserver_nameµÄ»°,»áÊ¹ÓÃ±¾»úµÄlocalhost½øĞĞrewrite
-
-- Ç°ÃæÌáµ½¹ı,rewriteµÄÕıÔòÊÇ²»Æ¥Åäquery stringµÄ,ËùÒÔÄ¬ÈÏÇé¿öÏÂ,query stringÊÇ×Ô¶¯×·¼Óµ½rewriteºóµÄµØÖ·ÉÏµÄ,Èç¹û²»Ïë×Ô¶¯×·¼Óquery string,ÔòÔÚrewriteµØÖ·µÄÄ©Î²Ìí¼Ó?
-
-rewrite  ^/users/(.*)$  /show?user=$1?  last;rewriteµÄ»ù±¾ÖªÊ¶¾ÍÊÇÕâÃ´¶à..µ«»¹Ã»ÓĞÍê..»¹ÓĞ×îÍ·ÌÛµÄ²¿·ÖÃ»ÓĞËµ¡­
-
- 
-
-/2 Nginx location ºÍ rewrite retry
- 
-
-nginxµÄrewriteÓĞ¸öºÜÆæÌØµÄÌØĞÔ ¡ª rewriteºóµÄurl»áÔÙ´Î½øĞĞrewrite¼ì²é,×î¶àÖØÊÔ10´Î,10´Îºó»¹Ã»ÓĞÖÕÖ¹µÄ»°¾Í»á·µ»ØHTTP 500
-
-ÓÃ¹ınginxµÄÅóÓÑ¶¼ÖªµÀlocationÇø¿é,locationÇø¿éÓĞµãÏñApacheÖĞµÄRewriteBase,µ«¶ÔÓÚnginxÀ´ËµlocationÊÇ¿ØÖÆµÄ¼¶±ğ¶øÒÑ,ÀïÃæµÄÄÚÈİ²»½ö½öÊÇrewrite.
-
-ÕâÀï±ØĞëÉÔÎ¢ÏÈ½²Ò»µãlocationµÄÖªÊ¶.locationÊÇnginxÓÃÀ´´¦Àí¶ÔÍ¬Ò»¸öserver²»Í¬µÄÇëÇóµØÖ·Ê¹ÓÃ¶ÀÁ¢µÄÅäÖÃµÄ·½Ê½
-
-¾ÙÀı:
-
-location  = / {
-  ....ÅäÖÃA
-}
- 
-location  / {
-  ....ÅäÖÃB
-}
- 
-location ^~ /images/ {
-  ....ÅäÖÃC
-}
- 
-location ~* \.(gif|jpg|jpeg)$ {
-  ....ÅäÖÃD
-}·ÃÎÊ / »áÊ¹ÓÃÅäÖÃA 
-·ÃÎÊ /documents/document.html »áÊ¹ÓÃÅäÖÃB 
-·ÃÎÊ /images/1.gif »áÊ¹ÓÃÅäÖÃC 
-·ÃÎÊ /documents/1.jpg »áÊ¹ÓÃÅäÖÃD
-
-ÈçºÎÅĞ¶ÏÃüÖĞÄÄ¸ölocationÔİÇÒ°´ÏÂ²»æ», ÎÒÃÇÔÚÊµÕ½ÆªÔÙ»ØÍ·À´¿´Õâ¸öÎÊÌâ.
-
-ÏÖÔÚÎÒÃÇÖ»ĞèÒªÃ÷°×Ò»¸öÇé¿ö: nginx¿ÉÒÔÓĞ¶à¸ölocation²¢Ê¹ÓÃ²»Í¬µÄÅä.
-
-severÇø¿éÖĞÈç¹ûÓĞ°üº¬rewrite¹æÔò,Ôò»á×îÏÈÖ´ĞĞ,¶øÇÒÖ»»áÖ´ĞĞÒ»´Î, È»ºóÔÙÅĞ¶ÏÃüÖĞÄÄ¸ölocationµÄÅäÖÃ,ÔÙÈ¥Ö´ĞĞ¸ÃlocationÖĞµÄrewrite, µ±¸ÃlocationÖĞµÄrewriteÖ´ĞĞÍê±ÏÊ±,rewrite²¢²»»áÍ£Ö¹,¶øÊÇ¸ù¾İrewrite¹ıµÄURLÔÙ´ÎÅĞ¶Ïlocation²¢Ö´ĞĞÆäÖĞµÄÅäÖÃ. ÄÇÃ´,ÕâÀï¾Í´æÔÚÒ»¸öÎÊÌâ,Èç¹ûrewriteĞ´µÄ²»ÕıÈ·µÄ»°,ÊÇ»áÔÚlocationÇø¿é¼äÔì³ÉÎŞÏŞÑ­»·µÄ.ËùÒÔnginx²Å»á¼ÓÒ»¸ö×î¶àÖØÊÔ10´ÎµÄÉÏÏŞ. ±ÈÈçÕâ¸öÀı×Ó
-
-location /download/ {
-  rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  last;
-}Èç¹ûÇëÇóÎª /download/eva/media/op1.mp3 ÔòÇëÇó±»rewriteµ½ /download/eva/mp3/op1.mp3
-
-½á¹ûrewriteµÄ½á¹ûÖØĞÂÃüÖĞÁËlocation /download/ ËäÈ»Õâ´Î²¢Ã»ÓĞÃüÖĞrewrite¹æÔòµÄÕıÔò±í´ïÊ½,µ«ÒòÎªÈ±ÉÙÖÕÖ¹rewriteµÄ±êÖ¾,ÆäÈÔ»á²»Í£ÖØÊÔdownloadÖĞrewrite¹æÔòÖ±µ½´ïµ½10´ÎÉÏÏŞ·µ»ØHTTP 500
-
-ÈÏÕæµÄÅóÓÑÕâÊ±¾Í»áÎÊÁË,ÉÏÃæµÄrewrite¹æÔò²»ÊÇÓĞ±êÖ¾Î»lastÃ´? last²»ÊÇÖÕÖ¹rewriteµÄÒâË¼Ã´?
-
-Ëµµ½ÕâÀïÎÒ¾ÍÒª±§Ô¹ÏÂÁË,ÍøÉÏÄÜÕÒµ½¹ØÓÚnginx rewriteµÄÎÄÕÂÖĞ80%¶Ôlast±êÖ¾µÄ½âÊÍ¶¼ÊÇ
-
-last ¨C »ù±¾ÉÏ¶¼ÓÃÕâ¸öFlag
-
-¡­¡­ÕâËûÂè¿ÓµùÄØ!!! Ê²Ã´½Ğ»ù±¾ÉÏ¶¼ÓÃ? Ê²Ã´ÊÇ²»»ù±¾µÄÇé¿ö?  =Ãó=
-
-ÓĞĞËÈ¤µÄ¿ÉÒÔ·Å¹·¡±»ù±¾ÉÏ¶¼ÓÃÕâ¸öFlag¡±¡­
-
-ÎÒ×îÖÕ»¹ÊÇÔÚstack overflowÕÒµ½ÁË´ğ°¸:
-
-lastºÍbreak×î´óµÄ²»Í¬ÔÚÓÚ
-
-- breakÊÇÖÕÖ¹µ±Ç°locationµÄrewrite¼ì²â,¶øÇÒ²»ÔÙ½øĞĞlocationÆ¥Åä 
-¨C lastÊÇÖÕÖ¹µ±Ç°locationµÄrewrite¼ì²â,µ«»á¼ÌĞøÖØÊÔlocationÆ¥Åä²¢´¦ÀíÇø¿éÖĞµÄrewrite¹æÔò
-
-»¹ÊÇÕâ¸ö¸ÃËÀµÄÀı×Ó
-
-location /download/ {
-  rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  ;
-  rewrite  ^(/download/.*)/movie/(.*)\..*$  $1/avi/$2.mp3  ;
-  rewrite  ^(/download/.*)/avvvv/(.*)\..*$  $1/rmvb/$2.mp3 ;
-}ÉÏÃæÃ»ÓĞĞ´±êÖ¾Î»,Çë¸÷Î»×ÔĞĞÄÔ²¹¡­
-
-Èç¹ûÇëÇóÎª /download/acg/moive/UBW.avi
-
-lastµÄÇé¿öÊÇ: ÔÚµÚ2ĞĞrewrite´¦ÖÕÖ¹,²¢ÖØÊÔlocation /download..ËÀÑ­»· 
-breakµÄÇé¿öÊÇ: ÔÚµÚ2ĞĞrewrite´¦ÖÕÖ¹,Æä½á¹ûÎª×îÖÕµÄrewriteµØÖ·.
-
-Ò²¾ÍÊÇËµ,ÉÏÃæµÄÄ³Î»ÊÔÍ¼ÏÂÔØeva op²»µ«Ã»ÏÂµ½·´¶ø±»HTTP 500ÉäÁËÒ»Á³µÄÀı×ÓÕıÊÇÒòÎªÓÃÁËlast±êÖ¾ËùÒÔ²Å»áÔì³ÉËÀÑ­»·,Èç¹ûÓÃbreak¾ÍÃ»ÊÂÁË.
-
-location /download/ {
-  rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  break;
-}¶ÔÓÚÕâ¸öÎÊÌâ,ÎÒ¸öÈËµÄ½¨ÒéÊÇ,Èç¹ûÊÇÈ«¾ÖĞÔÖÊµÄrewrite,×îºÃ·ÅÔÚserverÇø¿éÖĞ²¢¼õÉÙ²»±ØÒªµÄlocationÇø¿é.locationÇø¿éÖĞµÄrewriteÒªÏëÇå³şÊÇÓÃlast»¹ÊÇbreak.
-
-ÓĞÈË¿ÉÄÜ»áÎÊ,ÓÃbreak²»¾ÍÍòÎŞÒ»Ê§ÁËÃ´?
-
-²»¶Ô.ÓĞĞ©Çé¿öÊÇÒªÓÃlastµÄ. µäĞÍµÄÀı×Ó¾ÍÊÇwordpressµÄpermalink rewrite
-
-³£¼ûµÄÇé¿öÏÂ, wordpressµÄrewriteÊÇ·ÅÔÚlocation /ÏÂÃæ,²¢½«ÇëÇórewriteµ½/index.php
-
-ÕâÊ±Èç¹ûÕâÀïÊ¹ÓÃbreakÄË¾Í¹ÒÁË,²»ĞÅÊÔÊÔ. £â£¨£ş¨Œ£ş£©£ä¡­ÒòÎªnginx·µ»ØµÄÊÇÃ»ÓĞ½âÊÍµÄindex.phpµÄÔ´Âë¡­
-
-ÕâÀïÒ»¶¨ÒªÊ¹ÓÃlast²Å¿ÉÒÔÔÚ½áÊølocation / µÄrewrite, ²¢ÔÙ´ÎÃüÖĞlocation ~ \.php$,½«Æä½»¸øfastcgi½øĞĞ½âÊÍ.Æäºó·µ»Ø¸øä¯ÀÀÆ÷µÄ²ÅÊÇ½âÊÍ¹ıµÄhtml´úÂë.
-
-¹ØÓÚnginx rewriteµÄ¼ò½éµ½ÕâÀï¾ÍÈ«²¿½²ÍêÁË,Ë®Æ½¼°ÆäÓĞÏŞ,Çë´ó¼ÒÖ¸³ö´íÂ©¡­
-
- 
-
-/3 ÊµÕ½! WordPressµÄPermalink+Supercache rewriteÊµÏÖ
- 
-
-Õâ¸örewriteĞ´·¨ÆäÊµÊÇÀ´×Ôsupercache×÷Õß±¾¼ÒµÄÄ³¸öÆÀÂÛÖĞ,ÍøÉÏºÜÈİÒ×²éµ½,×öÁËÒ»Ğ©ĞŞ¸Ä. ÏÈ¸ø³ö¸ÃÅäÖÃÎÄ¼şµÄÈ«²¿ÄÚÈİ..²¿·ÖÄÚÈİÂëµôÁË..¾ø¶ÔÂ·¾¶Ê²Ã´µÄÄãÖªµÀÒ²Ã»É¶ÓÃ¶Ô°É?
-
-server {
-	listen   80;
-	server_name  cafeneko.info www.cafeneko.info;
- 
-	access_log  ***;
-	error_log   *** ;
- 
-	root   ***;
-	index  index.php;
- 
-	gzip_static on;
- 
-	if (-f $request_filename) {
-		break;
-	}
- 
-	set $supercache_file '';
-	set $supercache_uri $request_uri;
- 
-	if ($request_method = POST) {
-		set $supercache_uri '';
-	}
- 
-	if ($query_string) {
-		set $supercache_uri '';
-	}
- 
-	if ($http_cookie ~* "comment_author_|wordpress_logged_|wp-postpass_" ) {
-		set $supercache_uri '';
-	}
- 
-	if ($supercache_uri ~ ^(.+)$) {
-		set $supercache_file /wp-content/cache/supercache/$http_host/$1index.html;
-	}
- 
-	if (-f $document_root$supercache_file) {
-		rewrite ^(.*)$ $supercache_file break;
-	}
- 
-	if (!-e $request_filename) {
-		rewrite . /index.php last;
-	}
- 
-	location ~ \.php$ {
- 
-		fastcgi_pass   127.0.0.1:9000;
-		fastcgi_index  index.php;
-		fastcgi_param  SCRIPT_FILENAME  ***$fastcgi_script_name;
-		include        fastcgi_params;
-	}
- 
-	location ~ /\.ht {
-		deny  all;
-	}
-}ÏÂÃæÊÇ½âÊÍ:
-
-gzip_static on;Èç¹ûä¯ÀÀÆ÷Ö§³Ögzip,ÔòÔÚÑ¹ËõÇ°ÏÈÑ°ÕÒÊÇ·ñ´æÔÚÑ¹ËõºÃµÄÍ¬ÃûgzÎÄ¼ş±ÜÃâÔÙ´ÎÑ¹ËõÀË·Ñ×ÊÔ´,ÅäºÏsupercacheµÄÑ¹Ëõ¹¦ÄÜÒ»ÆğÊ¹ÓÃĞ§¹û×îºÃ,Ïà±ÈsupercacheÔ­ÉúµÄApache mod_rewriteÊµÏÖ,nginxµÄÊµÏÖ¼òµ¥µÄ¶à. Apache mod_rewrite×ã×ãÓÃÁËÁ½Ì×¿´ÆğÀ´Ò»Ä£Ò»ÑùµÄÌõ¼şÅĞ¶ÏÀ´·Ö±ğrewriteÖ§³ÖgzipÑ¹ËõºÍ²»Ö§³ÖµÄÇé¿ö.
-
-if (-f $request_filename) {
-	break;
-}//Èç¹ûÊÇÖ±½ÓÇëÇóÄ³¸öÕæÊµ´æÔÚµÄÎÄ¼ş,ÔòÓÃbreakÓï¾äÍ£Ö¹rewrite¼ì²é
-
-set $supercache_file '';
-set $supercache_uri $request_uri;//ÓÃ$request_uri³õÊ¼»¯±äÁ¿ $supercache_uri.
-
-if ($request_method = POST) {
-	set $supercache_uri '';
-}//Èç¹ûÇëÇó·½Ê½ÎªPOST,Ôò²»Ê¹ÓÃsupercache.ÕâÀïÓÃÇå¿Õ$supercache_uriµÄ·½·¨À´Ìø¹ı¼ì²â,ÏÂÃæ»á¿´µ½
-
-if ($query_string) {
-	set $supercache_uri '';
-}//ÒòÎªÊ¹ÓÃÁËrewriteµÄÔ­Òò,Õı³£Çé¿öÏÂ²»Ó¦¸ÃÓĞquery_string(Ò»°ãÖ»ÓĞºóÌ¨²Å»á³öÏÖquery string),ÓĞµÄ»°Ôò²»Ê¹ÓÃsupercache
-
-if ($http_cookie ~* "comment_author_|wordpress_logged_|wp-postpass_" ) {
-	set $supercache_uri '';
-}//Ä¬ÈÏÇé¿öÏÂ,supercacheÊÇ½ö¶Ôunknown userÊ¹ÓÃµÄ.ÆäËûÖîÈçµÇÂ¼ÓÃ»§»òÕßÆÀÂÛ¹ıµÄÓÃ»§Ôò²»Ê¹ÓÃ.
-
-comment_authorÊÇ²âÊÔÆÀÂÛÓÃ»§µÄcookie, wordpress_loggedÊÇ²âÊÔµÇÂ¼ÓÃ»§µÄcookie. wp-postpass²»´óÇå³ş,×ÖÃæÉÏÀ´¿´¿ÉÄÜÊÇÔø¾­·¢±í¹ıÎÄÕÂµÄ?Ö»ÒªcookieÖĞº¬ÓĞÕâĞ©×Ö·û´®ÔòÌõ¼ş³ÉÁ¢.
-
-Ô­À´µÄĞ´·¨ÖĞ¼ì²âµÇÂ¼ÓÃ»§cookieÓÃµÄÊÇwordpress_,µ«ÊÇÎÒÔÚ²âÊÔÖĞ·¢ÏÖµÇÈë/µÇ³öÒÔºó»¹»áÓĞÒ»¸ö½Ğwordpress_test_cookie´æÔÚ,²»ÖªµÀÊÇÊ²Ã´×÷ÓÃ,ÎÒÒ²²»Çå³şÒ»°ãÓÃ»§ÊÇ·ñ»á²úÉúÕâ¸öcookie.ÓÉÓÚ¿¼ÂÇµ½µÇ³öÒÔºóÕâ¸öcookieÒÀÈ»´æÔÚ¿ÉÄÜ»áÓ°Ïìµ½cacheµÄÅĞ¶Ï,ÓÚÊÇ°ÑÕâÀï¸Ä³ÉÁËÆ¥Åäwordpress_logged_
-
-if ($supercache_uri ~ ^(.+)$) {
-	set $supercache_file /wp-content/cache/supercache/$http_host$1index.html;
-}//Èç¹û±äÁ¿$supercache_uri²»Îª¿Õ,ÔòÉèÖÃcache fileµÄÂ·¾¶
-
-ÕâÀïÉÔÎ¢ÁôÒâÏÂ$http_host$1index.htmlÕâ´®¶«Î÷,ÆäÊµĞ´³É $http_host/$1/index.html ¾ÍºÃ¶®ºÜ¶à
-
-ÒÔÕâ¸örewriteĞÎÊ½µÄurlÎªÀı
-
-cafeneko.info/2010/09/tsukihime-doujin_part01/
-
-ÆäÖĞ 
-$http_host = ¡®cafeneko.info¡¯ , $1 = $request_uri = ¡®/2010/09/tsukihime-doujin_part01/¡¯
-
-Ôò $http_host$1index.html = ¡®cafeneko.info/2010/09/tsukihime-doujin_part01/index.html¡¯
-
-¶ø $http_host/$1/index.html = ¡®cafeneko.info//2010/09/tsukihime-doujin_part01//index.html¡¯
-
-ËäÈ»ÔÚµ÷ÊÔ¹ı³ÌÖĞÁ½Õß²¢Ã»ÓĞ²»Í¬,²»¹ıÎªÁË±£³ÖÕıÈ·µÄÂ·¾¶,»¹ÊÇÊ¡ÂÔÁËÖĞ¼äµÄ/·ûºÅ.
-
-×îºóÉÏÀırewriteºóµÄurl = ¡®cafeneko.info/wp-content/cache/supercache/cafeneko.info/2010/09/tsukihime-doujin_part01/index.html¡¯
-
-if (-f $document_root$supercache_file) {
-	rewrite ^(.*)$ $supercache_file break;
-}//¼ì²écacheÎÄ¼şÊÇ·ñ´æÔÚ,´æÔÚµÄ»°ÔòÖ´ĞĞrewrite,ÁôÒâÕâÀïÒòÎªÊÇrewriteµ½html¾²Ì¬ÎÄ¼ş,ËùÒÔ¿ÉÒÔÖ±½ÓÓÃbreakÖÕÖ¹µô.
-
-if (!-e $request_filename) {
-	rewrite . /index.php last;
-}//Ö´ĞĞµ½´ËÔòËµÃ÷²»Ê¹ÓÃsuercache,½øĞĞwordpressµÄpermalink rewrite
-
-¼ì²éÇëÇóµÄÎÄ¼ş/Ä¿Â¼ÊÇ·ñ´æÔÚ,Èç¹û²»´æÔÚÔòÌõ¼ş³ÉÁ¢, rewriteµ½index.php
-
-Ë³±ãËµÒ»¾ä,µ±Ê±ÕâÀïÕâ¾ärewrite¿´µÄÎÒ°ÙË¼²»µÃÆä½â. .
-
-Ö»ÄÜÆ¥ÅäÒ»¸ö×Ö·û°¡?ÕâÊÇÊ²Ã´ÒâË¼?
-
-Ò»°ãÇé¿öÏÂ,Ïëµ÷ÊÔnginx rewrite×î¼òµ¥µÄ·½·¨¾ÍÊÇ°ÑflagĞ´³Éredirect,ÕâÑù¾ÍÄÜÔÚä¯ÀÀÆ÷µØÖ·À¸Àï¿´µ½ÕæÊµµÄrewriteµØÖ·.
-
-È»¶ø¶ÔÓÚpermalink rewriteÈ´²»ÄÜÓÃÕâÖÖ·½·¨,ÒòÎªÒ»µ©Ğ´³ÉredirectÒÔºó,²»¹ÜµãÊ²Ã´Á´½Ó,Ö»ÒªÃ»ÓĞsupercache,¶¼ÊÇÌø×ª»ØÊ×Ò³ÁË.
-
-ºóÀ´¿´ÁËÒ»Ğ©ÎÄÕÂ²ÅÃ÷°×ÁËrewriteµÄ±¾ÖÊ,ÆäÊµÊÇÔÚ±£³ÖÇëÇóµØÖ·²»±äµÄÇé¿öÏÂ,ÔÚ·şÎñÆ÷¶Ë½«ÇëÇó×ªµ½ÌØ¶¨µÄÒ³Ãæ.
-
-Õ§Ò»¿´supercacheµÄĞÔÖÊÓĞµãÏñ302µ½¾²Ì¬ÎÄ¼ş,ËùÒÔ¿ÉÒÔÓÃredirectµ÷ÊÔ.
-
-µ«ÊÇpermalinkÈ´ÊÇĞÔÖÊÍêÈ«²»Í¬µÄrewrite,Õâ¸úwordpressµÄ´¦Àí·½Ê½ÓĞ¹Ø. ÎÒÑĞ¾¿²»Éî¾Í²»¶àËµÁË,¼òµ¥Ëµ¾ÍÊÇ±£³ÖURL²»±ä½«ÇëÇórewriteµ½index.php,WP½«·ÖÎöÆäURL½á¹¹ÔÙ¶ÔÆä²¢½øĞĞÆ¥Åä(ÎÄÕÂ,Ò³Ãæ,tagµÈ),È»ºóÔÙ¹¹½¨Ò³Ãæ. ËùÒÔÆäÊµÕâÌõrewrite
-
-rewrite . /index.php last;ËµµÄÊÇ,ÈÎºÎÇëÇó¶¼»á±»rewriteµ½index.php.ÒòÎª¡±.¡±Æ¥ÅäÈÎÒâ×Ö·û,ËùÒÔÕâÌõrewriteÆäÊµ¿ÉÒÔĞ´³ÉÈÎºÎĞÎÊ½µÄÄÜÈÎÒâÃüÖĞµÄÕıÔò.±ÈÈçËµ
-
-rewrite . /index.php last;
-rewrite ^ /index.php last;
-rewrite .* /index.php last;Ğ§¹û¶¼ÊÇÒ»ÑùµÄ,¶¼ÄÜ×öµ½permalink rewrite.
-
-×îºóÒªÌáµÄ¾ÍÊÇÓĞÈË¿ÉÄÜ×¢Òâµ½ÎÒµÄrewrite¹æÔòÊÇ·ÅÔÚserver¿éÖĞµÄ.ÍøÉÏÄÜÕÒµ½µÄ´ó¶àÊı¹ØÓÚwordpressµÄnginx rewrite¹æÔò¶¼ÊÇ·ÅÔÚlocation /ÏÂÃæµÄ,µ«ÊÇÉÏÃæÎÒÈ´·ÅÔÚÁËserver¿éÖĞ,ÎªºÎ?
-
-Ô­ÒòÊÇWP»òÄ³¸ö²å¼ş»áÔÚµ±Ç°Ò³Ãæ×öÒ»¸öPOSTµÄXHRÇëÇó,±¾À´Ã»Ê²Ã´ÌØ±ğ,µ«ÎÊÌâ¾Í³öÔÚÆäXHRÇëÇóµÄURL½á¹¹ÉÏ.
-
-Õı³£µÄpermalinkÒ»°ãÎª: domain.com/year/month/postname/ »òÕß domain.com/tags/tagname/ Ö®Àà.
-
-µ«Õâ¸öXHRÇëÇóµÄURLÈ´ÊÇ domain.com/year/month/postname/index.php »òÕß domain.com/tags/tagname/index.php
-
-ÕâÑùÒ»À´¾ÍÃüÖĞÁËlocation ~ \.php$¶ø½»¸øfastcgi,µ«ÒòÎª¸ù±¾Ã»ÓĞ×ö¹ırewriteÆäÒ³Ãæ²»¿ÉÄÜ´æÔÚ,½á¹û¾ÍÊÇÕâ¸öXHR·µ»ØÒ»¸ö404
-
-¼øÓÚlocationÖ®¼äÆ¥ÅäÓÅÏÈ¼¶µÄÔ­Òò,ÎÒ½«Ö÷ÒªµÄrewrite¹¦ÄÜÈ«²¿·Å½øÁËserverÇø¿éÖĞ,ÕâÑù¾ÍµÃÒÔ±£Ö¤ÔÚ½øĞĞlocationÆ¥ÅäÖ®Ç°ÊÇÒ»¶¨×ö¹ırewriteµÄ.
-
-ÕâÊ±ÓĞÅóÓÑÓÖÒªÎÊÁË,ÎªÊ²Ã´ÃüÖĞµÄÊÇlocation ~ \.php$¶ø²»ÊÇlocation / ?
-
-¡­ÍûÌì¡­³¤Ì¾¡­Õâ¾ÍÒª³¶µ½ÌìÉ±µÄlocationÆ¥ÅäÎÊÌâÁË¡­.
-
-locatoin²¢·ÇÏñrewriteÄÇÑùÖğÌõÖ´ĞĞ,¶øÊÇÓĞ×ÅÆ¥ÅäÓÅÏÈ¼¶µÄ,µ±Ò»ÌõÇëÇóÍ¬Ê±Âú×ã¼¸¸ölocationµÄÆ¥ÅäÊ±,ÆäÖ»»áÑ¡ÔñÆäÒ»µÄÅäÖÃÖ´ĞĞ.
-
-ÆäÑ°ÕÒµÄ·½·¨Îª:
-
-1. Ê×ÏÈÑ°ÕÒËùÓĞµÄ³£Á¿Æ¥Åä,Èçlocation /, location /av/, ÒÔÏà¶ÔÂ·¾¶×Ô×óÏòÓÒÆ¥Åä,Æ¥Åä³¤¶È×î¸ßµÄ»á±»Ê¹ÓÃ, 
-2. È»ºó°´ÕÕÅäÖÃÎÄ¼şÖĞ³öÏÖµÄË³ĞòÒÀ´Î²âÊÔÕıÔò±í´ïÊ½,Èç location ~ download\/$, location ~* \.wtf, µÚÒ»¸öÆ¥Åä»á±»Ê¹ÓÃ 
-3. Èç¹ûÃ»ÓĞÆ¥ÅäµÄÕıÔò,ÔòÊ¹ÓÃÖ®Ç°µÄ³£Á¿Æ¥Åä
-
-¶øÏÂÃæ¼¸ÖÖ·½·¨µ±Æ¥ÅäÊ±»áÁ¢¼´ÖÕÖ¹ÆäËûlocationµÄ³¢ÊÔ
-
-1. = ÍêÈ«Æ¥Åä,location = /download/ 
-2. ^~ ÖÕÖ¹ÕıÔò²âÊÔ,Èçlocation ^~ /download/ Èç¹ûÕâÌõÊÇ×î³¤Æ¥Åä,ÔòÖÕÖ¹ÕıÔò²âÊÔ,Õâ¸ö·ûºÅÖ»ÄÜÆ¥Åä³£Á¿ 
-3. ÔÚÃ»ÓĞ=»òÕß^~µÄÇé¿öÏÂ,Èç¹û³£Á¿ÍêÈ«Æ¥Åä,Ò²»áÁ¢¼´ÖÕÖ¹²âÊÔ,±ÈÈçÇëÇóÎª /download/ »áÍêÈ«ÃüÖĞlocation /download/¶ø²»¼ÌĞøÆäËûµÄÕıÔò²âÊÔ
-
-×Ü½á:
-
-1. Èç¹ûÍêÈ«Æ¥Åä(²»¹ÜÓĞÃ»ÓĞ=),³¢ÊÔ»áÁ¢¼´ÖÕÖ¹
-2. ÒÔ×î³¤Æ¥Åä²âÊÔ¸÷¸ö³£Á¿,Èç¹û³£Á¿Æ¥Åä²¢ÓĞ ^~, ³¢ÊÔ»áÖÕÖ¹ 
-3. °´ÔÚÅäÖÃÎÄ¼şÖĞ³öÏÖµÄË³Ğò²âÊÔ¸÷¸öÕıÔò±í´ïÊ½ 
-4. Èç¹ûµÚ3²½ÓĞÃüÖĞ,ÔòÊ¹ÓÃÆäÆ¥Åälocation,·ñÔòÊ¹ÓÃµÚ2²½µÄlocation
-
-ÁíÍâ»¹¿ÉÒÔ¶¨ÒåÒ»ÖÖÌØÊâµÄnamed location,ÒÔ@¿ªÍ·,Èçlocation @thisissparta ²»¹ıÕâÖÖlocation¶¨Òå²»ÓÃÓÚÒ»°ãµÄ´¦Àí,¶øÊÇ×¨ÃÅÓÃÓÚtry_file, error_pageµÄ´¦Àí,ÕâÀï²»ÔÙÉîÈë.
-
-ÔÎÁËÃ»? ÓÃÇ°ÎÄµÄÀı×ÓÀ´¿´¿´
-
-location  = / {
-  ....ÅäÖÃA
-}
- 
-location  / {
-  ....ÅäÖÃB
-}
- 
-location ^~ /images/ {
-  ....ÅäÖÃC
-}
- 
-location ~* \.(gif|jpg|jpeg)$ {
-  ....ÅäÖÃD
-}·ÃÎÊ / »áÊ¹ÓÃÅäÖÃA -> ÍêÈ«ÃüÖĞ
-·ÃÎÊ /documents/document.html »áÊ¹ÓÃÅäÖÃB -> Æ¥Åä³£Á¿B,²»Æ¥ÅäÕıÔòCºÍD,ËùÒÔÓÃB 
-·ÃÎÊ /images/1.gif »áÊ¹ÓÃÅäÖÃC -> Æ¥Åä³£Á¿B,Æ¥ÅäÕıÔòC,Ê¹ÓÃÊ×¸öÃüÖĞµÄÕıÔò,ËùÒÔÓÃC 
-·ÃÎÊ /documents/1.jpg »áÊ¹ÓÃÅäÖÃD -> Æ¥Åä³£Á¿B,²»Æ¥ÅäÕıÔòC,Æ¥ÅäÕıÔòD,Ê¹ÓÃÊ×¸öÃüÖĞµÄÕıÔò,ËùÒÔÓÃD
-
-ÄÇÃ´ÔÙ»ØÍ·¿´ÎÒÃÇ¸Õ²ÅËµµÄÎÊÌâ.ÎªÊ²Ã´ÄÇ¸öURL½á¹ûÆæ¹ÖµÄXHRÇëÇó»áÃüÖĞlocation ~ \.php$¶ø²»ÊÇlocation / ? ÎÒÏàĞÅÄãÓ¦¸ÃÒÑ¾­ÖªµÀ´ğ°¸ÁË.
-
-ËùÒÔÒª½â¾öÕâ¸öÎÊÌâ×î¼òµ¥µÄ·½·¨¾ÍÊÇ°Ñrewrite¹æÔò·ÅÔÚ±ÈlocationÏÈÖ´ĞĞµÄserver¿éÀïÃæ¾Í¿ÉÒÔÁËÓ´.
-
-Õâ´ÎµÄÑĞ¾¿±Ê¼Ç¾Íµ½´ËÎªÖ¹ÁË.
-
-×îºóÁôÒ»¸öË¼¿¼Ìâ,Èç¹û²»½«rewrite¹æÔò·ÅÈëserver¿é,»¹ÓĞÊ²Ã´·½·¨¿ÉÒÔ½â¾öÕâ¸öXHR 404µÄÎÊÌâ?
-
-Ô­À´µÄlocation /¿é°üº¬´Ólocation ~ \.php$µ½rootÎªÖ¹µÄ²¿·Ö.
-
-´ğ°¸ÊÇ´æÔÚµÄ.ÔÚÓÃÊ¹ÓÃÄ¿Ç°µÄ·½·¨Ç°ÎÒËÀÄÔ½îµÄÔÚ±£Áôlocation /µÄÇ°ÌáÏÂ³¢ÊÔÁËºÜ¶àÖÖ·½·¨¡­Çë²»Òª³¢ÊÔÎª¸÷ÖÖpermalink¹¹½¨¶ÀÁ¢µÄlocation.ÒòÎªwpµÄpermalinkÖÖÀàºÜ¶à,°üÀ¨µ¥ÆªÎÄÕÂ,Ò³Ãæ,·ÖÀà,tag,×÷Õß,´æµµµÈµÈ..»¶Ó­ÔÚ»Ø¸´ÖĞÌÖÂÛ /
-
-²Î¿¼:
-Nginx wiki
-
--EOF-
-
- 
-
-¸üĞÂ  @2010.10.23
-
-Ö®Ç°µÄsupercache rewrite¹æÔòÊÊÓÃÓÚ´ó²¿·ÖµÄWP.µ«ÊÇ²¢²»ÊÊÓÃÓÚmobile press²å¼şµÄÒÆ¶¯Éè±¸Ö§³Ö.
-
-ÒòÎªÆäÖĞ²¢Ã»ÓĞ¼ì²âÒÆ¶¯Éè±¸µÄuser agent,´Ó¶øµ¼ÖÂÒÆ¶¯Éè±¸Ò²»á±»rewriteµ½cacheÉÏ.ÕâÑùµÄ½á¹ûÊÇÔÚÒÆ¶¯Éè±¸ÉÏÒ²ÊÇ¿´µ½µÄ¸úPCÒ»ÑùµÄÍêÈ«°æblog. ¶ÔÓÚĞÔÄÜ±È½ÏºÃµÄÊÖ»ú±ÈÈçiphone°²×¿Ê²Ã´µÄ´ó¸ÅÃ»Ê²Ã´ÎÊÌâ,µ«±È½ÏÒ»°ãµÄ±ÈÈçnokiaÉÏÓÃopera miniµÈ¿´¾Í»á±È½ÏĞÁ¿àÁË,Õâ´Î°ÑsupercacheÔ­±¾ÔÚhtaccessÖĞµÄÒÆ¶¯Éè±¸¼ì²âµÄ´úÂë¿éÒ²ÒÆÖ²ÁË¹ıÀ´.
-
-ÔÚÇ°ÎÄµÄÅäÖÃÎÄ¼şÖĞcookie¼ì²âºóÃæ¼ÓÈëÒÔÏÂ´úÂë¶Î
-
-	# Bypass special user agent
-	if ($http_user_agent ~* "2.0 MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo Wii|Nitro|Nokia|Opera Mini|Palm|PlayStation Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915 Obigo|LGE VX|webOS|Nokia5800") {
-		set $supercache_uri '';
-	}
- 
-	if ($http_user_agent ~* "w3c |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-") {
-		set $supercache_uri '';
-	}ÕâÑù¾Í¿ÉÒÔ¶ÔÒÆ¶¯Éè±¸ÈÆ¿ªcache¹æÔò,¶øÖ±½ÓÊ¹ÓÃmobile press²úÉúµÄÒÆ¶¯°æµÄĞ§¹ûÁË.
-
-
-*/
-
-typedef struct {
-    /*
-     º¯Êıngx_httpscript_start_codeÀûÓÃngx_array_push_nÔÚlcf->codesÊı×éÄÚÉêÇëÁËsizeof(ngx_http_script_value_code_t¸öÔªËØ£¬×¢
- ÒâÃ¿¸öÔªËØµÄ´óĞ¡ÎªÒ»¸ö×Ö½Ú£¬ËùÒÔÆäÊµÒ²¾ÍÊÇÎªngx_httpscript_valuecodetÀàĞÍ±äÁ¿valÉêÇë´æ´¢¿Õ¼ä£¨ºÜ°ôµÄ¼¼ÇÉ£©
-     */ //´æ·ÅµÄÊÇÒÑ¾­Ê¹ÓÃÁËµÄ±äÁ¿µÄngx_http_script_XXX_code_t½á¹¹£¬ÕâĞ©½á¹¹µÄcodeº¯Êı£¬ÔÚngx_http_rewrite_handler»áµÃµ½Ö´ĞĞ
-     //set  break  returnµÈ¶¼»áÌí¼Ó¶ÔÓ¦µÄxxx_codeµ½¸ÃÊı×écodesÖĞ
-
-    /*×¢ÒâÕâÀïÊÇ¶ÔÓ¦µÄserver{}¿é»òÕßlocation{}¿éÖĞµÄcode£¬Òò´ËÕâÀïÃæ¶ÔÓ¦µÄ¾ÍÊÇÔÚserver{]»òÕßlocation{}ÖĞµÄcode,Òò´Ë²»Í¬server{}»ò
-     Õßlocation{}ÖĞµÄcode¶ÔÓ¦µÄrlcf->codes²»Ò»Ñù¡£ÏÈÒªNGX_HTTP_FIND_CONFIG_PHASE½×¶ÎÕÒµ½¶ÔÓ¦µÄlocationºó²ÅÄÜ¼ÌĞøÖ´ĞĞlocation{}ÖĞµÄrewrite
-     Ïà¹ØÅäÖÃ½Å±¾´¦Àí*/
-    ngx_array_t  *codes;        /* uintptr_t */ //set  $variable  valueÖĞµÄvalueÖÃ´æÈëµ½codesÖĞ£¬¼ûngx_http_rewrite_value
-
-    ngx_uint_t    stack_size; //Ä¬ÈÏ10
-
-    ngx_flag_t    log;
-    ngx_flag_t    uninitialized_variable_warn;
-} ngx_http_rewrite_loc_conf_t;
-
-
-static void *ngx_http_rewrite_create_loc_conf(ngx_conf_t *cf);
-static char *ngx_http_rewrite_merge_loc_conf(ngx_conf_t *cf,
-    void *parent, void *child);
-static ngx_int_t ngx_http_rewrite_init(ngx_conf_t *cf);
-static char *ngx_http_rewrite(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
-static char *ngx_http_rewrite_return(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-static char *ngx_http_rewrite_break(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-static char *ngx_http_rewrite_if(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-static char * ngx_http_rewrite_if_condition(ngx_conf_t *cf,
-    ngx_http_rewrite_loc_conf_t *lcf);
-static char *ngx_http_rewrite_variable(ngx_conf_t *cf,
-    ngx_http_rewrite_loc_conf_t *lcf, ngx_str_t *value);
-static char *ngx_http_rewrite_set(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-static char * ngx_http_rewrite_value(ngx_conf_t *cf,
-    ngx_http_rewrite_loc_conf_t *lcf, ngx_str_t *value);
-
-
-static ngx_command_t  ngx_http_rewrite_commands[] = { //²Î¿¼http://blog.csdn.net/brainkick/article/details/7065194
-    /*
-     rewrite 
-    Óï·¨£ºrewrite regex replacement flag 
-    Ä¬ÈÏÖµ£ºnone
-    Ê¹ÓÃ×Ö¶Î£ºserver, location, if 
-    °´ÕÕÏà¹ØµÄÕıÔò±í´ïÊ½Óë×Ö·û´®ĞŞ¸ÄURI£¬Ö¸Áî°´ÕÕÔÚÅäÖÃÎÄ¼şÖĞ³öÏÖµÄË³ĞòÖ´ĞĞ¡£
-    ×¢ÒâÖØĞ´¹æÔòÖ»Æ¥ÅäÏà¶ÔÂ·¾¶¶ø²»ÊÇ¾ø¶ÔµÄURL£¬Èç¹ûÏëÆ¥ÅäÖ÷»úÃû£¬¿ÉÒÔ¼ÓÒ»¸öifÅĞ¶Ï£¬Èç£º
-
-    if ($host ~* www\.(.*)) {
-      set $host_without_www $1;
-      rewrite ^(.*)$ http://$host_without_www$1 permanent; # $1Îª'/foo'£¬¶ø²»ÊÇ'www.mydomain.com/foo'
-    }¿ÉÒÔÔÚÖØĞ´Ö¸ÁîºóÃæÌí¼Ó±ê¼Ç¡£
-    Èç¹ûÌæ»»µÄ×Ö·û´®ÒÔhttp://¿ªÍ·£¬ÇëÇó½«±»ÖØ¶¨Ïò£¬²¢ÇÒ²»ÔÙÖ´ĞĞ¶àÓàµÄrewriteÖ¸Áî¡£
-    ±ê¼Ç¿ÉÒÔÊÇÒÔÏÂµÄÖµ£º 
-    ¡¤last - Íê³ÉÖØĞ´Ö¸Áî£¬Ö®ºóËÑË÷ÏàÓ¦µÄURI»òlocation¡£
-    ¡¤break - Íê³ÉÖØĞ´Ö¸Áî¡£
-    ¡¤redirect - ·µ»Ø302ÁÙÊ±ÖØ¶¨Ïò£¬Èç¹ûÌæ»»×Ö¶ÎÓÃhttp://¿ªÍ·Ôò±»Ê¹ÓÃ¡£
-    ¡¤permanent - ·µ»Ø301ÓÀ¾ÃÖØ¶¨Ïò¡£
-    ×¢ÒâÈç¹ûÒ»¸öÖØ¶¨ÏòÊÇÏà¶ÔµÄ£¨Ã»ÓĞÖ÷»úÃû²¿·Ö£©£¬nginx½«ÔÚÖØ¶¨ÏòµÄ¹ı³ÌÖĞÊ¹ÓÃÆ¥Åäserver_nameÖ¸ÁîµÄ¡°Host¡±Í·»òÕßserver_nameÖ¸ÁîÖ¸¶¨µÄµÚÒ»¸öÃû³Æ£¬Èç¹ûÍ·²»Æ¥Åä»ò²»´æÔÚ£¬Èç¹ûÃ»ÓĞÉèÖÃserver_name£¬½«Ê¹ÓÃ±¾µØÖ÷»úÃû£¬Èç¹ûÄã×ÜÊÇÏëÈÃnginxÊ¹ÓÃ¡°Host¡±Í·£¬¿ÉÒÔÔÚserver_nameÊ¹ÓÃ¡°*¡±Í¨Åä·û£¨²é¿´httpºËĞÄÄ£¿éÖĞµÄserver_name£©¡£ÀıÈç£º 
-    rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  last;
-    rewrite  ^(/download/.*)/audio/(.*)\..*$  $1/mp3/$2.ra   last;
-    return   403;µ«ÊÇÈç¹ûÎÒÃÇ½«Æä·ÅÈëÒ»¸öÃûÎª/download/µÄlocationÖĞ£¬ÔòĞèÒª½«last±ê¼Ç¸ÄÎªbreak£¬·ñÔònginx½«Ö´ĞĞ10´ÎÑ­»·²¢·µ»Ø500´íÎó¡£ 
-    location /download/ {
-      rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  break;
-      rewrite  ^(/download/.*)/audio/(.*)\..*$  $1/mp3/$2.ra   break;
-      return   403;
-    }Èç¹ûÌæ»»×Ö¶ÎÖĞ°üº¬²ÎÊı£¬ÄÇÃ´ÆäÓàµÄÇëÇó²ÎÊı½«¸½¼Óµ½ºóÃæ£¬ÎªÁË·ÀÖ¹¸½¼Ó£¬¿ÉÒÔÔÚ×îºóÒ»¸ö×Ö·ûºóÃæ¸úÒ»¸öÎÊºÅ£º
-
-    rewrite  ^/users/(.*)$  /show?user=$1?  last;×¢Òâ£º´óÀ¨ºÅ£¨{ºÍ}£©£¬¿ÉÒÔÍ¬Ê±ÓÃÔÚÕıÔò±í´ïÊ½ºÍÅäÖÃ¿éÖĞ£¬ÎªÁË·ÀÖ¹³åÍ»£¬ÕıÔò±í´ïÊ½Ê¹ÓÃ´óÀ¨ºÅĞèÒªÓÃË«ÒıºÅ£¨»òÕßµ¥ÒıºÅ£©¡£ÀıÈçÒªÖØĞ´ÒÔÏÂµÄURL£º
-
-    /photos/123456 Îª: 
-    /path/to/photos/12/1234/123456.png ÔòÊ¹ÓÃÒÔÏÂÕıÔò±í´ïÊ½£¨×¢ÒâÒıºÅ£©£º 
-    rewrite  "/photos/([0-9] {2})([0-9] {2})([0-9] {2})" /path/to/photos/$1/$1$2/$1$2$3.png;Í¬Ñù£¬ÖØĞ´Ö»¶ÔÂ·¾¶½øĞĞ²Ù×÷£¬¶ø²»ÊÇ²ÎÊı£¬Èç¹ûÒªÖØĞ´Ò»¸ö´ø²ÎÊıµÄURL£¬¿ÉÒÔÊ¹ÓÃÒÔÏÂ´úÌæ£º 
-    if ($args ^~ post=100){
-      rewrite ^ http://example.com/new-address.html? permanent;
-    }×¢Òâ$args±äÁ¿²»»á±»±àÒë£¬Óëlocation¹ı³ÌÖĞµÄURI²»Í¬£¨²Î¿¼httpºËĞÄÄ£¿éÖĞµÄlocation£©¡£
-     */
-    { ngx_string("rewrite"),
-      NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
-                       |NGX_CONF_TAKE23,
-      ngx_http_rewrite,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL }, 
-
-    /*
-     return
-     Óï·¨£ºreturn code 
-     Ä¬ÈÏÖµ£ºnone
-     Ê¹ÓÃ×Ö¶Î£ºserver, location, if 
-     Õâ¸öÖ¸Áî½áÊøÖ´ĞĞÅäÖÃÓï¾ä²¢Îª¿Í»§¶Ë·µ»Ø×´Ì¬´úÂë£¬¿ÉÒÔÊ¹ÓÃÏÂÁĞµÄÖµ£º204£¬400£¬402-406£¬408£¬410, 411, 413, 416Óë500-504¡£´ËÍâ£¬·Ç±ê×¼´úÂë444½«¹Ø±ÕÁ¬½Ó²¢ÇÒ²»·¢ËÍÈÎºÎµÄÍ·²¿¡£
-
-    Ê¾Àı£ºÈç¹û·ÃÎÊµÄURLÒÔ".sh"»ò".bash"½áÎ²£¬Ôò·µ»Ø403×´Ì¬Âë
-    location ~ .*\.(sh|bash)?$
-    {
-        return 403;
-    }
-     */
-    { ngx_string("return"),
-      NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
-                       |NGX_CONF_TAKE12,
-      ngx_http_rewrite_return,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
-
-    /*
-    break 
-    Óï·¨£ºbreak
-    Ä¬ÈÏÖµ£ºnone
-    Ê¹ÓÃ×Ö¶Î£ºserver, location, if 
-    Íê³Éµ±Ç°ÉèÖÃµÄ¹æÔò£¬Í£Ö¹Ö´ĞĞÆäËûµÄÖØĞ´Ö¸Áî¡£  ¸ÃÖ¸ÁîµÄ×÷ÓÃÊÇÍê³Éµ±Ç°µÄ¹æÔò¼¯£¬²»ÔÙ´¦ÀírewriteÖ¸Áî¡£
-    Ê¾Àı£º
-    if ($slow) {
-      limit_rate  10k;
-      break;
-    }
-     */ //break»áÌø¹ıºóÃæµÄ½Å±¾ÒıÇæ£¬Í£Ö¹Ö´ĞĞngx_http_rewrite_handlerÖĞµÄrewriteÏà¹ØµÄcodeº¯Êı£¬Ò²¾Í¸ÃÃüÁîºóµÄËùÓĞrewriteÅäÖÃÏà¹ØµÄ¼¸¸öÃüÁîÀıÈçset break  return rewrite if¶¼²»»áµÃµ½½âÎöÖ´ĞĞ
-    { ngx_string("break"),
-      NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
-                       |NGX_CONF_NOARGS,
-      ngx_http_rewrite_break,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
-
-    /*
-     Óï·¨£ºif (condition) { ... } 
-     Ä¬ÈÏÖµ£ºnone
-     Ê¹ÓÃ×Ö¶Î£ºserver, location 
-     ¸ÃÖ¸ÁîÓÃÓÚ¼ì²éÒ»¸öÌõ¼şÊÇ·ñ·ûºÏ£¬Èç¹ûÌõ¼ş·ûºÏ£¬ÔòÖ´ĞĞ´óÀ¨ºÅÄÚµÄÓï¾ä¡£IfÖ¸Áî²»Ö§³ÖÇ¶Ì×£¬²»Ö§³Ö¶à¸öÌõ¼ş&&ºÍ||´¦Àí¡£
-     ÅĞ¶ÏÒ»¸öÌõ¼ş£¬Èç¹ûÌõ¼ş³ÉÁ¢£¬ÔòºóÃæµÄ´óÀ¨ºÅÄÚµÄÓï¾ä½«Ö´ĞĞ£¬Ïà¹ØÅäÖÃ´ÓÉÏ¼¶¼Ì³Ğ¡£
-     ¿ÉÒÔÔÚÅĞ¶ÏÓï¾äÖĞÖ¸¶¨ÏÂÁĞÖµ£º
-     
-     ¡¤Ò»¸ö±äÁ¿µÄÃû³Æ£»²»³ÉÁ¢µÄÖµÎª£º¿Õ×Ö·û´«""»òÕßÒ»Ğ©ÓÃ¡°0¡±¿ªÊ¼µÄ×Ö·û´®¡£
-     ¡¤Ò»¸öÊ¹ÓÃ=»òÕß!=ÔËËã·ûµÄ±È½ÏÓï¾ä¡£
-     ¡¤Ê¹ÓÃ·ûºÅ~*ºÍ~Ä£Ê½Æ¥ÅäµÄÕıÔò±í´ïÊ½£º
-     ¡¤~ÎªÇø·Ö´óĞ¡Ğ´µÄÆ¥Åä¡£
-     ¡¤~*²»Çø·Ö´óĞ¡Ğ´µÄÆ¥Åä£¨firefoxÆ¥ÅäFireFox£©¡£
-     ¡¤!~ºÍ!~*ÒâÎª¡°²»Æ¥ÅäµÄ¡±¡£
-     ¡¤Ê¹ÓÃ-fºÍ!-f¼ì²éÒ»¸öÎÄ¼şÊÇ·ñ´æÔÚ¡£
-     ¡¤Ê¹ÓÃ-dºÍ!-d¼ì²éÒ»¸öÄ¿Â¼ÊÇ·ñ´æÔÚ¡£
-     ¡¤Ê¹ÓÃ-eºÍ!-e¼ì²éÒ»¸öÎÄ¼ş£¬Ä¿Â¼»òÕßÈíÁ´½ÓÊÇ·ñ´æÔÚ¡£ 
-     ¡¤Ê¹ÓÃ-xºÍ!-x¼ì²éÒ»¸öÎÄ¼şÊÇ·ñÎª¿ÉÖ´ĞĞÎÄ¼ş¡£ 
-     
-     ÕıÔò±í´ïÊ½µÄÒ»²¿·Ö¿ÉÒÔÓÃÔ²À¨ºÅ£¬·½±ãÖ®ºó°´ÕÕË³ĞòÓÃ$1-$9À´ÒıÓÃ¡£
-     Ê¾ÀıÅäÖÃ£º
-     if ($http_user_agent ~ MSIE) {
-       rewrite  ^(.*)$  /msie/$1  break;
-     }
-      
-     if ($http_cookie ~* "id=([^;] +)(?:;|$)" ) {
-       set  $id  $1;
-     }
-      
-     if ($request_method = POST ) {
-       return 405;
-     }
-      
-     if (!-f $request_filename) {
-       break;
-       proxy_pass  http://127.0.0.1;
-     }
-      
-     if ($slow) {
-       limit_rate  10k;
-     }
-      
-     if ($invalid_referer) {
-       return   403;
-     }
-      
-     if ($args ~ post=140){
-       rewrite ^ http://example.com/ permanent;
-     }ÄÚÖÃ±äÁ¿$invalid_refererÓÃÖ¸Áîvalid_referersÖ¸¶¨¡£
-     */ //if½âÎö¹ı³Ì²Î¿¼http://blog.sina.com.cn/s/blog_7303a1dc0101cm9z.html
-    { ngx_string("if"),
-      NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_BLOCK|NGX_CONF_1MORE,
-      ngx_http_rewrite_if,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
-
-    /*
-    Óï·¨£ºset variable value 
-    Ä¬ÈÏÖµ£ºnone
-    Ê¹ÓÃ×Ö¶Î£ºserver, location, if 
-    Ö¸ÁîÉèÖÃÒ»¸ö±äÁ¿²¢ÎªÆä¸³Öµ£¬ÆäÖµ¿ÉÒÔÊÇÎÄ±¾£¬±äÁ¿ºÍËüÃÇµÄ×éºÏ¡£
-    Äã¿ÉÒÔÊ¹ÓÃset¶¨ÒåÒ»¸öĞÂµÄ±äÁ¿£¬µ«ÊÇ²»ÄÜÊ¹ÓÃsetÉèÖÃ$http_xxxÍ·²¿±äÁ¿µÄÖµ¡£
-     */
-    { ngx_string("set"),
-      NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
-                       |NGX_CONF_TAKE2,
-      ngx_http_rewrite_set,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
-
-    { ngx_string("rewrite_log"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF
-                        |NGX_HTTP_LIF_CONF|NGX_CONF_FLAG,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      offsetof(ngx_http_rewrite_loc_conf_t, log),
-      NULL },
-
-    /*
-     uninitialized_variable_warn 
-     Óï·¨£ºuninitialized_variable_warn on|off 
-     Ä¬ÈÏÖµ£ºuninitialized_variable_warn on 
-     Ê¹ÓÃ×Ö¶Î£ºhttp, server, location, if 
-     ¿ªÆô»ò¹Ø±ÕÔÚÎ´³õÊ¼»¯±äÁ¿ÖĞ¼ÇÂ¼¾¯¸æÈÕÖ¾¡£
-     ÊÂÊµÉÏ£¬rewriteÖ¸ÁîÔÚÅäÖÃÎÄ¼ş¼ÓÔØÊ±ÒÑ¾­±àÒëµ½ÄÚ²¿´úÂëÖĞ£¬ÔÚ½âÊÍÆ÷²úÉúÇëÇóÊ±Ê¹ÓÃ¡£
-     Õâ¸ö½âÊÍÆ÷ÊÇÒ»¸ö¼òµ¥µÄ¶ÑÕ»ĞéÄâ»ú£¬ÈçÏÂÁĞÖ¸Áî£º 
-     location /download/ {
-       if ($forbidden) {
-         return   403;
-       }
-       if ($slow) {
-         limit_rate  10k;
-       }
-       rewrite  ^/(download/.*)/media/(.*)\..*$  /$1/mp3/$2.mp3  break;
-     ½«±»±àÒë³ÉÒÔÏÂË³Ğò£º 
-       variable $forbidden
-       checking to zero
-       recovery 403
-       completion of entire code
-       variable $slow
-       checking to zero
-       checkings of regular expression
-       copying "/"
-       copying $1
-       copying "/mp3/"
-       copying $2
-       copying "..mpe"
-       completion of regular expression
-       completion of entire sequence
-     ×¢Òâ²¢Ã»ÓĞ¹ØÓÚlimit_rateµÄ´úÂë£¬ÒòÎªËüÃ»ÓĞÌá¼°ngx_http_rewrite_moduleÄ£¿é£¬¡°if¡±¿é¿ÉÒÔÀàËÆ"location"Ö¸ÁîÔÚÅäÖÃÎÄ¼şµÄÏàÍ¬²¿·ÖÍ¬Ê±´æÔÚ¡£
-     Èç¹û$slowÎªÕæ£¬¶ÔÓ¦µÄif¿é½«ÉúĞ§£¬ÔÚÕâ¸öÅäÖÃÖĞlimit_rateµÄÖµÎª10k¡£
-     Ö¸Áî£º 
-     rewrite  ^/(download/.*)/media/(.*)\..*$  /$1/mp3/$2.mp3  break;Èç¹ûÎÒÃÇ½«µÚÒ»¸öĞ±¸ÜÀ¨ÈëÔ²À¨ºÅ£¬Ôò¿ÉÒÔ¼õÉÙÖ´ĞĞË³Ğò£º
-     
-     rewrite  ^(/download/.*)/media/(.*)\..*$  $1/mp3/$2.mp3  break;Ö®ºóµÄË³ĞòÀàËÆÈçÏÂ£º
-     
-       checking regular expression
-       copying $1
-       copying "/mp3/"
-       copying $2
-       copying "..mpe"
-       completion of regular expression
-       completion of entire code
-     */
-    { ngx_string("uninitialized_variable_warn"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_SIF_CONF|NGX_HTTP_LOC_CONF
-                        |NGX_HTTP_LIF_CONF|NGX_CONF_FLAG,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      offsetof(ngx_http_rewrite_loc_conf_t, uninitialized_variable_warn),
-      NULL },
-
-      ngx_null_command
-};
-
-
-static ngx_http_module_t  ngx_http_rewrite_module_ctx = {
-    NULL,                                  /* preconfiguration */
-    ngx_http_rewrite_init,                 /* postconfiguration */
-
-    NULL,                                  /* create main configuration */
-    NULL,                                  /* init main configuration */
-
-    NULL,                                  /* create server configuration */
-    NULL,                                  /* merge server configuration */
-
-    ngx_http_rewrite_create_loc_conf,      /* create location configuration */
-    ngx_http_rewrite_merge_loc_conf        /* merge location configuration */
-};
-
-
-ngx_module_t  ngx_http_rewrite_module = {//²Î¿¼http://blog.csdn.net/brainkick/article/details/7065194
-    NGX_MODULE_V1,
-    &ngx_http_rewrite_module_ctx,          /* module context */
-    ngx_http_rewrite_commands,             /* module directives */
-    NGX_HTTP_MODULE,                       /* module type */
-    NULL,                                  /* init master */
-    NULL,                                  /* init module */
-    NULL,                                  /* init process */
-    NULL,                                  /* init thread */
-    NULL,                                  /* exit thread */
-    NULL,                                  /* exit process */
-    NULL,                                  /* exit master */
-    NGX_MODULE_V1_PADDING
-};
-
-//checkerº¯ÊıÖĞngx_http_core_rewrite_phaseÖ´ĞĞ
-static ngx_int_t
-ngx_http_rewrite_handler(ngx_http_request_t *r) 
-{
-    ngx_int_t                     index;
-    ngx_http_script_code_pt       code;
-    ngx_http_script_engine_t     *e;
-    ngx_http_core_srv_conf_t     *cscf;
-    ngx_http_core_main_conf_t    *cmcf;
-    ngx_http_rewrite_loc_conf_t  *rlcf;
-
-    cmcf = ngx_http_get_module_main_conf(r, ngx_http_core_module);
-    cscf = ngx_http_get_module_srv_conf(r, ngx_http_core_module);
-    index = cmcf->phase_engine.location_rewrite_index;
-
-    if (r->phase_handler == index && r->loc_conf == cscf->ctx->loc_conf) { 
-        /* skipping location rewrite phase for server null location */
-        return NGX_DECLINED;
-    }
-
-    //ÔÚNGX_HTTP_SERVER_REWRITE_PHASE½×¶Î¶ÔÓ¦µÄÊÇserver{]¿éÖĞµÄrewriteÅäÖÃ£¬ÒòÎªr->loc_conf[]Ö¸ÏòµÄÊÇserver{]ÉÏÏÂÎÄÖĞµÄloc_conf£¬
-    //NGX_HTTP_REWRITE_PHASE¶ÔÓ¦µÄÊÇlocation{}¿éÖĞµÄrewriteÅäÖÃ£¬£¬ÒòÎªr->loc_conf[]Ö¸ÏòµÄÊÇlocation{]ÉÏÏÂÎÄÖĞµÄloc_conf£¬
-    //ÔÚNGX_HTTP_FIND_CONFIG_PHASE»áÕÒµ½uri¶ÔÓ¦µÄlocation{}ÅäÖÃ£¬´Ó¶øNGX_HTTP_REWRITE_PHASEÄÜ¹»Ö´ĞĞÕâ¸ölocation{}ÖĞµÄrewriteÅäÖÃ
-    rlcf = ngx_http_get_module_loc_conf(r, ngx_http_rewrite_module);
-    if (rlcf->codes == NULL) { //ËµÃ÷Ã»ÓĞÒÑÊ¹ÓÃµÄ±äÁ¿
-        return NGX_DECLINED;
-    }
-
-    e = ngx_pcalloc(r->pool, sizeof(ngx_http_script_engine_t));
-    if (e == NULL) {
-        return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    }
-
-    /* spÊÇÒ»¸öngx_http_variable_value_tµÄÊı×é£¬ÀïÃæ±£´æÁË´ÓÅäÖÃÖĞ·ÖÀë³öµÄÒ»Ğ©±äÁ¿   
-    ºÍÒ»Ğ©ÖĞ¼ä½á¹û£¬ÔÚµ±Ç°´¦ÀíÖĞ¿ÉÒÔ¿ÉÒÔ·½±ãµÄÄÃµ½Ö®Ç°»òÕßÖ®ºóµÄ±äÁ¿(Í¨¹ısp--»òÕßsp++)  */
-    e->sp = ngx_pcalloc(r->pool,
-                        rlcf->stack_size * sizeof(ngx_http_variable_value_t));
-    if (e->sp == NULL) {
-        return NGX_HTTP_INTERNAL_SERVER_ERROR;
-    }
-    
-    /* °üº¬ÁËÔÚÅäÖÃ½âÎö¹ı³ÌÖĞÉèÖÃµÄÒ»Ğ©´¦Àí½á¹¹Ìå£¬ÏÂÃæµÄrlcf->codesÊÇÒ»¸öÊı×é£¬×¢ÒâµÄÊÇ£¬ÕâĞ©½á¹¹ÌåµÄµÚÒ»¸ö³ÉÔ±¾ÍÊÇÒ»¸ö´¦Àíhandler£¬
-    ÕâÀï´¦ÀíÊ±£¬¶¼»á½«¸Ã½á¹¹ÌåÀàĞÍÇ¿×ª£¬ÄÃµ½Æä´¦Àíhandler£¬È»ºó°´ÕÕË³ĞòÒÀ´ÎÖ´ĞĞÖ®   */
-    e->ip = rlcf->codes->elts;  
-
-    e->request = r; // ĞèÒª´¦ÀíµÄÇëÇó  
-    e->quote = 1; // ³õÊ¼Ê±ÈÏÎªuriĞèÒªÌØÊâ´¦Àí£¬Èç×öescape£¬»òÕßurldecode´¦Àí¡£ 
-    e->log = rlcf->log;
-    // ±£´æ´¦Àí¹ı³ÌÊ±¿ÉÄÜ³öÏÖµÄÒ»Ğ©http response code£¬ÒÔ±ã½øĞĞÌØ¶¨µÄ´¦Àí    
-    e->status = NGX_DECLINED;
-
-    /*
-    ÒÀ´Î¶Ôe->ip Êı×éÖĞµÄ²»Í¬½á¹¹½øĞĞ´¦Àí£¬ÔÚ´¦ÀíÊ±Í¨¹ı½«µ±Ç°½á¹¹½øĞĞÇ¿×ª£¬¾Í¿ÉÒÔµÃµ½¾ßÌåµÄ´¦Àíhandler£¬ÒòÎªÃ¿¸ö½á¹¹µÄµÚÒ»¸ö
-    ±äÁ¿¾ÍÊÇÒ»¸öhandler¡£ÎÒÃÇ¿´   µÄ³öÀ´ÕâĞ©½á¹¹³ÉÔ±µÄÉè¼Æ¶¼ÊÇÓĞËüµÄÒâÍ¼µÄ¡£
-     */
-    while (*(uintptr_t *) e->ip) {
-    //ÀıÈçngx_http_script_value_code; ngx_http_script_set_var_code£¬ËûÃÇÔÚÊµ¼ÊÉÏÖ´ĞĞcodeÖĞ¶¼»á°Ñe->ipÒÆ¶¯ÏìÓ¦µÄngx_http_script_xxx_code_t³¤¶È£¬´Ó¶ø
-    //Ö´ĞĞÏÂÒ»¸öngx_http_script_xxx_code_t
-
-    /*
-    Òşº¬Ä¬ÈÏËùÓĞµÄngx_http_scriptxxx_codet½á¹¹ÌåµÚÒ»¸ö×Ö¶Î±Ø¶¨Îª»Øµ÷º¯ÊıÖ¸Õë£¬Èç¹ûÎÒÃÇÌí¼Ó×Ô¼ºµÄ½Å±¾ÒıÇæ¹¦ÄÜ²½Öè£¬Õâµã¾ÍĞèÒª×¢Òâ¡£
-     */
-        code = *(ngx_http_script_code_pt *) e->ip;
-        code(e); //e->ipÊÇ´Óngx_http_rewrite_loc_conf_t->codes->elts±éÀú»ñÈ¡µ½µÄ
-    }
-
-    ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
-                   "ngx_http_rewrite_handler e->status:%d, r->err_status:%ui", e->status, r->err_status);
-    //Ä¬ÈÏÊÇ·µ»ØNGX_DECLINED£¬´¥·¢ÔÚcode()ÖĞĞŞ¸ÄÁËe->status¡£Èç¹ûĞŞ¸ÄÁËstatus£¬ÔòÔÚÖ´ĞĞ¸Ãº¯ÊıµÄngx_http_core_rewrite_phaseÖĞ½áÊøÇëÇó
-    if (e->status < NGX_HTTP_BAD_REQUEST) {
-        return e->status;
-    }
-
-    if (r->err_status == 0) {
-        return e->status;
-    }
-
-    return r->err_status;
-}
-
-
-static ngx_int_t
-ngx_http_rewrite_var(ngx_http_request_t *r, ngx_http_variable_value_t *v,
-    uintptr_t data)
-{
-    ngx_http_variable_t          *var;
-    ngx_http_core_main_conf_t    *cmcf;
-    ngx_http_rewrite_loc_conf_t  *rlcf;
-
-    rlcf = ngx_http_get_module_loc_conf(r, ngx_http_rewrite_module);
-
-    if (rlcf->uninitialized_variable_warn == 0) {
-        *v = ngx_http_variable_null_value;
-        return NGX_OK;
-    }
-
-    cmcf = ngx_http_get_module_main_conf(r, ngx_http_core_module);
-
-    var = cmcf->variables.elts;
-
-    /*
-     * the ngx_http_rewrite_module sets variables directly in r->variables,
-     * and they should be handled by ngx_http_get_indexed_variable(),
-     * so the handler is called only if the variable is not initialized
-     */
-
-    ngx_log_error(NGX_LOG_WARN, r->connection->log, 0,
-                  "using uninitialized \"%V\" variable", &var[data].name);
-
-    *v = ngx_http_variable_null_value;
-
-    return NGX_OK;
-}
-
-
-static void *
-ngx_http_rewrite_create_loc_conf(ngx_conf_t *cf)
-{
-    ngx_http_rewrite_loc_conf_t  *conf;
-
-    conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_rewrite_loc_conf_t));
-    if (conf == NULL) {
-        return NULL;
-    }
-
-    conf->stack_size = NGX_CONF_UNSET_UINT;
-    conf->log = NGX_CONF_UNSET;
-    conf->uninitialized_variable_warn = NGX_CONF_UNSET;
-
-    return conf;
-}
-
-
-static char *
-ngx_http_rewrite_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
-{
-    ngx_http_rewrite_loc_conf_t *prev = parent;
-    ngx_http_rewrite_loc_conf_t *conf = child;
-
-    uintptr_t  *code;
-
-    ngx_conf_merge_value(conf->log, prev->log, 0);
-    ngx_conf_merge_value(conf->uninitialized_variable_warn,
-                         prev->uninitialized_variable_warn, 1);
-    ngx_conf_merge_uint_value(conf->stack_size, prev->stack_size, 10);
-
-    if (conf->codes == NULL) {
-        return NGX_CONF_OK;
-    }
-
-    if (conf->codes == prev->codes) {
-        return NGX_CONF_OK;
-    }
-
-    code = ngx_array_push_n(conf->codes, sizeof(uintptr_t));
-    if (code == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    *code = (uintptr_t) NULL;
-
-    return NGX_CONF_OK;
-}
-
-
-static ngx_int_t
-ngx_http_rewrite_init(ngx_conf_t *cf)
-{
-    ngx_http_handler_pt        *h;
-    ngx_http_core_main_conf_t  *cmcf;
-
-    cmcf = ngx_http_conf_get_module_main_conf(cf, ngx_http_core_module);
-
-    h = ngx_array_push(&cmcf->phases[NGX_HTTP_SERVER_REWRITE_PHASE].handlers);
-    if (h == NULL) {
-        return NGX_ERROR;
-    }
-
-    *h = ngx_http_rewrite_handler;
-
-    h = ngx_array_push(&cmcf->phases[NGX_HTTP_REWRITE_PHASE].handlers);
-    if (h == NULL) {
-        return NGX_ERROR;
-    }
-
-    *h = ngx_http_rewrite_handler;
-
-    return NGX_OK;
-}
-
-/*
-1. ½âÎöÕıÔò±í´ïÊ½£¬ÌáÈ¡×ÓÄ£Ê½£¬ÃüÃû×ÓÄ£Ê½´æÈëvariablesµÈ£»
-2.	½âÎöµÚËÄ¸ö²ÎÊılast,breakµÈ¡£
-3.µ÷ÓÃngx_http_script_compile½«Ä¿±ê×Ö·û´®½âÎöÎª½á¹¹»¯µÄcodes¾ä±úÊı×é£¬ÒÔ±ã½âÎöÊ±½øĞĞ¼ÆËã£»
-4.¸ù¾İµÚÈı²½µÄ½á¹û£¬Éú³Élcf->codes ×é£¬ºóĞørewriteÊ±£¬Ò»×é×éµÄ½øĞĞÆ¥Åä¼´¿É¡£Ê§°Ü×Ô¶¯Ìø¹ı±¾×é£¬µ½´ïÏÂÒ»×érewrite
-*/ //ngx_http_rewrite_handlerÖĞ»áÖ´ĞĞ¸Ãº¯ÊıÖĞµÄÏà¹Øcode
-static char *
-ngx_http_rewrite(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)   
-{//ÏÂÃæµÄ½âÎöÒÔ://±ÈÈçrewrite  ^(/xyz/aa.*)$   http://$http_host/aa.mp4   break;ÎªÀı
-    ngx_http_rewrite_loc_conf_t  *lcf = conf;
-
-    ngx_str_t                         *value;
-    ngx_uint_t                         last;
-    ngx_regex_compile_t                rc; 
-    ngx_http_script_code_pt           *code;
-    ngx_http_script_compile_t          sc;
-    ngx_http_script_regex_code_t      *regex;
-    ngx_http_script_regex_end_code_t  *regex_end;
-    u_char                             errstr[NGX_MAX_CONF_ERRSTR];
-
-    //¸Ãº¯ÊıÖĞµÄlcf->codes»á°Ñngx_http_script_regex_start_code
-    /*regex´Ócodes[]ÖĞ»ñÈ¡¿Õ¼ä,£¬×¢ÒâÕâÀïµÄcodes¶ÔÓ¦µÄÊÇrewriteÏà¹ØÅäÖÃËùÔÚµÄserver{}»òÕßlocationÖĞµÄÉÏÏÂÎÄÖĞ£¬ÀıÈç²»Í¬location{}
-    ÖĞµÄrewriteÏà¹ØÅäÖÃÉÏÏÂÎÄ´¦ÓÚ²»Í¬locationÖĞ */
-    regex = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                       sizeof(ngx_http_script_regex_code_t)); 
-    if (regex == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    ngx_memzero(regex, sizeof(ngx_http_script_regex_code_t));
-
-    value = cf->args->elts;
-
-    //ngx_http_rewriteÖĞ£¬rewrite aaa bbb break;ÅäÖÃÖĞ£¬aaa½âÎöÊ¹ÓÃngx_regex_compile_t£¬bbb½âÎöÊ¹ÓÃngx_http_script_compile_t
-    ngx_memzero(&rc, sizeof(ngx_regex_compile_t));
-
-    rc.pattern = value[1];//¼ÇÂ¼ ^(/xyz/aa.*)$
-    rc.err.len = NGX_MAX_CONF_ERRSTR;
-    rc.err.data = errstr;
-
-    /* TODO: NGX_REGEX_CASELESS */
-    //½âÎöÕıÔò±í´ïÊ½£¬ÌîĞ´ngx_http_regex_t½á¹¹²¢·µ»Ø¡£ÕıÔò¾ä±ú£¬ÃüÃû×ÓÄ£Ê½µÈ¶¼ÔÚÀïÃæÁË¡£
-    regex->regex = ngx_http_regex_compile(cf, &rc);
-    if (regex->regex == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    //ngx_http_script_regex_start_codeº¯ÊıÆ¥ÅäÕıÔò±í´ïÊ½£¬¼ÆËãÄ¿±ê×Ö·û´®³¤¶È²¢·ÖÅä¿Õ¼ä¡£
-	//½«ÆäÉèÖÃÎªµÚÒ»¸öcodeº¯Êı£¬Çó³öÄ¿±ê×Ö·û´®´óĞ¡¡£Î²²¿»¹ÓĞngx_http_script_regex_end_code
-    regex->code = ngx_http_script_regex_start_code;
-    regex->uri = 1;
-    regex->name = value[1];
-
-    if (value[2].data[value[2].len - 1] == '?') {//Èç¹ûÄ¿±ê½á¹û´®ºóÃæÓÃÎÊºÃ½áÎ²£¬Ôònginx²»»á¿½±´²ÎÊıµ½ºóÃæµÄ
-
-        /* the last "?" drops the original arguments */
-        value[2].len--;
-
-    } else {
-        regex->add_args = 1;//×Ô¶¯×·¼Ó²ÎÊı¡£
-    }
-
-    last = 0;
-
-    if (ngx_strncmp(value[2].data, "http://", sizeof("http://") - 1) == 0
-        || ngx_strncmp(value[2].data, "https://", sizeof("https://") - 1) == 0
-        || ngx_strncmp(value[2].data, "$scheme", sizeof("$scheme") - 1) == 0)
-    {//nginxÅĞ¶Ï£¬Èç¹ûÊÇÓÃhttp://µÈ¿ªÍ·µÄrewrite£¬¾Í´ú±íÊÇ¿åÓòÖØ¶¨Ïò¡£»á×ö302´¦Àí¡£
-        regex->status = NGX_HTTP_MOVED_TEMPORARILY; //·şÎñÆ÷·µ»Ø¸Ã302£¬ä¯ÀÀÆ÷ÊÕµ½ºó£¬»á°Ñ´ÓĞÂÇëÇóä¯ÀÀÆ÷·¢ËÍ»ØÀ´µÄĞÂµÄÖØ¶¨ÏòµØÖ·
-        regex->redirect = 1; 
-        last = 1;
-    }
-
-    /*
-     ¡¤last - Íê³ÉÖØĞ´Ö¸Áî£¬Ö®ºóËÑË÷ÏàÓ¦µÄURI»òlocation¡£
-    ¡¤break - Íê³ÉÖØĞ´Ö¸Áî¡£
-    ¡¤redirect - ·µ»Ø302ÁÙÊ±ÖØ¶¨Ïò£¬Èç¹ûÌæ»»×Ö¶ÎÓÃhttp://¿ªÍ·Ôò±»Ê¹ÓÃ¡£
-    ¡¤permanent - ·µ»Ø301ÓÀ¾ÃÖØ¶¨Ïò¡£
-
-      ÅäÖÃÎª:
-      location ~* /1mytest  {			
-            rewrite   ^.*$ www.11.com/ last;		
-       }  
-      uriÎª:http://10.135.10.167/1mytest ,ÔòÖ´ĞĞÍêngx_http_script_regex_end_codeºó£¬uri»á±äÎªwww.11.com/
-
-      last»òÕßbreakÅäÖÃ£¬nginx»á¼ÌĞøÖ´ĞĞºóÃæµÄÆäËûphaseÁ÷³Ì£¬»áÈ¥ÇëÇówww.11.com/Ä¿Â¼Â·¾¶²éÕÒ×ÊÔ´
-      redirect»òÕßpermanentÅäÖÃ£¬statusÖµ»á±äÎª301 »òÕß 302£¬ÔÚngx_http_core_rewrite_phaseÖĞÖ´ĞĞÍêcodeºó£¬»áÖ±½Ó·µ»ØÖØ¶¨ÏòµØÖ·www.11.com/¸ø¿Í»§¶Ë
-        ¿Í»§¶Ëä¯ÀÀÆ÷»áÖØĞÂÇëÇó±¾·şÎñÆ÷£¬ÆäuriÎªwww.11.com/(ä¯ÀÀÆ÷Ò³Ãæ±äÎªhttp://10.135.10.167/www.11.com)¡£µ«ÊÇÈç¹û°Ñwww.galaxywind.com/¸ÄÎªhttp://www.11.com/,Ôò²»»áÇëÇó±¾·şÎñÆ÷£¬¶øÊÇÖ±½ÓÌø×ªµ½http://www.11.com/
-     */
-    if (cf->args->nelts == 4) {
-        if (ngx_strcmp(value[3].data, "last") == 0) {  // ÀıÈçrewrite   ^.*$ www.galaxywind.com last;¾Í»á¶à´ÎÖ´ĞĞrewrite
-            last = 1;
-
-        } else if (ngx_strcmp(value[3].data, "break") == 0) {
-            /*
-                ÔÚngx_http_core_post_rewrite_phaseÖĞ¾Í²»»áÖ´ĞĞÀïÃæµÄifÓï¾ä£¬Ò²¾Í²»»áÔÙ´Î×ßµ½ÔÙ´Î×ßrewriteºÍfind configµÄ¹ı³ÌÁË£¬¶øÊÇ¼ÌĞø´¦ÀíºóÃæµÄÁ÷³Ì¡£
-               */
-            regex->break_cycle = 1;
-            last = 1;
-
-        } else if (ngx_strcmp(value[3].data, "redirect") == 0) {
-            regex->status = NGX_HTTP_MOVED_TEMPORARILY; //·şÎñÆ÷·µ»Ø¸Ã302£¬ä¯ÀÀÆ÷ÊÕµ½ºó£¬»á°Ñ´ÓĞÂÇëÇóä¯ÀÀÆ÷·¢ËÍ»ØÀ´µÄĞÂµÄÖØ¶¨ÏòµØÖ·
-            regex->redirect = 1;
-            last = 1;
-
-        } else if (ngx_strcmp(value[3].data, "permanent") == 0) {
-            regex->status = NGX_HTTP_MOVED_PERMANENTLY;
-            regex->redirect = 1;
-            last = 1;
-
-        } else {
-            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                               "invalid parameter \"%V\"", &value[3]);
-            return NGX_CONF_ERROR;
-        }
-    }
-
-    //ngx_http_rewriteÖĞ£¬rewrite aaa bbb break;ÅäÖÃÖĞ£¬aaa½âÎöÊ¹ÓÃngx_regex_compile_t£¬bbb½âÎöÊ¹ÓÃngx_http_script_compile_t
-    ngx_memzero(&sc, sizeof(ngx_http_script_compile_t));
-
-    sc.cf = cf;
-    sc.source = &value[2];//×Ö·û´® http://$http_host/aa.mp4
-    sc.lengths = &regex->lengths; //Êä³ö²ÎÊı£¬ÀïÃæ»á°üº¬Ò»Ğ©ÈçºÎÇóÄ¿±ê×Ö·û´®³¤¶ÈµÄº¯Êı»Øµ÷¡£ÈçÉÏ»á°üº¬Èı¸ö: ³£Á¿ ±äÁ¿ ³£Á¿
-    sc.values = &lcf->codes;//½«×ÓÄ£Ê½´æÈëÕâÀï¡£
-    sc.variables = ngx_http_script_variables_count(&value[2]);
-    sc.main = regex; //ÕâÊÇ¶¥²ãµÄ±í´ïÊ½£¬ÀïÃæ°üº¬ÁËlengthsµÈ¡£
-    sc.complete_lengths = 1;// complete_lengthsÖÃ1£¬ÊÇÎªÁË¸ølengthsÊı×é½áÎ²(ÒÔnullÖ¸ÕëÌî³ä)£¬ÒòÎªÔÚÔËĞĞÕâ¸öÊı×éÖĞµÄ³ÉÔ±Ê±£¬Åöµ½NULLÊ±£¬Ö´ĞĞ¾Í½áÊøÁË¡£ 
-    sc.compile_args = !regex->redirect;
-
-    //rewrite  ^(.*)$   http://$http_host.mp4   break;ÖĞµÄhttp://$http_host.mp4»áÍ¨¹ıngx_http_script_compileº¯Êı°ÑÏà¹ØµÄcodeÌí¼Óµ½lcf->codes[]ÖĞ
-    if (ngx_http_script_compile(&sc) != NGX_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    regex = sc.main;//ÕâÀïÕâÃ´×öµÄÔ­ÒòÊÇ¿ÉÄÜÉÏÃæ»á¸Ä±äÄÚ´æµØÖ·¡£
-
-    regex->size = sc.size;
-    regex->args = sc.args;
-
-    if (sc.variables == 0 && !sc.dup_capture) {//Èç¹ûÃ»ÓĞ±äÁ¿£¬ÄÇ¾Í½«lengthsÖÃ¿Õ£¬ÕâÑù¾Í²»ÓÃ×ö¶àÓàµÄÕıÔò½âÎö¶øÖ±½Ó½øÈë×Ö·û´®¿½±´codes
-        regex->lengths = NULL;
-    }
-
-    regex_end = ngx_http_script_add_code(lcf->codes,
-                                      sizeof(ngx_http_script_regex_end_code_t),
-                                      &regex);
-    if (regex_end == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    /*¾­¹ıÉÏÃæµÄ´¦Àí£¬ºóÃæµÄrewrite»á½âÎö³öÈçÏÂµÄº¯Êı½á¹¹: rewrite   ^(.*)$   http://$http_host.mp4   break;
-	ngx_http_script_regex_start_code ½âÎöÍêÁËÕıÔò±í´ïÊ½¡£¸ù¾İlengthsÇó³ö×Ü³¤¶È£¬ÉêÇë¿Õ¼ä¡£
-			ngx_http_script_copy_len_code		7
-			ngx_http_script_copy_var_len_code 	18
-			ngx_http_script_copy_len_code		4	=== 29 
-
-	ngx_http_script_copy_code		¿½±´"http://" µ½e->buf
-	ngx_http_script_copy_var_code	¿½±´"115.28.34.175:8881"
-	ngx_http_script_copy_code 		¿½±´".mp4"
-	ngx_http_script_regex_end_code
-	*/
-    regex_end->code = ngx_http_script_regex_end_code;//½áÊø»Øµ÷¡£¶ÔÓ¦Ç°ÃæµÄ¿ªÊ¼¡£
-    regex_end->uri = regex->uri;
-    regex_end->args = regex->args;
-    regex_end->add_args = regex->add_args;//ÊÇ·ñÌí¼Ó²ÎÊı¡£
-    regex_end->redirect = regex->redirect;
-
-    if (last) {//²Î¿¼ÉÏÃæ£¬Èç¹ûrewrite Ä©Î²ÓĞlast,break,µÈ£¬¾Í²»»áÔÙ´Î½âÎöºóÃæµÄÊı¾İÁË£¬ÄÇÃ´£¬¾Í½«codeÉèÖÃÎª¿Õ¡£
-        code = ngx_http_script_add_code(lcf->codes, sizeof(uintptr_t), &regex);
-        if (code == NULL) {
-            return NGX_CONF_ERROR;
-        }
-
-        *code = NULL;
-    }
-
-    //ÏÂÒ»¸ö½âÎö¾ä±ú×éµÄµØÖ·¡£Èç¹ûÆ¥ÅäÊ§°Ü£¬Ôò»áÖ±½ÓÌø¹ı¸ÃregexÆ¥ÅäÏà¹ØµÄËùÓĞcode
-    regex->next = (u_char *) lcf->codes->elts + lcf->codes->nelts
-                                              - (u_char *) regex;
-
-    return NGX_CONF_OK;
-}
-
-//return code£»
-//×¢²ácodeÎªngx_http_script_return_code
-static char *
-ngx_http_rewrite_return(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
-{
-    ngx_http_rewrite_loc_conf_t  *lcf = conf;
-
-    u_char                            *p;
-    ngx_str_t                         *value, *v;
-    ngx_http_script_return_code_t     *ret;
-    ngx_http_compile_complex_value_t   ccv;
-
-    ret = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                     sizeof(ngx_http_script_return_code_t));
-    if (ret == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    value = cf->args->elts; // return code ÖĞµÄcode£¬Ò»°ãÊÇ·µ»ØÂë 204£¬400£¬402-406£¬408£¬410, 411, 413, 416Óë500-504
-
-    ngx_memzero(ret, sizeof(ngx_http_script_return_code_t));
-
-    ret->code = ngx_http_script_return_code;
-
-    p = value[1].data;
-
-    ret->status = ngx_atoi(p, value[1].len);
-
-    if (ret->status == (uintptr_t) NGX_ERROR) {
-
-        if (cf->args->nelts == 2
-            && (ngx_strncmp(p, "http://", sizeof("http://") - 1) == 0
-                || ngx_strncmp(p, "https://", sizeof("https://") - 1) == 0
-                || ngx_strncmp(p, "$scheme", sizeof("$scheme") - 1) == 0))
-        {
-            ret->status = NGX_HTTP_MOVED_TEMPORARILY;
-            v = &value[1];
-
-        } else {
-            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                               "invalid return code \"%V\"", &value[1]);
-            return NGX_CONF_ERROR;
-        }
-
-    } else {
-
-        if (ret->status > 999) {
-            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                               "invalid return code \"%V\"", &value[1]);
-            return NGX_CONF_ERROR;
-        }
-
-        if (cf->args->nelts == 2) {
-            return NGX_CONF_OK;
-        }
-
-        v = &value[2];
-    }
-
-    ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
-
-    ccv.cf = cf;
-    ccv.value = v;
-    ccv.complex_value = &ret->text;
-
-    if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    return NGX_CONF_OK;
-}
-
-//ÅäºÏngx_http_rewrite_handler¶Á´úÂë£¬¿ÉÒÔ¿´µ½Èç¹ûÉèÖÃÒ»¸öcode½Úµãµ½codesÊı×é£¬ÄÇÃ´ÔÚngx_http_rewrite_handlerµÄforÑ­»·Ö´ĞĞµ½¸Ã
-//½ÚµãcodeµÄÊ±ºò£¬¾Í»á°Ñe->ipÖÃÎªNULL£¬ÕâÑù¾ÍÖ±½ÓÍË³öwhile (*(uintptr_t *) e->ip){}Ñ­»·
-static char *
-ngx_http_rewrite_break(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
-{
-    ngx_http_rewrite_loc_conf_t *lcf = conf;
-
-    ngx_http_script_code_pt  *code;
-
-    code = ngx_http_script_start_code(cf->pool, &lcf->codes, sizeof(uintptr_t));
-    if (code == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    *code = ngx_http_script_break_code;
-
-    return NGX_CONF_OK;
-}
-
-/*
-location / {
-    if ($uri ~* "(.*).html$" ) {
-       set  $file  $1;
-           rewrite ^(.*)$ http://$http_host$file.mp4 break;
-    }
-}
-ÀıÈçÉÏÃæµÄÅäÖÃ£¬cf->ctxÉÏÏÂÎÄ£¬ÆäÊµÊÇlocatin{}ÅäÖÃ¿éµÄÉÏÏÂÎÄ
-*///if½âÎö¹ı³Ì²Î¿¼http://blog.sina.com.cn/s/blog_7303a1dc0101cm9z.html
-static char * //ifµÄ½âÎö¹ı³ÌºÍlocation{}½âÎö¹ı³Ì²î²»¶à
-ngx_http_rewrite_if(ngx_conf_t *cf, ngx_command_t *cmd, void *conf) //ÏÂÃæ´úÂëµÄ½âÎö¶¼ÒÔÉÏÃæµÄ±¸×¢ÖĞµÄÅäÖÃÎªÀı
-{
-    ngx_http_rewrite_loc_conf_t  *lcf = conf;
-
-    void                         *mconf;
-    char                         *rv;
-    u_char                       *elts;
-    ngx_uint_t                    i;
-    ngx_conf_t                    save;
-    ngx_http_module_t            *module;
-    ngx_http_conf_ctx_t          *ctx, *pctx;
-    ngx_http_core_loc_conf_t     *clcf, *pclcf;
-    ngx_http_script_if_code_t    *if_code;
-    ngx_http_rewrite_loc_conf_t  *nlcf;
-
-    //ifµÄ½âÎö¹ı³ÌºÍlocation{}½âÎö¹ı³Ì²î²»¶à,Ò²ÓĞctx
-    ctx = ngx_pcalloc(cf->pool, sizeof(ngx_http_conf_ctx_t));
-    if (ctx == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    pctx = cf->ctx; //¸¸¿é{}µÄÉÏÏÂÎÄctx
-    ctx->main_conf = pctx->main_conf;
-    ctx->srv_conf = pctx->srv_conf;
-
-    ctx->loc_conf = ngx_pcalloc(cf->pool, sizeof(void *) * ngx_http_max_module);
-    if (ctx->loc_conf == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    for (i = 0; ngx_modules[i]; i++) {
-        if (ngx_modules[i]->type != NGX_HTTP_MODULE) {
-            continue;
-        }
-
-        module = ngx_modules[i]->ctx;
-
-        if (module->create_loc_conf) {
-            /*
-               ÔÚ½âÎöifÊ±£¬ nginx»á°ÑËüµ±×öÒ»¸ölocationÀ´¶Ô´ıµÄ£¬²¢ÇÒËüµÄlocation typeÎªnoname¡£Í¨¹ıngx_http_add_location½«¸Ã¡°location¡±Ìí
-               ¼Óµ½ÉÏ²ãµÄlocationsÖĞ¡£ÕâÀï½«if¿´×ölocation×ÔÈ»ÓĞËüµÄºÏÀíĞÔ£¬ÒòÎªifµÄÅäÖÃÒ²ÊÇĞèÒª½øĞĞurlÆ¥ÅäµÄ¡£
-               */
-            mconf = module->create_loc_conf(cf);
-            if (mconf == NULL) {
-                 return NGX_CONF_ERROR;
-            }
-
-            ctx->loc_conf[ngx_modules[i]->ctx_index] = mconf;
-        }
-    }
-
-    pclcf = pctx->loc_conf[ngx_http_core_module.ctx_index];//¸Ãif{}ËùÔÚlocation{}µÄÅäÖÃĞÅÏ¢
-
-    clcf = ctx->loc_conf[ngx_http_core_module.ctx_index]; //if{}µÄÅäÖÃĞÅÏ¢
-    clcf->loc_conf = ctx->loc_conf;
-    clcf->name = pclcf->name;
-    clcf->noname = 1; //ifÅäÖÃ±»×÷ÎªlocationµÄnonameĞÎÊ½
-
-    if (ngx_http_add_location(cf, &pclcf->locations, clcf) != NGX_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    if (ngx_http_rewrite_if_condition(cf, lcf) != NGX_CONF_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    if_code = ngx_array_push_n(lcf->codes, sizeof(ngx_http_script_if_code_t));
-    if (if_code == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    if_code->code = ngx_http_script_if_code;
-
-    elts = lcf->codes->elts;
-
-
-    /* the inner directives must be compiled to the same code array */
-
-    nlcf = ctx->loc_conf[ngx_http_rewrite_module.ctx_index];
-    nlcf->codes = lcf->codes;
-
-
-    save = *cf;
-    cf->ctx = ctx;
-
-    if (pclcf->name.len == 0) {
-        if_code->loc_conf = NULL;
-        cf->cmd_type = NGX_HTTP_SIF_CONF;
-
-    } else {
-        if_code->loc_conf = ctx->loc_conf;
-        cf->cmd_type = NGX_HTTP_LIF_CONF;
-    }
-
-    rv = ngx_conf_parse(cf, NULL);
-
-    *cf = save;
-
-    if (rv != NGX_CONF_OK) {
-        return rv;
-    }
-
-
-    if (elts != lcf->codes->elts) {
-        if_code = (ngx_http_script_if_code_t *)
-                   ((u_char *) if_code + ((u_char *) lcf->codes->elts - elts));
-    }
-
-    if_code->next = (u_char *) lcf->codes->elts + lcf->codes->nelts
-                                                - (u_char *) if_code;
-
-    /* the code array belong to parent block */
-
-    nlcf->codes = NULL;
-
-    return NGX_CONF_OK;
-}
-
-
-static char *
-ngx_http_rewrite_if_condition(ngx_conf_t *cf, ngx_http_rewrite_loc_conf_t *lcf)
-{
-    u_char                        *p;
-    size_t                         len;
-    ngx_str_t                     *value;
-    ngx_uint_t                     cur, last;
-    ngx_regex_compile_t            rc;
-    ngx_http_script_code_pt       *code;
-    ngx_http_script_file_code_t   *fop;
-    ngx_http_script_regex_code_t  *regex;
-    u_char                         errstr[NGX_MAX_CONF_ERRSTR];
-
-    value = cf->args->elts;
-    last = cf->args->nelts - 1;
-
-    if (value[1].len < 1 || value[1].data[0] != '(') {
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "invalid condition \"%V\"", &value[1]);
-        return NGX_CONF_ERROR;
-    }
-
-    if (value[1].len == 1) {
-        cur = 2;
-
-    } else {
-        cur = 1;
-        value[1].len--;
-        value[1].data++;
-    }
-
-    if (value[last].len < 1 || value[last].data[value[last].len - 1] != ')') {
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "invalid condition \"%V\"", &value[last]);
-        return NGX_CONF_ERROR;
-    }
-
-    if (value[last].len == 1) {
-        last--;
-
-    } else {
-        value[last].len--;
-        value[last].data[value[last].len] = '\0';
-    }
-
-    len = value[cur].len;
-    p = value[cur].data;
-
-    if (len > 1 && p[0] == '$') {
-
-        if (cur != last && cur + 2 != last) {
-            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                               "invalid condition \"%V\"", &value[cur]);
-            return NGX_CONF_ERROR;
-        }
-
-        if (ngx_http_rewrite_variable(cf, lcf, &value[cur]) != NGX_CONF_OK) {
-            return NGX_CONF_ERROR;
-        }
-
-        if (cur == last) {
-            return NGX_CONF_OK;
-        }
-
-        cur++;
-
-        len = value[cur].len;
-        p = value[cur].data;
-
-        if (len == 1 && p[0] == '=') {
-
-            if (ngx_http_rewrite_value(cf, lcf, &value[last]) != NGX_CONF_OK) {
-                return NGX_CONF_ERROR;
-            }
-
-            code = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                              sizeof(uintptr_t));
-            if (code == NULL) {
-                return NGX_CONF_ERROR;
-            }
-
-            *code = ngx_http_script_equal_code;
-
-            return NGX_CONF_OK;
-        }
-
-        if (len == 2 && p[0] == '!' && p[1] == '=') {
-
-            if (ngx_http_rewrite_value(cf, lcf, &value[last]) != NGX_CONF_OK) {
-                return NGX_CONF_ERROR;
-            }
-
-            code = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                              sizeof(uintptr_t));
-            if (code == NULL) {
-                return NGX_CONF_ERROR;
-            }
-
-            *code = ngx_http_script_not_equal_code;
-            return NGX_CONF_OK;
-        }
-
-        if ((len == 1 && p[0] == '~')
-            || (len == 2 && p[0] == '~' && p[1] == '*')
-            || (len == 2 && p[0] == '!' && p[1] == '~')
-            || (len == 3 && p[0] == '!' && p[1] == '~' && p[2] == '*'))
-        {
-            regex = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                         sizeof(ngx_http_script_regex_code_t));
-            if (regex == NULL) {
-                return NGX_CONF_ERROR;
-            }
-
-            ngx_memzero(regex, sizeof(ngx_http_script_regex_code_t));
-
-            ngx_memzero(&rc, sizeof(ngx_regex_compile_t));
-
-            rc.pattern = value[last];
-            rc.options = (p[len - 1] == '*') ? NGX_REGEX_CASELESS : 0;
-            rc.err.len = NGX_MAX_CONF_ERRSTR;
-            rc.err.data = errstr;
-
-            regex->regex = ngx_http_regex_compile(cf, &rc);
-            if (regex->regex == NULL) {
-                return NGX_CONF_ERROR;
-            }
-
-            regex->code = ngx_http_script_regex_start_code;
-            regex->next = sizeof(ngx_http_script_regex_code_t);
-            regex->test = 1;
-            if (p[0] == '!') {
-                regex->negative_test = 1;
-            }
-            regex->name = value[last];
-
-            return NGX_CONF_OK;
-        }
-
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "unexpected \"%V\" in condition", &value[cur]);
-        return NGX_CONF_ERROR;
-
-    } else if ((len == 2 && p[0] == '-')
-               || (len == 3 && p[0] == '!' && p[1] == '-'))
-    {
-        if (cur + 1 != last) {
-            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                               "invalid condition \"%V\"", &value[cur]);
-            return NGX_CONF_ERROR;
-        }
-
-        value[last].data[value[last].len] = '\0';
-        value[last].len++;
-
-        if (ngx_http_rewrite_value(cf, lcf, &value[last]) != NGX_CONF_OK) {
-            return NGX_CONF_ERROR;
-        }
-
-        fop = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                          sizeof(ngx_http_script_file_code_t));
-        if (fop == NULL) {
-            return NGX_CONF_ERROR;
-        }
-
-        fop->code = ngx_http_script_file_code;
-
-        if (p[1] == 'f') {
-            fop->op = ngx_http_script_file_plain;
-            return NGX_CONF_OK;
-        }
-
-        if (p[1] == 'd') {
-            fop->op = ngx_http_script_file_dir;
-            return NGX_CONF_OK;
-        }
-
-        if (p[1] == 'e') {
-            fop->op = ngx_http_script_file_exists;
-            return NGX_CONF_OK;
-        }
-
-        if (p[1] == 'x') {
-            fop->op = ngx_http_script_file_exec;
-            return NGX_CONF_OK;
-        }
-
-        if (p[0] == '!') {
-            if (p[2] == 'f') {
-                fop->op = ngx_http_script_file_not_plain;
-                return NGX_CONF_OK;
-            }
-
-            if (p[2] == 'd') {
-                fop->op = ngx_http_script_file_not_dir;
-                return NGX_CONF_OK;
-            }
-
-            if (p[2] == 'e') {
-                fop->op = ngx_http_script_file_not_exists;
-                return NGX_CONF_OK;
-            }
-
-            if (p[2] == 'x') {
-                fop->op = ngx_http_script_file_not_exec;
-                return NGX_CONF_OK;
-            }
-        }
-
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "invalid condition \"%V\"", &value[cur]);
-        return NGX_CONF_ERROR;
-    }
-
-    ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                       "invalid condition \"%V\"", &value[cur]);
-
-    return NGX_CONF_ERROR;
-}
-
-
-static char *
-ngx_http_rewrite_variable(ngx_conf_t *cf, ngx_http_rewrite_loc_conf_t *lcf,
-    ngx_str_t *value)
-{
-    ngx_int_t                    index;
-    ngx_http_script_var_code_t  *var_code;
-
-    value->len--;
-    value->data++;
-
-    index = ngx_http_get_variable_index(cf, value);
-
-    if (index == NGX_ERROR) {
-        return NGX_CONF_ERROR;
-    }
-
-    var_code = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                          sizeof(ngx_http_script_var_code_t));
-    if (var_code == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    var_code->code = ngx_http_script_var_code;
-    var_code->index = index;
-
-    return NGX_CONF_OK;
-}
-
-/*Syntax:	set $variable value
-1. ½«$variable¼ÓÈëµ½±äÁ¿ÏµÍ³ÖĞ£¬cmcf->variables_keys->keysºÍcmcf->variables¡£
-
-
-a. Èç¹ûvalueÊÇ¼òµ¥×Ö·û´®£¬ÄÇÃ´½âÎöÖ®ºó£¬lcf->codes¾Í»á×·¼ÓÕâÑùµÄµ½ºóÃæ: 
-	ngx_http_script_value_code  Ö±½Ó¼òµ¥×Ö·û´®Ö¸ÏòÒ»ÏÂ¾ÍĞĞ£¬¶¼²»ÓÃ¿½±´ÁË¡£
-b. Èç¹ûvalueÊÇ¸´ÔÓµÄ°üº¬±äÁ¿µÄ´®£¬ÄÇÃ´lcf->codes¾Í»á×·¼ÓÈçÏÂµÄ½øÈ¥ :
-	ngx_http_script_complex_value_code  µ÷ÓÃlengthsµÄlcode»ñÈ¡×éºÏ×Ö·û´®µÄ×Ü³¤¶È£¬²¢ÇÒÉêÇëÄÚ´æ
-		lengths
-	values£¬ÕâÀï¸ù¾İ±í´ïÊ½µÄ²»Í¬¶ø²»Í¬¡£ ·Ö±ğ½«value´ú±íµÄ¸´ÔÓ±í´ïÊ½²ğ·Ö³ÉÓï·¨µ¥Ôª£¬½øĞĞÒ»¸ö¸öÇóÖµ£¬²¢ºÏ²¢ÔÚÒ»Æğ¡£
-	ngx_http_script_set_var_code		¸ºÔğ½«ÉÏÊöºÏ²¢³öµÄ×îÖÕ½á¹ûÉèÖÃµ½variables[]Êı×éÖĞÈ¥¡£
-*/
-static char *
-ngx_http_rewrite_set(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
-{
-    ngx_http_rewrite_loc_conf_t  *lcf = conf;
-
-    ngx_int_t                            index;
-    ngx_str_t                           *value;
-    ngx_http_variable_t                 *v;
-    ngx_http_script_var_code_t          *vcode;
-    ngx_http_script_var_handler_code_t  *vhcode;
-
-    value = cf->args->elts;
-
-    if (value[1].data[0] != '$') {//±äÁ¿±ØĞëÒÔ$¿ªÍ·
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "invalid variable name \"%V\"", &value[1]);
-        return NGX_CONF_ERROR;
-    }
-
-    value[1].len--;
-    value[1].data++;
-    //ÏÂÃæ¸ù¾İÕâ¸ö±äÁ¿Ãû£¬½«Æä¼ÓÈëµ½cmcf->variables_keys->keysÀïÃæ¡£
-    v = ngx_http_add_variable(cf, &value[1], NGX_HTTP_VAR_CHANGEABLE);
-    if (v == NULL) {
-        return NGX_CONF_ERROR;
-    }
-    //½«Æä¼ÓÈëµ½cmcf->variablesÀïÃæ£¬²¢·µ»ØÆäÏÂ±ê
-    index = ngx_http_get_variable_index(cf, &value[1]);
-    if (index == NGX_ERROR) {
-        return NGX_CONF_ERROR;
-    }
-
-    //set $variable valueÖĞµÄµÚÒ»¸ö²ÎÊı$variable¶ÔÓ¦µÄÔÚÕâÀï»òÕßngx_http_variables_init_varsÉèÖÃngx_http_variable_tµÄget_handlerºÍdata³ÉÔ±
-    if (v->get_handler == NULL
-        && ngx_strncasecmp(value[1].data, (u_char *) "http_", 5) != 0
-        && ngx_strncasecmp(value[1].data, (u_char *) "sent_http_", 10) != 0
-        && ngx_strncasecmp(value[1].data, (u_char *) "upstream_http_", 14) != 0
-        && ngx_strncasecmp(value[1].data, (u_char *) "cookie_", 7) != 0
-        && ngx_strncasecmp(value[1].data, (u_char *) "upstream_cookie_", 16)
-           != 0
-        && ngx_strncasecmp(value[1].data, (u_char *) "arg_", 4) != 0)
-        //Èç¹û±äÁ¿Ãû³Æ²»ÊÇÒÔÉÏ¿ªÍ·£¬ÔòÆäget_handlerÎªngx_http_rewrite_var£¬dataÎªindex ¡£
-    {
-        //ÉèÖÃÒ»¸öÄ¬ÈÏµÄhandler¡£ÔÚngx_http_variables_init_varsÀïÃæÆäÊµÊÇ»á½«ÉÏÃæÕâĞ©"http_" "sent_http_"ÕâĞ©±äÁ¿get_hendlerµÄ
-        v->get_handler = ngx_http_rewrite_var;
-        v->data = index;
-    }
-
-/*
-    ½Å±¾ÒıÇæÊÇÒ»ÏµÁĞµÄ°¼µ÷º¯ÊıÒÔ¼°Ïà¹ØÊı¾İ£¨ËüÃÇ±»×éÖ¯³Éngx_httpscript_ xxx_codetÕâÑùµÄ½á¹¹Ìå£¬´ú±í¸÷ÖÖ²»Í¬¹¦ÄÜµÄ²Ù
-×÷²½Öè£©£¬±»±£´æÔÚ±äÁ¿lcf->codesÊı×éÄÚ£¬¶øngx_httprewrite_loc_conf_tÀàĞÍ±äÁ¿IcfÊÇÓëµ±Ç°locationÏà¹ØÁªµÄ£¬ËùÒÔÕâ¸ö½Å±¾ÒıÇæÖ»ÓĞ
-µ±¿Í»§¶ËÇëÇó·ÃÎÊµ±Ç°Õâ¸ölocationÊ±²Å»á±»Æô¶¯Ö´ĞĞ¡£ÈçÏÂÅäÖÃÖĞ£¬¡°set $file t_a;¡±¹¹½¨µÄ½Å±¾ÒıÇæÖ»ÓĞµ±¿Í»§¶ËÇëÇó·ÃÎÊ/tÈÕÂ¼Ê±²Å»á
-±»´¥·¢£¬Èç¹ûµ±¿Í»§¶ËÇëÇó·ÃÎÊ¸ùÄ¿Â¼Ê±ÔòÓëËüºÁÎŞ¹ØÏµ¡£
-       location / {
-			root web;
-        }
-       location /t {
-			set $file t_a;
-       }
-*/
-    //ngx_http_rewrite_handlerÖĞ»áÒÆ³ıÖ´ĞĞlcf->codesÊı×éÖĞµÄ¸÷¸öngx_http_script_xxx_code_t->codeº¯Êı£¬
-
-    //set $variable valueµÄvalue²ÎÊıÔÚÕâÀï´¦Àí ,
-
-    /*
-    ´ÓÏÂÃæ¿ÉÒÔ¿´³öÃ»setÒ»´Î¾Í»á´´½¨Ò»¸öngx_http_script_var_code_tºÍngx_http_script_xxx_value_code_tµ«ÊÇÈç¹ûÁ¬Ğø¶à´ÎÉèÖÃÍ¬ÑùµÄ
-    ±äÁ¿²»Í¬µÄÖµ£¬ÄÇÃ´¾Í»áÓĞ¶à¸övar_code_tºÍvalue_code_t¶Ô£¬Êµ¼ÊÉÏÔÚngx_http_rewrite_handler±äÁ¿Ö´ĞĞµÄÊ±ºò£¬ÒÔ×îºóÃæµÄÎª×¼£¬ÀıÈç:
-    50£º    location / {
-    51£º        root    web;
-    52:         set $file indexl.html;
-    53£º        index $file;
-    54£º
-    65:         set $file  index2.html;
-            }
-    ÉÏÃæµÄÀı×Ó×·×Ù·ÃÎÊµ½µÄÊÇindex2.html
-    */
-
-    /*
-    Èç¹ûset $variable valueÖĞµÄvalueÊÇÆÕÍ¨×Ö·û´®£¬ÔòÏÂÃæµÄngx_http_rewrite_value´Óngx_http_rewrite_loc_conf_t->codesÊı×éÖĞ»ñÈ¡ngx_http_script_value_code_t¿Õ¼ä£¬½ô½Ó×ÅÔÚºóÃæµÄ
-ngx_http_script_start_codeº¯ÊıÍ¬Ñù´Óngx_http_rewrite_loc_conf_t->codesÊı×éÖĞ»ñÈ¡ngx_http_script_var_code_t¿Õ¼ä£¬Òò´ËÔÚcodesÊı×éÖĞ
-´æ·Å±äÁ¿ÖµvalueµÄngx_http_script_value_code_t¿Õ¼äÓë´æ·Åvar±äÁ¿ÃûµÄngx_http_script_var_code_tÔÚ¿Õ¼äÉÏÊÇ¿¿×ÅµÄ£¬Í¼ĞÎ»¯¼û<ÉîÈëÆÊÎönginx Í¼8-4>
-
-     Èç¹ûset $variable valueÖĞµÄvalueÊÇ±äÁ¿Ãû£¬ÔòÏÂÃæµÄngx_http_rewrite_value´Óngx_http_rewrite_loc_conf_t->codesÊı×éÖĞ»ñÈ¡ngx_http_script_complex_value_code_t¿Õ¼ä£¬½ô½Ó×ÅÔÚºóÃæµÄ
- ngx_http_script_start_codeº¯ÊıÍ¬Ñù´Óngx_http_rewrite_loc_conf_t->codesÊı×éÖĞ»ñÈ¡ngx_http_script_complex_value_code_t¿Õ¼ä£¬Òò´ËÔÚcodesÊı×éÖĞ
- ´æ·Å±äÁ¿ÖµvalueµÄngx_http_script_value_code_t¿Õ¼äÓë´æ·Åvar±äÁ¿ÃûµÄngx_http_script_var_code_tÔÚ¿Õ¼äÉÏÊÇ¿¿×ÅµÄ£¬Í¼ĞÎ»¯¼û<ÉîÈëÆÊÎönginx Í¼8-4>
-     *///
-    if (ngx_http_rewrite_value(cf, lcf, &value[2]) != NGX_CONF_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    if (v->set_handler) {
-        vhcode = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                   sizeof(ngx_http_script_var_handler_code_t));
-        if (vhcode == NULL) {
-            return NGX_CONF_ERROR;
-        }
-
-        vhcode->code = ngx_http_script_var_set_handler_code;
-        vhcode->handler = v->set_handler;
-        vhcode->data = v->data;
-
-        return NGX_CONF_OK;
-    }
-
-    vcode = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                       sizeof(ngx_http_script_var_code_t));
-    if (vcode == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    vcode->code = ngx_http_script_set_var_code;
-    vcode->index = (uintptr_t) index;
-
-    return NGX_CONF_OK;
-}
-
-//set $varialbe valueÖĞ£¬ngx_http_rewrite_valueÀ´½âÎövalue
-//Í¼ĞÎ»¯²Î¿¼http://blog.csdn.net/brainkick/article/details/7065244
-static char *
-ngx_http_rewrite_value(ngx_conf_t *cf, ngx_http_rewrite_loc_conf_t *lcf,
-    ngx_str_t *value)
-{
-    ngx_int_t                              n;
-    ngx_http_script_compile_t              sc;
-    ngx_http_script_value_code_t          *val;
-    ngx_http_script_complex_value_code_t  *complex;
-
-    n = ngx_http_script_variables_count(value);
-
-    if (n == 0) {//Èç¹ûÃ»ÓĞ±äÁ¿£¬ÊÇ¸ö¼òµ¥×Ö·û´®£¬´æÈëlcf->codes,
-        val = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                         sizeof(ngx_http_script_value_code_t));
-        if (val == NULL) {
-            return NGX_CONF_ERROR;
-        }
-
-        n = ngx_atoi(value->data, value->len); //
-
-        if (n == NGX_ERROR) {
-            n = 0;
-        }
-
-        val->code = ngx_http_script_value_code; 
-        val->value = (uintptr_t) n; //Èç¹ûvalueÖĞÊÇÊı×Ö×Ö·û´®£¬ÔònÎª×Ö·û´®×ª»»ºó¶ÔÓ¦µÄÊı×Ö
-        val->text_len = (uintptr_t) value->len;
-        val->text_data = (uintptr_t) value->data;
-
-        return NGX_CONF_OK;
-    }
-
-    //´øÓĞ$µÄ±äÁ¿£¬valueÒ²ÊÇ±äÁ¿£¬Èçset $aa $bb£¬ÕâÀïµÄ$bb¾ÍÊÇ±äÁ¿£¬
-    complex = ngx_http_script_start_code(cf->pool, &lcf->codes,
-                                 sizeof(ngx_http_script_complex_value_code_t));
-    //Êµ¼ÊÉÏÈç¹ûvalueÒ²ÊÇ±äÁ¿£¬Ôò»áÔÚÕâÀïµÄngx_http_script_start_codeºÍÏÂÃæµÄngx_http_script_compileÓÃµôÁ½¸ölcf->codesÊı×é½Úµã£¬
-    //ÔÚngx_http_rewrite_handlerÖĞ»áÒÀ´ÎÖ´ĞĞÕâÁ½¸öcodesÊı×é½Úµã
-    if (complex == NULL) {
-        return NGX_CONF_ERROR;
-    }
-
-    complex->code = ngx_http_script_complex_value_code;
-    complex->lengths = NULL;
-
-    ngx_memzero(&sc, sizeof(ngx_http_script_compile_t));
-
-    sc.cf = cf;
-    sc.source = value;  
-    // lengthsºÍvaluesÊı×é»áÔÚngx_http_script_compileµÄÖ´ĞĞ¹ı³ÌÖĞ±»Ìî³ä   
-    sc.lengths = &complex->lengths; //ÔÚºóÃæµÄngx_http_script_compileÖĞ°Ñvalue½âÎöµ½
-    sc.values = &lcf->codes; 
-    //Êµ¼ÊÉÏÈç¹ûvalueÒ²ÊÇ±äÁ¿£¬Ôò»áÔÚÉÏÃæµÄngx_http_script_start_codeºÍÏÂÃæµÄngx_http_script_compileÓÃµôÁ½¸ölcf->codesÊı×é½Úµã ÔÚngx_http_rewrite_handlerÖĞ»áÒÀ´ÎÖ´ĞĞÕâÁ½¸öcodesÊı×é½Úµã
-    sc.variables = n;
-    // complete_lengthsÖÃ1£¬ÊÇÎªÁË¸ølengthsÊı×é½áÎ²(ÒÔnullÖ¸ÕëÌî³ä)£¬ÒòÎªÔÚÔËĞĞÕâ¸öÊı×éÖĞµÄ³ÉÔ±Ê±£¬Åöµ½NULLÊ±£¬Ö´ĞĞ¾Í½áÊøÁË¡£ 
-    sc.complete_lengths = 1;
-
-    //ÔÚ¸Ãº¯Êıngx_http_script_add_copy_codeÖĞ»á°Ñ´´½¨µÄÁ½¸öngx_http_script_copy_code_t¼ÓÈëµ½ÉÏÃæµÄlcf->codes[]->lengthsºÍlcf->codesÖĞ
-    if (ngx_http_script_compile(&sc) != NGX_OK) {
-        return NGX_CONF_ERROR;
-    }
-
-    return NGX_CONF_OK;
-}
-
+break 

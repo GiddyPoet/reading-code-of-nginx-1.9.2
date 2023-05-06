@@ -1,12 +1,7 @@
-#define NGX_CONFIGURE " --add-module=./src/mytest_config --add-module=./src/my_test_module --add-module=./src/mytest_subrequest --add-module=./src/mytest_upstream --add-module=./src/ngx_http_myfilter_module --with-debug --with-file-aio --add-module=./src/sendfile_test --with-threads --add-module=./src/nginx-requestkey-module-master/ --with-http_secure_link_module --add-module=./src/redis2-nginx-module-master/"
-
-#ifndef NGX_DEBUG
-#define NGX_DEBUG  1
-#endif
-
+#define NGX_CONFIGURE ""
 
 #ifndef NGX_COMPILER
-#define NGX_COMPILER  "gcc 5.4.0 (GCC) "
+#define NGX_COMPILER  "gcc 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) "
 #endif
 
 
@@ -140,11 +135,6 @@
 
 #ifndef NGX_HAVE_ACCEPT4
 #define NGX_HAVE_ACCEPT4  1
-#endif
-
-
-#ifndef NGX_HAVE_FILE_AIO
-#define NGX_HAVE_FILE_AIO  1
 #endif
 
 
@@ -295,11 +285,6 @@
 
 #ifndef NGX_HAVE_GETADDRINFO
 #define NGX_HAVE_GETADDRINFO  1
-#endif
-
-
-#ifndef NGX_THREADS
-#define NGX_THREADS  1
 #endif
 
 
@@ -459,6 +444,6 @@
 
 
 #ifndef NGX_GROUP
-#define NGX_GROUP  "nobody"
+#define NGX_GROUP  "nogroup"
 #endif
 

@@ -9,16 +9,16 @@
 #include <ngx_core.h>
 
 /*
-To quickly process static sets of data such as server names, map directive¡¯s values, MIME types, names of request header strings, nginx 
+To quickly process static sets of data such as server names, map directiveâ€™s values, MIME types, names of request header strings, nginx 
 uses hash tables. During the start and each re-configuration nginx selects the minimum possible sizes of hash tables such that the bucket 
 size that stores keys with identical hash values does not exceed the configured parameter (hash bucket size). The size of a table is 
 expressed in buckets. The adjustment is continued until the table size exceeds the hash max size parameter. Most hashes have the 
 corresponding directives that allow changing these parameters, for example, for the server names hash they are server_names_hash_max_size 
 and server_names_hash_bucket_size. 
 
-The hash bucket size parameter is aligned to the size that is a multiple of the processor¡¯s cache line size. This speeds up key search in 
-a hash on modern processors by reducing the number of memory accesses. If hash bucket size is equal to one processor¡¯s cache line size 
-then the number of memory accesses during the key search will be two in the worst case ¡ª first to compute the bucket address, and second 
+The hash bucket size parameter is aligned to the size that is a multiple of the processorâ€™s cache line size. This speeds up key search in 
+a hash on modern processors by reducing the number of memory accesses. If hash bucket size is equal to one processorâ€™s cache line size 
+then the number of memory accesses during the key search will be two in the worst case â€• first to compute the bucket address, and second 
 during the key search inside the bucket. Therefore, if nginx emits the message requesting to increase either hash max size or hash bucket 
 size then the first parameter should first be increased. 
 */
@@ -62,14 +62,14 @@ ngx_hash_find(ngx_hash_t *hash, ngx_uint_t key, u_char *name, size_t len)
 }
 
 /*
-nginxÎªÁË´¦Àí´øÓĞÍ¨Åä·ûµÄÓòÃûµÄÆ¥ÅäÎÊÌâ£¬ÊµÏÖÁËngx_hash_wildcard_tÕâÑùµÄhash±í¡£Ëû¿ÉÒÔÖ§³ÖÁ½ÖÖÀàĞÍµÄ´øÓĞÍ¨Åä·ûµÄÓòÃû¡£Ò»ÖÖÊÇÍ¨Åä·ûÔÚÇ°µÄ£¬
-ÀıÈç£º¡°*.abc.com¡±£¬Ò²¿ÉÒÔÊ¡ÂÔµôĞÇºÅ£¬Ö±½ÓĞ´³É¡±.abc.com¡±¡£ÕâÑùµÄkey£¬¿ÉÒÔÆ¥Åäwww.abc.com£¬qqq.www.abc.comÖ®ÀàµÄ¡£ÁíÍâÒ»ÖÖÊÇÍ¨Åä·ûÔÚÄ©
-Î²µÄ£¬ÀıÈç£º¡°mail.xxx.*¡±£¬ÇëÌØ±ğ×¢ÒâÍ¨Åä·ûÔÚÄ©Î²µÄ²»ÏñÎ»ÓÚ¿ªÊ¼µÄÍ¨Åä·û¿ÉÒÔ±»Ê¡ÂÔµô¡£ÕâÑùµÄÍ¨Åä·û£¬¿ÉÒÔÆ¥Åämail.xxx.com¡¢mail.xxx.com.cn¡¢
-mail.xxx.netÖ®ÀàµÄÓòÃû¡£
+nginxä¸ºäº†å¤„ç†å¸¦æœ‰é€šé…ç¬¦çš„åŸŸåçš„åŒ¹é…é—®é¢˜ï¼Œå®ç°äº†ngx_hash_wildcard_tè¿™æ ·çš„hashè¡¨ã€‚ä»–å¯ä»¥æ”¯æŒä¸¤ç§ç±»å‹çš„å¸¦æœ‰é€šé…ç¬¦çš„åŸŸåã€‚ä¸€ç§æ˜¯é€šé…ç¬¦åœ¨å‰çš„ï¼Œ
+ä¾‹å¦‚ï¼šâ€œ*.abc.comâ€ï¼Œä¹Ÿå¯ä»¥çœç•¥æ‰æ˜Ÿå·ï¼Œç›´æ¥å†™æˆâ€.abc.comâ€ã€‚è¿™æ ·çš„keyï¼Œå¯ä»¥åŒ¹é…www.abc.comï¼Œqqq.www.abc.comä¹‹ç±»çš„ã€‚å¦å¤–ä¸€ç§æ˜¯é€šé…ç¬¦åœ¨æœ«
+å°¾çš„ï¼Œä¾‹å¦‚ï¼šâ€œmail.xxx.*â€ï¼Œè¯·ç‰¹åˆ«æ³¨æ„é€šé…ç¬¦åœ¨æœ«å°¾çš„ä¸åƒä½äºå¼€å§‹çš„é€šé…ç¬¦å¯ä»¥è¢«çœç•¥æ‰ã€‚è¿™æ ·çš„é€šé…ç¬¦ï¼Œå¯ä»¥åŒ¹é…mail.xxx.comã€mail.xxx.com.cnã€
+mail.xxx.netä¹‹ç±»çš„åŸŸåã€‚
 
-ÓĞÒ»µã±ØĞëËµÃ÷£¬¾ÍÊÇÒ»¸öngx_hash_wildcard_tÀàĞÍµÄhash±íÖ»ÄÜ°üº¬Í¨Åä·ûÔÚÇ°µÄkey»òÕßÊÇÍ¨Åä·ûÔÚºóµÄkey¡£²»ÄÜÍ¬Ê±°üº¬Á½ÖÖÀàĞÍµÄÍ¨Åä·û
-µÄkey¡£ngx_hash_wildcard_tÀàĞÍ±äÁ¿µÄ¹¹½¨ÊÇÍ¨¹ıº¯Êıngx_hash_wildcard_initÍê³ÉµÄ£¬¶ø²éÑ¯ÊÇÍ¨¹ıº¯Êıngx_hash_find_wc_head»òÕß
-ngx_hash_find_wc_tailÀ´×öµÄ¡£ngx_hash_find_wc_headÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚÇ°µÄkeyµÄhash±íµÄ£¬¶øngx_hash_find_wc_tailÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚºóµÄkeyµÄhash±íµÄ¡£
+æœ‰ä¸€ç‚¹å¿…é¡»è¯´æ˜ï¼Œå°±æ˜¯ä¸€ä¸ªngx_hash_wildcard_tç±»å‹çš„hashè¡¨åªèƒ½åŒ…å«é€šé…ç¬¦åœ¨å‰çš„keyæˆ–è€…æ˜¯é€šé…ç¬¦åœ¨åçš„keyã€‚ä¸èƒ½åŒæ—¶åŒ…å«ä¸¤ç§ç±»å‹çš„é€šé…ç¬¦
+çš„keyã€‚ngx_hash_wildcard_tç±»å‹å˜é‡çš„æ„å»ºæ˜¯é€šè¿‡å‡½æ•°ngx_hash_wildcard_initå®Œæˆçš„ï¼Œè€ŒæŸ¥è¯¢æ˜¯é€šè¿‡å‡½æ•°ngx_hash_find_wc_headæˆ–è€…
+ngx_hash_find_wc_tailæ¥åšçš„ã€‚ngx_hash_find_wc_headæ˜¯æŸ¥è¯¢åŒ…å«é€šé…ç¬¦åœ¨å‰çš„keyçš„hashè¡¨çš„ï¼Œè€Œngx_hash_find_wc_tailæ˜¯æŸ¥è¯¢åŒ…å«é€šé…ç¬¦åœ¨åçš„keyçš„hashè¡¨çš„ã€‚
 */
 void *
 ngx_hash_find_wc_head(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
@@ -83,8 +83,8 @@ ngx_hash_find_wc_head(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
 
     n = len;
     
-    //´ÓºóÍùÇ°ËÑË÷µÚÒ»¸ödot£¬Ôòn µ½ len-1 ¼´Îª¹Ø¼ü×ÖÖĞ×îºóÒ»¸ö ×Ó¹Ø¼ü×Ö
-    while (n) { //nameÖĞ×îºóÃæµÄ×Ö·û´®£¬Èç AA.BB.CC.DD£¬ÔòÕâÀï»ñÈ¡µ½µÄ¾ÍÊÇDD
+    //ä»åå¾€å‰æœç´¢ç¬¬ä¸€ä¸ªdotï¼Œåˆ™n åˆ° len-1 å³ä¸ºå…³é”®å­—ä¸­æœ€åä¸€ä¸ª å­å…³é”®å­—
+    while (n) { //nameä¸­æœ€åé¢çš„å­—ç¬¦ä¸²ï¼Œå¦‚ AA.BB.CC.DDï¼Œåˆ™è¿™é‡Œè·å–åˆ°çš„å°±æ˜¯DD
         if (name[n - 1] == '.') {
             break;
         }
@@ -94,7 +94,7 @@ ngx_hash_find_wc_head(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
 
     key = 0;
     
-    //n µ½ len-1 ¼´Îª¹Ø¼ü×ÖÖĞ×îºóÒ»¸ö ×Ó¹Ø¼ü×Ö£¬¼ÆËãÆähashÖµ
+    //n åˆ° len-1 å³ä¸ºå…³é”®å­—ä¸­æœ€åä¸€ä¸ª å­å…³é”®å­—ï¼Œè®¡ç®—å…¶hashå€¼
     for (i = n; i < len; i++) {
         key = ngx_hash(key, name[i]);
     }
@@ -103,7 +103,7 @@ ngx_hash_find_wc_head(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
     ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0, "key:\"%ui\"", key);
 #endif
 
-    //µ÷ÓÃÆÕÍ¨²éÕÒÕÒµ½¹Ø¼ü×ÖµÄvalue£¨ÓÃ»§×Ô¶¨ÒåÊı¾İÖ¸Õë£©
+    //è°ƒç”¨æ™®é€šæŸ¥æ‰¾æ‰¾åˆ°å…³é”®å­—çš„valueï¼ˆç”¨æˆ·è‡ªå®šä¹‰æ•°æ®æŒ‡é’ˆï¼‰
     value = ngx_hash_find(&hwc->hash, key, &name[n], len - n);
 
 #if 0
@@ -125,84 +125,84 @@ ngx_hash_find_wc_head(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
 
         if ((uintptr_t) value & 2) {
 
-            if (n == 0) { //ËÑË÷µ½ÁË×îºóÒ»¸ö×Ó¹Ø¼ü×ÖÇÒÃ»ÓĞÍ¨Åä·û£¬Èç"example.com"µÄexample
+            if (n == 0) { //æœç´¢åˆ°äº†æœ€åä¸€ä¸ªå­å…³é”®å­—ä¸”æ²¡æœ‰é€šé…ç¬¦ï¼Œå¦‚"example.com"çš„example
 
                 /* "example.com" */
 
-                if ((uintptr_t) value & 1) {//valueµÍÁ½Î»Îª11£¬½öÎª"*.example.com"µÄÖ¸Õë£¬ÕâÀïÃ»ÓĞÍ¨Åä·û£¬Ã»ÕĞµ½£¬·µ»ØNULL
+                if ((uintptr_t) value & 1) {//valueä½ä¸¤ä½ä¸º11ï¼Œä»…ä¸º"*.example.com"çš„æŒ‡é’ˆï¼Œè¿™é‡Œæ²¡æœ‰é€šé…ç¬¦ï¼Œæ²¡æ‹›åˆ°ï¼Œè¿”å›NULL
                     return NULL;
                 }
-             //valueµÍÁ½Î»Îª10£¬Îª"example.com"µÄÖ¸Õë£¬value¾ÍÔÚÏÂÒ»¼¶µÄngx_hash_wildcard_t µÄvalueÖĞ£¬È¥µôĞ¯´øµÄµÍ2Î»11    ²Î¿¼ngx_hash_wildcard_init
+             //valueä½ä¸¤ä½ä¸º10ï¼Œä¸º"example.com"çš„æŒ‡é’ˆï¼Œvalueå°±åœ¨ä¸‹ä¸€çº§çš„ngx_hash_wildcard_t çš„valueä¸­ï¼Œå»æ‰æºå¸¦çš„ä½2ä½11    å‚è€ƒngx_hash_wildcard_init
                 hwc = (ngx_hash_wildcard_t *)
                                           ((uintptr_t) value & (uintptr_t) ~3);
                 return hwc->value;
             }
 
-            //»¹Î´ËÑË÷Íê£¬µÍÁ½Î»Îª11»ò10£¬¼ÌĞøÈ¥ÏÂ¼¶ngx_hash_wildcard_tÖĞËÑË÷
-            hwc = (ngx_hash_wildcard_t *) ((uintptr_t) value & (uintptr_t) ~3); //°Ñ×îµÍµÄÁ½¸öµØÖ·ÎªÇå0»¹»ØÈ¥£¬²Î¿¼ngx_hash_wildcard_init
+            //è¿˜æœªæœç´¢å®Œï¼Œä½ä¸¤ä½ä¸º11æˆ–10ï¼Œç»§ç»­å»ä¸‹çº§ngx_hash_wildcard_tä¸­æœç´¢
+            hwc = (ngx_hash_wildcard_t *) ((uintptr_t) value & (uintptr_t) ~3); //æŠŠæœ€ä½çš„ä¸¤ä¸ªåœ°å€ä¸ºæ¸…0è¿˜å›å»ï¼Œå‚è€ƒngx_hash_wildcard_init
 
-            //¼ÌĞøËÑË÷ ¹Ø¼ü×ÖÖĞÊ£Óà²¿·Ö£¬Èç"example.com"£¬ËÑË÷ 0 µ½ n -1 ¼´Îª example
+            //ç»§ç»­æœç´¢ å…³é”®å­—ä¸­å‰©ä½™éƒ¨åˆ†ï¼Œå¦‚"example.com"ï¼Œæœç´¢ 0 åˆ° n -1 å³ä¸º example
             value = ngx_hash_find_wc_head(hwc, name, n - 1);
 
-            if (value) {//ÈôÕÒµ½£¬Ôò·µ»Ø
+            if (value) {//è‹¥æ‰¾åˆ°ï¼Œåˆ™è¿”å›
                 return value;
             }
 
-            return hwc->value; //µÍÁ½Î»Îª00 ÕÒµ½£¬¼´Îªwc->value
+            return hwc->value; //ä½ä¸¤ä½ä¸º00 æ‰¾åˆ°ï¼Œå³ä¸ºwc->value
         }
 
-        if ((uintptr_t) value & 1) { //µÍÁ½Î»Îª01
+        if ((uintptr_t) value & 1) { //ä½ä¸¤ä½ä¸º01
 
-            if (n == 0) { //¹Ø¼ü×ÖÃ»ÓĞÍ¨Åä·û£¬´íÎó·µ»Ø¿Õ
+            if (n == 0) { //å…³é”®å­—æ²¡æœ‰é€šé…ç¬¦ï¼Œé”™è¯¯è¿”å›ç©º
 
                 /* "example.com" */
 
                 return NULL;
             }
 
-            return (void *) ((uintptr_t) value & (uintptr_t) ~3);//ÓĞÍ¨Åä·û£¬Ö±½Ó·µ»Ø
+            return (void *) ((uintptr_t) value & (uintptr_t) ~3);//æœ‰é€šé…ç¬¦ï¼Œç›´æ¥è¿”å›
         }
 
-        return value; //µÍÁ½Î»Îª00£¬Ö±½Ó·µ»Ø
+        return value; //ä½ä¸¤ä½ä¸º00ï¼Œç›´æ¥è¿”å›
     }
 
     return hwc->value;
 }
 
 /*
-nginxÎªÁË´¦Àí´øÓĞÍ¨Åä·ûµÄÓòÃûµÄÆ¥ÅäÎÊÌâ£¬ÊµÏÖÁËngx_hash_wildcard_tÕâÑùµÄhash±í¡£Ëû¿ÉÒÔÖ§³ÖÁ½ÖÖÀàĞÍµÄ´øÓĞÍ¨Åä·ûµÄÓòÃû¡£Ò»ÖÖÊÇÍ¨Åä·ûÔÚÇ°µÄ£¬
-ÀıÈç£º¡°*.abc.com¡±£¬Ò²¿ÉÒÔÊ¡ÂÔµôĞÇºÅ£¬Ö±½ÓĞ´³É¡±.abc.com¡±¡£ÕâÑùµÄkey£¬¿ÉÒÔÆ¥Åäwww.abc.com£¬qqq.www.abc.comÖ®ÀàµÄ¡£ÁíÍâÒ»ÖÖÊÇÍ¨Åä·ûÔÚÄ©
-Î²µÄ£¬ÀıÈç£º¡°mail.xxx.*¡±£¬ÇëÌØ±ğ×¢ÒâÍ¨Åä·ûÔÚÄ©Î²µÄ²»ÏñÎ»ÓÚ¿ªÊ¼µÄÍ¨Åä·û¿ÉÒÔ±»Ê¡ÂÔµô¡£ÕâÑùµÄÍ¨Åä·û£¬¿ÉÒÔÆ¥Åämail.xxx.com¡¢mail.xxx.com.cn¡¢
-mail.xxx.netÖ®ÀàµÄÓòÃû¡£
+nginxä¸ºäº†å¤„ç†å¸¦æœ‰é€šé…ç¬¦çš„åŸŸåçš„åŒ¹é…é—®é¢˜ï¼Œå®ç°äº†ngx_hash_wildcard_tè¿™æ ·çš„hashè¡¨ã€‚ä»–å¯ä»¥æ”¯æŒä¸¤ç§ç±»å‹çš„å¸¦æœ‰é€šé…ç¬¦çš„åŸŸåã€‚ä¸€ç§æ˜¯é€šé…ç¬¦åœ¨å‰çš„ï¼Œ
+ä¾‹å¦‚ï¼šâ€œ*.abc.comâ€ï¼Œä¹Ÿå¯ä»¥çœç•¥æ‰æ˜Ÿå·ï¼Œç›´æ¥å†™æˆâ€.abc.comâ€ã€‚è¿™æ ·çš„keyï¼Œå¯ä»¥åŒ¹é…www.abc.comï¼Œqqq.www.abc.comä¹‹ç±»çš„ã€‚å¦å¤–ä¸€ç§æ˜¯é€šé…ç¬¦åœ¨æœ«
+å°¾çš„ï¼Œä¾‹å¦‚ï¼šâ€œmail.xxx.*â€ï¼Œè¯·ç‰¹åˆ«æ³¨æ„é€šé…ç¬¦åœ¨æœ«å°¾çš„ä¸åƒä½äºå¼€å§‹çš„é€šé…ç¬¦å¯ä»¥è¢«çœç•¥æ‰ã€‚è¿™æ ·çš„é€šé…ç¬¦ï¼Œå¯ä»¥åŒ¹é…mail.xxx.comã€mail.xxx.com.cnã€
+mail.xxx.netä¹‹ç±»çš„åŸŸåã€‚
 
-ÓĞÒ»µã±ØĞëËµÃ÷£¬¾ÍÊÇÒ»¸öngx_hash_wildcard_tÀàĞÍµÄhash±íÖ»ÄÜ°üº¬Í¨Åä·ûÔÚÇ°µÄkey»òÕßÊÇÍ¨Åä·ûÔÚºóµÄkey¡£²»ÄÜÍ¬Ê±°üº¬Á½ÖÖÀàĞÍµÄÍ¨Åä·û
-µÄkey¡£ngx_hash_wildcard_tÀàĞÍ±äÁ¿µÄ¹¹½¨ÊÇÍ¨¹ıº¯Êıngx_hash_wildcard_initÍê³ÉµÄ£¬¶ø²éÑ¯ÊÇÍ¨¹ıº¯Êıngx_hash_find_wc_head»òÕß
-ngx_hash_find_wc_tailÀ´×öµÄ¡£ngx_hash_find_wc_headÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚÇ°µÄkeyµÄhash±íµÄ£¬¶øngx_hash_find_wc_tailÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚºóµÄkeyµÄhash±íµÄ¡£
+æœ‰ä¸€ç‚¹å¿…é¡»è¯´æ˜ï¼Œå°±æ˜¯ä¸€ä¸ªngx_hash_wildcard_tç±»å‹çš„hashè¡¨åªèƒ½åŒ…å«é€šé…ç¬¦åœ¨å‰çš„keyæˆ–è€…æ˜¯é€šé…ç¬¦åœ¨åçš„keyã€‚ä¸èƒ½åŒæ—¶åŒ…å«ä¸¤ç§ç±»å‹çš„é€šé…ç¬¦
+çš„keyã€‚ngx_hash_wildcard_tç±»å‹å˜é‡çš„æ„å»ºæ˜¯é€šè¿‡å‡½æ•°ngx_hash_wildcard_initå®Œæˆçš„ï¼Œè€ŒæŸ¥è¯¢æ˜¯é€šè¿‡å‡½æ•°ngx_hash_find_wc_headæˆ–è€…
+ngx_hash_find_wc_tailæ¥åšçš„ã€‚ngx_hash_find_wc_headæ˜¯æŸ¥è¯¢åŒ…å«é€šé…ç¬¦åœ¨å‰çš„keyçš„hashè¡¨çš„ï¼Œè€Œngx_hash_find_wc_tailæ˜¯æŸ¥è¯¢åŒ…å«é€šé…ç¬¦åœ¨åçš„keyçš„hashè¡¨çš„ã€‚
 
-hinit: ¹¹ÔìÒ»¸öÍ¨Åä·ûhash±íµÄÒ»Ğ©²ÎÊıµÄÒ»¸ö¼¯ºÏ¡£¹ØÓÚ¸Ã²ÎÊı¶ÔÓ¦µÄÀàĞÍµÄËµÃ÷£¬Çë²Î¼ûngx_hash_tÀàĞÍÖĞngx_hash_initº¯ÊıµÄËµÃ÷¡£ 
+hinit: æ„é€ ä¸€ä¸ªé€šé…ç¬¦hashè¡¨çš„ä¸€äº›å‚æ•°çš„ä¸€ä¸ªé›†åˆã€‚å…³äºè¯¥å‚æ•°å¯¹åº”çš„ç±»å‹çš„è¯´æ˜ï¼Œè¯·å‚è§ngx_hash_tç±»å‹ä¸­ngx_hash_initå‡½æ•°çš„è¯´æ˜ã€‚ 
 
-names: ¹¹Ôì´Ëhash±íµÄËùÓĞµÄÍ¨Åä·ûkeyµÄÊı×é¡£ÌØ±ğÒª×¢ÒâµÄÊÇÕâÀïµÄkeyÒÑ¾­¶¼ÊÇ±»Ô¤´¦Àí¹ıµÄ¡£ÀıÈç£º¡°*.abc.com¡±»òÕß¡°.abc.com¡±
-±»Ô¤´¦ÀíÍê³ÉÒÔºó£¬±ä³ÉÁË¡°com.abc.¡±¡£¶ø¡°mail.xxx.*¡±Ôò±»Ô¤´¦ÀíÎª¡°mail.xxx.¡±¡£ÎªÊ²Ã´»á±»´¦ÀíÕâÑù£¿ÕâÀï²»µÃ²»¼òµ¥µØÃèÊöÒ»ÏÂ
-Í¨Åä·ûhash±íµÄÊµÏÖÔ­Àí¡£µ±¹¹Ôì´ËÀàĞÍµÄhash±íµÄÊ±ºò£¬Êµ¼ÊÉÏÊÇ¹¹ÔìÁËÒ»¸öhash±íµÄÒ»¸ö¡°Á´±í¡±£¬ÊÇÍ¨¹ıhash±íÖĞµÄkey¡°Á´½Ó¡±ÆğÀ´µÄ¡£
-±ÈÈç£º¶ÔÓÚ¡°*.abc.com¡±½«»á¹¹Ôì³ö2¸öhash±í£¬µÚÒ»¸öhash±íÖĞÓĞÒ»¸ökeyÎªcomµÄ±íÏî£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸ÏòµÚ¶ş¸öhash±íµÄÖ¸Õë£¬
-¶øµÚ¶ş¸öhash±íÖĞÓĞÒ»¸ö±íÏîabc£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸Ïò*.abc.com¶ÔÓ¦µÄvalueµÄÖ¸Õë¡£ÄÇÃ´²éÑ¯µÄÊ±ºò£¬±ÈÈç²éÑ¯www.abc.comµÄÊ±ºò£¬
-ÏÈ²écom£¬Í¨¹ı²écom¿ÉÒÔÕÒµ½µÚ¶ş¼¶µÄhash±í£¬ÔÚµÚ¶ş¼¶hash±íÖĞ£¬ÔÙ²éÕÒabc£¬ÒÀ´ÎÀàÍÆ£¬Ö±µ½ÔÚÄ³Ò»¼¶µÄhash±íÖĞ²éµ½µÄ±íÏî¶ÔÓ¦µÄvalue¶Ô
-Ó¦Ò»¸öÕæÕıµÄÖµ¶ø·ÇÒ»¸öÖ¸ÏòÏÂÒ»¼¶hash±íµÄÖ¸ÕëµÄÊ±ºò£¬²éÑ¯¹ı³Ì½áÊø¡£ÕâÀïÓĞÒ»µãĞèÒªÌØ±ğ×¢ÒâµÄ£¬¾ÍÊÇnamesÊı×éÖĞÔªËØµÄvalueËù¶ÔÓ¦µÄ
-Öµ£¨Ò²¾ÍÊÇÕæÕıµÄvalueËùÔÚµÄµØÖ·£©±ØĞëÊÇÄÜ±»4Õû³ıµÄ£¬»òÕßËµÊÇÔÚ4µÄ±¶ÊıµÄµØÖ·ÉÏÊÇ¶ÔÆëµÄ¡£ÒòÎªÕâ¸övalueµÄÖµµÄµÍÁ½Î»bitÊÇÓĞÓÃµÄ£¬
-ËùÒÔ±ØĞëÎª0¡£Èç¹û²»Âú×ãÕâ¸öÌõ¼ş£¬Õâ¸öhash±í²éÑ¯²»³öÕıÈ·½á¹û¡£ 
+names: æ„é€ æ­¤hashè¡¨çš„æ‰€æœ‰çš„é€šé…ç¬¦keyçš„æ•°ç»„ã€‚ç‰¹åˆ«è¦æ³¨æ„çš„æ˜¯è¿™é‡Œçš„keyå·²ç»éƒ½æ˜¯è¢«é¢„å¤„ç†è¿‡çš„ã€‚ä¾‹å¦‚ï¼šâ€œ*.abc.comâ€æˆ–è€…â€œ.abc.comâ€
+è¢«é¢„å¤„ç†å®Œæˆä»¥åï¼Œå˜æˆäº†â€œcom.abc.â€ã€‚è€Œâ€œmail.xxx.*â€åˆ™è¢«é¢„å¤„ç†ä¸ºâ€œmail.xxx.â€ã€‚ä¸ºä»€ä¹ˆä¼šè¢«å¤„ç†è¿™æ ·ï¼Ÿè¿™é‡Œä¸å¾—ä¸ç®€å•åœ°æè¿°ä¸€ä¸‹
+é€šé…ç¬¦hashè¡¨çš„å®ç°åŸç†ã€‚å½“æ„é€ æ­¤ç±»å‹çš„hashè¡¨çš„æ—¶å€™ï¼Œå®é™…ä¸Šæ˜¯æ„é€ äº†ä¸€ä¸ªhashè¡¨çš„ä¸€ä¸ªâ€œé“¾è¡¨â€ï¼Œæ˜¯é€šè¿‡hashè¡¨ä¸­çš„keyâ€œé“¾æ¥â€èµ·æ¥çš„ã€‚
+æ¯”å¦‚ï¼šå¯¹äºâ€œ*.abc.comâ€å°†ä¼šæ„é€ å‡º2ä¸ªhashè¡¨ï¼Œç¬¬ä¸€ä¸ªhashè¡¨ä¸­æœ‰ä¸€ä¸ªkeyä¸ºcomçš„è¡¨é¡¹ï¼Œè¯¥è¡¨é¡¹çš„valueåŒ…å«æœ‰æŒ‡å‘ç¬¬äºŒä¸ªhashè¡¨çš„æŒ‡é’ˆï¼Œ
+è€Œç¬¬äºŒä¸ªhashè¡¨ä¸­æœ‰ä¸€ä¸ªè¡¨é¡¹abcï¼Œè¯¥è¡¨é¡¹çš„valueåŒ…å«æœ‰æŒ‡å‘*.abc.comå¯¹åº”çš„valueçš„æŒ‡é’ˆã€‚é‚£ä¹ˆæŸ¥è¯¢çš„æ—¶å€™ï¼Œæ¯”å¦‚æŸ¥è¯¢www.abc.comçš„æ—¶å€™ï¼Œ
+å…ˆæŸ¥comï¼Œé€šè¿‡æŸ¥comå¯ä»¥æ‰¾åˆ°ç¬¬äºŒçº§çš„hashè¡¨ï¼Œåœ¨ç¬¬äºŒçº§hashè¡¨ä¸­ï¼Œå†æŸ¥æ‰¾abcï¼Œä¾æ¬¡ç±»æ¨ï¼Œç›´åˆ°åœ¨æŸä¸€çº§çš„hashè¡¨ä¸­æŸ¥åˆ°çš„è¡¨é¡¹å¯¹åº”çš„valueå¯¹
+åº”ä¸€ä¸ªçœŸæ­£çš„å€¼è€Œéä¸€ä¸ªæŒ‡å‘ä¸‹ä¸€çº§hashè¡¨çš„æŒ‡é’ˆçš„æ—¶å€™ï¼ŒæŸ¥è¯¢è¿‡ç¨‹ç»“æŸã€‚è¿™é‡Œæœ‰ä¸€ç‚¹éœ€è¦ç‰¹åˆ«æ³¨æ„çš„ï¼Œå°±æ˜¯namesæ•°ç»„ä¸­å…ƒç´ çš„valueæ‰€å¯¹åº”çš„
+å€¼ï¼ˆä¹Ÿå°±æ˜¯çœŸæ­£çš„valueæ‰€åœ¨çš„åœ°å€ï¼‰å¿…é¡»æ˜¯èƒ½è¢«4æ•´é™¤çš„ï¼Œæˆ–è€…è¯´æ˜¯åœ¨4çš„å€æ•°çš„åœ°å€ä¸Šæ˜¯å¯¹é½çš„ã€‚å› ä¸ºè¿™ä¸ªvalueçš„å€¼çš„ä½ä¸¤ä½bitæ˜¯æœ‰ç”¨çš„ï¼Œ
+æ‰€ä»¥å¿…é¡»ä¸º0ã€‚å¦‚æœä¸æ»¡è¶³è¿™ä¸ªæ¡ä»¶ï¼Œè¿™ä¸ªhashè¡¨æŸ¥è¯¢ä¸å‡ºæ­£ç¡®ç»“æœã€‚ 
 
-nelts: namesÊı×éÔªËØµÄ¸öÊı¡£ 
+nelts: namesæ•°ç»„å…ƒç´ çš„ä¸ªæ•°ã€‚ 
 
 */
 /* 
-@hwc  ±íÊ¾Ö§³ÖÍ¨Åä·ûµÄ¹şÏ£±íµÄ½á¹¹Ìå   
-@name ±íÊ¾Êµ¼Ê¹Ø¼ü×ÖµØÖ·  
-@len  ±íÊ¾Êµ¼Ê¹Ø¼ü×Ö³¤¶È   
+@hwc  è¡¨ç¤ºæ”¯æŒé€šé…ç¬¦çš„å“ˆå¸Œè¡¨çš„ç»“æ„ä½“   
+@name è¡¨ç¤ºå®é™…å…³é”®å­—åœ°å€  
+@len  è¡¨ç¤ºå®é™…å…³é”®å­—é•¿åº¦   
 
-ngx_hash_find_wc_tailÓëÇ°ÖÃÍ¨Åä·û²éÕÒ²î²»¶à£¬ÕâÀïvalueµÍÁ½Î»½öÓĞÁ½ÖÖ±êÖ¾£¬¸ü¼Ó¼òµ¥£º
+ngx_hash_find_wc_tailä¸å‰ç½®é€šé…ç¬¦æŸ¥æ‰¾å·®ä¸å¤šï¼Œè¿™é‡Œvalueä½ä¸¤ä½ä»…æœ‰ä¸¤ç§æ ‡å¿—ï¼Œæ›´åŠ ç®€å•ï¼š
 
-00 - value ÊÇÖ¸Ïò ÓÃ»§×Ô¶¨ÒåÊı¾İ
-11 - valueµÄÖ¸ÏòÏÂÒ»¸ö¹şÏ£±í 
+00 - value æ˜¯æŒ‡å‘ ç”¨æˆ·è‡ªå®šä¹‰æ•°æ®
+11 - valueçš„æŒ‡å‘ä¸‹ä¸€ä¸ªå“ˆå¸Œè¡¨ 
 */
 void *
 ngx_hash_find_wc_tail(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
@@ -216,16 +216,16 @@ ngx_hash_find_wc_tail(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
 
     key = 0;
 
-    //´ÓÇ°ÍùºóËÑË÷µÚÒ»¸ödot£¬Ôò0 µ½ i ¼´Îª¹Ø¼ü×ÖÖĞµÚÒ»¸ö ×Ó¹Ø¼ü×Ö
+    //ä»å‰å¾€åæœç´¢ç¬¬ä¸€ä¸ªdotï¼Œåˆ™0 åˆ° i å³ä¸ºå…³é”®å­—ä¸­ç¬¬ä¸€ä¸ª å­å…³é”®å­—
     for (i = 0; i < len; i++) {
         if (name[i] == '.') {
             break;
         }
 
-        key = ngx_hash(key, name[i]); //¼ÆËã¹şÏ£Öµ
+        key = ngx_hash(key, name[i]); //è®¡ç®—å“ˆå¸Œå€¼
     }
 
-    if (i == len) {  //Ã»ÓĞÍ¨Åä·û£¬·µ»ØNULL
+    if (i == len) {  //æ²¡æœ‰é€šé…ç¬¦ï¼Œè¿”å›NULL
         return NULL;
     }
 
@@ -233,16 +233,16 @@ ngx_hash_find_wc_tail(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
     ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0, "key:\"%ui\"", key);
 #endif
 
-    value = ngx_hash_find(&hwc->hash, key, name, i); //µ÷ÓÃÆÕÍ¨²éÕÒÕÒµ½¹Ø¼ü×ÖµÄvalue£¨ÓÃ»§×Ô¶¨ÒåÊı¾İÖ¸Õë£©
+    value = ngx_hash_find(&hwc->hash, key, name, i); //è°ƒç”¨æ™®é€šæŸ¥æ‰¾æ‰¾åˆ°å…³é”®å­—çš„valueï¼ˆç”¨æˆ·è‡ªå®šä¹‰æ•°æ®æŒ‡é’ˆï¼‰
 
 #if 0
     ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0, "value:\"%p\"", value);
 #endif
 
     /*
-    »¹¼ÇµÃÉÏ½ÚÔÚngx_hash_wildcard_initÖĞ£¬ÓÃvalueÖ¸ÕëµÍ2Î»À´Ğ¯´øĞÅÏ¢Âğ£¿ÆäÊÇÓĞÌØÊâÒâÒåµÄ£¬ÈçÏÂ£º  
-    * 00 - value ÊÇÊı¾İÖ¸Õë   
-    * 11 - valueµÄÖ¸ÏòÏÂÒ»¸ö¹şÏ£±í   
+    è¿˜è®°å¾—ä¸ŠèŠ‚åœ¨ngx_hash_wildcard_initä¸­ï¼Œç”¨valueæŒ‡é’ˆä½2ä½æ¥æºå¸¦ä¿¡æ¯å—ï¼Ÿå…¶æ˜¯æœ‰ç‰¹æ®Šæ„ä¹‰çš„ï¼Œå¦‚ä¸‹ï¼š  
+    * 00 - value æ˜¯æ•°æ®æŒ‡é’ˆ   
+    * 11 - valueçš„æŒ‡å‘ä¸‹ä¸€ä¸ªå“ˆå¸Œè¡¨   
     */
     if (value) {
 
@@ -252,7 +252,7 @@ ngx_hash_find_wc_tail(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
          *     11 - value is pointer to wildcard hash allowing "example.*".
          */
 
-        if ((uintptr_t) value & 2) {//µÍ2Î»Îª11£¬valueµÄÖ¸ÏòÏÂÒ»¸ö¹şÏ£±í£¬µİ¹éËÑË÷
+        if ((uintptr_t) value & 2) {//ä½2ä½ä¸º11ï¼Œvalueçš„æŒ‡å‘ä¸‹ä¸€ä¸ªå“ˆå¸Œè¡¨ï¼Œé€’å½’æœç´¢
 
             i++;
 
@@ -260,27 +260,27 @@ ngx_hash_find_wc_tail(ngx_hash_wildcard_t *hwc, u_char *name, size_t len)
 
             value = ngx_hash_find_wc_tail(hwc, &name[i], len - i);
 
-            if (value) { //ÕÒµ½µÍÁ½Î»00£¬·µ»Ø
+            if (value) { //æ‰¾åˆ°ä½ä¸¤ä½00ï¼Œè¿”å›
                 return value;
             }
 
-            return hwc->value; //ÕÒ´òµÍÁ½Î»11£¬·µ»Øhwc->value
+            return hwc->value; //æ‰¾æ‰“ä½ä¸¤ä½11ï¼Œè¿”å›hwc->value
         }
 
         return value;
     }
 
-    return hwc->value; //µÍ2Î»Îª00£¬Ö±½Ó·µ»ØÊı¾İ
+    return hwc->value; //ä½2ä½ä¸º00ï¼Œç›´æ¥è¿”å›æ•°æ®
 }
 
-//´Óhash±íÖĞ²éÕÒ¶ÔÓ¦µÄkey - name
+//ä»hashè¡¨ä¸­æŸ¥æ‰¾å¯¹åº”çš„key - name
 void *
 ngx_hash_find_combined(ngx_hash_combined_t *hash, ngx_uint_t key, u_char *name,
     size_t len)
 {
     void  *value;
 
-    if (hash->hash.buckets) {  //ÔÚÆÕÍ¨hash±íÖĞ²éÕÒ
+    if (hash->hash.buckets) {  //åœ¨æ™®é€šhashè¡¨ä¸­æŸ¥æ‰¾
         value = ngx_hash_find(&hash->hash, key, name, len);
 
         if (value) {
@@ -292,7 +292,7 @@ ngx_hash_find_combined(ngx_hash_combined_t *hash, ngx_uint_t key, u_char *name,
         return NULL;
     }
 
-    if (hash->wc_head && hash->wc_head->hash.buckets) { //ÔÚÇ°ÖÃÍ¨Åä·û¹şÏ£±íÖĞ²éÕÒ
+    if (hash->wc_head && hash->wc_head->hash.buckets) { //åœ¨å‰ç½®é€šé…ç¬¦å“ˆå¸Œè¡¨ä¸­æŸ¥æ‰¾
         value = ngx_hash_find_wc_head(hash->wc_head, name, len);
 
         if (value) {
@@ -300,7 +300,7 @@ ngx_hash_find_combined(ngx_hash_combined_t *hash, ngx_uint_t key, u_char *name,
         }
     }
 
-    if (hash->wc_tail && hash->wc_tail->hash.buckets) { //ÔÚºóÖÃÍ¨Åä·û¹şÏ£±íÖĞ²éÕÒ
+    if (hash->wc_tail && hash->wc_tail->hash.buckets) { //åœ¨åç½®é€šé…ç¬¦å“ˆå¸Œè¡¨ä¸­æŸ¥æ‰¾
         value = ngx_hash_find_wc_tail(hash->wc_tail, name, len);
 
         if (value) {
@@ -312,1004 +312,18 @@ ngx_hash_find_combined(ngx_hash_combined_t *hash, ngx_uint_t key, u_char *name,
 }
 
 /*
-NGX_HASH_ELT_SIZEºêÓÃÀ´¼ÆËãngx_hash_elt_t½á¹¹´óĞ¡£¬¶¨ÒåÈçÏÂ¡£
-ÔÚ32Î»Æ½Ì¨ÉÏ£¬sizeof(void*)=4£¬(name)->key.len¼´ÊÇngx_hash_elt_t½á¹¹ÖĞnameÊı×é±£´æµÄÄÚÈİµÄ³¤¶È£¬ÆäÖĞµÄ"+2"ÊÇÒª¼ÓÉÏ¸Ã½á¹¹ÖĞlen×Ö¶Î(u_shortÀàĞÍ)µÄ´óĞ¡¡£
+NGX_HASH_ELT_SIZEå®ç”¨æ¥è®¡ç®—ngx_hash_elt_tç»“æ„å¤§å°ï¼Œå®šä¹‰å¦‚ä¸‹ã€‚
+åœ¨32ä½å¹³å°ä¸Šï¼Œsizeof(void*)=4ï¼Œ(name)->key.lenå³æ˜¯ngx_hash_elt_tç»“æ„ä¸­nameæ•°ç»„ä¿å­˜çš„å†…å®¹çš„é•¿åº¦ï¼Œå…¶ä¸­çš„"+2"æ˜¯è¦åŠ ä¸Šè¯¥ç»“æ„ä¸­lenå­—æ®µ(u_shortç±»å‹)çš„å¤§å°ã€‚
 */
 #define NGX_HASH_ELT_SIZE(name)                                               \
     (sizeof(void *) + ngx_align((name)->key.len + 2, sizeof(void *)))
 
 /*
-Æänames²ÎÊıÊÇngx_hash_key_t½á¹¹µÄÊı×é£¬¼´¼ü-Öµ¶Ô<key,value>Êı×é£¬nelts±íÊ¾¸ÃÊı×éÔªËØµÄ¸öÊı
-
-¸Ãº¯Êı³õÊ¼»¯µÄ½á¹û¾ÍÊÇ½«namesÊı×é±£´æµÄ¼ü-Öµ¶Ô<key,value>£¬Í¨¹ıhashµÄ·½Ê½½«Æä´æÈëÏàÓ¦µÄÒ»¸ö»ò¶à¸öhashÍ°(¼´´úÂëÖĞµÄbuckets)ÖĞ£¬
-¸Ãhash¹ı³ÌÓÃµ½µÄhashº¯ÊıÒ»°ãÎªngx_hash_key_lcµÈ¡£hashÍ°ÀïÃæ´æ·ÅµÄÊÇngx_hash_elt_t½á¹¹µÄÖ¸Õë(hashÔªËØÖ¸Õë)£¬¸ÃÖ¸ÕëÖ¸ÏòÒ»¸ö»ù±¾
-Á¬ĞøµÄÊı¾İÇø¡£¸ÃÊı¾İÇøÖĞ´æ·ÅµÄÊÇ¾­hashÖ®ºóµÄ¼ü-Öµ¶Ô<key',value'>£¬¼´ngx_hash_elt_t½á¹¹ÖĞµÄ×Ö¶Î<name,value>¡£Ã¿Ò»¸öÕâÑùµÄÊı¾İ
-Çø´æ·ÅµÄ¼ü-Öµ¶Ô<key',value'>¿ÉÒÔÊÇÒ»¸ö»ò¶à¸ö¡£
-*/ //ngx_hash_initÖĞnamesÊı×é´æÈëhashÍ°Ç°£¬Æä½á¹¹ÊÇngx_hash_key_tĞÎÊ½£¬ÔÚÍùhashÍ°ÀïÃæ´æÊı¾İµÄÊ±ºò£¬»á°Ñngx_hash_key_tÀïÃæµÄ³ÉÔ±¿½±´µ½ngx_hash_elt_tÖĞÏàÓ¦³ÉÔ±
-//Ô´´úÂë£¬±È½Ï³¤£¬×ÜµÄÁ÷³Ì¼´Îª£ºÔ¤¹ÀĞèÒªµÄÍ°ÊıÁ¿ ¨C> ËÑË÷ĞèÒªµÄÍ°ÊıÁ¿->·ÖÅäÍ°ÄÚ´æ->³õÊ¼»¯Ã¿Ò»¸öngx_hash_elt_t
- /* nginx hash½á¹¹´óÖÂÊÇÕâÑù: 
-11.           hash½á¹¹ÖĞÓĞN¸öÍ°, Ã¿¸öÍ°´æ·ÅN¸öÔªËØ(¼´<k,v>),ÔÚÄÚ´æÖĞ, 
-12.        ÓÃÒ»¸öÖ¸ÕëÊı×é¼ÇÂ¼N¸öÍ°µÄµØÖ·,Ã¿¸öÍ°ÓÖÊÇÒ»¸ö ngx_hash_elt_t Êı×é 
-13.        Ö¸ÕëÊı×é ºÍ ngx_hash_elt_t Êı×é ÔÚÒ»¸öÁ¬ĞøµÄÄÚ´æÖĞ. 
-14.        ÓÅµã: Ê¹ÓÃÊı×éÌá¸ßÑ°Ö·ËÙ¶È 
-15.        È±µã: hash±í³õÊ¼»¯ºó,Ö»ÄÜ²éÑ¯,²»ÄÜĞŞ¸Ä. 
-16. 
-17.        µ±È»hash½á¹¹±¾À´¾ÍÊÇÊı×éĞÎÊ½,µ«¶ÔÓÚ³åÍ»µÄÔªËØ´ó¶àÊÇÓÃÁ´±íĞÎÊ½´æ·Å,ÔÙ¹ÒÔØµ½hashÊı×éÉÏ. 
-18.        nginxµÄhash½á¹¹¹ı³Ì: 
-19.        Ê×ÏÈ Ã¿¸öÍ°µÄ¿Õ¼ä´óĞ¡¹Ì¶¨ Í¨¹ı ngx_hash_init_t.bucket_size Ö¸¶¨; 
-20.        È»ºó ¸ù¾İÔªËØµÄ¸öÊıºÍÍ°µÄ¹Ì¶¨´óĞ¡¼ÆËã³öĞèÒª¶àÉÙ¸öÍ°. 
-21.        È»ºó ¼ÆËãÄÄĞ©ÔªËØ´æ·Åµ½ÄÄ¸öÍ°ÖĞ,·½·¨¾ÍÊÇ (ÔªËØµÄhashÖµ % Í°µÄ¸öÊı) 
-22.        ÕâÊ± ĞèÒª¶àÉÙ¸öÍ°,ÕâĞ©Í°ĞèÒª¶àÉÙÄÚ´æ¿Õ¼ä,Ã¿¸öÍ°´æ·Å¶àÉÙÔªËØ£¬ĞèÒª¶àÉÙÄÚ´æ¿Õ¼ä¾ÍÖªµÀ, 
-23.        ÉêÇëËùÓĞÍ°µÄÄÚ´æ¿Õ¼ä,¼´Îª ngx_hash_init_t.hash.buckets Ö¸ÕëÊı×é. 
-24.        ÉêÇëÃ¿¸öÍ°´æ·ÅÔªËØµÄ´æ´¢¿Õ¼ä = ¸ÃÍ°ÔªËØÕ¼ÓÃµÄÄÚ´æ¿Õ¼ä + voidÖ¸Õë 
-25.        ÎªÁËÌá¸ß²éÑ¯Ğ§ÂÊ,ÉêÇëÒ»¸öÁ¬ĞøÄÚ´æ¿Õ¼ä´æ·Å ËùÓĞÍ°µÄÔªËØ. 
-26.        È»ºó°ÑÕâÆ¬Á¬ĞøµÄÄÚ´æ¿Õ¼äÓ³Éäµ½ ngx_hash_init_t.hash.buckets Ö¸ÕëÊı×é. 
-27.        È»ºóÎªÃ¿¸öÍ°µÄÔªËØ¸³Öµ. 
-28.        ×îºó½«Ã¿¸öÍ°µÄ"½áÊøÔªËØ"ÖÃÎªNULL 
-29. 
-30.        voidÖ¸ÕëµÄÓÃÍ¾: ÎªÍ°µÄ½áÊø±ê¼Ç, ÔÚ ngx_hash_find() ±éÀúÍ°ÊÇÅĞ¶Ï etl->value ÊÇ·ñÎªNULLÊ±ÓÃµ½. 
-31.        Äã¿ÉÄÜÓĞÒÔÎª "½áÊøÔªËØ"Ö»ÓĞÒ»¸övoid*Ö¸ÕëµÄ¿Õ¼ä×ª»»³É ngx_hash_elt_t ºó»á²»»áÔ½½ç²Ù×÷? 
-32.        ´ğ°¸ÊÇ²»»áµÄ, void*Ö¸ÕëµÄ¿Õ¼ä×ª»»³É ngx_hash_elt_t ºóÖ»²Ù×÷ ngx_hash_elt_t.value , 
-33.        ¶ø ngx_hash_elt_t.value ¸ÕºÃÖ»Õ¼ voidÖ¸Õë¿Õ¼ä´óĞ¡. 
-34. 
-35.        Ö¸¶¨Í°µÄ´óĞ¡µÄºÃ´¦: ±£Ö¤Ã¿¸öÍ°´æ·ÅÔªËØµÄ¸öÊı²»³¬¹ıÒ»¶¨Öµ,Ä¿µÄÊÇÎªÁËÌá¸ß²éÑ¯Ğ§ÂÊ. 
-36.         
-37.     */  
-    //Ê¹ÓÃ·½·¨¿ÉÒÔ²Î¿¼ngx_http_server_names
-ngx_int_t
-ngx_hash_init(ngx_hash_init_t *hinit, ngx_hash_key_t *names, ngx_uint_t nelts)//Ê¹ÓÃ·½·¨¿ÉÒÔ²Î¿¼ngx_http_server_names
-{
-    //²Î¿¼http://www.oschina.net/question/234345_42065  http://www.bkjia.com/ASPjc/905190.html
-    u_char          *elts;
-    size_t           len;
-    u_short         *test;
-    ngx_uint_t       i, n, key, 
-                     size,  //size±íÊ¾Êµ¼ÊĞèÒªÍ°µÄ¸öÊı
-                     start, bucket_size;
-    ngx_hash_elt_t  *elt, **buckets;
-
-    for (n = 0; n < nelts; n++) {
-        //¼ì²énamesÊı×éµÄÃ¿Ò»¸öÔªËØ£¬ÅĞ¶ÏÍ°µÄ´óĞ¡ÊÇ·ñ¹»·ÖÅä 
-        //names[n]³ÉÔ±¿Õ¼äÒ»¶¨ÒªĞ¡ÓÚµÈÓÚbucket_size /* Ã¿¸öÍ°ÖÁÉÙÄÜ´æ·ÅÒ»¸öÔªËØ + Ò»¸övoidÖ¸Õë  
-        //Òª¼ÓÉÏsizeof(void *)£¬ÒòÎªbucket×îºóĞèÒªk-v¶Ô½áÊø±êÖ¾£¬ÊÇvoid * valueÀ´×öµÄ¡£
-        if (hinit->bucket_size < NGX_HASH_ELT_SIZE(&names[n]) + sizeof(void *))
-        {
-            //ÓĞÈÎºÎÒ»¸öÔªËØ£¬Í°µÄ´óĞ¡²»¹»Îª¸ÃÔªËØ·ÖÅä¿Õ¼ä£¬ÔòÍË³ö   
-            ngx_log_error(NGX_LOG_EMERG, hinit->pool->log, 0,
-                          "could not build the %s, you should "
-                          "increase %s_bucket_size: %i",
-                          hinit->name, hinit->name, hinit->bucket_size);
-            return NGX_ERROR;
-        }
-    }
-
-    //·ÖÅä2*max_size¸ö×Ö½ÚµÄ¿Õ¼ä±£´æhashÊı¾İ(¸ÃÄÚ´æ·ÖÅä²Ù×÷²»ÔÚnginxµÄÄÚ´æ³ØÖĞ½øĞĞ£¬ÒòÎªtestÖ»ÊÇÁÙÊ±µÄ)    
-    /* ÓÃÓÚ¼ÇÂ¼Ã¿¸öÍ°µÄÁÙÊ±´óĞ¡ */  
-    test = ngx_alloc(hinit->max_size * sizeof(u_short), hinit->pool->log);
-    if (test == NULL) {
-        return NGX_ERROR;
-    }
-
-    // Êµ¼Ê¿ÉÓÃ¿Õ¼äÎª¶¨ÒåµÄbucket_size¼õÈ¥Ä©Î²µÄvoid *(½áÎ²±êÊ¶)£¬Ä©Î²µÄvoid* Ö¸ÏòNULL
-    bucket_size = hinit->bucket_size - sizeof(void *);
-
-    /* ÏÂÃæÕâ¼¸ĞĞÊÇ´ó¸Ä¹ÀËãÒ»ÏÂ£¬Í°¸öÊıÓ¦¸Ã´Ó¶àÉÙ¸ö¿ªÊ¼Ëã */
-    start = nelts / (bucket_size / (2 * sizeof(void *)));
-    start = start ? start : 1;
-    if (hinit->max_size > 10000 && nelts && hinit->max_size / nelts < 100) {
-        start = hinit->max_size - 1000;
-    }
-
-    //start±íÊ¾¼ÆËãÍ°µÄ¸öÊı£¬Í°µÄ¸öÊıÊÇËã³öÀ´µÄ£¬´Óstart¿ªÊ¼µ½max_sizeÒ»¸öÒ»¸öµÄÊÔ£¬×îÖÕÒª±£Ö¤Ã¿¸öÍ°ÖĞµÄÊµ¼Ê¿Õ¼ähinit->bucket_size - sizeof(void *);ÒªÄÜ¹»
-    //´æ·ÅËùÓĞÉ¢ÁĞµ½¸ÃÍ°ÖĞµÄngx_hash_elt_t¿Õ¼ä¸öÊıºÍ¡£
-    //ÆäÊµËãÕâ¸öÍ°µÄ¸öÊı(Í¨¹ıËùÓĞÔªËØ¿Õ¼äĞ¡ÓÚhinit->max_size)¾ÍÊÇÎªÁË±£Ö¤Ã¿¸öÍ°ÖĞµÄÔªËØ¸öÊı±ğÌ«¶à£¬ÕâÑù¿ÉÒÔ±£Ö¤ÔÚ±éÀúhash±íµÄÊ±ºò£¬ÄÜ¹»¿ìËÙÕÒµ½¾ßÌåÍ°ÖĞµÄÔªËØ
-
-
-    /*  max_sizeºÍbucket_sizeµÄÒâÒå
-    max_size±íÊ¾×î¶à·ÖÅämax_size¸öÍ°£¬Ã¿¸öÍ°ÖĞµÄÔªËØ(ngx_hash_elt_t)¸öÊı * NGX_HASH_ELT_SIZE(&names[n])²»ÄÜ³¬¹ıbucket_size´óĞ¡
-    Êµ¼Êngx_hash_init´¦ÀíµÄÊ±ºò²¢²»ÊÇÖ±½ÓÓÃmax_size¸öÍ°£¬¶øÊÇ´Ósize=1µ½max_sizeÈ¥ÊÔ£¬Ö»Òªngx_hash_init²ÎÊıÖĞµÄnames[]Êı×éÊı¾İÄÜÈ«²¿hash
-    µ½Õâsize¸öÍ°ÖĞ£¬²¢ÇÒÂú×ãÌõ¼ş:Ã¿¸öÍ°ÖĞµÄÔªËØ(ngx_hash_elt_t)¸öÊı * NGX_HASH_ELT_SIZE(&names[n])²»³¬¹ıbucket_size´óĞ¡,ÔòËµÃ÷ÓÃsize
-    ¸öÍ°¾Í¹»ÓÃÁË£¬È»ºóÖ±½ÓÊ¹ÓÃx¸öÍ°´æ´¢¡£ ¼ûngx_hash_init
-     */
-    
-    for (size = start; size <= hinit->max_size; size++) { //size±íÊ¾Êµ¼ÊĞèÒªÍ°µÄ¸öÊı
-
-        ngx_memzero(test, size * sizeof(u_short));
-
-        
-        //±ê¼Ç1£º´Ë¿é´úÂëÊÇ¼ì²ébucket´óĞ¡ÊÇ·ñ¹»·ÖÅähashÊı¾İ   
-        for (n = 0; n < nelts; n++) {
-            if (names[n].key.data == NULL) {
-                continue;
-            }
-
-            
-            //¼ÆËãkeyºÍnamesÖĞËùÓĞname³¤¶È£¬²¢±£´æÔÚtest[key]ÖĞ   
-            key = names[n].key_hash % size;//Èôsize=1£¬ÔòkeyÒ»Ö±Îª0  
-            //test[i]±íÊ¾µÚi¸öÍ°ÖĞÒÑ¾­Ê¹ÓÃÁËµÄngx_hash_elt_t¿Õ¼ä×Ü´óĞ¡
-            test[key] = (u_short) (test[key] + NGX_HASH_ELT_SIZE(&names[n])); 
-
-#if 0
-            ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                          "%ui: %ui %ui \"%V\"",
-                          size, key, test[key], &names[n].key);
-#endif
-            //ÕâÀïÖÕÓÚÓÃµ½ÁËbucket_size£¬´óÓÚÕâ¸öÖµ£¬ÔòËµÃ÷Õâ¸ösize²»ºÏÊÊ°¡goto next£¬µ÷ÕûÏÂÍ°µÄÊıÄ¿
-            if (test[key] > (u_short) bucket_size) { 
-                //Èô³¬¹ıÁËÍ°µÄ´óĞ¡£¬Ôòµ½ÏÂÒ»¸öÍ°ÖØĞÂ¼ÆËã   
-                goto next;
-            }
-        }
-
-        goto found;
-
-    next:
-
-        continue;
-    }
-
-    size = hinit->max_size;
-    
-    //×ßµ½ÕâÀï±íÃæ£¬ÔÚnamesÖĞµÄÔªËØÈëhashÍ°µÄÊ±ºò£¬¿ÉÄÜ»áÔì³ÉÄ³Ğ©hashÍ°µÄÔİÓÃ¿Õ¼ä»á±ÈÊµ¼ÊµÄbucket_size´ó
-    ngx_log_error(NGX_LOG_WARN, hinit->pool->log, 0,
-                  "could not build optimal %s, you should increase "
-                  "either %s_max_size: %i or %s_bucket_size: %i; "
-                  "ignoring %s_bucket_size",
-                  hinit->name, hinit->name, hinit->max_size,
-                  hinit->name, hinit->bucket_size, hinit->name);
-
-found://ÕÒµ½ºÏÊÊµÄbucket   
-
-    //µ½ÕâÀïºó°ÑËùÓĞµÄtest[i]Êı×é¸³ÖµÎª4£¬Ô¤Áô¸øNULLÖ¸Õë
-    for (i = 0; i < size; i++) {
-        test[i] = sizeof(void *);//½«testÊı×éÇ°size¸öÔªËØ³õÊ¼»¯Îª4£¬ÌáÇ°¸³Öµ4µÄÔ­ÒòÊÇ£¬hashÍ°µÄ³ÉÔ±ÁĞ±íÎ²²¿»áÓĞÒ»¸öNULL£¬ÌáÇ°°ÑÕâ4×Ö½Ú¿Õ¼äÔ¤Áô 
-    }
-
-   /* ±ê¼Ç2£ºÓë±ê¼Ç1´úÂë»ù±¾ÏàÍ¬£¬µ«´Ë¿é´úÂëÊÇÔÙ´Î¼ÆËãËùÓĞhashÊı¾İµÄ×Ü³¤¶È(±ê¼Ç1µÄ¼ì²éÒÑÍ¨¹ı)  
-      µ«´Ë´¦µÄtest[i]ÒÑ±»³õÊ¼»¯Îª4£¬¼´Ïàµ±ÓÚºóĞøµÄ¼ÆËãÔÙ¼ÓÉÏÒ»¸övoidÖ¸ÕëµÄ´óĞ¡¡£  
-    */ //¼ÆËãÃ¿¸öÍ°ÖĞµÄ³ÉÔ±¿Õ¼ä´óĞ¡×ÜºÍ
-    for (n = 0; n < nelts; n++) {
-        if (names[n].key.data == NULL) {
-            continue;
-        }
-
-        //¼ÆËãkeyºÍnamesÖĞËùÓĞname³¤¶È£¬²¢±£´æÔÚtest[key]ÖĞ   
-        key = names[n].key_hash % size;//Èôsize=1£¬ÔòkeyÒ»Ö±Îª0   
-        test[key] = (u_short) (test[key] + NGX_HASH_ELT_SIZE(&names[n]));
-    }
-    
-    //¼ÆËãhashÊı¾İµÄ×Ü³¤¶È£¬ËùÓĞÍ°µÄÊı¾İ¿Õ¼ä³¤¶ÈºÍ   
-    len = 0;
-
-    //len±íÊ¾ËùÓĞnames[]Êı×éÊı¾İÒ»¹²ĞèÒªx¸öngx_hash_elt_t½á¹¹´æ´¢£¬Õâx¸öngx_hash_elt_tÔİÓÃµÄ¿Õ¼ä×ÜºÍ£¬lenÊÇÊµ¼Ê´æ´¢Êı¾İÔªËØµÄ¿Õ¼ä£¬Ò²¾ÍÊÇ´æÈëËùÓĞÍ°ÖĞµÄÔªËØÔİÓÃµÄ¿Õ¼ä
-    for (i = 0; i < size; i++) {
-        if (test[i] == sizeof(void *)) {//Èôtest[i]ÈÔÎª³õÊ¼»¯µÄÖµ4£¬¼´Ã»ÓĞ±ä»¯£¬Ôò¼ÌĞø  
-            continue;
-        }
-        
-        //¶Ôtest[i]°´ngx_cacheline_size¶ÔÆë(32Î»Æ½Ì¨£¬ngx_cacheline_size=32)   
-        test[i] = (u_short) (ngx_align(test[i], ngx_cacheline_size));
-
-        len += test[i];
-    }
-
-    //·ÖÅäÃ¿Ò»¸öÍ°ÖĞÖ¸Ïò¾ßÌåÊı¾İ²¿·ÖµÄÖ¸ÕëÍ·
-    if (hinit->hash == NULL) {
-        //ÔÚÄÚ´æ³ØÖĞ·ÖÅähashÍ·¼°bucketsÊı×é(size¸öngx_hash_elt_t*½á¹¹)   
-        hinit->hash = ngx_pcalloc(hinit->pool, sizeof(ngx_hash_wildcard_t)
-                                             + size * sizeof(ngx_hash_elt_t *)); //size±íÊ¾Êµ¼ÊĞèÒªÍ°µÄ¸öÊı£¬ÕâÀïµÄ¿Õ¼ä¸ÕºÃ¾ÍÊÇÃ¿¸öÍ°µÄÍ·²¿Ö¸Õë
-        if (hinit->hash == NULL) {
-            ngx_free(test);
-            return NGX_ERROR;
-        }
-        
-        //¼ÆËãbucketsµÄÆôÊ¾Î»ÖÃ(ÔÚngx_hash_wildcard_t½á¹¹Ö®ºó)  
-        buckets = (ngx_hash_elt_t **)
-                      ((u_char *) hinit->hash + sizeof(ngx_hash_wildcard_t));
-
-    } else { //ÔÚÄÚ´æ³ØÖĞ·ÖÅäbucketsÊı×é(size¸öngx_hash_elt_t*½á¹¹)   
-        buckets = ngx_pcalloc(hinit->pool, size * sizeof(ngx_hash_elt_t *)); //size±íÊ¾Êµ¼ÊĞèÒªÍ°µÄ¸öÊı£¬ÕâÀïµÄ¿Õ¼ä¸ÕºÃ¾ÍÊÇÃ¿¸öÍ°µÄÍ·²¿Ö¸Õë
-        if (buckets == NULL) {
-            ngx_free(test);
-            return NGX_ERROR;
-        }
-    }
-    
-    //½Ó×Å·ÖÅäelts£¬´óĞ¡Îªlen+ngx_cacheline_size£¬´Ë´¦ÎªÊ²Ã´+32£¿¡ª¡ªÏÂÃæÒª°´32×Ö½Ú¶ÔÆë   
-    elts = ngx_palloc(hinit->pool, len + ngx_cacheline_size); 
-    //len±íÊ¾ËùÓĞnames[](¼ÙÉèÊı×éÓĞx¸ö³ÉÔ±)Êı×éÊı¾İÒ»¹²ĞèÒªx¸öngx_hash_elt_t½á¹¹´æ´¢£¬Õâx¸öngx_hash_elt_tÔİÓÃµÄ¿Õ¼ä×ÜºÍ
-    if (elts == NULL) {
-        ngx_free(test);
-        return NGX_ERROR;
-    }
-    
-    //½«eltsµØÖ·°´ngx_cacheline_size=32¶ÔÆë   
-    elts = ngx_align_ptr(elts, ngx_cacheline_size);
-
-    for (i = 0; i < size; i++) {//½«bucketsÊı×éÓëÏàÓ¦elts¶ÔÓ¦ÆğÀ´  
-        if (test[i] == sizeof(void *)) {
-            continue;
-        }
-
-        //Ã¿¸öÍ°Í·Ö¸Õëbuckets[i]Ö¸Ïò×Ô¼ºÍ°ÖĞµÄ³ÉÔ±Ê×µØÖ·
-        buckets[i] = (ngx_hash_elt_t *) elts;
-        elts += test[i];
-    }
-
-    for (i = 0; i < size; i++) {
-        //testÊı×éÖÃ0   
-        test[i] = 0;
-    }
-
-    //°ÑËùÓĞµÄnameÊı¾İÈë¶Óhash±íÖĞ
-    for (n = 0; n < nelts; n++) {//½«´«½øÀ´µÄÃ¿Ò»¸öhashÊı¾İ´æÈëhash±í 
-        if (names[n].key.data == NULL) {
-            continue;
-        }
-
-        
-        //¼ÆËãkey£¬¼´½«±»hashµÄÊı¾İÔÚµÚ¼¸¸öbucket£¬²¢¼ÆËãÆä¶ÔÓ¦µÄeltsÎ»ÖÃ£¬Ò²¾ÍÊÇÔÚ¸Ãbuckets[i]Í°ÖĞµÄ¾ßÌåÎ»ÖÃ
-        key = names[n].key_hash % size;
-        elt = (ngx_hash_elt_t *) ((u_char *) buckets[key] + test[key]);
-
-        
-        //¶Ôngx_hash_elt_t½á¹¹¸³Öµ   
-        elt->value = names[n].value;
-        elt->len = (u_short) names[n].key.len;
-
-        //Ã¿´ÎÒÆ¶¯test[]µÄÊ±ºò£¬¶¼ÊÇÒÆ¶¯NGX_HASH_ELT_SIZE(&names[n])£¬ÀïÃæÓĞ¸ønameÔ¤Áôname×Ö·û´®³¤¶È¿Õ¼ä
-        ngx_strlow(elt->name, names[n].key.data, names[n].key.len); 
-        
-        //¼ÆËãÏÂÒ»¸öÒª±»hashµÄÊı¾İµÄ³¤¶ÈÆ«ÒÆ£¬ÏÂÒ»´Î¾Í´Ó¸ÃÍ°µÄÏÂÒ»¸öÎ»ÖÃ´æ´¢   
-        test[key] = (u_short) (test[key] + NGX_HASH_ELT_SIZE(&names[n]));
-    }
-
-    //ÎªÃ¿¸öÍ°µÄ³ÉÔ±ÁĞ±í×îÎ²²¿Ìí¼ÓÒ»¸öngx_hash_elt_t³ÉÔ±£¬Æğvalue=NULL£¬±êÊ¶ÕâÊÇ¸ÃÍ°ÖĞµÄ×îºóÒ»¸öngx_hash_elt_t
-    for (i = 0; i < size; i++) {
-        if (buckets[i] == NULL) {
-            continue;
-        }
-        
-        //test[i]Ïàµ±ÓÚËùÓĞ±»hashµÄÊı¾İ×Ü³¤¶È   
-        elt = (ngx_hash_elt_t *) ((u_char *) buckets[i] + test[i]);
-
-        elt->value = NULL;
-    }
-
-    ngx_free(test);//ÊÍ·Å¸ÃÁÙÊ±¿Õ¼ä   
-
-    hinit->hash->buckets = buckets;
-    hinit->hash->size = size;
-
-#if 0
-
-    for (i = 0; i < size; i++) {
-        ngx_str_t   val;
-        ngx_uint_t  key;
-
-        elt = buckets[i];
-
-        if (elt == NULL) {
-            ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                          "%ui: NULL", i);
-            continue;
-        }
-
-        while (elt->value) {
-            val.len = elt->len;
-            val.data = &elt->name[0];
-
-            key = hinit->key(val.data, val.len);
-
-            ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                          "%ui: %p \"%V\" %ui", i, elt, &val, key);
-
-            elt = (ngx_hash_elt_t *) ngx_align_ptr(&elt->name[0] + elt->len,
-                                                   sizeof(void *));
-        }
-    }
-
-#endif
-
-    return NGX_OK;
-}
-
-/*
-nginxÎªÁË´¦Àí´øÓĞÍ¨Åä·ûµÄÓòÃûµÄÆ¥ÅäÎÊÌâ£¬ÊµÏÖÁËngx_hash_wildcard_tÕâÑùµÄhash±í¡£Ëû¿ÉÒÔÖ§³ÖÁ½ÖÖÀàĞÍµÄ´øÓĞÍ¨Åä·ûµÄÓòÃû¡£Ò»ÖÖÊÇÍ¨Åä·ûÔÚÇ°µÄ£¬
-ÀıÈç£º¡°*.abc.com¡±£¬Ò²¿ÉÒÔÊ¡ÂÔµôĞÇºÅ£¬Ö±½ÓĞ´³É¡±.abc.com¡±¡£ÕâÑùµÄkey£¬¿ÉÒÔÆ¥Åäwww.abc.com£¬qqq.www.abc.comÖ®ÀàµÄ¡£ÁíÍâÒ»ÖÖÊÇÍ¨Åä·ûÔÚÄ©
-Î²µÄ£¬ÀıÈç£º¡°mail.xxx.*¡±£¬ÇëÌØ±ğ×¢ÒâÍ¨Åä·ûÔÚÄ©Î²µÄ²»ÏñÎ»ÓÚ¿ªÊ¼µÄÍ¨Åä·û¿ÉÒÔ±»Ê¡ÂÔµô¡£ÕâÑùµÄÍ¨Åä·û£¬¿ÉÒÔÆ¥Åämail.xxx.com¡¢mail.xxx.com.cn¡¢
-mail.xxx.netÖ®ÀàµÄÓòÃû¡£
-
-ÓĞÒ»µã±ØĞëËµÃ÷£¬¾ÍÊÇÒ»¸öngx_hash_wildcard_tÀàĞÍµÄhash±íÖ»ÄÜ°üº¬Í¨Åä·ûÔÚÇ°µÄkey»òÕßÊÇÍ¨Åä·ûÔÚºóµÄkey¡£²»ÄÜÍ¬Ê±°üº¬Á½ÖÖÀàĞÍµÄÍ¨Åä·û
-µÄkey¡£ngx_hash_wildcard_tÀàĞÍ±äÁ¿µÄ¹¹½¨ÊÇÍ¨¹ıº¯Êıngx_hash_wildcard_initÍê³ÉµÄ£¬¶ø²éÑ¯ÊÇÍ¨¹ıº¯Êıngx_hash_find_wc_head»òÕß
-ngx_hash_find_wc_tailÀ´×öµÄ¡£ngx_hash_find_wc_headÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚÇ°µÄkeyµÄhash±íµÄ£¬¶øngx_hash_find_wc_tailÊÇ²éÑ¯°üº¬Í¨Åä·ûÔÚºóµÄkeyµÄhash±íµÄ¡£
-
-ÌØ±ğÒª×¢ÒâµÄÊÇÕâÀïµÄkeyÒÑ¾­¶¼ÊÇ±»Ô¤´¦Àí¹ıµÄ¡£ÀıÈç£º¡°*.abc.com¡±»òÕß¡°.abc.com¡±±»Ô¤´¦ÀíÍê³ÉÒÔºó£¬±ä³ÉÁË¡°com.abc.¡±¡£¶ø¡°mail.xxx.*¡±Ôò±»Ô¤´¦ÀíÎª¡°mail.xxx.¡±
-
-Ê×ÏÈ¿´Ò»ÏÂngx_hash_wildcard_init µÄÄÚ´æ½á¹¹£¬µ±¹¹Ôì´ËÀàĞÍµÄhash±íµÄÊ±ºò£¬Êµ¼ÊÉÏÊÇ¹¹ÔìÁËÒ»¸öhash±íµÄÒ»¸ö¡°Á´±í¡±£¬ÊÇÍ¨¹ıhash±íÖĞµÄkey¡°Á´½Ó¡±
-ÆğÀ´µÄ¡£±ÈÈç£º¶ÔÓÚ¡°*.abc.com¡±½«»á¹¹Ôì³ö2¸öhash±í£¬µÚÒ»¸öhash±íÖĞÓĞÒ»¸ökeyÎªcomµÄ±íÏî£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸ÏòµÚ¶ş¸öhash±íµÄÖ¸Õë£¬
-¶øµÚ¶ş¸öhash±íÖĞÓĞÒ»¸ö±íÏîabc£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸Ïò*.abc.com¶ÔÓ¦µÄvalueµÄÖ¸Õë¡£ÄÇÃ´²éÑ¯µÄÊ±ºò£¬±ÈÈç²éÑ¯www.abc.comµÄÊ±ºò£¬ÏÈ²écom£¬
-Í¨¹ı²écom¿ÉÒÔÕÒµ½µÚ¶ş¼¶µÄhash±í£¬ÔÚµÚ¶ş¼¶hash±íÖĞ£¬ÔÙ²éÕÒabc£¬ÒÀ´ÎÀàÍÆ£¬Ö±µ½ÔÚÄ³Ò»¼¶µÄhash±íÖĞ²éµ½µÄ±íÏî¶ÔÓ¦µÄvalue¶ÔÓ¦Ò»¸öÕæÕıµÄÖµ¶ø·Ç
-Ò»¸öÖ¸ÏòÏÂÒ»¼¶hash±íµÄÖ¸ÕëµÄÊ±ºò£¬²éÑ¯¹ı³Ì½áÊø¡£
-*/
-ngx_int_t
-ngx_hash_wildcard_init(ngx_hash_init_t *hinit, ngx_hash_key_t *names,
-    ngx_uint_t nelts) //²Î¿¼:http://www.bkjia.com/ASPjc/905190.html    //Ê¹ÓÃ·½·¨¿ÉÒÔ²Î¿¼ngx_http_server_names
-{//²Î¿¼http://www.bkjia.com/ASPjc/905190.html Í¼½â
-    size_t                len, dot_len;
-    ngx_uint_t            i, 
-                          n,  //n±íÊ¾µ±Ç°Ëù´¦ÀíµÄnames[]Êı×éÖĞµÄµÚ¼¸¸ö³ÉÔ±
-                          dot; //µ±Ç°½âÎöµ½names[i]ÖĞµÄµÚi¸öÔªËØ×Ö·û´®µÄ.×Ö·û´®Î»ÖÃ
-    ngx_array_t           curr_names, next_names;
-    ngx_hash_key_t       *name, *next_name;
-    ngx_hash_init_t       h;
-    ngx_hash_wildcard_t  *wdc;
-
-    //³õÊ¼»¯ÁÙÊ±¶¯Ì¬Êı×écurr_names,curr_namesÊÇ´æ·Åµ±Ç°¹Ø¼ü×ÖµÄÊı×é
-    if (ngx_array_init(&curr_names, hinit->temp_pool, nelts, sizeof(ngx_hash_key_t))
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-
-    //³õÊ¼»¯ÁÙÊ±¶¯Ì¬Êı×énext_names,next_namesÊÇ´æ·Å¹Ø¼ü×ÖÈ¥µôºóÊ£Óà¹Ø¼ü×Ö
-    if (ngx_array_init(&next_names, hinit->temp_pool, nelts,
-                       sizeof(ngx_hash_key_t))
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-
-    for (n = 0; n < nelts; n = i) {
-
-#if 0
-        ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                      "wc0: \"%V\"", &names[n].key);
-#endif
-
-        dot = 0;
-
-        for (len = 0; len < names[n].key.len; len++) {//²éÕÒ dot£¬lenµÄ³¤¶ÈÎª.Ç°ÃæµÄ×Ö·û´®³¤¶È
-            if (names[n].key.data[len] == '.') {
-                dot = 1;
-                break;
-            }
-        }
-
-        name = ngx_array_push(&curr_names);
-        if (name == NULL) {
-            return NGX_ERROR;
-        }
-
-        //½«¹Ø¼ü×ÖdotÒÔÇ°µÄ¹Ø¼ü×Ö·ÅÈëcurr_names
-        //names[]×Ö·û´®·ÅÔÚkeyÖĞ´æ´¢£¬ 
-
-        /* È¡Öµaa.bb.ccÖĞµÄaa×Ö·û´®´æ´¢µ½keyÖĞ£¬²¢¼ÆËãaa¶ÔÓ¦µÄkey_hashÖµ£¬ºóÃæ»á½øĞĞµİ¹é£¬È»ºóÈ¡³öbbºÍcc×Ö·û´®·Ö±ğ´æµ½nameÊı×éÖĞ */
-        name->key.len = len; //lenÎª.dotÇ°ÃæµÄ×Ö·û´®
-        name->key.data = names[n].key.data;
-        name->key_hash = hinit->key(name->key.data, name->key.len);
-        name->value = names[n].value; //Èç¹ûÓĞ×Óhash£¬Ôòvalue»áÔÚºóÃæÖ¸Ïò×Óhash
-
-#if 0
-        ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                      "wc1: \"%V\" %ui", &name->key, dot);
-#endif
-
-        dot_len = len + 1;
-
-        if (dot) {
-            len++;//lenÖ¸ÏòdotºóÊ£Óà¹Ø¼ü×Ö
-        }
-
-        next_names.nelts = 0;
-
-        //Èç¹ûnames[n] dotºó»¹ÓĞÊ£Óà¹Ø¼ü×Ö£¬½«Ê£Óà¹Ø¼ü×Ö·ÅÈënext_namesÖĞ
-        if (names[n].key.len != len) {//È¡³öÁËaa.bb.ccÖĞµÄaa×Ö·û´®´æµ½curr_names[]Êı×éÖĞ£¬Ê£ÏÂµÄbb.cc×Ö·û´®´æµ½next_namesÊı×éÖĞ
-            next_name = ngx_array_push(&next_names);
-            if (next_name == NULL) {
-                return NGX_ERROR;
-            }
-
-            next_name->key.len = names[n].key.len - len;
-            next_name->key.data = names[n].key.data + len;
-            next_name->key_hash = 0;
-            next_name->value = names[n].value;
-
-#if 0
-            ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                          "wc2: \"%V\"", &next_name->key);
-#endif
-        }
-
-        //Èç¹ûÉÏÃæËÑË÷µ½µÄ¹Ø¼ü×ÖÃ»ÓĞdot£¬´Ón+1±éÀúnames£¬½«¹Ø¼ü×Ö±ÈËü³¤µÄÈ«²¿·ÅÈënext_name
-
-        /*  
-            ÀıÈçnames[0]Îªaa.bb,names[1]Îªaa.cc£¬²¢ÇÒµ±Ç°´¦ÀíµÄÊÇnames[0],Ôòaa´æµ½curr_names[]Êı×éÖĞ£¬bbºÍcc´æµ½next_nameÊı×éÖĞ£¬
-            Ò²¾ÍÊÇ°Ñaa.bbºÍaa.ccºÏ²¢ÁË
-          */
-        for (i = n + 1; i < nelts; i++) {
-            if (ngx_strncmp(names[n].key.data, names[i].key.data, len) != 0) {//Ç°len¸ö¹Ø¼ü×ÖÏàÍ¬
-                break;
-            }
-
-            if (!dot
-                && names[i].key.len > len
-                && names[i].key.data[len] != '.')
-            {
-                break;
-            }
-
-            next_name = ngx_array_push(&next_names);
-            if (next_name == NULL) {
-                return NGX_ERROR;
-            }
-
-            next_name->key.len = names[i].key.len - dot_len;
-            next_name->key.data = names[i].key.data + dot_len;
-            next_name->key_hash = 0;
-            next_name->value = names[i].value;
-
-#if 0
-            ngx_log_error(NGX_LOG_ALERT, hinit->pool->log, 0,
-                          "wc3: \"%V\"", &next_name->key);
-#endif
-        }
-
-        //ÀıÈç¼ÓÉÏname[i]Îªaa.bb.cc£¬Ç°ÃæÈ¡³öÁËaa,Ê£ÏÂµÄbb.cc´æµ½ÁËnext_namesÊı×éÖĞ£¬Ôòµİ¹é¸Ãº¯Êı´Ó¶ø¶ÔbbºÍcc½øĞĞÍ¬ÑùµÄ²Ù×÷
-        if (next_names.nelts) {//Èç¹ûnext_name·Ç¿Õ
-
-            h = *hinit;
-            h.hash = NULL;
-
-            if (ngx_hash_wildcard_init(&h, (ngx_hash_key_t *) next_names.elts,
-                                       next_names.nelts)//µİ¹é£¬´´½¨Ò»¸öĞÂµÄ¹şÎ÷±í
-                != NGX_OK)
-            {
-                return NGX_ERROR;
-            }
-
-            wdc = (ngx_hash_wildcard_t *) h.hash;
-
-            if (names[n].key.len == len) { //ÈçÉÏÍ¼£¬½«ÓÃ»§valueÖµ·ÅÈëĞÂµÄhash±í£¬Ò²¾ÍÊÇhinitÖĞ
-                wdc->value = names[n].value;
-            }
-
-            /*
-                ÓÉÓÚÖ¸Õë¶¼¶Ôvoid*£¨´óĞ¡Îª4£©×Ö½Ú¶ÔÆëÁË£¬µÍ2Î»¿Ï¶¨Îª0£¬ÕâÖÖ²Ù×÷£¨name->value = (void *) ((uintptr_t) wdc | (dot ? 3 : 2)) £© 
-                ÇÉÃîµÄÊ¹ÓÃÁËÖ¸ÕëµÄµÍÎ»Ğ¯´ø¶îÍâĞÅÏ¢£¬½ÚÊ¡ÁËÄÚ´æ£¬ÈÃÈË²»µÃ²»Åå·şngxÉè¼ÆÕßµÄÏëÏóÁ¦¡£
-                */    
-            name->value = (void *) ((uintptr_t) wdc | (dot ? 3 : 2)); //²¢½«µ±Ç°valueÖµÖ¸ÏòĞÂµÄhash±í
-
-        } else if (dot) {
-            name->value = (void *) ((uintptr_t) name->value | 1); //±íÊ¾ºóÃæÒÑ¾­Ã»ÓĞ×ÓhashÁË,valueÖ¸Ïò¾ßÌåµÄkey-valueÖĞµÄvalue×Ö·û´®
-        }
-    }
-    
-    //½«×îÍâ²ãhash³õÊ¼»¯
-    if (ngx_hash_init(hinit, (ngx_hash_key_t *) curr_names.elts,
-                      curr_names.nelts)
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-
-    return NGX_OK;
-}
-
-/*
-©³©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©·
-©§  ©§    ±í7-8 NginxÌá¹©µÄÁ½ÖÖÉ¢ÁĞ·½·¨                                                                     ©§
-©Ç©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§  ©§    É¢ÁĞ·½·¨                                      ©§    ÒâÒå                                          ©§
-©Ç©¥©ß©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§ngx_uint_t ngx_hash_key(u_char *data, size_t len)     ©§  Ê¹ÓÃBKDRËã·¨½«ÈÎÒâ³¤¶ÈµÄ×Ö·û´®Ó³ÉäÎªÕûĞÍ        ©§
-©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§                                                      ©§  ½«×Ö·û´®È«Ğ¡Ğ´ºó£¬ÔÙÊ¹ÓÃBKDRËã·¨½«ÈÎÒâ³¤¶ÈµÄ×Ö  ©§
-©§.gx_uint_t ngx_hash_key_lc(I_char *data, size_t len)  ©§·û´®Ó³ÉäÎªÕûĞÍ                                    ©§
-©»©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ß©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¿
-*/
-/*
-ngx_hash_keyº¯ÊıµÄ¼ÆËã¿É±íÊöÎªÏÂÁĞ¹«Ê½¡£
-
-Key[0] = data[0]
-Key[1] = data[0]*31 + data[1]
-Key[2] = (data[0]*31 + data[1])*31 + data[2]
-...
-Key[len-1] = ((((data[0]*31 + data[1])*31 + data[2])*31) ... data[len-2])*31 + data[len-1]key[len-1]¼´Îª´«ÈëµÄ²ÎÊıdata¶ÔÓ¦µÄhashÖµ
-*/
-//¶ÔÊı¾İ×Ö·û´®data¼ÆËã³ökeyÖµ
-ngx_uint_t
-ngx_hash_key(u_char *data, size_t len)
-{
-    ngx_uint_t  i, key;
-
-    key = 0;
-
-    for (i = 0; i < len; i++) {
-        key = ngx_hash(key, data[i]);
-    }
-
-    return key;
-}
-
-/*
-©³©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©·
-©§  ©§    ±í7-8 NginxÌá¹©µÄÁ½ÖÖÉ¢ÁĞ·½·¨                                                                     ©§
-©Ç©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§  ©§    É¢ÁĞ·½·¨                                      ©§    ÒâÒå                                          ©§
-©Ç©¥©ß©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§ngx_uint_t ngx_hash_key(u_char *data, size_t len)     ©§  Ê¹ÓÃBKDRËã·¨½«ÈÎÒâ³¤¶ÈµÄ×Ö·û´®Ó³ÉäÎªÕûĞÍ        ©§
-©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
-©§                                                      ©§  ½«×Ö·û´®È«Ğ¡Ğ´ºó£¬ÔÙÊ¹ÓÃBKDRËã·¨½«ÈÎÒâ³¤¶ÈµÄ×Ö  ©§
-©§.gx_uint_t ngx_hash_key_lc(I_char *data, size_t len)  ©§·û´®Ó³ÉäÎªÕûĞÍ                                    ©§
-©»©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ß©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¿
-*/
-ngx_uint_t
-ngx_hash_key_lc(u_char *data, size_t len)
-{
-    ngx_uint_t  i, key;
-
-    key = 0;
-
-    for (i = 0; i < len; i++) {
-        key = ngx_hash(key, ngx_tolower(data[i]));
-    }
-
-    return key;
-}
-
-
-ngx_uint_t
-ngx_hash_strlow(u_char *dst, u_char *src, size_t n)
-{
-    ngx_uint_t  key;
-
-    key = 0;
-
-    while (n--) {
-        *dst = ngx_tolower(*src);
-        key = ngx_hash(key, *dst);
-        dst++;
-        src++;
-    }
-
-    return key;
-}
-
-/*
-³õÊ¼»¯ngx_hash_keys_arrays_t ½á¹¹Ìå£¬typeµÄÈ¡Öµ·¶Î§Ö»ÓĞÁ½¸ö£¬NGX_HASH_SMALL±íÊ¾³õÊ¼»¯ÔªËØ½ÏÉÙ£¬NGX_HASH_LARGE±íÊ¾³õÊ¼»¯ÔªËØ½Ï¶à£¬
-ÔÚÏòhaÖĞ¼ÓÈëÊ±±ØĞëµ÷ÓÃ´Ë·½·¨¡£
-*/ //ngx_hash_keys_array_initÒ»°ãºÍngx_hash_add_keyÅäºÏÊ¹ÓÃ£¬Ç°Õß±íÊ¾³õÊ¼»¯ngx_hash_keys_arrays_tÊı×é¿Õ¼ä£¬ºóÕßÓÃÀ´´æ´¢¶ÔÓ¦µÄkeyµ½Êı×éÖĞµÄ¶ÔÓ¦hashºÍÊı×éÖĞ
-ngx_int_t
-ngx_hash_keys_array_init(ngx_hash_keys_arrays_t *ha, ngx_uint_t type) //Ê¹ÓÃ·½·¨¿ÉÒÔ²Î¿¼ngx_http_server_names
-{
-    ngx_uint_t  asize;
-
-    if (type == NGX_HASH_SMALL) {
-        asize = 4;
-        ha->hsize = 107;
-
-    } else {
-        asize = NGX_HASH_LARGE_ASIZE;
-        ha->hsize = NGX_HASH_LARGE_HSIZE;
-    }
-    
-    //³õÊ¼»¯ ´æ·Å·ÇÍ¨Åä·û¹Ø¼ü×ÖµÄÊı×é
-    if (ngx_array_init(&ha->keys, ha->temp_pool, asize, sizeof(ngx_hash_key_t))
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-
-    //³õÊ¼»¯´æ·ÅÇ°ÖÃÍ¨Åä·û´¦ÀíºÃµÄ¹Ø¼ü×Ö Êı×é
-    if (ngx_array_init(&ha->dns_wc_head, ha->temp_pool, asize, sizeof(ngx_hash_key_t))
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-    
-    //³õÊ¼»¯´æ·ÅºóÖÃÍ¨Åä·û´¦ÀíºÃµÄ¹Ø¼ü×Ö Êı×é
-    if (ngx_array_init(&ha->dns_wc_tail, ha->temp_pool, asize, sizeof(ngx_hash_key_t))
-        != NGX_OK)
-    {
-        return NGX_ERROR;
-    }
-
-//ÏÂÃæÕâ¼¸¸öÊµ¼ÊÉÏÊÇhashÍ¨µÄ¸÷¸öÍ°µÄÍ·²¿Ö¸Õë£¬Ã¿¸öhashÓĞha->hsize¸öÍ°Í·²¿Ö¸Õë£¬ÔÚngx_hash_add_keyµÄÊ±ºòÍ·²¿Ö¸ÕëÖ¸ÏòÃ¿¸öÍ°ÖĞ¾ßÌåµÄ³ÉÔ±ÁĞ±í
-    
-  /*
-  ³õÊ¼»¯¶şÎ»Êı×é£¬Õâ¸öÊı×é´æ·ÅµÄµÚÒ»¸öÎ¬¶È´ú±íµÄÊÇbucketµÄ±àºÅ£¬ÄÇÃ´keys_hash[i]ÖĞ´æ·ÅµÄÊÇËùÓĞµÄkeyËã³öÀ´µÄhashÖµ¶ÔhsizeÈ¡
-  Ä£ÒÔºóµÄÖµÎªiµÄkey¡£¼ÙÉèÓĞ3¸ökey,·Ö±ğÊÇkey1,key2ºÍkey3¼ÙÉèhashÖµËã³öÀ´ÒÔºó¶ÔhsizeÈ¡Ä£µÄÖµ¶¼ÊÇi£¬ÄÇÃ´ÕâÈı¸ökeyµÄÖµ¾ÍË³Ğò´æ
-  ·ÅÔÚkeys_hash[i][0],keys_hash[i][1], keys_hash[i][2]¡£¸ÃÖµÔÚµ÷ÓÃµÄ¹ı³ÌÖĞÓÃÀ´±£´æºÍ¼ì²âÊÇ·ñÓĞ³åÍ»µÄkeyÖµ£¬Ò²¾ÍÊÇÊÇ·ñÓĞÖØ¸´¡£
-  */  
-    ha->keys_hash = ngx_pcalloc(ha->temp_pool, sizeof(ngx_array_t) * ha->hsize); 
-    //Ö»¿ª±ÙÓĞ¶àÉÙ¸öÍ°¶ÔÓ¦µÄÍ·£¬Ã¿¸öÍ°ÖĞÓÃÀ´´æ´¢Êı¾İµÄ¿Õ¼äÔÚºóÃæµÄngx_hash_add_key·ÖÆ¬¿Õ¼ä
-    if (ha->keys_hash == NULL) {
-        return NGX_ERROR;
-    }
-    
-    // ¸ÃÊı×éÔÚµ÷ÓÃµÄ¹ı³ÌÖĞÓÃÀ´±£´æºÍ¼ì²âÊÇ·ñÓĞ³åÍ»µÄÇ°ÏòÍ¨Åä·ûµÄkeyÖµ£¬Ò²¾ÍÊÇÊÇ·ñÓĞÖØ¸´¡£
-    ha->dns_wc_head_hash = ngx_pcalloc(ha->temp_pool,
-                                       sizeof(ngx_array_t) * ha->hsize);
-    if (ha->dns_wc_head_hash == NULL) {
-        return NGX_ERROR;
-    }
-    
-   // ¸ÃÊı×éÔÚµ÷ÓÃµÄ¹ı³ÌÖĞÓÃÀ´±£´æºÍ¼ì²âÊÇ·ñÓĞ³åÍ»µÄºóÏòÍ¨Åä·ûµÄkeyÖµ£¬Ò²¾ÍÊÇÊÇ·ñÓĞÖØ¸´¡£ 
-    ha->dns_wc_tail_hash = ngx_pcalloc(ha->temp_pool,
-                                       sizeof(ngx_array_t) * ha->hsize);
-    if (ha->dns_wc_tail_hash == NULL) {
-        return NGX_ERROR;
-    }
-
-    return NGX_OK;
-}
-
-/*
-°Ñkey valueÌí¼Óµ½ha¶ÔÓ¦µÄarray±äÁ¿Êı×éÖĞ
-*/ //ngx_hash_add_keyÊÇ½«´ø»ò²»´øÍ¨Åä·ûµÄkey×ª»»ºó´æ·ÅÔÚngx_hash_keys_arrays_t¶ÔÓ¦µÄ
-/*
-¹şÏ£Í¨Åä·ûµÄ²éÕÒ: 
-Nginx¹şÏ£Ö§³ÖÈıÖÖÀàĞÍµÄÍ¨Åä: 
-"*.example.com", ".example.com", and "www.example.*"
-
-¶ÔÕâĞ©×Ö·û´®½øĞĞ¹şÏ£Ç°½øĞĞÁËÔ¤´¦Àí(ngx_hash_add_key): 
-"*.example.com", ¾­¹ıÔ¤´¦Àíºó±ä³ÉÁË: "com.example.\0"
-".example.com"  ¾­¹ıÔ¤´¦Àíºó±ä³ÉÁË: "com.example\0"
-"www.example.*" ¾­¹ıÔ¤´¦Àíºó±ä³ÉÁË:  "www.example\0"
-
-Í¨Åä·ûhash±íµÄÊµÏÖÔ­Àí £º µ±¹¹Ôì´ËÀàĞÍµÄhash±íµÄÊ±ºò£¬Êµ¼ÊÉÏÊÇ¹¹ÔìÁËÒ»¸öhash±íµÄÒ»¸ö¡°Á´±í¡±£¬ÊÇÍ¨¹ıhash±íÖĞµÄkey¡°Á´½Ó¡±ÆğÀ´µÄ¡£
-±ÈÈç£º¶ÔÓÚ¡°*.example.com¡±½«»á¹¹Ôì³ö2¸öhash±í£¬µÚÒ»¸öhash±íÖĞÓĞÒ»¸ökeyÎªcomµÄ±íÏî£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸ÏòµÚ¶ş¸öhash±íµÄÖ¸Õë£¬
-¶øµÚ¶ş¸öhash±íÖĞÓĞÒ»¸ö±íÏîabc£¬¸Ã±íÏîµÄvalue°üº¬ÓĞÖ¸*.example.com¶ÔÓ¦µÄvalueµÄÖ¸Õë¡£ÄÇÃ´²éÑ¯µÄÊ±ºò£¬±ÈÈç²éÑ¯www.example.comµÄÊ±ºò£¬
-ÏÈ²écom£¬Í¨¹ı²écom¿ÉÒÔÕÒµ½µÚ¶ş¼¶µÄhash±í£¬ÔÚµÚ¶ş¼¶hash±íÖĞ£¬ÔÙ²éÕÒexample£¬ÒÀ´ÎÀàÍÆ£¬Ö±µ½ÔÚÄ³Ò»¼¶µÄhash±íÖĞ²éµ½µÄ±íÏî¶ÔÓ¦µÄvalue¶Ô
-Ó¦Ò»¸öÕæÕıµÄÖµ¶ø·ÇÒ»¸öÖ¸ÏòÏÂÒ»¼¶hash±íµÄÖ¸ÕëµÄÊ±ºò£¬²éÑ¯¹ı³Ì½áÊø¡£¶ø²éÕÒµ½ÄÄÀïÊÇÓÉvalueµØÖ·µÄ×îµÍÁ½bit±íÊ¾: (ÕâÒ²ÊÇÔÚÉêÇëÄÚ´æÊ±Òª
-Çó4×Ö½Ú¶ÔÆëµÄÔ­Òò, ×îºóÁ½bitÊÇ0, ¿ÉÒÔ±»ĞŞ¸ÄÀ´±íÊ¾ÏÂÊöÇé¿ö)
-
-Í·²¿Í¨ÅäÇé¿ö:
-        / *
-         * the 2 low bits of value have the special meaning:
-         *     00 - value is data pointer for both "example.com"
-         *          and "*.example.com";
-         *     01 - value is data pointer for "*.example.com" only;
-         *     10 - value is pointer to wildcard hash allowing
-         *          both "example.com" and "*.example.com";
-         *     11 - value is pointer to wildcard hash allowing
-         *          "*.example.com" only.
-         * /
-Î²²¿Í¨ÅäÇé¿ö:
-
-        / *
-         * the 2 low bits of value have the special meaning:
-         *     00 - value is data pointer;
-         *     11 - value is pointer to wildcard hash allowing "example.*".
-         * /
-
-*/
-/*
-ngx_hash_add_keyÊÇ½«´ø»ò²»´øÍ¨Åä·ûµÄkey×ª»»ºó´æ·ÅÔÚÉÏÊö½á¹¹ÖĞµÄ£¬Æä¹ı³ÌÊÇ:
-    ÏÈ¿´´«ÈëµÄµÚÈı¸ö²ÎÊı±êÖ¾±êÃ÷µÄkeyÊÇ²»ÊÇNGX_HASH_WILDCARD_KEY£¬ 
-    Èç¹û²»ÊÇ£¬ÔòÔÚha->keys_hashÖĞ¼ì²éÊÇ·ñ³åÍ»£¬³åÍ»¾Í·µ»ØNGX_BUSY£¬·ñÔò£¬¾Í½«ÕâÒ»Ïî²åÈëµ½ha->keysÖĞ¡£
-    Èç¹ûÊÇ£¬¾ÍÅĞ¶ÏÍ¨Åä·ûÀàĞÍ£¬Ö§³ÖµÄÍ³Åä·ûÓĞÈıÖÖ¡±*.example.com¡±, ¡°.example.com¡±, and ¡°www.example.*¡°£¬
-    È»ºó½«µÚÒ»ÖÖ×ª»»Îª"com.example.¡°²¢²åÈëµ½ha->dns_wc_headÖĞ£¬½«µÚÈıÖÖ×ª»»Îª"www.example"²¢²åÈëµ½ha->dns_wc_tailÖĞ£¬
-    ¶ÔµÚ¶şÖÖ±È½ÏÌØÊâ£¬ÒòÎªËüµÈ¼ÛÓÚ¡±*.example.com¡±+¡°example.com¡±,ËùÒÔ»áÒ»·İ×ª»»Îª"com.example.¡°²åÈëµ½ha->dns_wc_head£¬
-    Ò»·İÎª"example.com"²åÈëµ½ha->keysÖĞ¡£µ±È»²åÈëÇ°¶¼»á¼ì²éÊÇ·ñ³åÍ»¡£
-*/ //ngx_hash_keys_array_initÒ»°ãºÍngx_hash_add_keyÅäºÏÊ¹ÓÃ£¬Ç°Õß±íÊ¾³õÊ¼»¯ngx_hash_keys_arrays_tÊı×é¿Õ¼ä£¬ºóÕßÓÃÀ´´æ´¢¶ÔÓ¦µÄkeyµ½Êı×éÖĞµÄ¶ÔÓ¦hashºÍÊı×éÖĞ
-
-/*
-
-    ¸³Öµ¼ûngx_hash_add_key
-    
-    Ô­Ê¼key                  ´æ·Åµ½hashÍ°(keys_hash»òdns_wc_head_hash                 ´æ·Åµ½Êı×éÖĞ(keys»òdns_wc_head»ò
-                                    »òdns_wc_tail_hash)                                     dns_wc_tail)
-                                    
- www.example.com                 www.example.com(´æÈëkeys_hash)                        www.example.com (´æÈëkeysÊı×é³ÉÔ±ngx_hash_key_t¶ÔÓ¦µÄkeyÖĞ)
-  .example.com             example.com(´æµ½keys_hash£¬Í¬Ê±´æÈëdns_wc_tail_hash)        com.example  (´æÈëdns_wc_headÊı×é³ÉÔ±ngx_hash_key_t¶ÔÓ¦µÄkeyÖĞ)
- www.example.*                     www.example. (´æÈëdns_wc_tail_hash)                 www.example  (´æÈëdns_wc_tailÊı×é³ÉÔ±ngx_hash_key_t¶ÔÓ¦µÄkeyÖĞ)
- *.example.com                     example.com  (´æÈëdns_wc_head_hash)                 com.example. (´æÈëdns_wc_headÊı×é³ÉÔ±ngx_hash_key_t¶ÔÓ¦µÄkeyÖĞ)
-*/
-ngx_int_t
-ngx_hash_add_key(ngx_hash_keys_arrays_t *ha, ngx_str_t *key, void *value,
-    ngx_uint_t flags)//Ê¹ÓÃ·½·¨¿ÉÒÔ²Î¿¼ngx_http_server_names
-{
-    size_t           len;
-    u_char          *p;
-    ngx_str_t       *name;
-    ngx_uint_t       i, k, n, 
-        skip, // 1 -- ".example.com"  2 -- "*.example.com"  0 -- "www.example.*"
-        last;
-    ngx_array_t     *keys, *hwc;
-    ngx_hash_key_t  *hk;
-
-    last = key->len;
-
-    if (flags & NGX_HASH_WILDCARD_KEY) {
-
-        /*
-         * supported wildcards:
-         *     "*.example.com", ".example.com", and "www.example.*"
-         */
-
-        n = 0;
-
-        for (i = 0; i < key->len; i++) {
-
-            if (key->data[i] == '*') {
-                if (++n > 1) { //Í¨Åä·û*Ö»ÄÜ³öÏÖÒ»´Î£¬³öÏÖ¶à´ÎËµÃ÷´íÎó·µ»Ø
-                    return NGX_DECLINED;
-                }
-            }
-
-            //²»ÄÜ³öÏÖÁ½¸öÁ¬ĞøµÄ..£¬±ãÊÇ³ö´í£¬Ö±½Ó·µ»Ø
-            if (key->data[i] == '.' && key->data[i + 1] == '.') {
-                return NGX_DECLINED;
-            }
-        }
-        
-        if (key->len > 1 && key->data[0] == '.') {//Ê××Ö·ûÊÇ.£¬".example.com"ËµÃ÷ÊÇÇ°ÏòÍ¨Åä·û
-            skip = 1;
-            goto wildcard;
-        }
-
-        if (key->len > 2) {
-
-            if (key->data[0] == '*' && key->data[1] == '.') {//"*.example.com"
-                skip = 2;
-                goto wildcard;
-            }
-
-            if (key->data[i - 2] == '.' && key->data[i - 1] == '*') {//"www.example.*"
-                skip = 0;
-                last -= 2;
-                goto wildcard;
-            }
-        }
-
-        if (n) {
-            return NGX_DECLINED;
-        }
-    }
-
-    /* exact hash */
-    /* ËµÃ÷ÊÇ¾«È·Æ¥Åäserver_nameÀàĞÍ£¬ÀıÈç"www.example.com" */
-    k = 0;
-
-    //°Ñ×Ö·û´®keyÎªÔ´À´¼ÆËãhash£¬Ò»¸ö×Ö·ûÒ»¸ö×Ö·ûµÄËã
-    for (i = 0; i < last; i++) {
-        if (!(flags & NGX_HASH_READONLY_KEY)) {
-            key->data[i] = ngx_tolower(key->data[i]);
-        }
-        k = ngx_hash(k, key->data[i]);
-    }
-
-    k %= ha->hsize;
-
-    /* check conflicts in exact hash */
-
-    name = ha->keys_hash[k].elts;
-
-    if (name) {
-        for (i = 0; i < ha->keys_hash[k].nelts; i++) {
-            if (last != name[i].len) {
-                continue;
-            }
-
-            if (ngx_strncmp(key->data, name[i].data, last) == 0) { //ÒÑ¾­´æÔÚÒ»¸öÏàÍ¬µÄ
-                return NGX_BUSY;
-            }
-        }
-
-    } else {
-        //Ã¿¸öÍ°ÖĞµÄÔªËØ¸öÊıÄ¬ÈÏ
-        if (ngx_array_init(&ha->keys_hash[k], ha->temp_pool, 4,
-                           sizeof(ngx_str_t)) //Í°µÄÍ·²¿Ö¸ÕëÔÚngx_hash_keys_array_init·ÖÅä£¬Í°ÖĞ´æ´¢Êı¾İµÄ¿Õ¼äÔÚÕâÀï·ÖÅä
-            != NGX_OK)
-        {
-            return NGX_ERROR;
-        }
-    }
-
-    /*
-    key´æµ½ha->keys_hash[]¶ÔÓ¦µÄhashÍ°ÖĞ, key-value´æµ½ha->keys[]Êı×éÖĞµÄ¶ÔÓ¦key³ÉÔ±ºÍvalue³ÉÔ±ÖĞ
-
-     */
-
-    //´æ·Åkeyµ½ha->keys_hash[]Í°ÖĞ
-    name = ngx_array_push(&ha->keys_hash[k]);
-    if (name == NULL) {
-        return NGX_ERROR;
-    }
-
-    *name = *key;
-
-    hk = ngx_array_push(&ha->keys);
-    if (hk == NULL) {
-        return NGX_ERROR;
-    }
-    //ha->keysÖĞ´æ·ÅµÄÊÇkey  value¶Ô
-    hk->key = *key;
-    hk->key_hash = ngx_hash_key(key->data, last);
-    hk->value = value;
-
-    return NGX_OK;
-
-wildcard:
-
-    /* wildcard hash */
-    //ÒÔ²ÎÊıÖĞµÄkey×Ö·û´®¼ÆËãhash key
-    k = ngx_hash_strlow(&key->data[skip], &key->data[skip], last - skip);
-
-    k %= ha->hsize;
-
-    if (skip == 1) { //".example.com"£¬".example.com"³ıÁËÌí¼Óµ½hashÍ°keys_hash[]Íâ£¬»¹»áÌí¼Óµ½dns_wc_tail_hash[]Í°ÖĞ£¬
-
-        /* check conflicts in exact hash for ".example.com" */
-
-        name = ha->keys_hash[k].elts;
-
-        if (name) {
-            len = last - skip; //³öÈ¥¿ªÍ·µÄ.
-            //×Ö·û´®³¤¶ÈºÍÄÚÈİÍêÈ«Æ¥Åä
-            for (i = 0; i < ha->keys_hash[k].nelts; i++) {
-                if (len != name[i].len) {
-                    continue;
-                }
-
-                if (ngx_strncmp(&key->data[1], name[i].data, len) == 0) {
-                    return NGX_BUSY;
-                }
-            }
-
-        } else {
-            if (ngx_array_init(&ha->keys_hash[k], ha->temp_pool, 4,
-                               sizeof(ngx_str_t)) //Ã¿¸ö²ÛÖĞµÄÔªËØ¸öÊıÄ¬ÈÏ4×Ö½Ú
-            //¿ª±ÙÃ¿¸ö²ÛÖĞµÄ¿Õ¼ä£¬ÓÃÀ´´æ·Å¶ÔÓ¦µÄ½Úµãµ½¸Ã²ÛÖĞ£¬²ÛµÄÍ·½ÚµãÔÚngx_hash_keys_array_initÖĞÒÑ¾­·ÖÅäºÃ
-                != NGX_OK)
-            {
-                return NGX_ERROR;
-            }
-        }
-
-        name = ngx_array_push(&ha->keys_hash[k]);
-        if (name == NULL) {
-            return NGX_ERROR;
-        }
-
-        name->len = last - 1; //°Ñ".example.com"×Ö·û´®¿ªÍ·µÄ.È¥µô
-        name->data = ngx_pnalloc(ha->temp_pool, name->len);
-        if (name->data == NULL) {
-            return NGX_ERROR;
-        }
-
-        //".example.com"È¥µô¿ªÍ·µÄ.ºó±äÎª"example.com"´æ´¢µ½nameÖĞ£¬µ«ÊÇkey»¹ÊÇÔ­À´µÄ".example.com"
-        ngx_memcpy(name->data, &key->data[1], name->len);//".example.com"È¥µô¿ªÍ·µÄ.ºó±äÎª"example.com"´æ´¢µ½ha->keys_hash[i]Í°ÖĞ
-    }
-
-
-    if (skip) { //Ç°ÖÃÆ¥ÅäµÄÍ¨Åä·û"*.example.com"  ".example.com"
-        /*
-         * convert "*.example.com" to "com.example.\0"
-         *      and ".example.com" to "com.example\0"
-         */
-        p = ngx_pnalloc(ha->temp_pool, last);
-        if (p == NULL) {
-            return NGX_ERROR;
-        }
-
-        len = 0;
-        n = 0;
-
-        for (i = last - 1; i; i--) {
-            if (key->data[i] == '.') {
-                ngx_memcpy(&p[n], &key->data[i + 1], len);
-                n += len;
-                p[n++] = '.';
-                len = 0;
-                continue;
-            }
-
-            len++;
-        }
-
-        if (len) {
-            ngx_memcpy(&p[n], &key->data[1], len);
-            n += len;
-        }
-
-        /* keyÖĞÊı¾İ"*.example.com"£¬pÖĞÊı¾İ"com.example.\0"   keyÖĞÊı¾İ".example.com" pÖĞÊı¾İ"com.example\0" */
-        p[n] = '\0'; 
-
-        hwc = &ha->dns_wc_head;
-        keys = &ha->dns_wc_head_hash[k];
-    
-    }  else {//ºóÖÃÆ¥Åä
-        last++; //+1ÊÇÓÃÀ´´æ´¢\0×Ö·û
-
-        p = ngx_pnalloc(ha->temp_pool, last);
-        if (p == NULL) {
-            return NGX_ERROR;
-        }
-
-        //keyÖĞÊı¾İÎª"www.example.*"£¬ pÖĞÊı¾İÎª"www.example\0"
-        ngx_cpystrn(p, key->data, last); 
-
-        hwc = &ha->dns_wc_tail;
-        keys = &ha->dns_wc_tail_hash[k];
-    }
-
-    /* check conflicts in wildcard hash */  
-    name = keys->elts;
-
-    if (name) {
-        len = last - skip;
-        //²é¿´ÊÇ·ñÒÑ¾­ÓĞ´æÔÚµÄÁË
-        for (i = 0; i < keys->nelts; i++) {
-            if (len != name[i].len) {
-                continue;
-            }
-
-            if (ngx_strncmp(key->data + skip, name[i].data, len) == 0) {
-                return NGX_BUSY;
-            }
-        }
-
-    } else {//ËµÃ÷ÊÇµÚÒ»´Î³öÏÖÇ°ÖÃÍ¨Åä·û»òÕßºóÖÃÍ¨Åä·û
-        //³õÊ¼»¯Í°ha->dns_wc_head_hash[i]»òÕßÍ°ha->dns_wc_tail_hash[i]ÖĞµÄÔªËØ¸öÊı
-        if (ngx_array_init(keys, ha->temp_pool, 4, sizeof(ngx_str_t)) != NGX_OK)
-        {
-            return NGX_ERROR;
-        }
-    }
-
-    name = ngx_array_push(keys);
-    if (name == NULL) {
-        return NGX_ERROR;
-    }
-
-    name->len = last - skip;
-    name->data = ngx_pnalloc(ha->temp_pool, name->len);
-    if (name->data == NULL) {
-        return NGX_ERROR;
-    }
-    
-    /* Ç°ÖÃÆ¥Åäkey×Ö·û´®´æ·Åµ½&ha->dns_wc_head; ºóÖÃÆ¥Åäkey×Ö·û´®´æ·Åµ½&ha->dns_wc_tail hash±íÖĞ */
-    ngx_memcpy(name->data, key->data + skip, name->len);
-
-    /*
-    ÅäÖÃvalid_referers none blocked server_names .example.com  www.example.*
-    »òÕßÅäÖÃvalid_referers none blocked server_names *.example.com  www.example.*
-    name:example.com, kye:*.example.com
-    name:www.example., kye:www.example.*
-    name:example.com, kye:.example.com
-
-    *.example.com  --- example.com
-    www.example.*  --- www.example.
-    .example.com   --- example.com
-    ngx_log_debugall(ngx_cycle->log, 0, "name:%V, kye:%V", name, key);
-     */
-    /* add to wildcard hash */
-
-    hk = ngx_array_push(hwc);
-    if (hk == NULL) {
-        return NGX_ERROR;
-    }
-
-    hk->key.len = last - 1;
-    //µ½ÕâÀï,pÖĞµÄÊı¾İ¾ÍÓĞÔ´key"*.example.com", ".example.com", and "www.example.*"±äÎªÁË"com.example.\0" "com.example\0"  "www.example\0"
-    hk->key.data = p;
-    hk->key_hash = 0;
-    hk->value = value; //ÒÔngx_http_add_refererÎªÀı£¬¼ÙÉèkeyÎª£¬*.example.com/test/xxx,ÔòvalueÎª×Ö·û´®/test/xxx£¬·ñÔòÎªNGX_HTTP_REFERER_NO_URI_PART
-
-/*
-    ÅäÖÃvalid_referers none blocked server_names .example.com  www.example.*
-    »òÕßÅäÖÃvalid_referers none blocked server_names *.example.com  www.example.*
-
-    [yangya  [debug] 25843#25843: name:example.com, kye:.example.com, p:com.example
-    [yangya  [debug] 25843#25843: name:www.example., kye:www.example.*, p:www.example
-    [yangya  [debug] 25844#25844: name:example.com, kye:*.example.com, p:com.example.
-
-
-    ngx_log_debugall(ngx_cycle->log, 0, "name:%V, kye:%V, p:%V", name, key, &hk->key);
-*/
-    return NGX_OK;
-}
-
+å…¶nameså‚æ•°æ˜¯ngx_hash_key_tç»“æ„çš„æ•°ç»„ï¼Œå³é”®-å€¼å¯¹<key,value>æ•°ç»„ï¼Œneltsè¡¨ç¤ºè¯¥æ•°ç»„å…ƒç´ çš„ä¸ªæ•°
+
+è¯¥å‡½æ•°åˆå§‹åŒ–çš„ç»“æœå°±æ˜¯å°†namesæ•°ç»„ä¿å­˜çš„é”®-å€¼å¯¹<key,value>ï¼Œé€šè¿‡hashçš„æ–¹å¼å°†å…¶å­˜å…¥ç›¸åº”çš„ä¸€ä¸ªæˆ–å¤šä¸ªhashæ¡¶(å³ä»£ç ä¸­çš„buckets)ä¸­ï¼Œ
+è¯¥hashè¿‡ç¨‹ç”¨åˆ°çš„hashå‡½æ•°ä¸€èˆ¬ä¸ºngx_hash_key_lcç­‰ã€‚hashæ¡¶é‡Œé¢å­˜æ”¾çš„æ˜¯ngx_hash_elt_tç»“æ„çš„æŒ‡é’ˆ(hashå…ƒç´ æŒ‡é’ˆ)ï¼Œè¯¥æŒ‡é’ˆæŒ‡å‘ä¸€ä¸ªåŸºæœ¬
+è¿ç»­çš„æ•°æ®åŒºã€‚è¯¥æ•°æ®åŒºä¸­å­˜æ”¾çš„æ˜¯ç»hashä¹‹åçš„é”®-å€¼å¯¹<key',value'>ï¼Œå³ngx_hash_elt_tç»“æ„ä¸­çš„å­—æ®µ<name,value>ã€‚æ¯ä¸€ä¸ªè¿™æ ·çš„æ•°æ®
+åŒºå­˜æ”¾çš„é”®-å€¼å¯¹<key',value'>å¯ä»¥æ˜¯ä¸€ä¸ªæˆ–å¤šä¸ªã€‚
+*/ //ngx_hash_initä¸­namesæ•°ç»„å­˜å…¥hashæ¡¶å‰ï¼Œå…¶ç»“æ„æ˜¯ngx_hash_key_tå½¢å¼ï¼Œåœ¨å¾€hashæ¡¶é‡Œé¢å­˜æ•°æ®çš„æ—¶å€™ï¼Œä¼šæŠŠngx_hash_key_té‡Œé¢çš„æˆå‘˜æ‹·è´åˆ°ngx_hash_elt_tä¸­ç›¸åº”æˆå‘˜
+//æºä»£ç ï¼Œæ¯”è¾ƒé•¿ï¼Œæ€»çš„æµç¨‹å³ä¸ºï¼šé¢„ä¼°éœ€è¦çš„æ¡¶æ•°é‡ 

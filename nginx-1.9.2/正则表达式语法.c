@@ -1,48 +1,45 @@
 /*
-ÕıÔòÓï·¨:
-Èç¹ûÄãÏë²éÕÒÔª×Ö·û±¾ÉíµÄ»°£¬±ÈÈçÄã²éÕÒ.,»òÕß*,¾Í³öÏÖÁËÎÊÌâ£ºÄãÃ»°ì·¨Ö¸¶¨ËüÃÇ£¬ÒòÎªËüÃÇ»á±»½âÊÍ³É±ğµÄÒâË¼¡£ÕâÊ±Äã¾ÍµÃÊ¹ÓÃ\À´È¡ÏûÕâĞ©×Ö·ûµÄÌØÊâÒâÒå¡£Òò´Ë£¬ÄãÓ¦¸ÃÊ¹ÓÃ\.ºÍ\*¡£µ±È»£¬Òª²éÕÒ\±¾Éí£¬ÄãÒ²µÃÓÃ\\.
+æ­£åˆ™è¯­æ³•:
+å¦‚æœä½ æƒ³æŸ¥æ‰¾å…ƒå­—ç¬¦æœ¬èº«çš„è¯ï¼Œæ¯”å¦‚ä½ æŸ¥æ‰¾.,æˆ–è€…*,å°±å‡ºç°äº†é—®é¢˜ï¼šä½ æ²¡åŠæ³•æŒ‡å®šå®ƒä»¬ï¼Œå› ä¸ºå®ƒä»¬ä¼šè¢«è§£é‡Šæˆåˆ«çš„æ„æ€ã€‚è¿™æ—¶ä½ å°±å¾—ä½¿ç”¨\æ¥å–æ¶ˆè¿™äº›å­—ç¬¦çš„ç‰¹æ®Šæ„ä¹‰ã€‚å› æ­¤ï¼Œä½ åº”è¯¥ä½¿ç”¨\.å’Œ\*ã€‚å½“ç„¶ï¼Œè¦æŸ¥æ‰¾\æœ¬èº«ï¼Œä½ ä¹Ÿå¾—ç”¨\\.
 
 
-.     Æ¥Åä³ı»»ĞĞ·ûÒÔÍâµÄÈÎÒâ×Ö·û
-\w     Æ¥Åä×ÖÄ¸»òÊı×Ö»òÏÂ»®Ïß»òºº×Ö
-\s     Æ¥ÅäÈÎÒâµÄ¿Õ°×·û ÈÎÒâµÄ¿Õ°×·û£¬°üÀ¨¿Õ¸ñ£¬ÖÆ±í·û(Tab)£¬»»ĞĞ·û£¬ÖĞÎÄÈ«½Ç¿Õ¸ñµÈ¡£
-\d     Æ¥ÅäÊı×Ö      Èç:\d+Æ¥Åä1¸ö»ò¸ü¶àÁ¬ĞøµÄÊı×Ö
-\b     Æ¥Åäµ¥´ÊµÄ¿ªÊ¼»ò½áÊø
-^     Æ¥Åä×Ö·û´®µÄ¿ªÊ¼
-$     Æ¥Åä×Ö·û´®µÄ½áÊø
+.     åŒ¹é…é™¤æ¢è¡Œç¬¦ä»¥å¤–çš„ä»»æ„å­—ç¬¦
+\w     åŒ¹é…å­—æ¯æˆ–æ•°å­—æˆ–ä¸‹åˆ’çº¿æˆ–æ±‰å­—
+\s     åŒ¹é…ä»»æ„çš„ç©ºç™½ç¬¦ ä»»æ„çš„ç©ºç™½ç¬¦ï¼ŒåŒ…æ‹¬ç©ºæ ¼ï¼Œåˆ¶è¡¨ç¬¦(Tab)ï¼Œæ¢è¡Œç¬¦ï¼Œä¸­æ–‡å…¨è§’ç©ºæ ¼ç­‰ã€‚
+\d     åŒ¹é…æ•°å­—      å¦‚:\d+åŒ¹é…1ä¸ªæˆ–æ›´å¤šè¿ç»­çš„æ•°å­—
+\b     åŒ¹é…å•è¯çš„å¼€å§‹æˆ–ç»“æŸ
+^     åŒ¹é…å­—ç¬¦ä¸²çš„å¼€å§‹
+$     åŒ¹é…å­—ç¬¦ä¸²çš„ç»“æŸ
 
-*     ÖØ¸´Áã´Î»ò¸ü¶à´Î    Èç:È»ºóÊÇÈÎÒâÊıÁ¿µÄ×ÖÄ¸»òÊı×Ö(\w*)   +ÊÇºÍ*ÀàËÆµÄÔª×Ö·û£¬²»Í¬µÄÊÇ*Æ¥ÅäÖØ¸´ÈÎÒâ´Î(¿ÉÄÜÊÇ0´Î)£¬¶ø+ÔòÆ¥ÅäÖØ¸´1´Î»ò¸ü¶à´Î¡£
+*     é‡å¤é›¶æ¬¡æˆ–æ›´å¤šæ¬¡    å¦‚:ç„¶åæ˜¯ä»»æ„æ•°é‡çš„å­—æ¯æˆ–æ•°å­—(\w*)   +æ˜¯å’Œ*ç±»ä¼¼çš„å…ƒå­—ç¬¦ï¼Œä¸åŒçš„æ˜¯*åŒ¹é…é‡å¤ä»»æ„æ¬¡(å¯èƒ½æ˜¯0æ¬¡)ï¼Œè€Œ+åˆ™åŒ¹é…é‡å¤1æ¬¡æˆ–æ›´å¤šæ¬¡ã€‚
 
-+     ÖØ¸´Ò»´Î»ò¸ü¶à´Î    Èç:\d+Æ¥Åä1¸ö»ò¸ü¶àÁ¬ĞøµÄÊı×Ö  +ÊÇºÍ*ÀàËÆµÄÔª×Ö·û£¬²»Í¬µÄÊÇ*Æ¥ÅäÖØ¸´ÈÎÒâ´Î(¿ÉÄÜÊÇ0´Î)£¬¶ø+ÔòÆ¥ÅäÖØ¸´1´Î»ò¸ü¶à´Î¡£
++     é‡å¤ä¸€æ¬¡æˆ–æ›´å¤šæ¬¡    å¦‚:\d+åŒ¹é…1ä¸ªæˆ–æ›´å¤šè¿ç»­çš„æ•°å­—  +æ˜¯å’Œ*ç±»ä¼¼çš„å…ƒå­—ç¬¦ï¼Œä¸åŒçš„æ˜¯*åŒ¹é…é‡å¤ä»»æ„æ¬¡(å¯èƒ½æ˜¯0æ¬¡)ï¼Œè€Œ+åˆ™åŒ¹é…é‡å¤1æ¬¡æˆ–æ›´å¤šæ¬¡ã€‚
 
-?     ÖØ¸´Áã´Î»òÒ»´Î
-{n}     ÖØ¸´n´Î
-{n,}     ÖØ¸´n´Î»ò¸ü¶à´Î
-{n,m}     ÖØ¸´nµ½m´Î
-*?     ÖØ¸´ÈÎÒâ´Î£¬µ«¾¡¿ÉÄÜÉÙÖØ¸´
-+?     ÖØ¸´1´Î»ò¸ü¶à´Î£¬µ«¾¡¿ÉÄÜÉÙÖØ¸´
-??     ÖØ¸´0´Î»ò1´Î£¬µ«¾¡¿ÉÄÜÉÙÖØ¸´
-{n,m}?     ÖØ¸´nµ½m´Î£¬µ«¾¡¿ÉÄÜÉÙÖØ¸´
-{n,}?     ÖØ¸´n´ÎÒÔÉÏ£¬µ«¾¡¿ÉÄÜÉÙÖØ¸´
+?     é‡å¤é›¶æ¬¡æˆ–ä¸€æ¬¡
+{n}     é‡å¤næ¬¡
+{n,}     é‡å¤næ¬¡æˆ–æ›´å¤šæ¬¡
+{n,m}     é‡å¤nåˆ°mæ¬¡
+*?     é‡å¤ä»»æ„æ¬¡ï¼Œä½†å°½å¯èƒ½å°‘é‡å¤
++?     é‡å¤1æ¬¡æˆ–æ›´å¤šæ¬¡ï¼Œä½†å°½å¯èƒ½å°‘é‡å¤
+??     é‡å¤0æ¬¡æˆ–1æ¬¡ï¼Œä½†å°½å¯èƒ½å°‘é‡å¤
+{n,m}?     é‡å¤nåˆ°mæ¬¡ï¼Œä½†å°½å¯èƒ½å°‘é‡å¤
+{n,}?     é‡å¤næ¬¡ä»¥ä¸Šï¼Œä½†å°½å¯èƒ½å°‘é‡å¤
 
-\W     Æ¥ÅäÈÎÒâ²»ÊÇ×ÖÄ¸£¬Êı×Ö£¬ÏÂ»®Ïß£¬ºº×ÖµÄ×Ö·û
-\S     Æ¥ÅäÈÎÒâ²»ÊÇ¿Õ°×·ûµÄ×Ö·û
-\D     Æ¥ÅäÈÎÒâ·ÇÊı×ÖµÄ×Ö·û
-\B     Æ¥Åä²»ÊÇµ¥´Ê¿ªÍ·»ò½áÊøµÄÎ»ÖÃ
-[^x]     Æ¥Åä³ıÁËxÒÔÍâµÄÈÎÒâ×Ö·û
-[^aeiou]     Æ¥Åä³ıÁËaeiouÕâ¼¸¸ö×ÖÄ¸ÒÔÍâµÄÈÎÒâ×Ö·û
+\W     åŒ¹é…ä»»æ„ä¸æ˜¯å­—æ¯ï¼Œæ•°å­—ï¼Œä¸‹åˆ’çº¿ï¼Œæ±‰å­—çš„å­—ç¬¦
+\S     åŒ¹é…ä»»æ„ä¸æ˜¯ç©ºç™½ç¬¦çš„å­—ç¬¦
+\D     åŒ¹é…ä»»æ„éæ•°å­—çš„å­—ç¬¦
+\B     åŒ¹é…ä¸æ˜¯å•è¯å¼€å¤´æˆ–ç»“æŸçš„ä½ç½®
+[^x]     åŒ¹é…é™¤äº†xä»¥å¤–çš„ä»»æ„å­—ç¬¦
+[^aeiou]     åŒ¹é…é™¤äº†aeiouè¿™å‡ ä¸ªå­—æ¯ä»¥å¤–çš„ä»»æ„å­—ç¬¦
 
-²¶»ñ     (exp)     Æ¥Åäexp,²¢²¶»ñÎÄ±¾µ½×Ô¶¯ÃüÃûµÄ×éÀï
-(?<name>exp)     Æ¥Åäexp,²¢²¶»ñÎÄ±¾µ½Ãû³ÆÎªnameµÄ×éÀï£¬Ò²¿ÉÒÔĞ´³É(?'name'exp)
-(?:exp)     Æ¥Åäexp,²»²¶»ñÆ¥ÅäµÄÎÄ±¾£¬Ò²²»¸ø´Ë·Ö×é·ÖÅä×éºÅ
-Áã¿í¶ÏÑÔ     (?=exp)     Æ¥ÅäexpÇ°ÃæµÄÎ»ÖÃ
-(?<=exp)     Æ¥ÅäexpºóÃæµÄÎ»ÖÃ
-(?!exp)     Æ¥ÅäºóÃæ¸úµÄ²»ÊÇexpµÄÎ»ÖÃ
-(?<!exp)     Æ¥ÅäÇ°Ãæ²»ÊÇexpµÄÎ»ÖÃ
-×¢ÊÍ     (?#comment)     ÕâÖÖÀàĞÍµÄ·Ö×é²»¶ÔÕıÔò±í´ïÊ½µÄ´¦Àí²úÉúÈÎºÎÓ°Ïì£¬ÓÃÓÚÌá¹©×¢ÊÍÈÃÈËÔÄ¶Á
-
-
-
+æ•è·     (exp)     åŒ¹é…exp,å¹¶æ•è·æ–‡æœ¬åˆ°è‡ªåŠ¨å‘½åçš„ç»„é‡Œ
+(?<name>exp)     åŒ¹é…exp,å¹¶æ•è·æ–‡æœ¬åˆ°åç§°ä¸ºnameçš„ç»„é‡Œï¼Œä¹Ÿå¯ä»¥å†™æˆ(?'name'exp)
+(?:exp)     åŒ¹é…exp,ä¸æ•è·åŒ¹é…çš„æ–‡æœ¬ï¼Œä¹Ÿä¸ç»™æ­¤åˆ†ç»„åˆ†é…ç»„å·
+é›¶å®½æ–­è¨€     (?=exp)     åŒ¹é…expå‰é¢çš„ä½ç½®
+(?<=exp)     åŒ¹é…expåé¢çš„ä½ç½®
+(?!exp)     åŒ¹é…åé¢è·Ÿçš„ä¸æ˜¯expçš„ä½ç½®
+(?<!exp)     åŒ¹é…å‰é¢ä¸æ˜¯expçš„ä½ç½®
+æ³¨é‡Š     (?#comment)     è¿™ç§ç±»å‹çš„åˆ†ç»„ä¸å¯¹æ­£åˆ™è¡¨è¾¾å¼çš„å¤„ç†äº§ç”Ÿä»»ä½•å½±å“ï¼Œç”¨äºæä¾›æ³¨é‡Šè®©äººé˜…è¯»
 
 
 
@@ -50,38 +47,41 @@ $     Æ¥Åä×Ö·û´®µÄ½áÊø
 
 
 
-PCREº¯Êı¼ò½éºÍÊ¹ÓÃÊ¾Àı .
-·ÖÀà£º C/C++ 2011-03-13 23:56 15411ÈËÔÄ¶Á ÆÀÂÛ(6) ÊÕ²Ø ¾Ù±¨ 
-ÕıÔò±í´ïÊ½listbuffercompilationnullperlPCREÊÇÒ»¸öNFAÕıÔòÒıÇæ£¬²»È»²»ÄÜÌá¹©ÍêÈ«ÓëPerlÒ»ÖÂµÄÕıÔòÓï·¨¹¦ÄÜ¡£
-µ«ËüÍ¬Ê±Ò²ÊµÏÖÁËDFA£¬Ö»ÊÇÂú×ãÊıÑ§ÒâÒåÉÏµÄÕıÔò¡£
+
+
+
+PCREå‡½æ•°ç®€ä»‹å’Œä½¿ç”¨ç¤ºä¾‹ .
+åˆ†ç±»ï¼š C/C++ 2011-03-13 23:56 15411äººé˜…è¯» è¯„è®º(6) æ”¶è— ä¸¾æŠ¥ 
+æ­£åˆ™è¡¨è¾¾å¼listbuffercompilationnullperlPCREæ˜¯ä¸€ä¸ªNFAæ­£åˆ™å¼•æ“ï¼Œä¸ç„¶ä¸èƒ½æä¾›å®Œå…¨ä¸Perlä¸€è‡´çš„æ­£åˆ™è¯­æ³•åŠŸèƒ½ã€‚
+ä½†å®ƒåŒæ—¶ä¹Ÿå®ç°äº†DFAï¼Œåªæ˜¯æ»¡è¶³æ•°å­¦æ„ä¹‰ä¸Šçš„æ­£åˆ™ã€‚
 
  
 
-PCREÌá¹©ÁË19¸ö½Ó¿Úº¯Êı£¬ÎªÁË¼òµ¥½éÉÜ£¬Ê¹ÓÃPCREÄÚ´øµÄ²âÊÔ³ÌĞò(pcretest.c)Ê¾ÀıÓÃ·¨¡£
+PCREæä¾›äº†19ä¸ªæ¥å£å‡½æ•°ï¼Œä¸ºäº†ç®€å•ä»‹ç»ï¼Œä½¿ç”¨PCREå†…å¸¦çš„æµ‹è¯•ç¨‹åº(pcretest.c)ç¤ºä¾‹ç”¨æ³•ã€‚
 
 1. pcre_compile
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
          #include <pcre.h> 
 
 pcre *pcre_compile(const char *pattern, int options, const char **errptr, int *erroffset, const unsigned char *tableptr); 
 
-¹¦ÄÜ£º½«Ò»¸öÕıÔò±í´ïÊ½±àÒë³ÉÒ»¸öÄÚ²¿±íÊ¾£¬ÔÚÆ¥Åä¶à¸ö×Ö·û´®Ê±£¬¿ÉÒÔ¼ÓËÙÆ¥Åä¡£ÆäÍ¬pcre_compile2¹¦ÄÜÒ»ÑùÖ»ÊÇÈ±ÉÙÒ»¸ö²ÎÊıerrorcodeptr¡£
+åŠŸèƒ½ï¼šå°†ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ç¼–è¯‘æˆä¸€ä¸ªå†…éƒ¨è¡¨ç¤ºï¼Œåœ¨åŒ¹é…å¤šä¸ªå­—ç¬¦ä¸²æ—¶ï¼Œå¯ä»¥åŠ é€ŸåŒ¹é…ã€‚å…¶åŒpcre_compile2åŠŸèƒ½ä¸€æ ·åªæ˜¯ç¼ºå°‘ä¸€ä¸ªå‚æ•°errorcodeptrã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-pattern    ÕıÔò±í´ïÊ½
+pattern    æ­£åˆ™è¡¨è¾¾å¼
 
-options     Îª0£¬»òÕßÆäËû²ÎÊıÑ¡Ïî
+options     ä¸º0ï¼Œæˆ–è€…å…¶ä»–å‚æ•°é€‰é¡¹
 
-       errptr       ³ö´íÏûÏ¢
+       errptr       å‡ºé”™æ¶ˆæ¯
 
-        erroffset  ³ö´íÎ»ÖÃ
+        erroffset  å‡ºé”™ä½ç½®
 
-tableptr   Ö¸ÏòÒ»¸ö×Ö·ûÊı×éµÄÖ¸Õë£¬¿ÉÒÔÉèÖÃÎª¿ÕNULL
+tableptr   æŒ‡å‘ä¸€ä¸ªå­—ç¬¦æ•°ç»„çš„æŒ‡é’ˆï¼Œå¯ä»¥è®¾ç½®ä¸ºç©ºNULL
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 L1720     re = pcre_compile((char *)p, options, &error, &erroroffset, tables);
 
@@ -89,47 +89,47 @@ L1720     re = pcre_compile((char *)p, options, &error, &erroroffset, tables);
 
 2. pcre_compile2
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 pcre *pcre_compile2(const char *pattern, int options, int *errorcodeptr, const char **errptr, int *erroffset, const unsigned char *tableptr); 
 
-¹¦ÄÜ£º½«Ò»¸öÕıÔò±í´ïÊ½±àÒë³ÉÒ»¸öÄÚ²¿±íÊ¾£¬ÔÚÆ¥Åä¶à¸ö×Ö·û´®Ê±£¬¿ÉÒÔ¼ÓËÙÆ¥Åä¡£ÆäÍ¬pcre_compile¹¦ÄÜÒ»ÑùÖ»ÊÇ¶àÒ»¸ö²ÎÊıerrorcodeptr¡£
+åŠŸèƒ½ï¼šå°†ä¸€ä¸ªæ­£åˆ™è¡¨è¾¾å¼ç¼–è¯‘æˆä¸€ä¸ªå†…éƒ¨è¡¨ç¤ºï¼Œåœ¨åŒ¹é…å¤šä¸ªå­—ç¬¦ä¸²æ—¶ï¼Œå¯ä»¥åŠ é€ŸåŒ¹é…ã€‚å…¶åŒpcre_compileåŠŸèƒ½ä¸€æ ·åªæ˜¯å¤šä¸€ä¸ªå‚æ•°errorcodeptrã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-pattern    ÕıÔò±í´ïÊ½
+pattern    æ­£åˆ™è¡¨è¾¾å¼
 
-options     Îª0£¬»òÕßÆäËû²ÎÊıÑ¡Ïî
+options     ä¸º0ï¼Œæˆ–è€…å…¶ä»–å‚æ•°é€‰é¡¹
 
-errorcodeptr    ´æ·Å³ö´íÂë
+errorcodeptr    å­˜æ”¾å‡ºé”™ç 
 
-       errptr       ³ö´íÏûÏ¢
+       errptr       å‡ºé”™æ¶ˆæ¯
 
-        erroffset  ³ö´íÎ»ÖÃ
+        erroffset  å‡ºé”™ä½ç½®
 
-tableptr   Ö¸ÏòÒ»¸ö×Ö·ûÊı×éµÄÖ¸Õë£¬¿ÉÒÔÉèÖÃÎª¿ÕNULL
+tableptr   æŒ‡å‘ä¸€ä¸ªå­—ç¬¦æ•°ç»„çš„æŒ‡é’ˆï¼Œå¯ä»¥è®¾ç½®ä¸ºç©ºNULL
 
  
 
 3. pcre_config
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_config(int what, void *where);
 
-¹¦ÄÜ£º²éÑ¯µ±Ç°PCRE°æ±¾ÖĞÊ¹ÓÃµÄÑ¡ÏîĞÅÏ¢¡£
+åŠŸèƒ½ï¼šæŸ¥è¯¢å½“å‰PCREç‰ˆæœ¬ä¸­ä½¿ç”¨çš„é€‰é¡¹ä¿¡æ¯ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-what         Ñ¡ÏîÃû
+what         é€‰é¡¹å
 
-where       ´æ´¢½á¹ûµÄÎ»ÖÃ
+where       å­˜å‚¨ç»“æœçš„ä½ç½®
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line1312 (void)pcre_config(PCRE_CONFIG_POSIX_MALLOC_THRESHOLD, &rc);
 
@@ -137,32 +137,32 @@ Line1312 (void)pcre_config(PCRE_CONFIG_POSIX_MALLOC_THRESHOLD, &rc);
 
 4. pcre_copy_named_substring
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_copy_named_substring(const pcre *code, const char *subject, int *ovector, int stringcount, const char *stringname, 
 char *buffer, int buffersize); 
 
-¹¦ÄÜ£º¸ù¾İÃû×Ö»ñÈ¡²¶»ñµÄ×Ö´®¡£
+åŠŸèƒ½ï¼šæ ¹æ®åå­—è·å–æ•è·çš„å­—ä¸²ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                            ³É¹¦Æ¥ÅäµÄÄ£Ê½
+code                            æˆåŠŸåŒ¹é…çš„æ¨¡å¼
 
-subject               Æ¥ÅäµÄ´®
+subject               åŒ¹é…çš„ä¸²
 
-ovector              pcre_exec() Ê¹ÓÃµÄÆ«ÒÆÏòÁ¿
+ovector              pcre_exec() ä½¿ç”¨çš„åç§»å‘é‡
 
-stringcount   pcre_exec()µÄ·µ»ØÖµ
+stringcount   pcre_exec()çš„è¿”å›å€¼
 
-stringname       ²¶»ñ×Ö´®µÄÃû×Ö
+stringname       æ•è·å­—ä¸²çš„åå­—
 
-buffer                 ÓÃÀ´´æ´¢µÄ»º³åÇø
+buffer                 ç”¨æ¥å­˜å‚¨çš„ç¼“å†²åŒº
 
-buffersize                   »º³åÇø´óĞ¡
+buffersize                   ç¼“å†²åŒºå¤§å°
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2730 int rc = pcre_copy_named_substring(re, (char *)bptr, use_offsets,
 
@@ -171,31 +171,31 @@ Line2730 int rc = pcre_copy_named_substring(re, (char *)bptr, use_offsets,
  
 
 5. pcre_copy_substring
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_copy_substring(const char *subject, int *ovector, int stringcount, int stringnumber, char *buffer, int buffersize); 
 
-¹¦ÄÜ£º¸ù¾İ±àºÅ»ñÈ¡²¶»ñµÄ×Ö´®¡£
+åŠŸèƒ½ï¼šæ ¹æ®ç¼–å·è·å–æ•è·çš„å­—ä¸²ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                            ³É¹¦Æ¥ÅäµÄÄ£Ê½
+code                            æˆåŠŸåŒ¹é…çš„æ¨¡å¼
 
-subject               Æ¥ÅäµÄ´®
+subject               åŒ¹é…çš„ä¸²
 
-ovector              pcre_exec() Ê¹ÓÃµÄÆ«ÒÆÏòÁ¿
+ovector              pcre_exec() ä½¿ç”¨çš„åç§»å‘é‡
 
-stringcount   pcre_exec()µÄ·µ»ØÖµ
+stringcount   pcre_exec()çš„è¿”å›å€¼
 
-stringnumber   ²¶»ñ×Ö´®±àºÅ
+stringnumber   æ•è·å­—ä¸²ç¼–å·
 
-buffer                 ÓÃÀ´´æ´¢µÄ»º³åÇø
+buffer                 ç”¨æ¥å­˜å‚¨çš„ç¼“å†²åŒº
 
-buffersize                   »º³åÇø´óĞ¡
+buffersize                   ç¼“å†²åŒºå¤§å°
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2730 int rc = pcre_copy_substring((char *)bptr, use_offsets, count,
 
@@ -205,38 +205,38 @@ Line2730 int rc = pcre_copy_substring((char *)bptr, use_offsets, count,
 
 6. pcre_dfa_exec
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_dfa_exec(const pcre *code, const pcre_extra *extra, const char *subject, int length, int startoffset, int options, 
 int *ovector, int ovecsize, int *workspace, int wscount);
 
-¹¦ÄÜ£ºÊ¹ÓÃ±àÒëºÃµÄÄ£Ê½½øĞĞÆ¥Åä£¬²ÉÓÃµÄÊÇÒ»ÖÖ·Ç´«Í³µÄ·½·¨DFA£¬Ö»ÊÇ¶ÔÆ¥Åä´®É¨ÃèÒ»´Î£¨ÓëPerl²»¼æÈİ£©¡£
+åŠŸèƒ½ï¼šä½¿ç”¨ç¼–è¯‘å¥½çš„æ¨¡å¼è¿›è¡ŒåŒ¹é…ï¼Œé‡‡ç”¨çš„æ˜¯ä¸€ç§éä¼ ç»Ÿçš„æ–¹æ³•DFAï¼Œåªæ˜¯å¯¹åŒ¹é…ä¸²æ‰«æä¸€æ¬¡ï¼ˆä¸Perlä¸å…¼å®¹ï¼‰ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                   ±àÒëºÃµÄÄ£Ê½
+code                   ç¼–è¯‘å¥½çš„æ¨¡å¼
 
-extra         Ö¸ÏòÒ»¸öpcre_extra½á¹¹Ìå£¬¿ÉÒÔÎªNULL
+extra         æŒ‡å‘ä¸€ä¸ªpcre_extraç»“æ„ä½“ï¼Œå¯ä»¥ä¸ºNULL
 
-subject    ĞèÒªÆ¥ÅäµÄ×Ö·û´®
+subject    éœ€è¦åŒ¹é…çš„å­—ç¬¦ä¸²
 
-length       Æ¥ÅäµÄ×Ö·û´®³¤¶È£¨Byte£©
+length       åŒ¹é…çš„å­—ç¬¦ä¸²é•¿åº¦ï¼ˆByteï¼‰
 
-startoffset        Æ¥ÅäµÄ¿ªÊ¼Î»ÖÃ
+startoffset        åŒ¹é…çš„å¼€å§‹ä½ç½®
 
-options     Ñ¡ÏîÎ»
+options     é€‰é¡¹ä½
 
-ovector    Ö¸ÏòÒ»¸ö½á¹ûµÄÕûĞÍÊı×é
+ovector    æŒ‡å‘ä¸€ä¸ªç»“æœçš„æ•´å‹æ•°ç»„
 
-ovecsize   Êı×é´óĞ¡
+ovecsize   æ•°ç»„å¤§å°
 
-workspace        Ò»¸ö¹¤×÷ÇøÊı×é
+workspace        ä¸€ä¸ªå·¥ä½œåŒºæ•°ç»„
 
-wscount   Êı×é´óĞ¡
+wscount   æ•°ç»„å¤§å°
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2730 count = pcre_dfa_exec(re, extra, (char *)bptr, len, start_offset,
 
@@ -247,49 +247,49 @@ Line2730 count = pcre_dfa_exec(re, extra, (char *)bptr, len, start_offset,
  
 
 7. pcre_copy_substring
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_exec(const pcre *code, const pcre_extra *extra, const char *subject, int length, int startoffset, int options, 
 int *ovector, int ovecsize);
 
-¹¦ÄÜ£ºÊ¹ÓÃ±àÒëºÃµÄÄ£Ê½½øĞĞÆ¥Åä£¬²ÉÓÃÓëPerlÏàËÆµÄËã·¨£¬·µ»ØÆ¥Åä´®µÄÆ«ÒÆÎ»ÖÃ¡£¡£
+åŠŸèƒ½ï¼šä½¿ç”¨ç¼–è¯‘å¥½çš„æ¨¡å¼è¿›è¡ŒåŒ¹é…ï¼Œé‡‡ç”¨ä¸Perlç›¸ä¼¼çš„ç®—æ³•ï¼Œè¿”å›åŒ¹é…ä¸²çš„åç§»ä½ç½®ã€‚ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                   ±àÒëºÃµÄÄ£Ê½
+code                   ç¼–è¯‘å¥½çš„æ¨¡å¼
 
-extra         Ö¸ÏòÒ»¸öpcre_extra½á¹¹Ìå£¬¿ÉÒÔÎªNULL
+extra         æŒ‡å‘ä¸€ä¸ªpcre_extraç»“æ„ä½“ï¼Œå¯ä»¥ä¸ºNULL
 
-subject    ĞèÒªÆ¥ÅäµÄ×Ö·û´®
+subject    éœ€è¦åŒ¹é…çš„å­—ç¬¦ä¸²
 
-length       Æ¥ÅäµÄ×Ö·û´®³¤¶È£¨Byte£©
+length       åŒ¹é…çš„å­—ç¬¦ä¸²é•¿åº¦ï¼ˆByteï¼‰
 
-startoffset        Æ¥ÅäµÄ¿ªÊ¼Î»ÖÃ
+startoffset        åŒ¹é…çš„å¼€å§‹ä½ç½®
 
-options     Ñ¡ÏîÎ»
+options     é€‰é¡¹ä½
 
-ovector    Ö¸ÏòÒ»¸ö½á¹ûµÄÕûĞÍÊı×é
+ovector    æŒ‡å‘ä¸€ä¸ªç»“æœçš„æ•´å‹æ•°ç»„
 
-ovecsize   Êı×é´óĞ¡
+ovecsize   æ•°ç»„å¤§å°
 
  
 
 8. pcre_free_substring
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 void pcre_free_substring(const char *stringptr);
 
-¹¦ÄÜ£ºÊÍ·Åpcre_get_substring()ºÍpcre_get_named_substring()ÉêÇëµÄÄÚ´æ¿Õ¼ä¡£
+åŠŸèƒ½ï¼šé‡Šæ”¾pcre_get_substring()å’Œpcre_get_named_substring()ç”³è¯·çš„å†…å­˜ç©ºé—´ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-stringptr            Ö¸Ïò×Ö·û´®µÄÖ¸Õë
+stringptr            æŒ‡å‘å­—ç¬¦ä¸²çš„æŒ‡é’ˆ
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2730        const char *substring;
 
@@ -297,54 +297,54 @@ int rc = pcre_get_substring((char *)bptr, use_offsets, count,
 
               i, &substring);
 
-¡­¡­
+â€¦â€¦
 
 pcre_free_substring(substring);
 
  
 
 9. pcre_free_substring_list
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 void pcre_free_substring_list(const char **stringptr);
 
-¹¦ÄÜ£ºÊÍ·ÅÓÉpcre_get_substring_listÉêÇëµÄÄÚ´æ¿Õ¼ä¡£
+åŠŸèƒ½ï¼šé‡Šæ”¾ç”±pcre_get_substring_listç”³è¯·çš„å†…å­˜ç©ºé—´ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-stringptr            Ö¸Ïò×Ö·û´®Êı×éµÄÖ¸Õë
+stringptr            æŒ‡å‘å­—ç¬¦ä¸²æ•°ç»„çš„æŒ‡é’ˆ
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2773        const char **stringlist;
 
 int rc = pcre_get_substring_list((char *)bptr, use_offsets, count,
 
-¡­¡­
+â€¦â€¦
 
 pcre_free_substring_list(stringlist);
 
  
 
 10. pcre_fullinfo
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_fullinfo(const pcre *code, const pcre_extra *extra, int what, void *where);
 
-¹¦ÄÜ£º·µ»Ø±àÒë³öÀ´µÄÄ£Ê½µÄĞÅÏ¢¡£
+åŠŸèƒ½ï¼šè¿”å›ç¼–è¯‘å‡ºæ¥çš„æ¨¡å¼çš„ä¿¡æ¯ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code          ±àÒëºÃµÄÄ£Ê½
+code          ç¼–è¯‘å¥½çš„æ¨¡å¼
 
-extra         pcre_study()µÄ·µ»ØÖµ£¬»òÕßNULL
-what         Ê²Ã´ĞÅÏ¢
-where       ´æ´¢Î»ÖÃ
-Ê¾Àı£º
+extra         pcre_study()çš„è¿”å›å€¼ï¼Œæˆ–è€…NULL
+what         ä»€ä¹ˆä¿¡æ¯
+where       å­˜å‚¨ä½ç½®
+ç¤ºä¾‹ï¼š
 
 Line997          if ((rc = pcre_fullinfo(re, study, option, ptr)) < 0)
 
@@ -355,28 +355,28 @@ fprintf(outfile, "Error %d from pcre_fullinfo(%d)/n", rc, option);
  
 
 11. pcre_get_named_substring
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_get_named_substring(const pcre *code, const char *subject, int *ovector, int stringcount, const char *stringname, const char **stringptr);
 
-¹¦ÄÜ£º¸ù¾İ±àºÅ»ñÈ¡²¶»ñµÄ×Ö´®¡£
+åŠŸèƒ½ï¼šæ ¹æ®ç¼–å·è·å–æ•è·çš„å­—ä¸²ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                            ³É¹¦Æ¥ÅäµÄÄ£Ê½
+code                            æˆåŠŸåŒ¹é…çš„æ¨¡å¼
 
-subject               Æ¥ÅäµÄ´®
+subject               åŒ¹é…çš„ä¸²
 
-ovector              pcre_exec() Ê¹ÓÃµÄÆ«ÒÆÏòÁ¿
+ovector              pcre_exec() ä½¿ç”¨çš„åç§»å‘é‡
 
-stringcount   pcre_exec()µÄ·µ»ØÖµ
+stringcount   pcre_exec()çš„è¿”å›å€¼
 
-stringname       ²¶»ñ×Ö´®µÄÃû×Ö
+stringname       æ•è·å­—ä¸²çš„åå­—
 
-stringptr     ´æ·Å½á¹ûµÄ×Ö·û´®Ö¸Õë
-Ê¾Àı£º
+stringptr     å­˜æ”¾ç»“æœçš„å­—ç¬¦ä¸²æŒ‡é’ˆ
+ç¤ºä¾‹ï¼š
 
 Line2759        const char *substring;
 
@@ -387,144 +387,144 @@ int rc = pcre_get_named_substring(re, (char *)bptr, use_offsets,
  
 
 12. pcre_get_stringnumber
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_get_stringnumber(const pcre *code, const char *name);
 
-¹¦ÄÜ£º¸ù¾İÃüÃû²¶»ñµÄÃû×Ö»ñÈ¡¶ÔÓ¦µÄ±àºÅ¡£
+åŠŸèƒ½ï¼šæ ¹æ®å‘½åæ•è·çš„åå­—è·å–å¯¹åº”çš„ç¼–å·ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code                            ³É¹¦Æ¥ÅäµÄÄ£Ê½
+code                            æˆåŠŸåŒ¹é…çš„æ¨¡å¼
 
-name                 ²¶»ñÃû×Ö
+name                 æ•è·åå­—
 
  
 
 13. pcre_get_substring
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_get_substring(const char *subject, int *ovector, int stringcount, int stringnumber, const char **stringptr);
 
-¹¦ÄÜ£º»ñÈ¡Æ¥ÅäµÄ×Ó´®¡£
+åŠŸèƒ½ï¼šè·å–åŒ¹é…çš„å­ä¸²ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-subject       ³É¹¦Æ¥ÅäµÄ´®
-ovector       pcre_exec() Ê¹ÓÃµÄÆ«ÒÆÏòÁ¿
+subject       æˆåŠŸåŒ¹é…çš„ä¸²
+ovector       pcre_exec() ä½¿ç”¨çš„åç§»å‘é‡
 
-stringcount    pcre_exec()µÄ·µ»ØÖµ
-stringnumber  »ñÈ¡µÄ×Ö·û´®±àºÅ
-stringptr      ×Ö·û´®Ö¸Õë
+stringcount    pcre_exec()çš„è¿”å›å€¼
+stringnumber  è·å–çš„å­—ç¬¦ä¸²ç¼–å·
+stringptr      å­—ç¬¦ä¸²æŒ‡é’ˆ
  
 
 14. pcre_get_substring_list
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_get_substring_list(const char *subject, int *ovector, int stringcount, const char ***listptr);
 
-¹¦ÄÜ£º»ñÈ¡Æ¥ÅäµÄËùÓĞ×Ó´®¡£
+åŠŸèƒ½ï¼šè·å–åŒ¹é…çš„æ‰€æœ‰å­ä¸²ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-subject       ³É¹¦Æ¥ÅäµÄ´®
-ovector       pcre_exec() Ê¹ÓÃµÄÆ«ÒÆÏòÁ¿
+subject       æˆåŠŸåŒ¹é…çš„ä¸²
+ovector       pcre_exec() ä½¿ç”¨çš„åç§»å‘é‡
 
-stringcount    pcre_exec()µÄ·µ»ØÖµ
-listptr             ×Ö·û´®ÁĞ±íµÄÖ¸Õë
+stringcount    pcre_exec()çš„è¿”å›å€¼
+listptr             å­—ç¬¦ä¸²åˆ—è¡¨çš„æŒ‡é’ˆ
  
 
 15. pcre_info
 
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_info(const pcre *code, int *optptr, int *firstcharptr);
 
-ÒÑ¹ıÊ±£¬Ê¹ÓÃpcre_fullinfoÌæ´ú¡£
+å·²è¿‡æ—¶ï¼Œä½¿ç”¨pcre_fullinfoæ›¿ä»£ã€‚
  
 
 16. pcre_maketables
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 const unsigned char *pcre_maketables(void);
 
-¹¦ÄÜ£ºÉú³ÉÒ»¸ö×Ö·û±í£¬±íÖĞÃ¿Ò»¸öÔªËØµÄÖµ²»´óÓÚ256£¬¿ÉÒÔÓÃËü´«¸øpcre_compile()Ìæ»»µôÄÚ½¨µÄ×Ö·û±í¡£
+åŠŸèƒ½ï¼šç”Ÿæˆä¸€ä¸ªå­—ç¬¦è¡¨ï¼Œè¡¨ä¸­æ¯ä¸€ä¸ªå…ƒç´ çš„å€¼ä¸å¤§äº256ï¼Œå¯ä»¥ç”¨å®ƒä¼ ç»™pcre_compile()æ›¿æ¢æ‰å†…å»ºçš„å­—ç¬¦è¡¨ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line2759 tables = pcre_maketables();
 
  
 
 17. pcre_refcount
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 int pcre_refcount(pcre *code, int adjust);
 
-¹¦ÄÜ£º±àÒëÄ£Ê½µÄÒıÓÃ¼ÆÊı¡£
+åŠŸèƒ½ï¼šç¼–è¯‘æ¨¡å¼çš„å¼•ç”¨è®¡æ•°ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code       ÒÑ±àÒëµÄÄ£Ê½
-adjust      µ÷ÕûµÄÒıÓÃ¼ÆÊıÖµ
+code       å·²ç¼–è¯‘çš„æ¨¡å¼
+adjust      è°ƒæ•´çš„å¼•ç”¨è®¡æ•°å€¼
 
  
 
 18. pcre_study
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 pcre_extra *pcre_study(const pcre *code, int options, const char **errptr);
 
-¹¦ÄÜ£º¶Ô±àÒëµÄÄ£Ê½½øĞĞÑ§Ï°£¬ÌáÈ¡¿ÉÒÔ¼ÓËÙÆ¥Åä¹ı³ÌµÄĞÅÏ¢¡£
+åŠŸèƒ½ï¼šå¯¹ç¼–è¯‘çš„æ¨¡å¼è¿›è¡Œå­¦ä¹ ï¼Œæå–å¯ä»¥åŠ é€ŸåŒ¹é…è¿‡ç¨‹çš„ä¿¡æ¯ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-code      ÒÑ±àÒëµÄÄ£Ê½
-options    Ñ¡Ïî
-errptr     ³ö´íÏûÏ¢
-Ê¾Àı£º
+code      å·²ç¼–è¯‘çš„æ¨¡å¼
+options    é€‰é¡¹
+errptr     å‡ºé”™æ¶ˆæ¯
+ç¤ºä¾‹ï¼š
 
 Line1797 extra = pcre_study(re, study_options, &error);
 
  
 
 19. pcre_version
-       Ô­ĞÍ£º
+       åŸå‹ï¼š
 
 #include <pcre.h> 
 
 char *pcre_version(void);
 
-¹¦ÄÜ£º·µ»ØPCREµÄ°æ±¾ĞÅÏ¢¡£
+åŠŸèƒ½ï¼šè¿”å›PCREçš„ç‰ˆæœ¬ä¿¡æ¯ã€‚
 
-²ÎÊı£º
+å‚æ•°ï¼š
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 Line1384 if (!quiet) fprintf(outfile, "PCRE version %s/n/n", pcre_version());
 
  
 
-³ÌĞòÊµÀı£º
+ç¨‹åºå®ä¾‹ï¼š
 
 [cpp] view plaincopyprint?
-01.#define PCRE_STATIC // ¾²Ì¬¿â±àÒëÑ¡Ïî   
+01.#define PCRE_STATIC // é™æ€åº“ç¼–è¯‘é€‰é¡¹   
 02.#include <stdio.h>   
 03.#include <string.h>   
 04.#include <pcre.h>   
@@ -539,45 +539,45 @@ Line1384 if (!quiet) fprintf(outfile, "PCRE version %s/n/n", pcre_version());
 13.    int  erroffset;  
 14.    int  ovector[OVECCOUNT];  
 15.    int  rc, i;  
-16.    char  src [] = "111 <title>Hello World</title> 222";   // Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®   
-17.    char  pattern [] = "<title>(.*)</(tit)le>";              // ½«Òª±»±àÒëµÄ×Ö·û´®ĞÎÊ½µÄÕıÔò±í´ïÊ½   
+16.    char  src [] = "111 <title>Hello World</title> 222";   // è¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²   
+17.    char  pattern [] = "<title>(.*)</(tit)le>";              // å°†è¦è¢«ç¼–è¯‘çš„å­—ç¬¦ä¸²å½¢å¼çš„æ­£åˆ™è¡¨è¾¾å¼   
 18.    printf("String : %s/n", src);  
 19.    printf("Pattern: /"%s/"/n", pattern);  
-20.    re = pcre_compile(pattern,       // pattern, ÊäÈë²ÎÊı£¬½«Òª±»±àÒëµÄ×Ö·û´®ĞÎÊ½µÄÕıÔò±í´ïÊ½   
-21.                      0,            // options, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨±àÒëÊ±µÄÒ»Ğ©Ñ¡Ïî   
-22.                      &error,       // errptr, Êä³ö²ÎÊı£¬ÓÃÀ´Êä³ö´íÎóĞÅÏ¢   
-23.                      &erroffset,   // erroffset, Êä³ö²ÎÊı£¬patternÖĞ³ö´íÎ»ÖÃµÄÆ«ÒÆÁ¿   
-24.                      NULL);        // tableptr, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨×Ö·û±í£¬Ò»°ãÇé¿öÓÃNULL   
-25.    // ·µ»ØÖµ£º±»±àÒëºÃµÄÕıÔò±í´ïÊ½µÄpcreÄÚ²¿±íÊ¾½á¹¹   
-26.    if (re == NULL) {                 //Èç¹û±àÒëÊ§°Ü£¬·µ»Ø´íÎóĞÅÏ¢   
+20.    re = pcre_compile(pattern,       // pattern, è¾“å…¥å‚æ•°ï¼Œå°†è¦è¢«ç¼–è¯‘çš„å­—ç¬¦ä¸²å½¢å¼çš„æ­£åˆ™è¡¨è¾¾å¼   
+21.                      0,            // options, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šç¼–è¯‘æ—¶çš„ä¸€äº›é€‰é¡¹   
+22.                      &error,       // errptr, è¾“å‡ºå‚æ•°ï¼Œç”¨æ¥è¾“å‡ºé”™è¯¯ä¿¡æ¯   
+23.                      &erroffset,   // erroffset, è¾“å‡ºå‚æ•°ï¼Œpatternä¸­å‡ºé”™ä½ç½®çš„åç§»é‡   
+24.                      NULL);        // tableptr, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šå­—ç¬¦è¡¨ï¼Œä¸€èˆ¬æƒ…å†µç”¨NULL   
+25.    // è¿”å›å€¼ï¼šè¢«ç¼–è¯‘å¥½çš„æ­£åˆ™è¡¨è¾¾å¼çš„pcreå†…éƒ¨è¡¨ç¤ºç»“æ„   
+26.    if (re == NULL) {                 //å¦‚æœç¼–è¯‘å¤±è´¥ï¼Œè¿”å›é”™è¯¯ä¿¡æ¯   
 27.        printf("PCRE compilation failed at offset %d: %s/n", erroffset, error);  
 28.        return 1;  
 29.    }  
-30.    rc = pcre_exec(re,            // code, ÊäÈë²ÎÊı£¬ÓÃpcre_compile±àÒëºÃµÄÕıÔò±í´ï½á¹¹µÄÖ¸Õë   
-31.                   NULL,          // extra, ÊäÈë²ÎÊı£¬ÓÃÀ´Ïòpcre_exec´«Ò»Ğ©¶îÍâµÄÊı¾İĞÅÏ¢µÄ½á¹¹µÄÖ¸Õë   
-32.                   src,           // subject, ÊäÈë²ÎÊı£¬Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®   
-33.                   strlen(src),  // length, ÊäÈë²ÎÊı£¬ Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®µÄÖ¸Õë   
-34.                   0,             // startoffset, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨subject´ÓÊ²Ã´Î»ÖÃ¿ªÊ¼±»Æ¥ÅäµÄÆ«ÒÆÁ¿   
-35.                   0,             // options, ÊäÈë²ÎÊı£¬ ÓÃÀ´Ö¸¶¨Æ¥Åä¹ı³ÌÖĞµÄÒ»Ğ©Ñ¡Ïî   
-36.                   ovector,       // ovector, Êä³ö²ÎÊı£¬ÓÃÀ´·µ»ØÆ¥ÅäÎ»ÖÃÆ«ÒÆÁ¿µÄÊı×é   
-37.                   OVECCOUNT);    // ovecsize, ÊäÈë²ÎÊı£¬ ÓÃÀ´·µ»ØÆ¥ÅäÎ»ÖÃÆ«ÒÆÁ¿µÄÊı×éµÄ×î´ó´óĞ¡   
-38.    // ·µ»ØÖµ£ºÆ¥Åä³É¹¦·µ»Ø·Ç¸ºÊı£¬Ã»ÓĞÆ¥Åä·µ»Ø¸ºÊı   
-39.    if (rc < 0) {                     //Èç¹ûÃ»ÓĞÆ¥Åä£¬·µ»Ø´íÎóĞÅÏ¢   
+30.    rc = pcre_exec(re,            // code, è¾“å…¥å‚æ•°ï¼Œç”¨pcre_compileç¼–è¯‘å¥½çš„æ­£åˆ™è¡¨è¾¾ç»“æ„çš„æŒ‡é’ˆ   
+31.                   NULL,          // extra, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥å‘pcre_execä¼ ä¸€äº›é¢å¤–çš„æ•°æ®ä¿¡æ¯çš„ç»“æ„çš„æŒ‡é’ˆ   
+32.                   src,           // subject, è¾“å…¥å‚æ•°ï¼Œè¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²   
+33.                   strlen(src),  // length, è¾“å…¥å‚æ•°ï¼Œ è¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²çš„æŒ‡é’ˆ   
+34.                   0,             // startoffset, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šsubjectä»ä»€ä¹ˆä½ç½®å¼€å§‹è¢«åŒ¹é…çš„åç§»é‡   
+35.                   0,             // options, è¾“å…¥å‚æ•°ï¼Œ ç”¨æ¥æŒ‡å®šåŒ¹é…è¿‡ç¨‹ä¸­çš„ä¸€äº›é€‰é¡¹   
+36.                   ovector,       // ovector, è¾“å‡ºå‚æ•°ï¼Œç”¨æ¥è¿”å›åŒ¹é…ä½ç½®åç§»é‡çš„æ•°ç»„   
+37.                   OVECCOUNT);    // ovecsize, è¾“å…¥å‚æ•°ï¼Œ ç”¨æ¥è¿”å›åŒ¹é…ä½ç½®åç§»é‡çš„æ•°ç»„çš„æœ€å¤§å¤§å°   
+38.    // è¿”å›å€¼ï¼šåŒ¹é…æˆåŠŸè¿”å›éè´Ÿæ•°ï¼Œæ²¡æœ‰åŒ¹é…è¿”å›è´Ÿæ•°   
+39.    if (rc < 0) {                     //å¦‚æœæ²¡æœ‰åŒ¹é…ï¼Œè¿”å›é”™è¯¯ä¿¡æ¯   
 40.        if (rc == PCRE_ERROR_NOMATCH) printf("Sorry, no match .../n");  
 41.        else printf("Matching error %d/n", rc);  
 42.        pcre_free(re);  
 43.        return 1;  
 44.    }  
-45.    printf("/nOK, has matched .../n/n");   //Ã»ÓĞ³ö´í£¬ÒÑ¾­Æ¥Åä   
-46.    for (i = 0; i < rc; i++) {             //·Ö±ğÈ¡³ö²¶»ñ·Ö×é $0Õû¸öÕıÔò¹«Ê½ $1µÚÒ»¸ö()   
+45.    printf("/nOK, has matched .../n/n");   //æ²¡æœ‰å‡ºé”™ï¼Œå·²ç»åŒ¹é…   
+46.    for (i = 0; i < rc; i++) {             //åˆ†åˆ«å–å‡ºæ•è·åˆ†ç»„ $0æ•´ä¸ªæ­£åˆ™å…¬å¼ $1ç¬¬ä¸€ä¸ª()   
 47.        char *substring_start = src + ovector[2*i];  
 48.        int substring_length = ovector[2*i+1] - ovector[2*i];  
 49.        printf("$%2d: %.*s/n", i, substring_length, substring_start);  
 50.    }  
-51.    pcre_free(re);                     // ±àÒëÕıÔò±í´ïÊ½re ÊÍ·ÅÄÚ´æ   
+51.    pcre_free(re);                     // ç¼–è¯‘æ­£åˆ™è¡¨è¾¾å¼re é‡Šæ”¾å†…å­˜   
 52.    return 0;  
 53.}  
-#define PCRE_STATIC // ¾²Ì¬¿â±àÒëÑ¡Ïî
+#define PCRE_STATIC // é™æ€åº“ç¼–è¯‘é€‰é¡¹
 #include <stdio.h>
 #include <string.h>
 #include <pcre.h>
@@ -592,46 +592,46 @@ int main()
     int  erroffset;
     int  ovector[OVECCOUNT];
     int  rc, i;
-    char  src [] = "111 <title>Hello World</title> 222";   // Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®
-    char  pattern [] = "<title>(.*)</(tit)le>";              // ½«Òª±»±àÒëµÄ×Ö·û´®ĞÎÊ½µÄÕıÔò±í´ïÊ½
+    char  src [] = "111 <title>Hello World</title> 222";   // è¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²
+    char  pattern [] = "<title>(.*)</(tit)le>";              // å°†è¦è¢«ç¼–è¯‘çš„å­—ç¬¦ä¸²å½¢å¼çš„æ­£åˆ™è¡¨è¾¾å¼
     printf("String : %s/n", src);
     printf("Pattern: /"%s/"/n", pattern);
-    re = pcre_compile(pattern,       // pattern, ÊäÈë²ÎÊı£¬½«Òª±»±àÒëµÄ×Ö·û´®ĞÎÊ½µÄÕıÔò±í´ïÊ½
-                      0,            // options, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨±àÒëÊ±µÄÒ»Ğ©Ñ¡Ïî
-                      &error,       // errptr, Êä³ö²ÎÊı£¬ÓÃÀ´Êä³ö´íÎóĞÅÏ¢
-                      &erroffset,   // erroffset, Êä³ö²ÎÊı£¬patternÖĞ³ö´íÎ»ÖÃµÄÆ«ÒÆÁ¿
-                      NULL);        // tableptr, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨×Ö·û±í£¬Ò»°ãÇé¿öÓÃNULL
-    // ·µ»ØÖµ£º±»±àÒëºÃµÄÕıÔò±í´ïÊ½µÄpcreÄÚ²¿±íÊ¾½á¹¹
-    if (re == NULL) {                 //Èç¹û±àÒëÊ§°Ü£¬·µ»Ø´íÎóĞÅÏ¢
+    re = pcre_compile(pattern,       // pattern, è¾“å…¥å‚æ•°ï¼Œå°†è¦è¢«ç¼–è¯‘çš„å­—ç¬¦ä¸²å½¢å¼çš„æ­£åˆ™è¡¨è¾¾å¼
+                      0,            // options, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šç¼–è¯‘æ—¶çš„ä¸€äº›é€‰é¡¹
+                      &error,       // errptr, è¾“å‡ºå‚æ•°ï¼Œç”¨æ¥è¾“å‡ºé”™è¯¯ä¿¡æ¯
+                      &erroffset,   // erroffset, è¾“å‡ºå‚æ•°ï¼Œpatternä¸­å‡ºé”™ä½ç½®çš„åç§»é‡
+                      NULL);        // tableptr, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šå­—ç¬¦è¡¨ï¼Œä¸€èˆ¬æƒ…å†µç”¨NULL
+    // è¿”å›å€¼ï¼šè¢«ç¼–è¯‘å¥½çš„æ­£åˆ™è¡¨è¾¾å¼çš„pcreå†…éƒ¨è¡¨ç¤ºç»“æ„
+    if (re == NULL) {                 //å¦‚æœç¼–è¯‘å¤±è´¥ï¼Œè¿”å›é”™è¯¯ä¿¡æ¯
         printf("PCRE compilation failed at offset %d: %s/n", erroffset, error);
         return 1;
     }
-    rc = pcre_exec(re,            // code, ÊäÈë²ÎÊı£¬ÓÃpcre_compile±àÒëºÃµÄÕıÔò±í´ï½á¹¹µÄÖ¸Õë
-                   NULL,          // extra, ÊäÈë²ÎÊı£¬ÓÃÀ´Ïòpcre_exec´«Ò»Ğ©¶îÍâµÄÊı¾İĞÅÏ¢µÄ½á¹¹µÄÖ¸Õë
-                   src,           // subject, ÊäÈë²ÎÊı£¬Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®
-                   strlen(src),  // length, ÊäÈë²ÎÊı£¬ Òª±»ÓÃÀ´Æ¥ÅäµÄ×Ö·û´®µÄÖ¸Õë
-                   0,             // startoffset, ÊäÈë²ÎÊı£¬ÓÃÀ´Ö¸¶¨subject´ÓÊ²Ã´Î»ÖÃ¿ªÊ¼±»Æ¥ÅäµÄÆ«ÒÆÁ¿
-                   0,             // options, ÊäÈë²ÎÊı£¬ ÓÃÀ´Ö¸¶¨Æ¥Åä¹ı³ÌÖĞµÄÒ»Ğ©Ñ¡Ïî
-                   ovector,       // ovector, Êä³ö²ÎÊı£¬ÓÃÀ´·µ»ØÆ¥ÅäÎ»ÖÃÆ«ÒÆÁ¿µÄÊı×é
-                   OVECCOUNT);    // ovecsize, ÊäÈë²ÎÊı£¬ ÓÃÀ´·µ»ØÆ¥ÅäÎ»ÖÃÆ«ÒÆÁ¿µÄÊı×éµÄ×î´ó´óĞ¡
-    // ·µ»ØÖµ£ºÆ¥Åä³É¹¦·µ»Ø·Ç¸ºÊı£¬Ã»ÓĞÆ¥Åä·µ»Ø¸ºÊı
-    if (rc < 0) {                     //Èç¹ûÃ»ÓĞÆ¥Åä£¬·µ»Ø´íÎóĞÅÏ¢
+    rc = pcre_exec(re,            // code, è¾“å…¥å‚æ•°ï¼Œç”¨pcre_compileç¼–è¯‘å¥½çš„æ­£åˆ™è¡¨è¾¾ç»“æ„çš„æŒ‡é’ˆ
+                   NULL,          // extra, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥å‘pcre_execä¼ ä¸€äº›é¢å¤–çš„æ•°æ®ä¿¡æ¯çš„ç»“æ„çš„æŒ‡é’ˆ
+                   src,           // subject, è¾“å…¥å‚æ•°ï¼Œè¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²
+                   strlen(src),  // length, è¾“å…¥å‚æ•°ï¼Œ è¦è¢«ç”¨æ¥åŒ¹é…çš„å­—ç¬¦ä¸²çš„æŒ‡é’ˆ
+                   0,             // startoffset, è¾“å…¥å‚æ•°ï¼Œç”¨æ¥æŒ‡å®šsubjectä»ä»€ä¹ˆä½ç½®å¼€å§‹è¢«åŒ¹é…çš„åç§»é‡
+                   0,             // options, è¾“å…¥å‚æ•°ï¼Œ ç”¨æ¥æŒ‡å®šåŒ¹é…è¿‡ç¨‹ä¸­çš„ä¸€äº›é€‰é¡¹
+                   ovector,       // ovector, è¾“å‡ºå‚æ•°ï¼Œç”¨æ¥è¿”å›åŒ¹é…ä½ç½®åç§»é‡çš„æ•°ç»„
+                   OVECCOUNT);    // ovecsize, è¾“å…¥å‚æ•°ï¼Œ ç”¨æ¥è¿”å›åŒ¹é…ä½ç½®åç§»é‡çš„æ•°ç»„çš„æœ€å¤§å¤§å°
+    // è¿”å›å€¼ï¼šåŒ¹é…æˆåŠŸè¿”å›éè´Ÿæ•°ï¼Œæ²¡æœ‰åŒ¹é…è¿”å›è´Ÿæ•°
+    if (rc < 0) {                     //å¦‚æœæ²¡æœ‰åŒ¹é…ï¼Œè¿”å›é”™è¯¯ä¿¡æ¯
         if (rc == PCRE_ERROR_NOMATCH) printf("Sorry, no match .../n");
         else printf("Matching error %d/n", rc);
         pcre_free(re);
         return 1;
     }
-    printf("/nOK, has matched .../n/n");   //Ã»ÓĞ³ö´í£¬ÒÑ¾­Æ¥Åä
-    for (i = 0; i < rc; i++) {             //·Ö±ğÈ¡³ö²¶»ñ·Ö×é $0Õû¸öÕıÔò¹«Ê½ $1µÚÒ»¸ö()
+    printf("/nOK, has matched .../n/n");   //æ²¡æœ‰å‡ºé”™ï¼Œå·²ç»åŒ¹é…
+    for (i = 0; i < rc; i++) {             //åˆ†åˆ«å–å‡ºæ•è·åˆ†ç»„ $0æ•´ä¸ªæ­£åˆ™å…¬å¼ $1ç¬¬ä¸€ä¸ª()
         char *substring_start = src + ovector[2*i];
         int substring_length = ovector[2*i+1] - ovector[2*i];
         printf("$%2d: %.*s/n", i, substring_length, substring_start);
     }
-    pcre_free(re);                     // ±àÒëÕıÔò±í´ïÊ½re ÊÍ·ÅÄÚ´æ
+    pcre_free(re);                     // ç¼–è¯‘æ­£åˆ™è¡¨è¾¾å¼re é‡Šæ”¾å†…å­˜
     return 0;
 }
  
 
 
-³ÌĞòÀ´×ÔÍøÉÏ£¬¿´µ½ÓĞÈË²»Àí½â×îºóÒ»¸öforÑ­»·µÄº¬Òå£¬ovector·µ»ØµÄÊÇÆ¥Åä×Ö·û´®µÄÆ«ÒÆ£¬°üÀ¨ÆğÊ¼Æ«ÒÆºÍ½áÊøÆ«ÒÆ£¬ËùÒÔ¾ÍÓĞÑ­»·ÄÚ²¿µÄ2*i´¦Àí¡£
+ç¨‹åºæ¥è‡ªç½‘ä¸Šï¼Œçœ‹åˆ°æœ‰äººä¸ç†è§£æœ€åä¸€ä¸ªforå¾ªç¯çš„å«ä¹‰ï¼Œovectorè¿”å›çš„æ˜¯åŒ¹é…å­—ç¬¦ä¸²çš„åç§»ï¼ŒåŒ…æ‹¬èµ·å§‹åç§»å’Œç»“æŸåç§»ï¼Œæ‰€ä»¥å°±æœ‰å¾ªç¯å†…éƒ¨çš„2*iå¤„ç†ã€‚
 */

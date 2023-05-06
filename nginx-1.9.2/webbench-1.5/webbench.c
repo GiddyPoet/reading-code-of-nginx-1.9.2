@@ -25,12 +25,12 @@
 #include <signal.h>
 
 /* values */
-volatile int timerexpired=0;//ÅĞ¶ÏÑ¹²âÊ±³¤ÊÇ·ñÒÑ¾­µ½´ïÉè¶¨µÄÊ±¼ä  Ê±¼äµ½ºó½ø³Ì¾Í»áÍË³ö
-int speed=0;//¼ÇÂ¼½ø³Ì³É¹¦µÃµ½·şÎñÆ÷ÏìÓ¦µÄÊıÁ¿  ³É¹¦½¨Á¢Á¬½Ó²¢·¢ËÍÊı¾İ(Èç¹û²»´ø-fÔò»¹±ØĞëread·şÎñ¶ËÊı¾İ³É¹¦²ÅÄÜ¼Ó1)
-int failed=0;//¼ÇÂ¼Ê§°ÜµÄÊıÁ¿£¨speed±íÊ¾³É¹¦Êı£¬failed±íÊ¾Ê§°ÜÊı£©  Ò»´ÎÁ¬½ÓÊ§°Ü »òÕß¶ÁĞ´Ê§°Ü¶¼+1
-int bytes=0; //¼ÇÂ¼½ø³Ì³É¹¦¶ÁÈ¡µÄ×Ö½ÚÊı  Í¨¹ı¶ÁÈ¡·şÎñ¶ËµÄ»ØÓ¦À´¼ÆËã
+volatile int timerexpired=0;//åˆ¤æ–­å‹æµ‹æ—¶é•¿æ˜¯å¦å·²ç»åˆ°è¾¾è®¾å®šçš„æ—¶é—´  æ—¶é—´åˆ°åè¿›ç¨‹å°±ä¼šé€€å‡º
+int speed=0;//è®°å½•è¿›ç¨‹æˆåŠŸå¾—åˆ°æœåŠ¡å™¨å“åº”çš„æ•°é‡  æˆåŠŸå»ºç«‹è¿æ¥å¹¶å‘é€æ•°æ®(å¦‚æœä¸å¸¦-fåˆ™è¿˜å¿…é¡»readæœåŠ¡ç«¯æ•°æ®æˆåŠŸæ‰èƒ½åŠ 1)
+int failed=0;//è®°å½•å¤±è´¥çš„æ•°é‡ï¼ˆspeedè¡¨ç¤ºæˆåŠŸæ•°ï¼Œfailedè¡¨ç¤ºå¤±è´¥æ•°ï¼‰  ä¸€æ¬¡è¿æ¥å¤±è´¥ æˆ–è€…è¯»å†™å¤±è´¥éƒ½+1
+int bytes=0; //è®°å½•è¿›ç¨‹æˆåŠŸè¯»å–çš„å­—èŠ‚æ•°  é€šè¿‡è¯»å–æœåŠ¡ç«¯çš„å›åº”æ¥è®¡ç®—
 /* globals */
-int http10=1; /* 0 - http/0.9, 1 - http/1.0, 2 - http/1.1 */ //http°æ±¾£¬0±íÊ¾http0.9£¬1±íÊ¾http1.0£¬2±íÊ¾http1.1
+int http10=1; /* 0 - http/0.9, 1 - http/1.0, 2 - http/1.1 */ //httpç‰ˆæœ¬ï¼Œ0è¡¨ç¤ºhttp0.9ï¼Œ1è¡¨ç¤ºhttp1.0ï¼Œ2è¡¨ç¤ºhttp1.1
 /* Allow: GET, HEAD, OPTIONS, TRACE */
 int keepalive = 1;
 #define METHOD_GET 0 
@@ -38,19 +38,19 @@ int keepalive = 1;
 #define METHOD_OPTIONS 2
 #define METHOD_TRACE 3
 #define PROGRAM_VERSION "1.5"
-int method=METHOD_GET;//Ä¬ÈÏÇëÇó·½Ê½ÎªGET£¬Ò²Ö§³ÖHEAD¡¢OPTIONS¡¢TRACE
-int clients=1;//²¢·¢ÊıÄ¿£¬Ä¬ÈÏÖ»ÓĞ1¸ö½ø³Ì·¢ÇëÇó£¬Í¨¹ı-c²ÎÊıÉèÖÃ
-int force=0;//ÊÇ·ñĞèÒªµÈ´ı¶ÁÈ¡´Óserver·µ»ØµÄÊı¾İ£¬0±íÊ¾ÒªµÈ´ı¶ÁÈ¡
-int force_reload=0;//ÊÇ·ñÊ¹ÓÃ»º´æ£¬1±íÊ¾²»»º´æ£¬0±íÊ¾¿ÉÒÔ»º´æÒ³Ãæ
-int proxyport=80;//´úÀí·şÎñÆ÷µÄ¶Ë¿Ú
-char *proxyhost=NULL;//´úÀí·şÎñÆ÷µÄip
-int benchtime=30;//Ñ¹²âÊ±¼ä£¬Ä¬ÈÏ30Ãë£¬Í¨¹ı-t²ÎÊıÉèÖÃ
+int method=METHOD_GET;//é»˜è®¤è¯·æ±‚æ–¹å¼ä¸ºGETï¼Œä¹Ÿæ”¯æŒHEADã€OPTIONSã€TRACE
+int clients=1;//å¹¶å‘æ•°ç›®ï¼Œé»˜è®¤åªæœ‰1ä¸ªè¿›ç¨‹å‘è¯·æ±‚ï¼Œé€šè¿‡-cå‚æ•°è®¾ç½®
+int force=0;//æ˜¯å¦éœ€è¦ç­‰å¾…è¯»å–ä»serverè¿”å›çš„æ•°æ®ï¼Œ0è¡¨ç¤ºè¦ç­‰å¾…è¯»å–
+int force_reload=0;//æ˜¯å¦ä½¿ç”¨ç¼“å­˜ï¼Œ1è¡¨ç¤ºä¸ç¼“å­˜ï¼Œ0è¡¨ç¤ºå¯ä»¥ç¼“å­˜é¡µé¢
+int proxyport=80;//ä»£ç†æœåŠ¡å™¨çš„ç«¯å£
+char *proxyhost=NULL;//ä»£ç†æœåŠ¡å™¨çš„ip
+int benchtime=30;//å‹æµ‹æ—¶é—´ï¼Œé»˜è®¤30ç§’ï¼Œé€šè¿‡-tå‚æ•°è®¾ç½®
 int max_request = 0;
 /* internal */
-int mypipe[2];//Ê¹ÓÃ¹ÜµÀ½øĞĞ¸¸½ø³ÌºÍ×Ó½ø³ÌµÄÍ¨ĞÅ
-char host[MAXHOSTNAMELEN];//·şÎñÆ÷¶Ëip
+int mypipe[2];//ä½¿ç”¨ç®¡é“è¿›è¡Œçˆ¶è¿›ç¨‹å’Œå­è¿›ç¨‹çš„é€šä¿¡
+char host[MAXHOSTNAMELEN];//æœåŠ¡å™¨ç«¯ip
 #define REQUEST_SIZE 2048
-char request[REQUEST_SIZE];//ËùÒª·¢ËÍµÄhttpÇëÇó
+char request[REQUEST_SIZE];//æ‰€è¦å‘é€çš„httpè¯·æ±‚
 
 static const struct option long_options[]=
 {
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 }
 
 /*
-Õâ¸öº¯ÊıÖ÷Òª²Ù×÷È«¾Ö±äÁ¿char request[REQUEST_SIZE]£¬¸ù¾İurlÌî³äÆäÄÚÈİ¡£Ò»¸öµäĞÍµÄhttp GETÇëÇóÈçÏÂ£º
+è¿™ä¸ªå‡½æ•°ä¸»è¦æ“ä½œå…¨å±€å˜é‡char request[REQUEST_SIZE]ï¼Œæ ¹æ®urlå¡«å……å…¶å†…å®¹ã€‚ä¸€ä¸ªå…¸å‹çš„http GETè¯·æ±‚å¦‚ä¸‹ï¼š
 
 GET /test.jpg HTTP/1.1
 User-Agent: WebBench 1.5
@@ -223,8 +223,8 @@ Host:192.168.10.1
 Pragma: no-cache
 Connection: closebuild_request
 
-º¯ÊıµÄÄ¿µÄ¾ÍÊÇÒª°ÑÀàËÆÓÚÒÔÉÏÕâÒ»´óÛçĞÅÏ¢È«²¿´æµ½È«¾Ö±äÁ¿request[REQUEST_SIZE]ÖĞ£¬ÆäÖĞ»»ĞĞ²Ù×÷Ê¹ÓÃµÄÊÇ¡±\r\n¡±¡£¶øÒÔÉÏÕâ
-Ò»´óÛçĞÅÏ¢µÄ¾ßÌåÄÚÈİÊÇÒª¸ù¾İÃüÁîĞĞÊäÈëµÄ²ÎÊı£¬ÒÔ¼°urlÀ´È·¶¨µÄ
+å‡½æ•°çš„ç›®çš„å°±æ˜¯è¦æŠŠç±»ä¼¼äºä»¥ä¸Šè¿™ä¸€å¤§å¨ä¿¡æ¯å…¨éƒ¨å­˜åˆ°å…¨å±€å˜é‡request[REQUEST_SIZE]ä¸­ï¼Œå…¶ä¸­æ¢è¡Œæ“ä½œä½¿ç”¨çš„æ˜¯â€\r\nâ€ã€‚è€Œä»¥ä¸Šè¿™
+ä¸€å¤§å¨ä¿¡æ¯çš„å…·ä½“å†…å®¹æ˜¯è¦æ ¹æ®å‘½ä»¤è¡Œè¾“å…¥çš„å‚æ•°ï¼Œä»¥åŠurlæ¥ç¡®å®šçš„
 */
 void build_request(const char *url)
 {
@@ -331,7 +331,7 @@ void build_request(const char *url)
 }
 
 /* vraci system rc error kod */
-static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
+static int bench(void) //æ‰€æœ‰çš„å‹æµ‹éƒ½åœ¨benchå‡½æ•°å®ç°
 {
   int i,j,k;	
   pid_t pid=0;
@@ -346,7 +346,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
   
   close(i);
   /* create pipe */
-  if(pipe(mypipe)) {//¹ÜµÀÓÃÓÚ×Ó½ø³ÌÏò¸¸½ø³Ì»Ø±¨Êı¾İ
+  if(pipe(mypipe)) {//ç®¡é“ç”¨äºå­è¿›ç¨‹å‘çˆ¶è¿›ç¨‹å›æŠ¥æ•°æ®
 	  perror("pipe failed.");
 	  return 3;
   }
@@ -360,7 +360,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
   */
 
   /* fork childs */
-  for(i=0;i<clients;i++) //¸ù¾İclients´óĞ¡fork³öÀ´×ã¹»µÄ×Ó½ø³Ì½øĞĞ²âÊÔ
+  for(i=0;i<clients;i++) //æ ¹æ®clientså¤§å°forkå‡ºæ¥è¶³å¤Ÿçš„å­è¿›ç¨‹è¿›è¡Œæµ‹è¯•
   {
 	   pid=fork();
 	   if(pid <= (pid_t) 0)
@@ -378,7 +378,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
 	  return 3;
   }
 
-  if(pid== (pid_t) 0)//Èç¹ûÊÇ×Ó½ø³Ì£¬µ÷ÓÃbenchcore½øĞĞ²âÊÔ
+  if(pid== (pid_t) 0)//å¦‚æœæ˜¯å­è¿›ç¨‹ï¼Œè°ƒç”¨benchcoreè¿›è¡Œæµ‹è¯•
   {
     /* I am a child */
     if(proxyhost==NULL)
@@ -387,7 +387,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
         benchcore(proxyhost,proxyport,request);
 
          /* write results to pipe */
-	 f=fdopen(mypipe[1],"w");  //×Ó½ø³Ì½«²âÊÔ½á¹ûÊä³öµ½¹ÜµÀ
+	 f=fdopen(mypipe[1],"w");  //å­è¿›ç¨‹å°†æµ‹è¯•ç»“æœè¾“å‡ºåˆ°ç®¡é“
 	 if(f==NULL)
 	 {
 		 perror("open pipe for writing failed.");
@@ -397,7 +397,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
 	 fprintf(f,"%d %d %d\n",speed,failed,bytes);
 	 fclose(f);
 	 return 0;
-  } else {  //Èç¹ûÊÇ¸¸½ø³Ì£¬Ôò´Ó¹ÜµÀ¶ÁÈ¡×Ó½ø³ÌÊä³ö£¬²¢×÷»ã×Ü
+  } else {  //å¦‚æœæ˜¯çˆ¶è¿›ç¨‹ï¼Œåˆ™ä»ç®¡é“è¯»å–å­è¿›ç¨‹è¾“å‡ºï¼Œå¹¶ä½œæ±‡æ€»
 	  f=fdopen(mypipe[0],"r");
 	  if(f==NULL) 
 	  {
@@ -411,7 +411,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
 
 	  while(1)
 	  {
-		  pid=fscanf(f,"%d %d %d",&i,&j,&k);  //´Ó¹ÜµÀ¶ÁÈ¡Êı¾İ£¬fscanfÎª×èÈûÊ½º¯Êı
+		  pid=fscanf(f,"%d %d %d",&i,&j,&k);  //ä»ç®¡é“è¯»å–æ•°æ®ï¼Œfscanfä¸ºé˜»å¡å¼å‡½æ•°
 		  if(pid<2)
                   {
                        fprintf(stderr,"Some of our childrens died.\n");
@@ -422,7 +422,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
 		  bytes+=k;
 		  /* fprintf(stderr,"*Knock* %d %d read=%d\n",speed,failed,pid); */
 		  if(--clients==0) 
-		    break;//Õâ¾äÓÃÓÚ¼ÇÂ¼ÒÑ¾­¶ÁÁË¶àÉÙ¸ö×Ó½ø³ÌµÄÊı¾İ£¬¶ÁÍê¾ÍÍË³ö
+		    break;//è¿™å¥ç”¨äºè®°å½•å·²ç»è¯»äº†å¤šå°‘ä¸ªå­è¿›ç¨‹çš„æ•°æ®ï¼Œè¯»å®Œå°±é€€å‡º
 	  }
 	  fclose(f);
 
@@ -430,7 +430,7 @@ static int bench(void) //ËùÓĞµÄÑ¹²â¶¼ÔÚbenchº¯ÊıÊµÏÖ
 		  (int)((speed+failed)/(benchtime/60.0f)),
 		  (int)(bytes/(float)benchtime),
 		  speed,
-		  failed); //×îºó½«½á¹û´òÓ¡µ½ÆÁÄ»ÉÏ
+		  failed); //æœ€åå°†ç»“æœæ‰“å°åˆ°å±å¹•ä¸Š
   }
   return i;
 }
@@ -449,14 +449,14 @@ void benchcore(const char *host,const int port,const char *req)
  /* setup alarm signal handler */
  sa.sa_handler=alarm_handler;
  sa.sa_flags=0;
- if(sigaction(SIGALRM,&sa,NULL)) //¶¨Ê±Æ÷³¬Ê±ÉèÖÃ£¬³¬Ê±ÍË³ö
+ if(sigaction(SIGALRM,&sa,NULL)) //å®šæ—¶å™¨è¶…æ—¶è®¾ç½®ï¼Œè¶…æ—¶é€€å‡º
     exit(3);
- alarm(benchtime); //¿ªÊ¼¼ÆÊ±
+ alarm(benchtime); //å¼€å§‹è®¡æ—¶
 
  rlen=strlen(req);
  nexttry:while(1)
  {
-    if(timerexpired) //Ò»µ©³¬Ê±Ôò·µ»Ø
+    if(timerexpired) //ä¸€æ—¦è¶…æ—¶åˆ™è¿”å›
     {
        if(failed>0)
        {
@@ -477,13 +477,13 @@ void benchcore(const char *host,const int port,const char *req)
     }
 
     max_req_tmp++;
-    ssock[socknum]=Socket(host,port);  //×¢ÒâÔÚÕıÊ½Ñ­»·Ç°µ÷ÓÃ¹ıÒ»´Îsocket,¼ûbench                         
+    ssock[socknum]=Socket(host,port);  //æ³¨æ„åœ¨æ­£å¼å¾ªç¯å‰è°ƒç”¨è¿‡ä¸€æ¬¡socket,è§bench                         
     if(ssock[socknum]<0) { 
         failed++;
         continue;
     } 
 
-    if(rlen!=write(ssock[socknum],req,rlen)) { //·¢³öÇëÇó
+    if(rlen!=write(ssock[socknum],req,rlen)) { //å‘å‡ºè¯·æ±‚
         failed++;
         close(ssock[socknum]);
         continue;
@@ -496,7 +496,7 @@ void benchcore(const char *host,const int port,const char *req)
     	    continue;
 	    }
 	    
-    if(force==0) //È«¾Ö±äÁ¿force±íÊ¾ÊÇ·ñÒªµÈ´ı·şÎñÆ÷·µ»ØµÄÊı¾İ
+    if(force==0) //å…¨å±€å˜é‡forceè¡¨ç¤ºæ˜¯å¦è¦ç­‰å¾…æœåŠ¡å™¨è¿”å›çš„æ•°æ®
     {
             /* read all available data from socket */
 	    while(1)

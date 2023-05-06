@@ -17,49 +17,49 @@ static void ngx_thread_read_handler(void *data, ngx_log_t *log);
 #if (NGX_HAVE_FILE_AIO)
 
 /*
-ÎÄ¼þÒì²½IO
-    ÊÂ¼þÇý¶¯Ä£¿é¶¼ÊÇÔÚ´¦ÀíÍøÂçÊÂ¼þ£¬¶øÃ»ÓÐÉæ¼°´ÅÅÌÉÏÎÄ¼þµÄ²Ù×÷¡£±¾
-½Ú½«ÌÖÂÛLinuxÄÚºË2.6.2xÖ®ºó°æ±¾ÖÐÖ§³ÖµÄÎÄ¼þÒì²½I/O£¬ÒÔ¼°ngx_epoll_moduleÄ£¿éÊÇ
-ÈçºÎÓëÎÄ¼þÒì²½I/OÅäºÏÌá¹©·þÎñµÄ¡£ÕâÀïÌáµ½µÄÎÄ¼þÒì²½I/O²¢²»ÊÇglibc¿âÌá¹©µÄÎÄ¼þÒì
-²½I/O¡£glibc¿âÌá¹©µÄÒì²½I/OÊÇ»ùÓÚ¶àÏß³ÌÊµÏÖµÄ£¬Ëü²»ÊÇÕæÕýÒâÒåÉÏµÄÒì²½I/O¡£¶ø±¾½Ú
-ËµÃ÷µÄÒì²½I/OÊÇÓÉLinuxÄÚºËÊµÏÖ£¬Ö»ÓÐÔÚÄÚºËÖÐ³É¹¦µØÍê³ÉÁË´ÅÅÌ²Ù×÷£¬ÄÚºË²Å»áÍ¨Öª
-½ø³Ì£¬½ø¶øÊ¹µÃ´ÅÅÌÎÄ¼þµÄ´¦ÀíÓëÍøÂçÊÂ¼þµÄ´¦ÀíÍ¬Ñù¸ßÐ§¡£
-    Ê¹ÓÃÕâÖÖ·½Ê½µÄÇ°ÌáÊÇLinuxÄÚºË°æ±¾ÖÐ±ØÐëÖ§³ÖÎÄ¼þÒì²½I/O¡£µ±È»£¬Ëü´øÀ´µÄºÃ´¦
-Ò²·Ç³£Ã÷ÏÔ£¬Nginx°Ñ¶ÁÈ¡ÎÄ¼þµÄ²Ù×÷Òì²½µØÌá½»¸øÄÚºËºó£¬ÄÚºË»áÍ¨ÖªI/OÉè±¸¶ÀÁ¢µØÖ´
-ÐÐ²Ù×÷£¬ÕâÑù£¬Nginx½ø³Ì¿ÉÒÔ¼ÌÐø³ä·ÖµØÕ¼ÓÃCPU¡£¶øÇÒ£¬µ±´óÁ¿¶ÁÊÂ¼þ¶Ñ»ýµ½I/OÉè±¸
-µÄ¶ÓÁÐÖÐÊ±£¬½«»á·¢»Ó³öÄÚºËÖÐ¡°µçÌÝËã·¨¡±µÄÓÅÊÆ£¬´Ó¶ø½µµÍËæ»ú¶ÁÈ¡´ÅÅÌÉÈÇøµÄ³É±¾¡£
-    ×¢ÒâLinuxÄÚºË¼¶±ðµÄÎÄ¼þÒì²½I/OÊÇ²»Ö§³Ö»º´æ²Ù×÷µÄ£¬Ò²¾ÍÊÇËµ£¬¼´Ê¹ÐèÒª²Ù×÷
-µÄÎÄ¼þ¿éÔÚLinuxÎÄ¼þ»º´æÖÐ´æÔÚ£¬Ò²²»»áÍ¨¹ý¶ÁÈ¡¡¢¸ü¸Ä»º´æÖÐµÄÎÄ¼þ¿éÀ´´úÌæÊµ¼Ê¶Ô´Å
-ÅÌµÄ²Ù×÷£¬ËäÈ»´Ó×èÈûworker½ø³ÌµÄ½Ç¶ÈÉÏÀ´ËµÓÐÁËºÜ´óºÃ×ª£¬µ«ÊÇ¶Ôµ¥¸öÇëÇóÀ´Ëµ£¬»¹ÊÇ
-ÓÐ¿ÉÄÜ½µµÍÊµ¼Ê´¦ÀíµÄËÙ¶È£¬ÒòÎªÔ­ÏÈ¿ÉÒÔ´ÓÄÚ´æÖÐ¿ìËÙ»ñÈ¡µÄÎÄ¼þ¿éÔÚÊ¹ÓÃÁËÒì²½I/Oºó
-ÔòÒ»¶¨»á´Ó´ÅÅÌÉÏ¶ÁÈ¡¡£Òì²½ÎÄ¼þI/OÊÇ°Ñ¡°Ë«ÈÐ½£¡±£¬¹Ø¼üÒª¿´Ê¹ÓÃ³¡¾°£¬Èç¹û´ó²¿·ÖÓÃ»§
-ÇëÇó¶ÔÎÄ¼þµÄ²Ù×÷¶¼»áÂäµ½ÎÄ¼þ»º´æÖÐ£¬ÄÇÃ´²»ÒªÊ¹ÓÃÒì²½I/O£¬·´Ö®Ôò¿ÉÒÔÊÔ×ÅÊ¹ÓÃÎÄ¼þ
-Òì²½I/O£¬¿´Ò»ÏÂÊÇ·ñ»áÎª·þÎñ´øÀ´²¢·¢ÄÜÁ¦ÉÏµÄÌáÉý¡£
-    Ä¿Ç°£¬Nginx½öÖ§³ÖÔÚ¶ÁÈ¡ÎÄ¼þÊ±Ê¹ÓÃÒì²½I/O£¬ÒòÎªÕý³£Ð´ÈëÎÄ¼þÊ±ÍùÍùÊÇÐ´ÈëÄÚ´æ
-ÖÐ¾ÍÁ¢¿Ì·µ»Ø£¬Ð§ÂÊºÜ¸ß£¬¶øÊ¹ÓÃÒì²½I/OÐ´ÈëÊ±ËÙ¶È»áÃ÷ÏÔÏÂ½µ¡£
-ÎÄ¼þÒì²½AIOÓÅµã:
-        Òì²½I/OÊÇÓÉLinuxÄÚºËÊµÏÖ£¬Ö»ÓÐÔÚÄÚºËÖÐ³É¹¦µØÍê³ÉÁË´ÅÅÌ²Ù×÷£¬ÄÚºË²Å»áÍ¨Öª
-    ½ø³Ì£¬½ø¶øÊ¹µÃ´ÅÅÌÎÄ¼þµÄ´¦ÀíÓëÍøÂçÊÂ¼þµÄ´¦ÀíÍ¬Ñù¸ßÐ§¡£ÕâÑù¾Í²»»á×èÈûworker½ø³Ì¡£
-È±µã:
-        ²»Ö§³Ö»º´æ²Ù×÷µÄ£¬Ò²¾ÍÊÇËµ£¬¼´Ê¹ÐèÒª²Ù×÷µÄÎÄ¼þ¿éÔÚLinuxÎÄ¼þ»º´æÖÐ´æÔÚ£¬Ò²²»»áÍ¨¹ý¶ÁÈ¡¡¢
-    ¸ü¸Ä»º´æÖÐµÄÎÄ¼þ¿éÀ´´úÌæÊµ¼Ê¶Ô´ÅÅÌµÄ²Ù×÷¡£ÓÐ¿ÉÄÜ½µµÍÊµ¼Ê´¦ÀíµÄËÙ¶È£¬ÒòÎªÔ­ÏÈ¿ÉÒÔ´ÓÄÚ´æÖÐ¿ìËÙ
-    »ñÈ¡µÄÎÄ¼þ¿éÔÚÊ¹ÓÃÁËÒì²½I/OºóÔòÒ»¶¨»á´Ó´ÅÅÌÉÏ¶ÁÈ¡
-¾¿¾¹ÊÇÑ¡ÔñÒì²½I/O»¹ÊÇÆÕÍ¨I/O²Ù×÷ÄØ?
-        Òì²½ÎÄ¼þI/OÊÇ°Ñ¡°Ë«ÈÐ½£¡±£¬¹Ø¼üÒª¿´Ê¹ÓÃ³¡¾°£¬Èç¹û´ó²¿·ÖÓÃ»§
-    ÇëÇó¶ÔÎÄ¼þµÄ²Ù×÷¶¼»áÂäµ½ÎÄ¼þ»º´æÖÐ£¬ÄÇÃ´²»ÒªÊ¹ÓÃÒì²½I/O£¬·´Ö®Ôò¿ÉÒÔÊÔ×ÅÊ¹ÓÃÎÄ¼þ
-    Òì²½I/O£¬¿´Ò»ÏÂÊÇ·ñ»áÎª·þÎñ´øÀ´²¢·¢ÄÜÁ¦ÉÏµÄÌáÉý¡£
-        Ä¿Ç°£¬Nginx½öÖ§³ÖÔÚ¶ÁÈ¡ÎÄ¼þÊ±Ê¹ÓÃÒì²½I/O£¬ÒòÎªÕý³£Ð´ÈëÎÄ¼þÊ±ÍùÍùÊÇÐ´ÈëÄÚ´æ
-    ÖÐ¾ÍÁ¢¿Ì·µ»Ø£¬Ð§ÂÊºÜ¸ß£¬¶øÊ¹ÓÃÒì²½I/OÐ´ÈëÊ±ËÙ¶È»áÃ÷ÏÔÏÂ½µ¡£Òì²½I/O²»Ö§³ÖÐ´²Ù×÷£¬ÒòÎª
-    Òì²½I/OÎÞ·¨ÀûÓÃ»º´æ£¬¶øÐ´²Ù×÷Í¨³£ÊÇÂäµ½»º´æÉÏ£¬linux»á×Ô¶¯½«ÎÄ¼þÖÐ»º´æÖÐµÄÊý¾ÝÐ´µ½´ÅÅÌ
+æ–‡ä»¶å¼‚æ­¥IO
+    äº‹ä»¶é©±åŠ¨æ¨¡å—éƒ½æ˜¯åœ¨å¤„ç†ç½‘ç»œäº‹ä»¶ï¼Œè€Œæ²¡æœ‰æ¶‰åŠç£ç›˜ä¸Šæ–‡ä»¶çš„æ“ä½œã€‚æœ¬
+èŠ‚å°†è®¨è®ºLinuxå†…æ ¸2.6.2xä¹‹åŽç‰ˆæœ¬ä¸­æ”¯æŒçš„æ–‡ä»¶å¼‚æ­¥I/Oï¼Œä»¥åŠngx_epoll_moduleæ¨¡å—æ˜¯
+å¦‚ä½•ä¸Žæ–‡ä»¶å¼‚æ­¥I/Oé…åˆæä¾›æœåŠ¡çš„ã€‚è¿™é‡Œæåˆ°çš„æ–‡ä»¶å¼‚æ­¥I/Oå¹¶ä¸æ˜¯glibcåº“æä¾›çš„æ–‡ä»¶å¼‚
+æ­¥I/Oã€‚glibcåº“æä¾›çš„å¼‚æ­¥I/Oæ˜¯åŸºäºŽå¤šçº¿ç¨‹å®žçŽ°çš„ï¼Œå®ƒä¸æ˜¯çœŸæ­£æ„ä¹‰ä¸Šçš„å¼‚æ­¥I/Oã€‚è€Œæœ¬èŠ‚
+è¯´æ˜Žçš„å¼‚æ­¥I/Oæ˜¯ç”±Linuxå†…æ ¸å®žçŽ°ï¼Œåªæœ‰åœ¨å†…æ ¸ä¸­æˆåŠŸåœ°å®Œæˆäº†ç£ç›˜æ“ä½œï¼Œå†…æ ¸æ‰ä¼šé€šçŸ¥
+è¿›ç¨‹ï¼Œè¿›è€Œä½¿å¾—ç£ç›˜æ–‡ä»¶çš„å¤„ç†ä¸Žç½‘ç»œäº‹ä»¶çš„å¤„ç†åŒæ ·é«˜æ•ˆã€‚
+    ä½¿ç”¨è¿™ç§æ–¹å¼çš„å‰ææ˜¯Linuxå†…æ ¸ç‰ˆæœ¬ä¸­å¿…é¡»æ”¯æŒæ–‡ä»¶å¼‚æ­¥I/Oã€‚å½“ç„¶ï¼Œå®ƒå¸¦æ¥çš„å¥½å¤„
+ä¹Ÿéžå¸¸æ˜Žæ˜¾ï¼ŒNginxæŠŠè¯»å–æ–‡ä»¶çš„æ“ä½œå¼‚æ­¥åœ°æäº¤ç»™å†…æ ¸åŽï¼Œå†…æ ¸ä¼šé€šçŸ¥I/Oè®¾å¤‡ç‹¬ç«‹åœ°æ‰§
+è¡Œæ“ä½œï¼Œè¿™æ ·ï¼ŒNginxè¿›ç¨‹å¯ä»¥ç»§ç»­å……åˆ†åœ°å ç”¨CPUã€‚è€Œä¸”ï¼Œå½“å¤§é‡è¯»äº‹ä»¶å †ç§¯åˆ°I/Oè®¾å¤‡
+çš„é˜Ÿåˆ—ä¸­æ—¶ï¼Œå°†ä¼šå‘æŒ¥å‡ºå†…æ ¸ä¸­â€œç”µæ¢¯ç®—æ³•â€çš„ä¼˜åŠ¿ï¼Œä»Žè€Œé™ä½Žéšæœºè¯»å–ç£ç›˜æ‰‡åŒºçš„æˆæœ¬ã€‚
+    æ³¨æ„Linuxå†…æ ¸çº§åˆ«çš„æ–‡ä»¶å¼‚æ­¥I/Oæ˜¯ä¸æ”¯æŒç¼“å­˜æ“ä½œçš„ï¼Œä¹Ÿå°±æ˜¯è¯´ï¼Œå³ä½¿éœ€è¦æ“ä½œ
+çš„æ–‡ä»¶å—åœ¨Linuxæ–‡ä»¶ç¼“å­˜ä¸­å­˜åœ¨ï¼Œä¹Ÿä¸ä¼šé€šè¿‡è¯»å–ã€æ›´æ”¹ç¼“å­˜ä¸­çš„æ–‡ä»¶å—æ¥ä»£æ›¿å®žé™…å¯¹ç£
+ç›˜çš„æ“ä½œï¼Œè™½ç„¶ä»Žé˜»å¡žworkerè¿›ç¨‹çš„è§’åº¦ä¸Šæ¥è¯´æœ‰äº†å¾ˆå¤§å¥½è½¬ï¼Œä½†æ˜¯å¯¹å•ä¸ªè¯·æ±‚æ¥è¯´ï¼Œè¿˜æ˜¯
+æœ‰å¯èƒ½é™ä½Žå®žé™…å¤„ç†çš„é€Ÿåº¦ï¼Œå› ä¸ºåŽŸå…ˆå¯ä»¥ä»Žå†…å­˜ä¸­å¿«é€ŸèŽ·å–çš„æ–‡ä»¶å—åœ¨ä½¿ç”¨äº†å¼‚æ­¥I/OåŽ
+åˆ™ä¸€å®šä¼šä»Žç£ç›˜ä¸Šè¯»å–ã€‚å¼‚æ­¥æ–‡ä»¶I/Oæ˜¯æŠŠâ€œåŒåˆƒå‰‘â€ï¼Œå…³é”®è¦çœ‹ä½¿ç”¨åœºæ™¯ï¼Œå¦‚æžœå¤§éƒ¨åˆ†ç”¨æˆ·
+è¯·æ±‚å¯¹æ–‡ä»¶çš„æ“ä½œéƒ½ä¼šè½åˆ°æ–‡ä»¶ç¼“å­˜ä¸­ï¼Œé‚£ä¹ˆä¸è¦ä½¿ç”¨å¼‚æ­¥I/Oï¼Œåä¹‹åˆ™å¯ä»¥è¯•ç€ä½¿ç”¨æ–‡ä»¶
+å¼‚æ­¥I/Oï¼Œçœ‹ä¸€ä¸‹æ˜¯å¦ä¼šä¸ºæœåŠ¡å¸¦æ¥å¹¶å‘èƒ½åŠ›ä¸Šçš„æå‡ã€‚
+    ç›®å‰ï¼ŒNginxä»…æ”¯æŒåœ¨è¯»å–æ–‡ä»¶æ—¶ä½¿ç”¨å¼‚æ­¥I/Oï¼Œå› ä¸ºæ­£å¸¸å†™å…¥æ–‡ä»¶æ—¶å¾€å¾€æ˜¯å†™å…¥å†…å­˜
+ä¸­å°±ç«‹åˆ»è¿”å›žï¼Œæ•ˆçŽ‡å¾ˆé«˜ï¼Œè€Œä½¿ç”¨å¼‚æ­¥I/Oå†™å…¥æ—¶é€Ÿåº¦ä¼šæ˜Žæ˜¾ä¸‹é™ã€‚
+æ–‡ä»¶å¼‚æ­¥AIOä¼˜ç‚¹:
+        å¼‚æ­¥I/Oæ˜¯ç”±Linuxå†…æ ¸å®žçŽ°ï¼Œåªæœ‰åœ¨å†…æ ¸ä¸­æˆåŠŸåœ°å®Œæˆäº†ç£ç›˜æ“ä½œï¼Œå†…æ ¸æ‰ä¼šé€šçŸ¥
+    è¿›ç¨‹ï¼Œè¿›è€Œä½¿å¾—ç£ç›˜æ–‡ä»¶çš„å¤„ç†ä¸Žç½‘ç»œäº‹ä»¶çš„å¤„ç†åŒæ ·é«˜æ•ˆã€‚è¿™æ ·å°±ä¸ä¼šé˜»å¡žworkerè¿›ç¨‹ã€‚
+ç¼ºç‚¹:
+        ä¸æ”¯æŒç¼“å­˜æ“ä½œçš„ï¼Œä¹Ÿå°±æ˜¯è¯´ï¼Œå³ä½¿éœ€è¦æ“ä½œçš„æ–‡ä»¶å—åœ¨Linuxæ–‡ä»¶ç¼“å­˜ä¸­å­˜åœ¨ï¼Œä¹Ÿä¸ä¼šé€šè¿‡è¯»å–ã€
+    æ›´æ”¹ç¼“å­˜ä¸­çš„æ–‡ä»¶å—æ¥ä»£æ›¿å®žé™…å¯¹ç£ç›˜çš„æ“ä½œã€‚æœ‰å¯èƒ½é™ä½Žå®žé™…å¤„ç†çš„é€Ÿåº¦ï¼Œå› ä¸ºåŽŸå…ˆå¯ä»¥ä»Žå†…å­˜ä¸­å¿«é€Ÿ
+    èŽ·å–çš„æ–‡ä»¶å—åœ¨ä½¿ç”¨äº†å¼‚æ­¥I/OåŽåˆ™ä¸€å®šä¼šä»Žç£ç›˜ä¸Šè¯»å–
+ç©¶ç«Ÿæ˜¯é€‰æ‹©å¼‚æ­¥I/Oè¿˜æ˜¯æ™®é€šI/Oæ“ä½œå‘¢?
+        å¼‚æ­¥æ–‡ä»¶I/Oæ˜¯æŠŠâ€œåŒåˆƒå‰‘â€ï¼Œå…³é”®è¦çœ‹ä½¿ç”¨åœºæ™¯ï¼Œå¦‚æžœå¤§éƒ¨åˆ†ç”¨æˆ·
+    è¯·æ±‚å¯¹æ–‡ä»¶çš„æ“ä½œéƒ½ä¼šè½åˆ°æ–‡ä»¶ç¼“å­˜ä¸­ï¼Œé‚£ä¹ˆä¸è¦ä½¿ç”¨å¼‚æ­¥I/Oï¼Œåä¹‹åˆ™å¯ä»¥è¯•ç€ä½¿ç”¨æ–‡ä»¶
+    å¼‚æ­¥I/Oï¼Œçœ‹ä¸€ä¸‹æ˜¯å¦ä¼šä¸ºæœåŠ¡å¸¦æ¥å¹¶å‘èƒ½åŠ›ä¸Šçš„æå‡ã€‚
+        ç›®å‰ï¼ŒNginxä»…æ”¯æŒåœ¨è¯»å–æ–‡ä»¶æ—¶ä½¿ç”¨å¼‚æ­¥I/Oï¼Œå› ä¸ºæ­£å¸¸å†™å…¥æ–‡ä»¶æ—¶å¾€å¾€æ˜¯å†™å…¥å†…å­˜
+    ä¸­å°±ç«‹åˆ»è¿”å›žï¼Œæ•ˆçŽ‡å¾ˆé«˜ï¼Œè€Œä½¿ç”¨å¼‚æ­¥I/Oå†™å…¥æ—¶é€Ÿåº¦ä¼šæ˜Žæ˜¾ä¸‹é™ã€‚å¼‚æ­¥I/Oä¸æ”¯æŒå†™æ“ä½œï¼Œå› ä¸º
+    å¼‚æ­¥I/Oæ— æ³•åˆ©ç”¨ç¼“å­˜ï¼Œè€Œå†™æ“ä½œé€šå¸¸æ˜¯è½åˆ°ç¼“å­˜ä¸Šï¼Œlinuxä¼šè‡ªåŠ¨å°†æ–‡ä»¶ä¸­ç¼“å­˜ä¸­çš„æ•°æ®å†™åˆ°ç£ç›˜
     
-    ÆÕÍ¨ÎÄ¼þ¶ÁÐ´¹ý³Ì:
-    Õý³£µÄÏµÍ³µ÷ÓÃread/writeµÄÁ÷³ÌÊÇÔõÑùµÄÄØ£¿
-    - ¶ÁÈ¡£ºÄÚºË»º´æÓÐÐèÒªµÄÎÄ¼þÊý¾Ý:ÄÚºË»º³åÇø->ÓÃ»§»º³åÇø;Ã»ÓÐ:Ó²ÅÌ->ÄÚºË»º³åÇø->ÓÃ»§»º³åÇø;
-    - Ð´»Ø£ºÊý¾Ý»á´ÓÓÃ»§µØÖ·¿Õ¼ä¿½±´µ½²Ù×÷ÏµÍ³ÄÚºËµØÖ·¿Õ¼äµÄÒ³»º´æÖÐÈ¥£¬ÕâÊÇwrite¾Í»áÖ±½Ó·µ»Ø£¬²Ù×÷ÏµÍ³»áÔÚÇ¡µ±µÄÊ±»úÐ´Èë´ÅÅÌ£¬Õâ¾ÍÊÇ´«ËµÖÐµÄ
+    æ™®é€šæ–‡ä»¶è¯»å†™è¿‡ç¨‹:
+    æ­£å¸¸çš„ç³»ç»Ÿè°ƒç”¨read/writeçš„æµç¨‹æ˜¯æ€Žæ ·çš„å‘¢ï¼Ÿ
+    - è¯»å–ï¼šå†…æ ¸ç¼“å­˜æœ‰éœ€è¦çš„æ–‡ä»¶æ•°æ®:å†…æ ¸ç¼“å†²åŒº->ç”¨æˆ·ç¼“å†²åŒº;æ²¡æœ‰:ç¡¬ç›˜->å†…æ ¸ç¼“å†²åŒº->ç”¨æˆ·ç¼“å†²åŒº;
+    - å†™å›žï¼šæ•°æ®ä¼šä»Žç”¨æˆ·åœ°å€ç©ºé—´æ‹·è´åˆ°æ“ä½œç³»ç»Ÿå†…æ ¸åœ°å€ç©ºé—´çš„é¡µç¼“å­˜ä¸­åŽ»ï¼Œè¿™æ˜¯writeå°±ä¼šç›´æŽ¥è¿”å›žï¼Œæ“ä½œç³»ç»Ÿä¼šåœ¨æ°å½“çš„æ—¶æœºå†™å…¥ç£ç›˜ï¼Œè¿™å°±æ˜¯ä¼ è¯´ä¸­çš„
 */
-//direct AIO¿ÉÒÔ²Î¿¼http://blog.csdn.net/bengda/article/details/21871413
+//direct AIOå¯ä»¥å‚è€ƒhttp://blog.csdn.net/bengda/article/details/21871413
 
-ngx_uint_t  ngx_file_aio = 1; //Èç¹û´´½¨ngx_eventfdÊ§°Ü£¬ÖÃ0£¬±íÊ¾²»Ö§³ÖAIO
+ngx_uint_t  ngx_file_aio = 1; //å¦‚æžœåˆ›å»ºngx_eventfdå¤±è´¥ï¼Œç½®0ï¼Œè¡¨ç¤ºä¸æ”¯æŒAIO
 
 #endif
 
@@ -72,9 +72,9 @@ ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
     ngx_log_debug5(NGX_LOG_DEBUG_CORE, file->log, 0,
                    "read file %V: %d, %p, %uz, %O", &file->name, file->fd, buf, size, offset);
 
-#if (NGX_HAVE_PREAD)  //ÔÚÅäÖÃ½Å±¾ÖÐ¸³Öµauto/unix:ngx_feature_name="NGX_HAVE_PREAD"
+#if (NGX_HAVE_PREAD)  //åœ¨é…ç½®è„šæœ¬ä¸­èµ‹å€¼auto/unix:ngx_feature_name="NGX_HAVE_PREAD"
 
-    n = pread(file->fd, buf, size, offset);//pread() ´ÓÎÄ¼þ fd Ö¸¶¨µÄÆ«ÒÆ offset (Ïà¶ÔÎÄ¼þ¿ªÍ·) ÉÏ¶ÁÈ¡ count ¸ö×Ö½Úµ½ buf ¿ªÊ¼Î»ÖÃ¡£ÎÄ¼þµ±Ç°Î»ÖÃÆ«ÒÆ±£³Ö²»±ä¡£ 
+    n = pread(file->fd, buf, size, offset);//pread() ä»Žæ–‡ä»¶ fd æŒ‡å®šçš„åç§» offset (ç›¸å¯¹æ–‡ä»¶å¼€å¤´) ä¸Šè¯»å– count ä¸ªå­—èŠ‚åˆ° buf å¼€å§‹ä½ç½®ã€‚æ–‡ä»¶å½“å‰ä½ç½®åç§»ä¿æŒä¸å˜ã€‚ 
 
     if (n == -1) {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno,
@@ -106,7 +106,7 @@ ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
 #endif
 
-    file->offset += n;//Ã¿¶Án×Ö½Ú£¬ÎÄ¼þ¶ÁÈ¡Æ«ÒÆÁ¿¾Í¼Ón
+    file->offset += n;//æ¯è¯»nå­—èŠ‚ï¼Œæ–‡ä»¶è¯»å–åç§»é‡å°±åŠ n
 
     return n;
 }
@@ -114,26 +114,26 @@ ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
 #if (NGX_THREADS)
 
-//ngx_thread_readÖÐ´´½¨¿Õ¼äºÍ¸³Öµ
+//ngx_thread_readä¸­åˆ›å»ºç©ºé—´å’Œèµ‹å€¼
 typedef struct {
-    ngx_fd_t     fd; //ÎÄ¼þfd
-    u_char      *buf; //¶ÁÈ¡ÎÄ¼þÄÚÈÝµ½¸ÃbufÖÐ
-    size_t       size; //¶ÁÈ¡ÎÄ¼þÄÚÈÝ´óÐ¡
-    off_t        offset; //´ÓÎÄ¼þoffset¿ªÊ¼´¦¶ÁÈ¡size×Ö½Úµ½bufÖÐ
+    ngx_fd_t     fd; //æ–‡ä»¶fd
+    u_char      *buf; //è¯»å–æ–‡ä»¶å†…å®¹åˆ°è¯¥bufä¸­
+    size_t       size; //è¯»å–æ–‡ä»¶å†…å®¹å¤§å°
+    off_t        offset; //ä»Žæ–‡ä»¶offsetå¼€å§‹å¤„è¯»å–sizeå­—èŠ‚åˆ°bufä¸­
 
-    size_t       read; //Í¨¹ýngx_thread_read_handler¶ÁÈ¡µ½µÄ×Ö½ÚÊý
-    ngx_err_t    err; //ngx_thread_read_handler¶ÁÈ¡·µ»ØºóµÄ´íÎóÐÅÏ¢
-} ngx_thread_read_ctx_t; //¼ûngx_thread_read£¬¸Ã½á¹¹ÓÉngx_thread_task_t->ctxÖ¸Ïò
+    size_t       read; //é€šè¿‡ngx_thread_read_handlerè¯»å–åˆ°çš„å­—èŠ‚æ•°
+    ngx_err_t    err; //ngx_thread_read_handlerè¯»å–è¿”å›žåŽçš„é”™è¯¯ä¿¡æ¯
+} ngx_thread_read_ctx_t; //è§ngx_thread_readï¼Œè¯¥ç»“æž„ç”±ngx_thread_task_t->ctxæŒ‡å‘
 
-//µÚÒ»´Î½øÀ´µÄÊ±ºò±íÊ¾¿ªÊ¼°Ñ¶ÁÈÎÎñ¼ÓÈëÏß³Ì³ØÖÐ´¦Àí£¬±íÊ¾ÕýÔÚ¿ªÊ¼¶Á£¬µÚ¶þ´Î½øÀ´µÄÊ±ºò±íÊ¾Êý¾ÝÒÑ¾­Í¨¹ýnotify_epollÍ¨Öª¶ÁÈ¡Íê±Ï£¬¿ÉÒÔ´¦ÀíÁË£¬µÚÒ»´Î·µ»ØNAX_AGAIN
-//µÚ¶þ´Î·Å»ØÏß³Ì³ØÖÐµÄÏß³Ì´¦Àí¶ÁÈÎÎñ¶ÁÈ¡µ½µÄ×Ö½ÚÊý
+//ç¬¬ä¸€æ¬¡è¿›æ¥çš„æ—¶å€™è¡¨ç¤ºå¼€å§‹æŠŠè¯»ä»»åŠ¡åŠ å…¥çº¿ç¨‹æ± ä¸­å¤„ç†ï¼Œè¡¨ç¤ºæ­£åœ¨å¼€å§‹è¯»ï¼Œç¬¬äºŒæ¬¡è¿›æ¥çš„æ—¶å€™è¡¨ç¤ºæ•°æ®å·²ç»é€šè¿‡notify_epollé€šçŸ¥è¯»å–å®Œæ¯•ï¼Œå¯ä»¥å¤„ç†äº†ï¼Œç¬¬ä¸€æ¬¡è¿”å›žNAX_AGAIN
+//ç¬¬äºŒæ¬¡æ”¾å›žçº¿ç¨‹æ± ä¸­çš„çº¿ç¨‹å¤„ç†è¯»ä»»åŠ¡è¯»å–åˆ°çš„å­—èŠ‚æ•°
 ssize_t
 ngx_thread_read(ngx_thread_task_t **taskp, ngx_file_t *file, u_char *buf,
     size_t size, off_t offset, ngx_pool_t *pool)
 {
     /*
-        ¸Ãº¯ÊýÒ»°ã»á½øÀ´Á½´Î£¬µÚÒ»´ÎÊÇÍ¨¹ýÔ­Ê¼Êý¾Ý·¢ËÍ´¥·¢×ßµ½ÕâÀï£¬ÕâÊ±ºòcomplete = 0£¬µÚ¶þ´ÎÊÇµ±Ïß³Ì³Ø¶ÁÈ¡Êý¾ÝÍê³É£¬Ôò»áÍ¨¹ý
-        ngx_thread_pool_handler->ngx_http_copy_thread_event_handler->ngx_http_request_handler->ngx_http_writerÔÚ´Î×ßµ½ÕâÀï
+        è¯¥å‡½æ•°ä¸€èˆ¬ä¼šè¿›æ¥ä¸¤æ¬¡ï¼Œç¬¬ä¸€æ¬¡æ˜¯é€šè¿‡åŽŸå§‹æ•°æ®å‘é€è§¦å‘èµ°åˆ°è¿™é‡Œï¼Œè¿™æ—¶å€™complete = 0ï¼Œç¬¬äºŒæ¬¡æ˜¯å½“çº¿ç¨‹æ± è¯»å–æ•°æ®å®Œæˆï¼Œåˆ™ä¼šé€šè¿‡
+        ngx_thread_pool_handler->ngx_http_copy_thread_event_handler->ngx_http_request_handler->ngx_http_writeråœ¨æ¬¡èµ°åˆ°è¿™é‡Œ
      */
     ngx_thread_task_t      *task;
     ngx_thread_read_ctx_t  *ctx;
@@ -159,9 +159,9 @@ ngx_thread_read(ngx_thread_task_t **taskp, ngx_file_t *file, u_char *buf,
 
     if (task->event.complete) {
     /*
-    ¸Ãº¯ÊýÒ»°ã»á½øÀ´Á½´Î£¬µÚÒ»´ÎÊÇÍ¨¹ýÔ­Ê¼Êý¾Ý·¢ËÍ´¥·¢×ßµ½ÕâÀï£¬ÕâÊ±ºòcomplete = 0£¬µÚ¶þ´ÎÊÇµ±Ïß³Ì³Ø¶ÁÈ¡Êý¾ÝÍê³É£¬Ôò»áÍ¨¹ý
-    ngx_thread_pool_handler->ngx_http_copy_thread_event_handler->ngx_http_request_handler->ngx_http_writerÔÚ´Î×ßµ½ÕâÀï£¬²»¹ý
-    Õâ´ÎcompleteÒÑ¾­ÔÚngx_thread_pool_handlerÖÃ1
+    è¯¥å‡½æ•°ä¸€èˆ¬ä¼šè¿›æ¥ä¸¤æ¬¡ï¼Œç¬¬ä¸€æ¬¡æ˜¯é€šè¿‡åŽŸå§‹æ•°æ®å‘é€è§¦å‘èµ°åˆ°è¿™é‡Œï¼Œè¿™æ—¶å€™complete = 0ï¼Œç¬¬äºŒæ¬¡æ˜¯å½“çº¿ç¨‹æ± è¯»å–æ•°æ®å®Œæˆï¼Œåˆ™ä¼šé€šè¿‡
+    ngx_thread_pool_handler->ngx_http_copy_thread_event_handler->ngx_http_request_handler->ngx_http_writeråœ¨æ¬¡èµ°åˆ°è¿™é‡Œï¼Œä¸è¿‡
+    è¿™æ¬¡completeå·²ç»åœ¨ngx_thread_pool_handlerç½®1
      */   
         task->event.complete = 0;
 
@@ -179,9 +179,9 @@ ngx_thread_read(ngx_thread_task_t **taskp, ngx_file_t *file, u_char *buf,
     ctx->size = size;
     ctx->offset = offset;
 
-    //ÕâÀïÌí¼Ótask->eventÐÅÏ¢µ½taskÖÐ£¬µ±task->handlerÖ¸ÏòÍêºó£¬Í¨¹ýnginx_notify¿ÉÒÔ¼ÌÐøÍ¨¹ýepoll_wait·µ»ØÖ´ÐÐtask->event
-    //¿Í»§¶Ë¹ýÀ´ºóÈç¹ûÓÐ»º´æ´æÔÚ£¬Ôòngx_http_file_cache_aio_readÖÐ¸³ÖµÎªngx_http_cache_thread_handler;  
-    //Èç¹ûÊÇ´Óºó¶Ë»ñÈ¡µÄÊý¾Ý£¬È»ºó·¢ËÍ¸ø¿Í»§¶Ë£¬Ôòngx_output_chain_as_isÖÐ¸³ÖµÎ´ngx_http_copy_thread_handler
+    //è¿™é‡Œæ·»åŠ task->eventä¿¡æ¯åˆ°taskä¸­ï¼Œå½“task->handleræŒ‡å‘å®ŒåŽï¼Œé€šè¿‡nginx_notifyå¯ä»¥ç»§ç»­é€šè¿‡epoll_waitè¿”å›žæ‰§è¡Œtask->event
+    //å®¢æˆ·ç«¯è¿‡æ¥åŽå¦‚æžœæœ‰ç¼“å­˜å­˜åœ¨ï¼Œåˆ™ngx_http_file_cache_aio_readä¸­èµ‹å€¼ä¸ºngx_http_cache_thread_handler;  
+    //å¦‚æžœæ˜¯ä»ŽåŽç«¯èŽ·å–çš„æ•°æ®ï¼Œç„¶åŽå‘é€ç»™å®¢æˆ·ç«¯ï¼Œåˆ™ngx_output_chain_as_isä¸­èµ‹å€¼æœªngx_http_copy_thread_handler
     if (file->thread_handler(task, file) != NGX_OK) {
         return NGX_ERROR;
     }
@@ -191,17 +191,17 @@ ngx_thread_read(ngx_thread_task_t **taskp, ngx_file_t *file, u_char *buf,
 
 
 #if (NGX_HAVE_PREAD)
-//ÔÚngx_thread_read°Ñ¸ÃhandlerÌí¼Óµ½Ïß³Ì³ØÖÐ
+//åœ¨ngx_thread_readæŠŠè¯¥handleræ·»åŠ åˆ°çº¿ç¨‹æ± ä¸­
 static void //ngx_thread_read->ngx_thread_read_handler
 ngx_thread_read_handler(void *data, ngx_log_t *log)
-{//¸Ãº¯ÊýÖ´ÐÐºó£¬»áÍ¨¹ýngx_notifyÖ´ÐÐevent.handler = ngx_http_cache_thread_event_handler;
+{//è¯¥å‡½æ•°æ‰§è¡ŒåŽï¼Œä¼šé€šè¿‡ngx_notifyæ‰§è¡Œevent.handler = ngx_http_cache_thread_event_handler;
     ngx_thread_read_ctx_t *ctx = data;
 
     ssize_t  n;
 
     ngx_log_debug0(NGX_LOG_DEBUG_CORE, log, 0, "thread read handler");
 
-    //»º´æÎÄ¼þÊý¾Ý»á¿½±´µ½dstÖÐ£¬Ò²¾ÍÊÇngx_output_chain_ctx_t->buf,È»ºóÔÚngx_output_chain_copy_bufº¯ÊýÍâ²ã»áÖØÐÂ°Ñctx->buf¸³Öµ¸øÐÂµÄchain£¬È»ºówrite³öÈ¥
+    //ç¼“å­˜æ–‡ä»¶æ•°æ®ä¼šæ‹·è´åˆ°dstä¸­ï¼Œä¹Ÿå°±æ˜¯ngx_output_chain_ctx_t->buf,ç„¶åŽåœ¨ngx_output_chain_copy_bufå‡½æ•°å¤–å±‚ä¼šé‡æ–°æŠŠctx->bufèµ‹å€¼ç»™æ–°çš„chainï¼Œç„¶åŽwriteå‡ºåŽ»
     n = pread(ctx->fd, ctx->buf, ctx->size, ctx->offset);
 
     if (n == -1) {
@@ -243,7 +243,7 @@ ngx_write_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 #if (NGX_HAVE_PWRITE)
 
     for ( ;; ) {
-        //pwrite() °Ñ»º´æÇø buf ¿ªÍ·µÄ count ¸ö×Ö½ÚÐ´ÈëÎÄ¼þÃèÊö·û fd offset Æ«ÒÆÎ»ÖÃÉÏ¡£ÎÄ¼þÆ«ÒÆÃ»ÓÐ¸Ä±ä¡£
+        //pwrite() æŠŠç¼“å­˜åŒº buf å¼€å¤´çš„ count ä¸ªå­—èŠ‚å†™å…¥æ–‡ä»¶æè¿°ç¬¦ fd offset åç§»ä½ç½®ä¸Šã€‚æ–‡ä»¶åç§»æ²¡æœ‰æ”¹å˜ã€‚
         n = pwrite(file->fd, buf + written, size, offset);
 
         if (n == -1) {
@@ -307,10 +307,10 @@ ngx_open_tempfile(u_char *name, ngx_uint_t persistent, ngx_uint_t access)
 
     if (fd != -1 && !persistent) {
         /*
-        unlinkº¯ÊýÊ¹ÎÄ¼þÒýÓÃÊý¼õÒ»£¬µ±ÒýÓÃÊýÎªÁãÊ±£¬²Ù×÷ÏµÍ³¾ÍÉ¾³ýÎÄ¼þ¡£µ«ÈôÓÐ½ø³ÌÒÑ¾­´ò¿ªÎÄ¼þ£¬ÔòÖ»ÓÐ×îºóÒ»¸öÒýÓÃ¸ÃÎÄ¼þµÄÎÄ¼þ
-        ÃèÊö·û¹Ø±Õ£¬¸ÃÎÄ¼þ²Å»á±»É¾³ý¡£
+        unlinkå‡½æ•°ä½¿æ–‡ä»¶å¼•ç”¨æ•°å‡ä¸€ï¼Œå½“å¼•ç”¨æ•°ä¸ºé›¶æ—¶ï¼Œæ“ä½œç³»ç»Ÿå°±åˆ é™¤æ–‡ä»¶ã€‚ä½†è‹¥æœ‰è¿›ç¨‹å·²ç»æ‰“å¼€æ–‡ä»¶ï¼Œåˆ™åªæœ‰æœ€åŽä¸€ä¸ªå¼•ç”¨è¯¥æ–‡ä»¶çš„æ–‡ä»¶
+        æè¿°ç¬¦å…³é—­ï¼Œè¯¥æ–‡ä»¶æ‰ä¼šè¢«åˆ é™¤ã€‚
           */
-        (void) unlink((const char *) name); //Èç¹ûÒ»¸öÎÄ¼þÃûÓÐunlink£¬Ôòµ±¹Ø±ÕfdµÄÊ±ºò£¬»áÉ¾³ý¸ÃÎÄ¼þ
+        (void) unlink((const char *) name); //å¦‚æžœä¸€ä¸ªæ–‡ä»¶åæœ‰unlinkï¼Œåˆ™å½“å…³é—­fdçš„æ—¶å€™ï¼Œä¼šåˆ é™¤è¯¥æ–‡ä»¶
     }
 
     return fd;
@@ -319,15 +319,15 @@ ngx_open_tempfile(u_char *name, ngx_uint_t persistent, ngx_uint_t access)
 
 #define NGX_IOVS  8
 /*
-Èç¹ûÅäÖÃxxx_buffers  XXX_buffer_sizeÖ¸¶¨µÄ¿Õ¼ä¶¼ÓÃÍêÁË£¬Ôò»á°Ñ»º´æÖÐµÄÊý¾ÝÐ´ÈëÁÙÊ±ÎÄ¼þ£¬È»ºó¼ÌÐø¶Á£¬¶Áµ½ngx_event_pipe_write_chain_to_temp_file
-ºóÐ´ÈëÁÙÊ±ÎÄ¼þ£¬Ö±µ½read·µ»ØNGX_AGAIN,È»ºóÔÚngx_event_pipe_write_to_downstream->ngx_output_chain->ngx_output_chain_copy_bufÖÐ¶ÁÈ¡ÁÙÊ±ÎÄ¼þÄÚÈÝ
-·¢ËÍµ½ºó¶Ë£¬µ±Êý¾Ý¼ÌÐøµ½À´£¬Í¨¹ýepoll read¼ÌÐøÑ­»·¸ÃÁ÷³Ì
+å¦‚æžœé…ç½®xxx_buffers  XXX_buffer_sizeæŒ‡å®šçš„ç©ºé—´éƒ½ç”¨å®Œäº†ï¼Œåˆ™ä¼šæŠŠç¼“å­˜ä¸­çš„æ•°æ®å†™å…¥ä¸´æ—¶æ–‡ä»¶ï¼Œç„¶åŽç»§ç»­è¯»ï¼Œè¯»åˆ°ngx_event_pipe_write_chain_to_temp_file
+åŽå†™å…¥ä¸´æ—¶æ–‡ä»¶ï¼Œç›´åˆ°readè¿”å›žNGX_AGAIN,ç„¶åŽåœ¨ngx_event_pipe_write_to_downstream->ngx_output_chain->ngx_output_chain_copy_bufä¸­è¯»å–ä¸´æ—¶æ–‡ä»¶å†…å®¹
+å‘é€åˆ°åŽç«¯ï¼Œå½“æ•°æ®ç»§ç»­åˆ°æ¥ï¼Œé€šè¿‡epoll readç»§ç»­å¾ªçŽ¯è¯¥æµç¨‹
 */
 
-/*ngx_http_upstream_init_request->ngx_http_upstream_cache ¿Í»§¶Ë»ñÈ¡»º´æ ºó¶ËÓ¦´ð»ØÀ´Êý¾ÝºóÔÚngx_http_upstream_send_response->ngx_http_file_cache_create
-ÖÐ´´½¨ÁÙÊ±ÎÄ¼þ£¬È»ºóÔÚngx_event_pipe_write_chain_to_temp_file°Ñ¶ÁÈ¡µÄºó¶ËÊý¾ÝÐ´ÈëÁÙÊ±ÎÄ¼þ£¬×îºóÔÚ
-ngx_http_upstream_send_response->ngx_http_upstream_process_request->ngx_http_file_cache_updateÖÐ°ÑÁÙÊ±ÎÄ¼þÄÚÈÝrename(Ïàµ±ÓÚmv)µ½proxy_cache_pathÖ¸¶¨
-µÄcacheÄ¿Â¼ÏÂÃæ
+/*ngx_http_upstream_init_request->ngx_http_upstream_cache å®¢æˆ·ç«¯èŽ·å–ç¼“å­˜ åŽç«¯åº”ç­”å›žæ¥æ•°æ®åŽåœ¨ngx_http_upstream_send_response->ngx_http_file_cache_create
+ä¸­åˆ›å»ºä¸´æ—¶æ–‡ä»¶ï¼Œç„¶åŽåœ¨ngx_event_pipe_write_chain_to_temp_fileæŠŠè¯»å–çš„åŽç«¯æ•°æ®å†™å…¥ä¸´æ—¶æ–‡ä»¶ï¼Œæœ€åŽåœ¨
+ngx_http_upstream_send_response->ngx_http_upstream_process_request->ngx_http_file_cache_updateä¸­æŠŠä¸´æ—¶æ–‡ä»¶å†…å®¹rename(ç›¸å½“äºŽmv)åˆ°proxy_cache_pathæŒ‡å®š
+çš„cacheç›®å½•ä¸‹é¢
 */
 
 ssize_t
@@ -342,13 +342,13 @@ ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl, off_t offset,
 
     /* use pwrite() if there is the only buf in a chain */
 
-    if (cl->next == NULL) { //Ö»ÓÐÒ»¸öbuf½Úµã
+    if (cl->next == NULL) { //åªæœ‰ä¸€ä¸ªbufèŠ‚ç‚¹
         return ngx_write_file(file, cl->buf->pos,
                               (size_t) (cl->buf->last - cl->buf->pos),
                               offset);
     }
 
-    total = 0; //±¾´Î×Ü¹²Ð´µÀÎÄ¼þÖÐµÄ×Ö½ÚÊý£¬ºÍclÖÐËùÓÐbufÖ¸ÏòµÄÄÚ´æ¿Õ¼ä´óÐ¡ÏàµÈ
+    total = 0; //æœ¬æ¬¡æ€»å…±å†™é“æ–‡ä»¶ä¸­çš„å­—èŠ‚æ•°ï¼Œå’Œclä¸­æ‰€æœ‰bufæŒ‡å‘çš„å†…å­˜ç©ºé—´å¤§å°ç›¸ç­‰
 
     vec.elts = iovs;
     vec.size = sizeof(struct iovec);
@@ -364,8 +364,8 @@ ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl, off_t offset,
 
         /* create the iovec and coalesce the neighbouring bufs */
 
-        while (cl && vec.nelts < IOV_MAX) { //°ÑclÁ´ÖÐµÄËùÓÐÃ¿Ò»¸öchain½ÚµãÁ¬½Óµ½Ò»¸öiovÖÐ
-            if (prev == cl->buf->pos) { //°ÑÒ»¸öchainÁ´ÖÐµÄËùÓÐbuf·Åµ½Ò»¸öiovÖÐ
+        while (cl && vec.nelts < IOV_MAX) { //æŠŠclé“¾ä¸­çš„æ‰€æœ‰æ¯ä¸€ä¸ªchainèŠ‚ç‚¹è¿žæŽ¥åˆ°ä¸€ä¸ªiovä¸­
+            if (prev == cl->buf->pos) { //æŠŠä¸€ä¸ªchainé“¾ä¸­çš„æ‰€æœ‰bufæ”¾åˆ°ä¸€ä¸ªiovä¸­
                 iov->iov_len += cl->buf->last - cl->buf->pos;
 
             } else {
@@ -378,10 +378,10 @@ ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl, off_t offset,
                 iov->iov_len = cl->buf->last - cl->buf->pos;
             }
 
-            size += cl->buf->last - cl->buf->pos; //clÎªËùÓÐÊý¾ÝµÄ³¤¶ÈºÍ
+            size += cl->buf->last - cl->buf->pos; //clä¸ºæ‰€æœ‰æ•°æ®çš„é•¿åº¦å’Œ
             prev = cl->buf->last;
             cl = cl->next;
-        } //Èç¹ûclÁ´ÖÐµÄËùÓÐchain¸öÊý³¬¹ýÁËIOV_MAX¸ö£¬ÔòÐèÒªÏÂ´Î¼ÌÐøÔÚºóÃæwhile (cl);»Ø¹ýÀ´´¦Àí
+        } //å¦‚æžœclé“¾ä¸­çš„æ‰€æœ‰chainä¸ªæ•°è¶…è¿‡äº†IOV_MAXä¸ªï¼Œåˆ™éœ€è¦ä¸‹æ¬¡ç»§ç»­åœ¨åŽé¢while (cl);å›žè¿‡æ¥å¤„ç†
 
         /* use pwrite() if there is the only iovec buffer */
 
@@ -431,7 +431,7 @@ ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl, off_t offset,
         offset += n;
         total += n;
 
-    } while (cl);//Èç¹ûclÁ´ÖÐµÄËùÓÐchain¸öÊý³¬¹ýÁËIOV_MAX¸ö£¬ÔòÐèÒªÏÂ´Î¼ÌÐøÔÚºóÃæwhile (cl);»Ø¹ýÀ´´¦Àí
+    } while (cl);//å¦‚æžœclé“¾ä¸­çš„æ‰€æœ‰chainä¸ªæ•°è¶…è¿‡äº†IOV_MAXä¸ªï¼Œåˆ™éœ€è¦ä¸‹æ¬¡ç»§ç»­åœ¨åŽé¢while (cl);å›žè¿‡æ¥å¤„ç†
 
     return total;
 }
@@ -636,726 +636,4 @@ ngx_close_glob(ngx_glob_t *gl)
 
 
 /*
-Linux fcntlº¯ÊýÏê½â(2011-07-18 20:22:14)×ªÔØ¨‹±êÇ©£º fcntllinuxcit  
-¹¦ÄÜÃèÊö£º¸ù¾ÝÎÄ¼þÃèÊö´ÊÀ´²Ù×÷ÎÄ¼þµÄÌØÐÔ¡£
-#include <unistd.h>
-#include <fcntl.h>
-int fcntl(int fd, int cmd);
-int fcntl(int fd, int cmd, long arg);
-int fcntl(int fd, int cmd, struct flock *lock);
-[ÃèÊö]
-fcntl()Õë¶Ô(ÎÄ¼þ)ÃèÊö·ûÌá¹©¿ØÖÆ¡£²ÎÊýfdÊÇ±»²ÎÊýcmd²Ù×÷(ÈçÏÂÃæµÄÃèÊö)µÄÃèÊö·û¡£Õë¶ÔcmdµÄÖµ£¬fcntlÄÜ¹»½ÓÊÜµÚÈý¸ö²ÎÊýint arg¡£
-[·µ»ØÖµ]
-fcntl()µÄ·µ»ØÖµÓëÃüÁîÓÐ¹Ø¡£Èç¹û³ö´í£¬ËùÓÐÃüÁî¶¼·µ»Ø£­1£¬Èç¹û³É¹¦Ôò·µ»ØÄ³¸öÆäËûÖµ¡£ÏÂÁÐÈý¸öÃüÁîÓÐÌØ¶¨·µ»ØÖµ£ºF_DUPFD , F_GETFD , F_GETFLÒÔ¼°F_GETOWN¡£
-    F_DUPFD   ·µ»ØÐÂµÄÎÄ¼þÃèÊö·û
-    F_GETFD   ·µ»ØÏàÓ¦±êÖ¾
-    F_GETFL , F_GETOWN   ·µ»ØÒ»¸öÕýµÄ½ø³ÌID»ò¸ºµÄ½ø³Ì×éID
- 
-fcntlº¯ÊýÓÐ5ÖÖ¹¦ÄÜ£º
-1. ¸´ÖÆÒ»¸öÏÖÓÐµÄÃèÊö·û(cmd=F_DUPFD).
-2. »ñµÃ£¯ÉèÖÃÎÄ¼þÃèÊö·û±ê¼Ç(cmd=F_GETFD»òF_SETFD).
-3. »ñµÃ£¯ÉèÖÃÎÄ¼þ×´Ì¬±ê¼Ç(cmd=F_GETFL»òF_SETFL).
-4. »ñµÃ£¯ÉèÖÃÒì²½I/OËùÓÐÈ¨(cmd=F_GETOWN»òF_SETOWN).
-5. »ñµÃ£¯ÉèÖÃ¼ÇÂ¼Ëø(cmd=F_GETLK , F_SETLK»òF_SETLKW).
-1. cmdÖµµÄF_DUPFD £º
-F_DUPFD    ·µ»ØÒ»¸öÈçÏÂÃèÊöµÄ(ÎÄ¼þ)ÃèÊö·û£º
-        ¡¤×îÐ¡µÄ´óÓÚ»òµÈÓÚargµÄÒ»¸ö¿ÉÓÃµÄÃèÊö·û
-        ¡¤ÓëÔ­Ê¼²Ù×÷·ûÒ»ÑùµÄÄ³¶ÔÏóµÄÒýÓÃ
-        ¡¤Èç¹û¶ÔÏóÊÇÎÄ¼þ(file)µÄ»°£¬Ôò·µ»ØÒ»¸öÐÂµÄÃèÊö·û£¬Õâ¸öÃèÊö·ûÓëarg¹²ÏíÏàÍ¬µÄÆ«ÒÆÁ¿(offset)
-        ¡¤ÏàÍ¬µÄ·ÃÎÊÄ£Ê½(¶Á£¬Ð´»ò¶Á/Ð´)
-        ¡¤ÏàÍ¬µÄÎÄ¼þ×´Ì¬±êÖ¾(Èç£ºÁ½¸öÎÄ¼þÃèÊö·û¹²ÏíÏàÍ¬µÄ×´Ì¬±êÖ¾)
-        ¡¤ÓëÐÂµÄÎÄ¼þÃèÊö·û½áºÏÔÚÒ»ÆðµÄclose-on-exec±êÖ¾±»ÉèÖÃ³É½»²æÊ½·ÃÎÊexecve(2)µÄÏµÍ³µ÷ÓÃ
-Êµ¼ÊÉÏµ÷ÓÃdup(oldfd)£»
-µÈÐ§ÓÚ
-        fcntl(oldfd, F_DUPFD, 0);
-¶øµ÷ÓÃdup2(oldfd, newfd)£»
-µÈÐ§ÓÚ
-        close(oldfd)£»
-        fcntl(oldfd, F_DUPFD, newfd)£»
-2. cmdÖµµÄF_GETFDºÍF_SETFD£º     
-F_GETFD    È¡µÃÓëÎÄ¼þÃèÊö·ûfdÁªºÏµÄclose-on-exec±êÖ¾£¬ÀàËÆFD_CLOEXEC¡£Èç¹û·µ»ØÖµºÍFD_CLOEXEC½øÐÐÓëÔËËã½á¹ûÊÇ0µÄ»°£¬ÎÄ¼þ±£³Ö½»²æÊ½·ÃÎÊexec()£¬·ñÔòÈç¹ûÍ¨¹ýexecÔËÐÐµÄ»°£¬ÎÄ¼þ½«±»¹Ø±Õ(arg ±»ºöÂÔ)       
-F_SETFD    ÉèÖÃclose-on-exec±êÖ¾£¬¸Ã±êÖ¾ÒÔ²ÎÊýargµÄFD_CLOEXECÎ»¾ö¶¨£¬Ó¦µ±ÁË½âºÜ¶àÏÖ´æµÄÉæ¼°ÎÄ¼þÃèÊö·û±êÖ¾µÄ³ÌÐò²¢²»Ê¹ÓÃ³£Êý FD_CLOEXEC£¬¶øÊÇ½«´Ë±êÖ¾ÉèÖÃÎª0(ÏµÍ³Ä¬ÈÏ£¬ÔÚexecÊ±²»¹Ø±Õ)»ò1(ÔÚexecÊ±¹Ø±Õ)    
-ÔÚÐÞ¸ÄÎÄ¼þÃèÊö·û±êÖ¾»òÎÄ¼þ×´Ì¬±êÖ¾Ê±±ØÐë½÷É÷£¬ÏÈÒªÈ¡µÃÏÖÔÚµÄ±êÖ¾Öµ£¬È»ºó°´ÕÕÏ£ÍûÐÞ¸ÄËü£¬×îºóÉèÖÃÐÂ±êÖ¾Öµ¡£²»ÄÜÖ»ÊÇÖ´ÐÐF_SETFD»òF_SETFLÃüÁî£¬ÕâÑù»á¹Ø±ÕÒÔÇ°ÉèÖÃµÄ±êÖ¾Î»¡£ 
-3. cmdÖµµÄF_GETFLºÍF_SETFL£º  
-F_GETFL    È¡µÃfdµÄÎÄ¼þ×´Ì¬±êÖ¾£¬ÈçÍ¬ÏÂÃæµÄÃèÊöÒ»Ñù(arg±»ºöÂÔ)£¬ÔÚËµÃ÷openº¯ÊýÊ±£¬ÒÑËµÃ÷
-ÁËÎÄ¼þ×´Ì¬±êÖ¾¡£²»ÐÒµÄÊÇ£¬Èý¸ö´æÈ¡·½Ê½±êÖ¾ (O_RDONLY , O_WRONLY , ÒÔ¼°O_RDWR)²¢²»¸÷Õ¼1Î»¡£(ÕâÈýÖÖ±êÖ¾µÄÖµ¸÷ÊÇ0 , 1ºÍ2£¬ÓÉÓÚÀúÊ·Ô­Òò£¬ÕâÈýÖÖÖµ»¥³â ¡ª Ò»¸öÎÄ¼þÖ»ÄÜÓÐÕâÈýÖÖÖµÖ®Ò»¡£) Òò´ËÊ×ÏÈ±ØÐëÓÃÆÁ±Î×ÖO_ACCMODEÏàÓëÈ¡µÃ´æÈ¡·½Ê½Î»£¬È»ºó½«½á¹ûÓëÕâÈýÖÖÖµÏà±È½Ï¡£      
-F_SETFL    ÉèÖÃ¸øargÃèÊö·û×´Ì¬±êÖ¾£¬¿ÉÒÔ¸ü¸ÄµÄ¼¸¸ö±êÖ¾ÊÇ£ºO_APPEND£¬O_NONBLOCK£¬O_SYNC ºÍ O_ASYNC¡£¶øfcntlµÄÎÄ¼þ×´Ì¬±êÖ¾×Ü¹²ÓÐ7¸ö£ºO_RDONLY , O_WRONLY , O_RDWR , O_APPEND , O_NONBLOCK , O_SYNCºÍO_ASYNC
-¿É¸ü¸ÄµÄ¼¸¸ö±êÖ¾ÈçÏÂÃæµÄÃèÊö£º
-    O_NONBLOCK   ·Ç×èÈûI/O£¬Èç¹ûread(2)µ÷ÓÃÃ»ÓÐ¿É¶ÁÈ¡µÄÊý¾Ý£¬»òÕßÈç¹ûwrite(2)²Ù×÷½«×èÈû£¬Ôòread»òwriteµ÷ÓÃ½«·µ»Ø-1ºÍEAGAIN´íÎó
-    O_APPEND     Ç¿ÖÆÃ¿´ÎÐ´(write)²Ù×÷¶¼Ìí¼ÓÔÚÎÄ¼þ´óµÄÄ©Î²£¬Ïàµ±ÓÚopen(2)µÄO_APPEND±êÖ¾
-    O_DIRECT     ×îÐ¡»¯»òÈ¥µôreadingºÍwritingµÄ»º´æÓ°Ïì¡£ÏµÍ³½«ÆóÍ¼±ÜÃâ»º´æÄãµÄ¶Á»òÐ´µÄÊý¾Ý¡£Èç¹û²»ÄÜ¹»±ÜÃâ»º´æ£¬ÄÇÃ´Ëü½«×îÐ¡»¯ÒÑ¾­±»»º´æÁËµÄÊý¾ÝÔì³ÉµÄÓ°Ïì¡£Èç¹ûÕâ¸ö±êÖ¾ÓÃµÄ²»¹»ºÃ£¬½«´ó´óµÄ½µµÍÐÔÄÜ
-    O_ASYNC      µ±I/O¿ÉÓÃµÄÊ±ºò£¬ÔÊÐíSIGIOÐÅºÅ·¢ËÍµ½½ø³Ì×é£¬ÀýÈç£ºµ±ÓÐÊý¾Ý¿ÉÒÔ¶ÁµÄÊ±ºò
-4. cmdÖµµÄF_GETOWNºÍF_SETOWN£º  
-F_GETOWN   È¡µÃµ±Ç°ÕýÔÚ½ÓÊÕSIGIO»òÕßSIGURGÐÅºÅµÄ½ø³Ìid»ò½ø³Ì×éid£¬½ø³Ì×éid·µ»ØµÄÊÇ¸ºÖµ(arg±»ºöÂÔ)    
-F_SETOWN   ÉèÖÃ½«½ÓÊÕSIGIOºÍSIGURGÐÅºÅµÄ½ø³Ìid»ò½ø³Ì×éid£¬½ø³Ì×éidÍ¨¹ýÌá¹©¸ºÖµµÄargÀ´ËµÃ÷(arg¾ø¶ÔÖµµÄÒ»¸ö½ø³Ì×éID)£¬·ñÔòarg½«±»ÈÏÎªÊÇ½ø³Ìid
- 5. cmdÖµµÄF_GETLK, F_SETLK»òF_SETLKW£º »ñµÃ£¯ÉèÖÃ¼ÇÂ¼ËøµÄ¹¦ÄÜ£¬³É¹¦Ôò·µ»Ø0£¬ÈôÓÐ´íÎóÔò·µ»Ø-1£¬´íÎóÔ­Òò´æÓÚerrno¡£
-F_GETLK    Í¨¹ýµÚÈý¸ö²ÎÊýarg(Ò»¸öÖ¸ÏòflockµÄ½á¹¹Ìå)È¡µÃµÚÒ»¸ö×èÈûlock descriptionÖ¸ÏòµÄËø¡£È¡µÃµÄÐÅÏ¢½«¸²¸Ç´«µ½fcntl()µÄflock½á¹¹µÄÐÅÏ¢¡£Èç¹ûÃ»ÓÐ·¢ÏÖÄÜ¹»×èÖ¹±¾´ÎËø(flock)Éú³ÉµÄËø£¬Õâ¸ö½á¹¹½«²»±»¸Ä±ä£¬³ý·ÇËøµÄÀàÐÍ±»ÉèÖÃ³ÉF_UNLCK   
-F_SETLK    °´ÕÕÖ¸Ïò½á¹¹ÌåflockµÄÖ¸ÕëµÄµÚÈý¸ö²ÎÊýargËùÃèÊöµÄËøµÄÐÅÏ¢ÉèÖÃ»òÕßÇå³ýÒ»¸öÎÄ¼þµÄsegmentËø¡£F_SETLK±»ÓÃÀ´ÊµÏÖ¹²Ïí(»ò¶Á)Ëø(F_RDLCK)»ò¶ÀÕ¼(Ð´)Ëø(F_WRLCK)£¬Í¬Ñù¿ÉÒÔÈ¥µôÕâÁ½ÖÖËø(F_UNLCK)¡£Èç¹û¹²ÏíËø»ò¶ÀÕ¼Ëø²»ÄÜ±»ÉèÖÃ£¬fcntl()½«Á¢¼´·µ»ØEAGAIN    
-F_SETLKW   ³ýÁË¹²ÏíËø»ò¶ÀÕ¼Ëø±»ÆäËûµÄËø×èÈûÕâÖÖÇé¿öÍâ£¬Õâ¸öÃüÁîºÍF_SETLKÊÇÒ»ÑùµÄ¡£Èç¹û¹²ÏíËø»ò¶ÀÕ¼Ëø±»ÆäËûµÄËø×èÈû£¬½ø³Ì½«µÈ´ýÖ±µ½Õâ¸öÇëÇóÄÜ¹»Íê³É¡£µ±fcntl()ÕýÔÚµÈ´ýÎÄ¼þµÄÄ³¸öÇøÓòµÄÊ±ºò²¶×½µ½Ò»¸öÐÅºÅ£¬Èç¹ûÕâ¸öÐÅºÅÃ»ÓÐ±»Ö¸¶¨SA_RESTART, fcntl½«±»ÖÐ¶Ï
-µ±Ò»¸ö¹²ÏíËø±»setµ½Ò»¸öÎÄ¼þµÄÄ³¶ÎµÄÊ±ºò£¬ÆäËûµÄ½ø³Ì¿ÉÒÔset¹²ÏíËøµ½Õâ¸ö¶Î»òÕâ¸ö¶ÎµÄÒ»²¿·Ö¡£¹²ÏíËø×èÖ¹ÈÎºÎÆäËû½ø³Ìset¶ÀÕ¼Ëøµ½Õâ¶Î±£»¤ÇøÓòµÄÈÎºÎ²¿·Ö¡£Èç¹ûÎÄ¼þÃèÊö·ûÃ»ÓÐÒÔ¶ÁµÄ·ÃÎÊ·½Ê½´ò¿ªµÄ»°£¬¹²ÏíËøµÄÉèÖÃÇëÇó»áÊ§°Ü¡£
-¶ÀÕ¼Ëø×èÖ¹ÈÎºÎÆäËûµÄ½ø³ÌÔÚÕâ¶Î±£»¤ÇøÓòÈÎºÎÎ»ÖÃÉèÖÃ¹²ÏíËø»ò¶ÀÕ¼Ëø¡£Èç¹ûÎÄ¼þÃèÊö·û²»ÊÇÒÔÐ´µÄ·ÃÎÊ·½Ê½´ò¿ªµÄ»°£¬¶ÀÕ¼ËøµÄÇëÇó»áÊ§°Ü¡£
-½á¹¹ÌåflockµÄÖ¸Õë£º
-struct flcok
-{
-short int l_type;
-//ÒÔÏÂµÄÈý¸ö²ÎÊýÓÃÓÚ·Ö¶Î¶ÔÎÄ¼þ¼ÓËø£¬Èô¶ÔÕû¸öÎÄ¼þ¼ÓËø£¬Ôò£ºl_whence=SEEK_SET, l_start=0, l_len=0
-short int l_whence;
-off_t l_start;
-off_t l_len;
-pid_t l_pid;
-};
-l_type ÓÐÈýÖÖ×´Ì¬£º
-F_RDLCK   ½¨Á¢Ò»¸ö¹©¶ÁÈ¡ÓÃµÄËø¶¨
-F_WRLCK   ½¨Á¢Ò»¸ö¹©Ð´ÈëÓÃµÄËø¶¨
-F_UNLCK   É¾³ýÖ®Ç°½¨Á¢µÄËø¶¨
-l_whence Ò²ÓÐÈýÖÖ·½Ê½£º
-SEEK_SET   ÒÔÎÄ¼þ¿ªÍ·ÎªËø¶¨µÄÆðÊ¼Î»ÖÃ
-SEEK_CUR   ÒÔÄ¿Ç°ÎÄ¼þ¶ÁÐ´Î»ÖÃÎªËø¶¨µÄÆðÊ¼Î»ÖÃ
-SEEK_END   ÒÔÎÄ¼þ½áÎ²ÎªËø¶¨µÄÆðÊ¼Î»ÖÃ
-fcntlÎÄ¼þËøÓÐÁ½ÖÖÀàÐÍ£º½¨ÒéÐÔËøºÍÇ¿ÖÆÐÔËø
-½¨ÒéÐÔËøÊÇÕâÑù¹æ¶¨µÄ£ºÃ¿¸öÊ¹ÓÃÉÏËøÎÄ¼þµÄ½ø³Ì¶¼Òª¼ì²éÊÇ·ñÓÐËø´æÔÚ£¬µ±È»»¹µÃ×ðÖØÒÑÓÐµÄËø¡£ÄÚºËºÍÏµÍ³×ÜÌåÉÏ¶¼¼á³Ö²»Ê¹ÓÃ½¨ÒéÐÔËø£¬ËüÃÇÒÀ¿¿³ÌÐòÔ±×ñÊØÕâ¸ö¹æ¶¨¡£
-Ç¿ÖÆÐÔËøÊÇÓÉÄÚºËÖ´ÐÐµÄ£ºµ±ÎÄ¼þ±»ÉÏËøÀ´½øÐÐÐ´Èë²Ù×÷Ê±£¬ÔÚËø¶¨¸ÃÎÄ¼þµÄ½ø³ÌÊÍ·Å¸ÃËøÖ®Ç°£¬ÄÚºË»á×èÖ¹ÈÎºÎ¶Ô¸ÃÎÄ¼þµÄ¶Á»òÐ´·ÃÎÊ£¬Ã¿´Î¶Á»òÐ´·ÃÎÊ¶¼µÃ¼ì²éËøÊÇ·ñ´æÔÚ¡£
-ÏµÍ³Ä¬ÈÏfcntl¶¼ÊÇ½¨ÒéÐÔËø£¬Ç¿ÖÆÐÔËøÊÇ·ÇPOSIX±ê×¼µÄ¡£Èç¹ûÒªÊ¹ÓÃÇ¿ÖÆÐÔËø£¬ÒªÊ¹Õû¸öÏµÍ³¿ÉÒÔÊ¹ÓÃÇ¿ÖÆÐÔËø£¬ÄÇÃ´µÃÐèÒªÖØÐÂ¹ÒÔØÎÄ¼þÏµÍ³£¬mountÊ¹ÓÃ²ÎÊý -0 mand ´ò¿ªÇ¿ÖÆÐÔËø£¬»òÕß¹Ø±ÕÒÑ¼ÓËøÎÄ¼þµÄ×éÖ´ÐÐÈ¨ÏÞ²¢ÇÒ´ò¿ª¸ÃÎÄ¼þµÄset-GIDÈ¨ÏÞÎ»¡£
-½¨ÒéÐÔËøÖ»ÔÚcooperating processesÖ®¼ä²ÅÓÐÓÃ¡£¶Ôcooperating processµÄÀí½âÊÇ×îÖØÒªµÄ£¬ËüÖ¸µÄÊÇ»áÓ°ÏìÆäËü½ø³ÌµÄ½ø³Ì»ò±»±ðµÄ½ø³ÌËùÓ°ÏìµÄ½ø³Ì£¬¾ÙÁ½¸öÀý×Ó£º
-(1) ÎÒÃÇ¿ÉÒÔÍ¬Ê±ÔÚÁ½¸ö´°¿ÚÖÐÔËÐÐÍ¬Ò»¸öÃüÁî£¬¶ÔÍ¬Ò»¸öÎÄ¼þ½øÐÐ²Ù×÷£¬ÄÇÃ´ÕâÁ½¸ö½ø³Ì¾ÍÊÇcooperating  processes
-(2) cat file | sort£¬ÄÇÃ´catºÍsort²úÉúµÄ½ø³Ì¾ÍÊÇÊ¹ÓÃÁËpipeµÄcooperating processes
-Ê¹ÓÃfcntlÎÄ¼þËø½øÐÐI/O²Ù×÷±ØÐëÐ¡ÐÄ£º½ø³ÌÔÚ¿ªÊ¼ÈÎºÎI/O²Ù×÷Ç°ÈçºÎÈ¥´¦ÀíËø£¬ÔÚ¶ÔÎÄ¼þ½âËøÇ°ÈçºÎÍê³ÉËùÓÐµÄ²Ù×÷£¬ÊÇ±ØÐë¿¼ÂÇµÄ¡£Èç¹ûÔÚÉèÖÃËøÖ®Ç°´ò¿ªÎÄ¼þ£¬»òÕß¶ÁÈ¡¸ÃËøÖ®ºó¹Ø±ÕÎÄ¼þ£¬ÁíÒ»¸ö½ø³Ì¾Í¿ÉÄÜÔÚÉÏËø/½âËø²Ù×÷ºÍ´ò¿ª/¹Ø±Õ²Ù×÷Ö®¼äµÄ¼¸·ÖÖ®Ò»ÃëÄÚ·ÃÎÊ¸ÃÎÄ¼þ¡£µ±Ò»¸ö½ø³Ì¶ÔÎÄ¼þ¼ÓËøºó£¬ÎÞÂÛËüÊÇ·ñÊÍ·ÅËù¼ÓµÄËø£¬Ö»ÒªÎÄ¼þ¹Ø±Õ£¬ÄÚºË¶¼»á×Ô¶¯ÊÍ·Å¼ÓÔÚÎÄ¼þÉÏµÄ½¨ÒéÐÔËø(ÕâÒ²ÊÇ½¨ÒéÐÔËøºÍÇ¿ÖÆÐÔËøµÄ×î´óÇø±ð)£¬ËùÒÔ²»ÒªÏëÉèÖÃ½¨ÒéÐÔËøÀ´´ïµ½ÓÀ¾Ã²»ÈÃ±ðµÄ½ø³Ì·ÃÎÊÎÄ¼þµÄÄ¿µÄ(Ç¿ÖÆÐÔËø²Å¿ÉÒÔ)£»Ç¿ÖÆÐÔËøÔò¶ÔËùÓÐ½ø³ÌÆð×÷ÓÃ¡£
-fcntlÊ¹ÓÃÈý¸ö²ÎÊý F_SETLK/F_SETLKW£¬ F_UNLCKºÍF_GETLK À´·Ö±ðÒªÇó¡¢ÊÍ·Å¡¢²âÊÔrecord locks¡£record locksÊÇ¶ÔÎÄ¼þÒ»²¿·Ö¶ø²»ÊÇÕû¸öÎÄ¼þµÄËø£¬ÕâÖÖÏ¸ÖÂµÄ¿ØÖÆÊ¹µÃ½ø³Ì¸üºÃµØÐ­×÷ÒÔ¹²ÏíÎÄ¼þ×ÊÔ´¡£fcntlÄÜ¹»ÓÃÓÚ¶ÁÈ¡ËøºÍÐ´ÈëËø£¬read lockÒ²½Ðshared lock(¹²ÏíËø)£¬ ÒòÎª¶à¸öcooperating processÄÜ¹»ÔÚÎÄ¼þµÄÍ¬Ò»²¿·Ö½¨Á¢¶ÁÈ¡Ëø£»write lock±»³ÆÎªexclusive lock(ÅÅ³âËø)£¬ÒòÎªÈÎºÎÊ±¿ÌÖ»ÄÜÓÐÒ»¸öcooperating processÔÚÎÄ¼þµÄÄ³²¿·ÖÉÏ½¨Á¢Ð´ÈëËø¡£Èç¹ûcooperating processes¶ÔÎÄ¼þ½øÐÐ²Ù×÷£¬ÄÇÃ´ËüÃÇ¿ÉÒÔÍ¬Ê±¶ÔÎÄ¼þ¼Óread lock£¬ÔÚÒ»¸öcooperating process¼Ówrite lockÖ®Ç°£¬±ØÐëÊÍ·Å±ðµÄcooperating process¼ÓÔÚ¸ÃÎÄ¼þµÄread lockºÍwrtie lock£¬Ò²¾ÍÊÇËµ£¬¶ÔÓÚÎÄ¼þÖ»ÄÜÓÐÒ»¸öwrite lock´æÔÚ£¬read lockºÍwrtie lock²»ÄÜ¹²´æ¡£
-ÏÂÃæµÄÀý×ÓÊ¹ÓÃF_GETFL»ñÈ¡fdµÄÎÄ¼þ×´Ì¬±êÖ¾¡£
-#include<fcntl.h>
-#include<unistd.h>
-#include<iostream>
-#include<errno.h>
-using namespace std;
-int main(int argc,char* argv[])
-{
-  int fd, var;
-  //  fd=open("new",O_RDWR);
-  if (argc!=2)
-  {
-      perror("--");
-      cout<<"ÇëÊäÈë²ÎÊý£¬¼´ÎÄ¼þÃû£¡"<<endl;
-  }
-  if((var=fcntl(atoi(argv[1]), F_GETFL, 0))<0)
-  {
-     strerror(errno);
-     cout<<"fcntl file error."<<endl;
-  }
-  switch(var & O_ACCMODE)
-  {
-   case O_RDONLY : cout<<"Read only.."<<endl;
-                   break;
-   case O_WRONLY : cout<<"Write only.."<<endl;
-                   break;
-   case O_RDWR   : cout<<"Read wirte.."<<endl;
-                   break;
-   default  : break;
-  }
- if (val & O_APPEND)
-    cout<<",append"<<endl;
- if (val & O_NONBLOCK)
-    cout<<",noblocking"<<endl;
- cout<<"exit 0"<<endl;
- exit(0);
-}
-Linux fcntlº¯ÊýÏê½â .
-·ÖÀà£º fcntl 2013-12-07 16:43 183ÈËÔÄ¶Á ÆÀÂÛ(0) ÊÕ²Ø ¾Ù±¨ 
-¹¦ÄÜÃèÊö£º¸ù¾ÝÎÄ¼þÃèÊö´ÊÀ´²Ù×÷ÎÄ¼þµÄÌØÐÔ¡£
-ÎÄ¼þ¿ØÖÆº¯Êý          fcntl -- file control
-Í·ÎÄ¼þ£º
-#include <unistd.h>
-#include <fcntl.h>
-º¯ÊýÔ­ÐÍ£º          
-int fcntl(int fd, int cmd);
-int fcntl(int fd, int cmd, long arg);         
-int fcntl(int fd, int cmd, struct flock *lock);
-ÃèÊö£º
-           fcntl()Õë¶Ô(ÎÄ¼þ)ÃèÊö·ûÌá¹©¿ØÖÆ.²ÎÊýfdÊÇ±»²ÎÊýcmd²Ù×÷(ÈçÏÂÃæµÄÃèÊö)µÄÃèÊö·û.            
-¡¡¡¡¡¡¡¡Õë¶ÔcmdµÄÖµ,fcntlÄÜ¹»½ÓÊÜµÚÈý¸ö²ÎÊý£¨arg£©
-fcntlº¯ÊýÓÐ5ÖÖ¹¦ÄÜ£º
-¡¡¡¡¡¡¡¡ 1.¸´ÖÆÒ»¸öÏÖÓÐµÄÃèÊö·û£¨cmd=F_DUPFD£©.
-¡¡¡¡       2.»ñµÃ£¯ÉèÖÃÎÄ¼þÃèÊö·û±ê¼Ç(cmd=F_GETFD»òF_SETFD).
-            3.»ñµÃ£¯ÉèÖÃÎÄ¼þ×´Ì¬±ê¼Ç(cmd=F_GETFL»òF_SETFL).
-            4.»ñµÃ£¯ÉèÖÃÒì²½I/OËùÓÐÈ¨(cmd=F_GETOWN»òF_SETOWN).
-            5.»ñµÃ£¯ÉèÖÃ¼ÇÂ¼Ëø(cmd=F_GETLK,F_SETLK»òF_SETLKW).
- 
- cmd Ñ¡Ïî£º
-            F_DUPFD      ·µ»ØÒ»¸öÈçÏÂÃèÊöµÄ(ÎÄ¼þ)ÃèÊö·û:                            
-         ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡£¨1£©×îÐ¡µÄ´óÓÚ»òµÈÓÚargµÄÒ»¸ö¿ÉÓÃµÄÃèÊö·û                          
-   ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡£¨2£©ÓëÔ­Ê¼²Ù×÷·ûÒ»ÑùµÄÄ³¶ÔÏóµÄÒýÓÃ               
-            ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡  £¨3£©Èç¹û¶ÔÏóÊÇÎÄ¼þ(file)µÄ»°,·µ»ØÒ»¸öÐÂµÄÃèÊö·û,Õâ¸öÃèÊö·ûÓëarg¹²ÏíÏàÍ¬µÄÆ«ÒÆÁ¿(offset)                    
-¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡   £¨4£©ÏàÍ¬µÄ·ÃÎÊÄ£Ê½(¶Á,Ð´»ò¶Á/Ð´)                          
-¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡£¨5£©ÏàÍ¬µÄÎÄ¼þ×´Ì¬±êÖ¾(Èç:Á½¸öÎÄ¼þÃèÊö·û¹²ÏíÏàÍ¬µÄ×´Ì¬±êÖ¾)                            
-¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡£¨6£©ÓëÐÂµÄÎÄ¼þÃèÊö·û½áºÏÔÚÒ»ÆðµÄclose-on-exec±êÖ¾±»ÉèÖÃ³É½»²æÊ½·ÃÎÊexecve(2)µÄÏµÍ³µ÷ÓÃ                     
-             F_GETFD     È¡µÃÓëÎÄ¼þÃèÊö·ûfdÁªºÏclose-on-exec±êÖ¾,ÀàËÆFD_CLOEXEC.Èç¹û·µ»ØÖµºÍFD_CLOEXEC½øÐÐÓëÔËËã½á¹ûÊÇ0µÄ»°,ÎÄ¼þ±£³Ö½»²æÊ½·ÃÎÊexec(),¡¡¡¡¡¡¡¡¡¡¡¡                      ·ñÔòÈç¹ûÍ¨¹ýexecÔËÐÐµÄ»°,ÎÄ¼þ½«±»¹Ø±Õ(arg±»ºöÂÔ)                  
-             F_SETFD     ÉèÖÃclose-on-execÆì±ê¡£¸ÃÆì±êÒÔ²ÎÊýargµÄFD_CLOEXECÎ»¾ö¶¨¡£                   
-             F_GETFL     È¡µÃfdµÄÎÄ¼þ×´Ì¬±êÖ¾,ÈçÍ¬ÏÂÃæµÄÃèÊöÒ»Ñù(arg±»ºöÂÔ)                    
-             F_SETFL     ÉèÖÃ¸øargÃèÊö·û×´Ì¬±êÖ¾,¿ÉÒÔ¸ü¸ÄµÄ¼¸¸ö±êÖ¾ÊÇ£ºO_APPEND£¬ O_NONBLOCK£¬O_SYNCºÍO_ASYNC¡£
-             F_GETOWN È¡µÃµ±Ç°ÕýÔÚ½ÓÊÕSIGIO»òÕßSIGURGÐÅºÅµÄ½ø³Ìid»ò½ø³Ì×éid,½ø³Ì×éid·µ»Ø³É¸ºÖµ(arg±»ºöÂÔ)                    
-             F_SETOWN ÉèÖÃ½«½ÓÊÕSIGIOºÍSIGURGÐÅºÅµÄ½ø³Ìid»ò½ø³Ì×éid,½ø³Ì×éidÍ¨¹ýÌá¹©¸ºÖµµÄargÀ´ËµÃ÷,·ñÔò,arg½«±»ÈÏÎªÊÇ½ø³Ìid
-              
-ÃüÁî×Ö(cmd)F_GETFLºÍF_SETFLµÄ±êÖ¾ÈçÏÂÃæµÄÃèÊö:            
-             O_NONBLOCK        ·Ç×èÈûI/O;Èç¹ûread(2)µ÷ÓÃÃ»ÓÐ¿É¶ÁÈ¡µÄÊý¾Ý,»òÕßÈç¹ûwrite(2)²Ù×÷½«×èÈû,read»òwriteµ÷ÓÃ·µ»Ø-1ºÍEAGAIN´íÎó               ¡¡¡¡¡¡¡¡       ¡¡¡¡O_APPEND             Ç¿ÖÆÃ¿´ÎÐ´(write)²Ù×÷¶¼Ìí¼ÓÔÚÎÄ¼þ´óµÄÄ©Î²,Ïàµ±ÓÚopen(2)µÄO_APPEND±êÖ¾         
-             O_DIRECT             ×îÐ¡»¯»òÈ¥µôreadingºÍwritingµÄ»º´æÓ°Ïì.ÏµÍ³½«ÆóÍ¼±ÜÃâ»º´æÄãµÄ¶Á»òÐ´µÄÊý¾Ý.
-                             Èç¹û²»ÄÜ¹»±ÜÃâ»º´æ,ÄÇÃ´Ëü½«×îÐ¡»¯ÒÑ¾­±»»º´æÁËµÄÊý ¾ÝÔì³ÉµÄÓ°Ïì.Èç¹ûÕâ¸ö±êÖ¾ÓÃµÄ²»¹»ºÃ,½«´ó´óµÄ½µµÍÐÔÄÜ                      
-             O_ASYNC              µ±I/O¿ÉÓÃµÄÊ±ºò,ÔÊÐíSIGIOÐÅºÅ·¢ËÍµ½½ø³Ì×é,ÀýÈç:µ±ÓÐÊý¾Ý¿ÉÒÔ¶ÁµÄÊ±ºò
- ×¢Òâ£º      ÔÚÐÞ¸ÄÎÄ¼þÃèÊö·û±êÖ¾»òÎÄ¼þ×´Ì¬±êÖ¾Ê±±ØÐë½÷É÷£¬ÏÈÒªÈ¡µÃÏÖÔÚµÄ±êÖ¾Öµ£¬È»ºó°´ÕÕÏ£ÍûÐÞ¸ÄËü£¬×îºóÉèÖÃÐÂ±êÖ¾Öµ¡£²»ÄÜÖ»ÊÇÖ´ÐÐF_SETFD»òF_SETFLÃüÁî£¬ÕâÑù»á¹Ø±ÕÒÔÇ°ÉèÖÃµÄ±êÖ¾Î»¡£
-fcntlµÄ·µ»ØÖµ£º  ÓëÃüÁîÓÐ¹Ø¡£Èç¹û³ö´í£¬ËùÓÐÃüÁî¶¼·µ»Ø£­1£¬Èç¹û³É¹¦Ôò·µ»ØÄ³¸öÆäËûÖµ¡£ÏÂÁÐÈý¸öÃüÁîÓÐÌØ¶¨·µ»ØÖµ£ºF_DUPFD,F_GETFD,F_GETFLÒÔ¼°F_GETOWN¡£µÚÒ»¸ö·µ»ØÐÂµÄÎÄ¼þÃèÊö·û£¬µÚ¶þ¸ö·µ»ØÏàÓ¦±êÖ¾£¬×îºóÒ»¸ö·µ»ØÒ»¸öÕýµÄ½ø³ÌID»ò¸ºµÄ½ø³Ì×éID¡£
- 
-Ò»£ºµÚÒ»ÖÖÀàËÆÓÚdup²Ù×÷£¬ÔÚÕâÀï²»×ö¾ÙÀý¡££¨fcnlt(oldfd, F_DUPFD, 0) <==>dup2(oldfd, newfd)£©
-¶þ£ºÉèÖÃclose-on-execÆì±ê
-ÔÚ´Ëº¯ÊýÖÐ´´½¨×Ó½ø³Ì£¬µ÷ÓÃexecl
- 1 #include <stdio.h>
- 2 #include <stdlib.h>
- 3 #include <string.h>
- 4 
- 5 int main()
- 6 {
- 7     pid_t pid;
- 8     //ÒÔ×·¼ÓµÄÐÎÊ½´ò¿ªÎÄ¼þ
- 9     int fd = fd = open("test.txt", O_TRUNC | O_RDWR | O_APPEND | O_CREAT, 0777);
-10     if(fd < 0)
-11     {
-12         perror("open");
-13         return -1;
-14     }
-15     printf("fd = %d\n", fd);
-16     
-17     fcntl(fd, F_SETFD, 0);//¹Ø±ÕfdµÄclose-on-exec±êÖ¾
-18 
-19     write(fd, "hello c program\n", strlen("hello c program!\n"));
-20 
-21     pid = fork();
-22     if(pid < 0)
-23     {
-24             perror("fork");
-25             return -1;
-26     }
-27     if(pid == 0)
-28     {
-29         printf("fd = %d\n", fd);
-30         
-31         int ret = execl("./main", "./main", (char *)&fd, NULL);
-32         if(ret < 0)
-33         {
-34             perror("execl");
-35             exit(-1);
-36         }
-37         exit(0);
-38     }
-39 
-40     wait(NULL);
-41 
-42     write(fd, "hello c++ program!\n", strlen("hello c++ program!\n"));
-43 
-44     close(fd);
-45 
-46     return 0;
-47 }main²âÊÔº¯Êý
- 1 int main(int argc, char *argv[])
- 2 {
- 3     int fd = (int)(*argv[1]);//ÃèÊö·û
- 4     
- 5     printf("fd = %d\n", fd);
- 6 
- 7     int ret = write(fd, "hello linux\n", strlen("hello linux\n"));
- 8     if(ret < 0)
- 9     {
-10         perror("write");
-11         return -1;
-12     }
-13 
-14     close(fd);
-15 
-16     return 0;
-17 }Ö´ÐÐºóÎÄ¼þ½á¹û£º
-[root@centOS5 class_2]# cat test.txt 
-hello c program
-hello linux
-hello c++ program!
- 
-Èý£ºÓÃÃüÁîF_GETFLºÍF_SETFLÉèÖÃÎÄ¼þ±êÖ¾£¬±ÈÈç×èÈûÓë·Ç×èÈû
- 1 #include <stdio.h>
- 2 #include <sys/types.h>
- 3 #include <unistd.h>
- 4 #include <sys/stat.h>
- 5 #include <fcntl.h>
- 6 #include <string.h>
- 7 
- 8 / **********************Ê¹ÄÜ·Ç×èÈûI/O********************
- 9 *int flags;
-10 *if(flags = fcntl(fd, F_GETFL, 0) < 0)
-11 *{
-12 *    perror("fcntl");
-13 *    return -1;
-14 *}
-15 *flags |= O_NONBLOCK;
-16 *if(fcntl(fd, F_SETFL, flags) < 0)
-17 *{
-18 *    perror("fcntl");
-19 *    return -1;
-20 *}
-21 ******************************************************* /
-22 
-23 / **********************¹Ø±Õ·Ç×èÈûI/O******************
-24 flags &= ~O_NONBLOCK;
-25 if(fcntl(fd, F_SETFL, flags) < 0)
-26 {
-27     perror("fcntl");
-28     return -1;
-29 }
-30 ******************************************************* /
-31 
-32 int main()
-33 {
-34     char buf[10] = {0};
-35     int ret;
-36     int flags;
-37     
-38     //Ê¹ÓÃ·Ç×èÈûio
-39     if(flags = fcntl(STDIN_FILENO, F_GETFL, 0) < 0)
-40     {
-41         perror("fcntl");
-42         return -1;
-43     }
-44     flags |= O_NONBLOCK;
-45     if(fcntl(STDIN_FILENO, F_SETFL, flags) < 0)
-46     {
-47         perror("fcntl");
-48         return -1;
-49     }
-50 
-51     while(1)
-52     {
-53         sleep(2);
-54         ret = read(STDIN_FILENO, buf, 9);
-55         if(ret == 0)
-56         {
-57             perror("read--no");
-58         }
-59         else
-60         {
-61             printf("read = %d\n", ret);
-62         }
-63         
-64         write(STDOUT_FILENO, buf, 10);
-65         memset(buf, 0, 10);
-66     }
-67 
-68     return 0;
-69 }ËÄ£ºÉèÖÃÒì²½IO»¹Ã»ÏëºÃÒÔºóÊµÏÖ£¨ºÇºÇºÇ¡£¡£¡£¡£¡££©
-Îå£ºÉèÖÃ»ñÈ¡¼ÇÂ¼Ëø
-½á¹¹ÌåflockµÄÖ¸Õë£º
-struct flcok
-{
-¡¡¡¡ short int l_type;  Ëø¶¨µÄ×´Ì¬
-¡¡¡¡¡¡¡¡//ÕâÈý¸ö²ÎÊýÓÃÓÚ·Ö¶Î¶ÔÎÄ¼þ¼ÓËø£¬Èô¶ÔÕû¸öÎÄ¼þ¼ÓËø£¬Ôò£ºl_whence=SEEK_SET,l_start=0,l_len=0;
-¡¡¡¡ short int l_whence;¾ö¶¨l_startÎ»ÖÃ* /
-¡¡¡¡ off_t l_start; / * Ëø¶¨ÇøÓòµÄ¿ªÍ·Î»ÖÃ * /
-¡¡¡¡ off_t l_len; / *Ëø¶¨ÇøÓòµÄ´óÐ¡* /
-¡¡¡¡ pid_t l_pid; / *Ëø¶¨¶¯×÷µÄ½ø³Ì* /
-};
-l_type ÓÐÈýÖÖ×´Ì¬:
-¡¡¡¡ F_RDLCK ½¨Á¢Ò»¸ö¹©¶ÁÈ¡ÓÃµÄËø¶¨
-¡¡¡¡ F_WRLCK ½¨Á¢Ò»¸ö¹©Ð´ÈëÓÃµÄËø¶¨
-       F_UNLCK É¾³ýÖ®Ç°½¨Á¢µÄËø¶¨
-l_whence Ò²ÓÐÈýÖÖ·½Ê½:
-¡¡¡¡SEEK_SET ÒÔÎÄ¼þ¿ªÍ·ÎªËø¶¨µÄÆðÊ¼Î»ÖÃ¡£
-     SEEK_CUR ÒÔÄ¿Ç°ÎÄ¼þ¶ÁÐ´Î»ÖÃÎªËø¶¨µÄÆðÊ¼Î»ÖÃ
-     SEEK_END ÒÔÎÄ¼þ½áÎ²ÎªËø¶¨µÄÆðÊ¼Î»ÖÃ¡£
- 
- 
- 1 #include "filelock.h"
- 2 
- 3 / * ÉèÖÃÒ»°Ñ¶ÁËø  * /
- 4 int readLock(int fd, short start, short whence, short len) 
- 5 {
- 6     struct flock lock;
- 7     lock.l_type = F_RDLCK;
- 8     lock.l_start = start;
- 9     lock.l_whence = whence;//SEEK_CUR,SEEK_SET,SEEK_END
-10     lock.l_len = len;
-11     lock.l_pid = getpid();
-12 //  ×èÈû·½Ê½¼ÓËø
-13     if(fcntl(fd, F_SETLKW, &lock) == 0)
-14         return 1;
-15     
-16     return 0;
-17 }
-18 
-19 / * ÉèÖÃÒ»°Ñ¶ÁËø , ²»µÈ´ý * /
-20 int readLocknw(int fd, short start, short whence, short len) 
-21 {
-22     struct flock lock;
-23     lock.l_type = F_RDLCK;
-24     lock.l_start = start;
-25     lock.l_whence = whence;//SEEK_CUR,SEEK_SET,SEEK_END
-26     lock.l_len = len;
-27     lock.l_pid = getpid();
-28 //  ·Ç×èÈû·½Ê½¼ÓËø
-29     if(fcntl(fd, F_SETLK, &lock) == 0)
-30         return 1;
-31     
-32     return 0;
-33 }
-34 / * ÉèÖÃÒ»°ÑÐ´Ëø * /
-35 int writeLock(int fd, short start, short whence, short len) 
-36 {
-37     struct flock lock;
-38     lock.l_type = F_WRLCK;
-39     lock.l_start = start;
-40     lock.l_whence = whence;
-41     lock.l_len = len;
-42     lock.l_pid = getpid();
-43 
-44     //×èÈû·½Ê½¼ÓËø
-45     if(fcntl(fd, F_SETLKW, &lock) == 0)
-46         return 1;
-47     
-48     return 0;
-49 }
-50 
-51 / * ÉèÖÃÒ»°ÑÐ´Ëø  * /
-52 int writeLocknw(int fd, short start, short whence, short len) 
-53 {
-54     struct flock lock;
-55     lock.l_type = F_WRLCK;
-56     lock.l_start = start;
-57     lock.l_whence = whence;
-58     lock.l_len = len;
-59     lock.l_pid = getpid();
-60 
-61     //·Ç×èÈû·½Ê½¼ÓËø
-62     if(fcntl(fd, F_SETLK, &lock) == 0)
-63         return 1;
-64     
-65     return 0;
-66 }
-67 
-68 / * ½âËø * /
-69 int unlock(int fd, short start, short whence, short len) 
-70 {
-71     struct flock lock;
-72     lock.l_type = F_UNLCK;
-73     lock.l_start = start;
-74     lock.l_whence = whence;
-75     lock.l_len = len;
-76     lock.l_pid = getpid();
-77 
-78     if(fcntl(fd, F_SETLKW, &lock) == 0)
-79         return 1;
-80 
-81     return 0;
-82 }
-*/
-
-
-/*
-²ÎÊýfd±ØÐëÊÇÒÑ¾­³É¹¦Êã¿ªµÄÎÄ¼þ¾ä±ú¡£Êµ¼ÊÉÏ£¬nginx.confÎÄ¼þÖÐµÄlock_fileÅäÖÃÏîÖ¸¶¨µÄÎÄ¼þÂ·¾¶£¬¾ÍÊÇÓÃÓÚÎÄ¼þ»¥³âËøµÄ£¬
-Õâ¸öÎÄ¼þ±»´ò¿ªºóµÃµ½µÄ¾ä±ú£¬½«»á×÷Îªfd²ÎÊý´«µÝ¸øfcntl·½·¨£¬Ìá¹©Ò»ÖÖËø»úÖÆ¡£
-struct flcok
-{
-¡¡¡¡ short int l_type;  Ëø¶¨µÄ×´Ì¬ //ÕâÈý¸ö²ÎÊýÓÃÓÚ·Ö¶Î¶ÔÎÄ¼þ¼ÓËø£¬Èô¶ÔÕû¸öÎÄ¼þ¼ÓËø£¬Ôò£ºl_whence=SEEK_SET,l_start=0,l_len=0;
-¡¡¡¡ short int l_whence;¾ö¶¨l_startÎ»ÖÃ* /  ËøÇøÓòÆðÊ¼µØÖ·µÄÏà¶ÔÎ»ÖÃ
-¡¡¡¡ off_t l_start; / * Ëø¶¨ÇøÓòµÄ¿ªÍ·Î»ÖÃ * /  ËøÇøÓòÆðÊ¼µØÖ·Æ«ÒÆÁ¿£¬Í¬1_whence¹²Í¬È·¶¨ËøÇøÓò
-¡¡¡¡ off_t l_len; / *Ëø¶¨ÇøÓòµÄ´óÐ¡* /  ËøµÄ³¤¶È£¬O±íÊ¾ËøÖÁÎÄ¼þÄ©
-¡¡¡¡ pid_t l_pid; / *Ëø¶¨¶¯×÷µÄ½ø³Ì* /  ÓµÓÐËøµÄ½ø³ÌID
-};
-ÕâÀïµÄcmd²ÎÊýÔÚNginxÖÐÖ»»áÓÐÁ½¸öÖµ£ºF¡ªSETLKºÍF¡ªSETLKW£¬ËüÃÇ¶¼±íÊ¾ÊÔÍ¼»ñµÃ»¥³âËø£¬µ«Ê¹ÓÃF¡ªSETLKÊ±Èç¹û»¥³âËøÒÑ¾­±»ÆäËû½ø³ÌÕ¼ÓÃ£¬
-fcntl·½·¨²»»áµÈ´ýÆäËû½ø³ÌÊÍ·ÅËøÇÒ×Ô¼ºÄÃµ½Ëøºó²Å·µ»Ø£¬¶øÊÇÁ¢¼´·µ»Ø»ñÈ¡»¥³âËøÊ§°Ü£»Ê¹ÓÃF¡ªSETLKWÊ±Ôò²»Í¬£¬Ëø±»Õ¼ÓÃºófcntl·½·¨»áÒ»Ö±
-µÈ´ý£¬ÔÚÆäËû½ø³ÌÃ»ÓÐÊÍ·ÅËøÊ±£¬µ±Ç°½ø³Ì¾Í»á×èÈûÔÚfcntl·½·¨ÖÐ£¬ÕâÖÖ×èÈû»áµ¼ÖÂµ±Ç°½ø³ÌÓÉ¿ÉÖ´ÐÐ×´Ì¬×ªÎªË¯Ãß×´Ì¬¡£
- ´Óflock½á¹¹ÌåÖÐ¿ÉÒÔ¿´³ö£¬ÎÄ¼þËøµÄ¹¦ÄÜ¾ø²»½ö½ö¾ÖÏÞÓÚÆÕÍ¨µÄ»¥³âËø£¬Ëü»¹¿ÉÒÔËø×¡ÎÄ¼þÖÐµÄ²¿·ÖÄÚÈÝ¡£µ«Nginx·â×°µÄÎÄ¼þËø½öÓÃÓÚ±£»¤´ú
-Âë¶ÎµÄË³ÐòÖ´ÐÐ£¨ÀýÈç£¬ÔÚ½øÐÐ¸ºÔØ¾ùºâÊ±£¬Ê¹ÓÃ»¥³âËø±£Ö¤Í¬Ò»Ê±¿Ì½öÓÐÒ»¸öworker½ø³Ì¿ÉÒÔ´¦ÀíÐÂµÄTCPÁ¬½Ó£©£¬Ê¹ÓÃ·½Ê½Òª¼òµ¥µÃ¶à£ºÒ»¸ö
-lock_fileÎÄ¼þ¶ÔÓ¦Ò»¸öÈ«¾Ö»¥³âËø£¬¶øÇÒËü¶Ômaster½ø³Ì»òÕßworker½ø³Ì¶¼ÉúÐ§¡£Òò´Ë£¬¶ÔÓÚLstart¡¢l_len¡¢l_pid£¬¶¼ÌîÎª0£¬¶ø1_whenceÔòÌîÎª
-SEEK_SET£¬Ö»ÐèÒªÕâ¸öÎÄ¼þÌá¹©Ò»¸öËø¡£l_typeµÄÖµÔòÈ¡¾öÓÚÓÃ»§ÊÇÏëÊµÏÖ×èÈûË¯ÃßËø»¹ÊÇÏëÊµÏÖ·Ç×èÈû²»»áË¯ÃßµÄËø¡£
-*/
-
-
-//µ±¹Ø±Õfd¾ä±ú¶ÔÓ¦µÄÎÄ¼þÊ±£¬µ±Ç°½ø³Ì½«×Ô¶¯ÊÍ·ÅÒÑ¾­ÄÃµ½µÄËø¡£
-
-/*
-¶ÔÓÚÎÄ¼þËø£¬Nginx·â×°ÁË3¸ö·½·¨£ºngx_trylock_fdÊµÏÖÁË²»»á×èÈû½ø³Ì¡¢²»»á±ãµÃ½ø³Ì½øÈëË¯Ãß×´Ì¬µÄ»¥³âËø£»ngx_lock_fdÌá¹©µÄ»¥³âËøÔÚËø
-ÒÑ¾­±»ÆäËû½ø³ÌÄÃµ½Ê±½«»áµ¼ÖÂµ±Ç°½ø³Ì½øÈëË¯Ãß×´Ì¬£¬Ö±µ½Ë³ÀûÄÃµ½Õâ¸öËøºó£¬µ±Ç°½ø³Ì²Å»á±»LinuxÄÚºËÖØÐÂµ÷¶È£¬ËùÒÔËüÊÇ×èÈû²Ù×÷£»
-ngx_unlock fdÓÃÓÚÊÍ·Å»¥³âËø¡£
-*/
-ngx_err_t
-ngx_trylock_fd(ngx_fd_t fd)
-{
-    struct flock  fl;
-
-    ngx_memzero(&fl, sizeof(struct flock)); //Õâ¸öÎÄ¼þËø²¢²»ÓÃÓÚËøÎÄ¼þÖÐµÄÄÚÈÝ£¬Ìî³äÎª0
-    fl.l_type = F_WRLCK; //F_WRLCKÒâÎ¶×Å²»»áµ¼ÖÂ½ø³ÌË¯Ãß
-    fl.l_whence = SEEK_SET; //
-
-    //»ñÈ¡fd¶ÔÓ¦µÄ»¥³âËø£¬Èç¹û·µ»Ø
-    /*
-    Ê¹ÓÃngx_trylock_fd·½·¨»ñÈ¡»¥³âËø³É¹¦Ê±»á·µ»Ø0£¬·ñÔò·µ»ØµÄÆäÊµÊÇerrno´íÎóÂë£¬¶øÕâ¸ö´íÎóÂëÎªNGX- EAGAIN»òÕßNGX EACCESSÊ±
-    ±íÊ¾µ±Ç°Ã»ÓÐÄÃµ½»¥³âËø£¬·ñÔò¿ÉÒÔÈÏÎªfcntlÖ´ÐÐ´íÎó¡£
-     */
-    if (fcntl(fd, F_SETLK, &fl) == -1) {
-        return ngx_errno;
-    }
-
-    return 0;
-}
-
-/*
-ngx_lock_fd·½·¨½«»á×èÈû½ø³ÌµÄÖ´ÐÐ£¬Ê¹ÓÃÊ±ÐèÒª·Ç³£½÷É÷£¬Ëü¿ÉÄÜ»áµ¼ÖÂworker½ø³ÌÄþ¿ÉË¯ÃßÒ²²»´¦ÀíÆäËûÕý³£ÇëÇó
-*/
-ngx_err_t
-ngx_lock_fd(ngx_fd_t fd)
-{
-    struct flock  fl;
-
-    ngx_memzero(&fl, sizeof(struct flock));
-
-    //F_WRLCK»áµ¼ÖÂ½ø³ÌË¯Ãß
-    fl.l_type = F_WRLCK;
-    fl.l_whence = SEEK_SET;
-
-    //Èç¹û·µ»Ø-1£¬Ôò±íÊ¾fcntlÖ´ÐÐ´íÎó¡£Ò»µ©·µ»Ø0£¬±íÊ¾³É¹¦µØÄÃµ½ÁËËø
-    if (fcntl(fd, F_SETLKW, &fl) == -1) {
-        return ngx_errno;
-    }
-
-    return 0;
-}
-
-/*
-ngx_unlock_fd·½·¨ÓÃÓÚÊÍ·Åµ±Ç°½ø³ÌÒÑ¾­ÄÃµ½µÄ»¥³âËø
-*/ //µ±¹Ø±Õfd¾ä±ú¶ÔÓ¦µÄÎÄ¼þÊ±£¬µ±Ç°½ø³Ì½«×Ô¶¯ÊÍ·ÅÒÑ¾­ÄÃµ½µÄËø¡£
-ngx_err_t
-ngx_unlock_fd(ngx_fd_t fd)
-{
-    struct flock  fl;
-
-    ngx_memzero(&fl, sizeof(struct flock));
-    fl.l_type = F_UNLCK;//F_UNLCK±íÊ¾½«ÒªÊÍ·ÅËø
-    fl.l_whence = SEEK_SET;
-
-    if (fcntl(fd, F_SETLK, &fl) == -1) {
-        return  ngx_errno;
-    }
-
-    return 0;
-}
-
-
-#if (NGX_HAVE_POSIX_FADVISE) && !(NGX_HAVE_F_READAHEAD)
-
-ngx_int_t
-ngx_read_ahead(ngx_fd_t fd, size_t n)
-{
-    int  err;
-
-    err = posix_fadvise(fd, 0, 0, POSIX_FADV_SEQUENTIAL);
-
-    if (err == 0) {
-        return 0;
-    }
-
-    ngx_set_errno(err);
-    return NGX_FILE_ERROR;
-}
-
-#endif
-
-
-#if (NGX_HAVE_O_DIRECT)
-/*
-ÎÄ¼þÒì²½IO
-    ÊÂ¼þÇý¶¯Ä£¿é¶¼ÊÇÔÚ´¦ÀíÍøÂçÊÂ¼þ£¬¶øÃ»ÓÐÉæ¼°´ÅÅÌÉÏÎÄ¼þµÄ²Ù×÷¡£±¾
-½Ú½«ÌÖÂÛLinuxÄÚºË2.6.2xÖ®ºó°æ±¾ÖÐÖ§³ÖµÄÎÄ¼þÒì²½I/O£¬ÒÔ¼°ngx_epoll_moduleÄ£¿éÊÇ
-ÈçºÎÓëÎÄ¼þÒì²½I/OÅäºÏÌá¹©·þÎñµÄ¡£ÕâÀïÌáµ½µÄÎÄ¼þÒì²½I/O²¢²»ÊÇglibc¿âÌá¹©µÄÎÄ¼þÒì
-²½I/O¡£glibc¿âÌá¹©µÄÒì²½I/OÊÇ»ùÓÚ¶àÏß³ÌÊµÏÖµÄ£¬Ëü²»ÊÇÕæÕýÒâÒåÉÏµÄÒì²½I/O¡£¶ø±¾½Ú
-ËµÃ÷µÄÒì²½I/OÊÇÓÉLinuxÄÚºËÊµÏÖ£¬Ö»ÓÐÔÚÄÚºËÖÐ³É¹¦µØÍê³ÉÁË´ÅÅÌ²Ù×÷£¬ÄÚºË²Å»áÍ¨Öª
-½ø³Ì£¬½ø¶øÊ¹µÃ´ÅÅÌÎÄ¼þµÄ´¦ÀíÓëÍøÂçÊÂ¼þµÄ´¦ÀíÍ¬Ñù¸ßÐ§¡£
-    Ê¹ÓÃÕâÖÖ·½Ê½µÄÇ°ÌáÊÇLinuxÄÚºË°æ±¾ÖÐ±ØÐëÖ§³ÖÎÄ¼þÒì²½I/O¡£µ±È»£¬Ëü´øÀ´µÄºÃ´¦
-Ò²·Ç³£Ã÷ÏÔ£¬Nginx°Ñ¶ÁÈ¡ÎÄ¼þµÄ²Ù×÷Òì²½µØÌá½»¸øÄÚºËºó£¬ÄÚºË»áÍ¨ÖªI/OÉè±¸¶ÀÁ¢µØÖ´
-ÐÐ²Ù×÷£¬ÕâÑù£¬Nginx½ø³Ì¿ÉÒÔ¼ÌÐø³ä·ÖµØÕ¼ÓÃCPU¡£¶øÇÒ£¬µ±´óÁ¿¶ÁÊÂ¼þ¶Ñ»ýµ½I/OÉè±¸
-µÄ¶ÓÁÐÖÐÊ±£¬½«»á·¢»Ó³öÄÚºËÖÐ¡°µçÌÝËã·¨¡±µÄÓÅÊÆ£¬´Ó¶ø½µµÍËæ»ú¶ÁÈ¡´ÅÅÌÉÈÇøµÄ³É±¾¡£
-    ×¢ÒâLinuxÄÚºË¼¶±ðµÄÎÄ¼þÒì²½I/OÊÇ²»Ö§³Ö»º´æ²Ù×÷µÄ£¬Ò²¾ÍÊÇËµ£¬¼´Ê¹ÐèÒª²Ù×÷
-µÄÎÄ¼þ¿éÔÚLinuxÎÄ¼þ»º´æÖÐ´æÔÚ£¬Ò²²»»áÍ¨¹ý¶ÁÈ¡¡¢¸ü¸Ä»º´æÖÐµÄÎÄ¼þ¿éÀ´´úÌæÊµ¼Ê¶Ô´Å
-ÅÌµÄ²Ù×÷£¬ËäÈ»´Ó×èÈûworker½ø³ÌµÄ½Ç¶ÈÉÏÀ´ËµÓÐÁËºÜ´óºÃ×ª£¬µ«ÊÇ¶Ôµ¥¸öÇëÇóÀ´Ëµ£¬»¹ÊÇ
-ÓÐ¿ÉÄÜ½µµÍÊµ¼Ê´¦ÀíµÄËÙ¶È£¬ÒòÎªÔ­ÏÈ¿ÉÒÔ´ÓÄÚ´æÖÐ¿ìËÙ»ñÈ¡µÄÎÄ¼þ¿éÔÚÊ¹ÓÃÁËÒì²½I/Oºó
-ÔòÒ»¶¨»á´Ó´ÅÅÌÉÏ¶ÁÈ¡¡£Òì²½ÎÄ¼þI/OÊÇ°Ñ¡°Ë«ÈÐ½£¡±£¬¹Ø¼üÒª¿´Ê¹ÓÃ³¡¾°£¬Èç¹û´ó²¿·ÖÓÃ»§
-ÇëÇó¶ÔÎÄ¼þµÄ²Ù×÷¶¼»áÂäµ½ÎÄ¼þ»º´æÖÐ£¬ÄÇÃ´²»ÒªÊ¹ÓÃÒì²½I/O£¬·´Ö®Ôò¿ÉÒÔÊÔ×ÅÊ¹ÓÃÎÄ¼þ
-Òì²½I/O£¬¿´Ò»ÏÂÊÇ·ñ»áÎª·þÎñ´øÀ´²¢·¢ÄÜÁ¦ÉÏµÄÌáÉý¡£
-    Ä¿Ç°£¬Nginx½öÖ§³ÖÔÚ¶ÁÈ¡ÎÄ¼þÊ±Ê¹ÓÃÒì²½I/O£¬ÒòÎªÕý³£Ð´ÈëÎÄ¼þÊ±ÍùÍùÊÇÐ´ÈëÄÚ´æ
-ÖÐ¾ÍÁ¢¿Ì·µ»Ø£¬Ð§ÂÊºÜ¸ß£¬¶øÊ¹ÓÃÒì²½I/OÐ´ÈëÊ±ËÙ¶È»áÃ÷ÏÔÏÂ½µ¡£
-ÎÄ¼þÒì²½AIOÓÅµã:
-        Òì²½I/OÊÇÓÉLinuxÄÚºËÊµÏÖ£¬Ö»ÓÐÔÚÄÚºËÖÐ³É¹¦µØÍê³ÉÁË´ÅÅÌ²Ù×÷£¬ÄÚºË²Å»áÍ¨Öª
-    ½ø³Ì£¬½ø¶øÊ¹µÃ´ÅÅÌÎÄ¼þµÄ´¦ÀíÓëÍøÂçÊÂ¼þµÄ´¦ÀíÍ¬Ñù¸ßÐ§¡£ÕâÑù¾Í²»»á×èÈûworker½ø³Ì¡£
-È±µã:
-        ²»Ö§³Ö»º´æ²Ù×÷µÄ£¬Ò²¾ÍÊÇËµ£¬¼´Ê¹ÐèÒª²Ù×÷µÄÎÄ¼þ¿éÔÚLinuxÎÄ¼þ»º´æÖÐ´æÔÚ£¬Ò²²»»áÍ¨¹ý¶ÁÈ¡¡¢
-    ¸ü¸Ä»º´æÖÐµÄÎÄ¼þ¿éÀ´´úÌæÊµ¼Ê¶Ô´ÅÅÌµÄ²Ù×÷¡£ÓÐ¿ÉÄÜ½µµÍÊµ¼Ê´¦ÀíµÄËÙ¶È£¬ÒòÎªÔ­ÏÈ¿ÉÒÔ´ÓÄÚ´æÖÐ¿ìËÙ
-    »ñÈ¡µÄÎÄ¼þ¿éÔÚÊ¹ÓÃÁËÒì²½I/OºóÔòÒ»¶¨»á´Ó´ÅÅÌÉÏ¶ÁÈ¡
-¾¿¾¹ÊÇÑ¡ÔñÒì²½I/O»¹ÊÇÆÕÍ¨I/O²Ù×÷ÄØ?
-        Òì²½ÎÄ¼þI/OÊÇ°Ñ¡°Ë«ÈÐ½£¡±£¬¹Ø¼üÒª¿´Ê¹ÓÃ³¡¾°£¬Èç¹û´ó²¿·ÖÓÃ»§
-    ÇëÇó¶ÔÎÄ¼þµÄ²Ù×÷¶¼»áÂäµ½ÎÄ¼þ»º´æÖÐ£¬ÄÇÃ´²»ÒªÊ¹ÓÃÒì²½I/O£¬·´Ö®Ôò¿ÉÒÔÊÔ×ÅÊ¹ÓÃÎÄ¼þ
-    Òì²½I/O£¬¿´Ò»ÏÂÊÇ·ñ»áÎª·þÎñ´øÀ´²¢·¢ÄÜÁ¦ÉÏµÄÌáÉý¡£
-    Ä¿Ç°£¬Nginx½öÖ§³ÖÔÚ¶ÁÈ¡ÎÄ¼þÊ±Ê¹ÓÃÒì²½I/O£¬ÒòÎªÕý³£Ð´ÈëÎÄ¼þÊ±ÍùÍùÊÇÐ´ÈëÄÚ´æ
-ÖÐ¾ÍÁ¢¿Ì·µ»Ø£¬Ð§ÂÊºÜ¸ß£¬¶øÊ¹ÓÃÒì²½I/OÐ´ÈëÊ±ËÙ¶È»áÃ÷ÏÔÏÂ½µ¡£Òì²½I/O²»Ö§³ÖÐ´²Ù×÷£¬ÒòÎª
-Òì²½I/OÎÞ·¨ÀûÓÃ»º´æ£¬¶øÐ´²Ù×÷Í¨³£ÊÇÂäµ½»º´æÉÏ£¬linux»á×Ô¶¯½«ÎÄ¼þÖÐ»º´æÖÐµÄÊý¾ÝÐ´µ½´ÅÅÌ
-ÆÕÍ¨ÎÄ¼þ¶ÁÐ´¹ý³Ì:
-Õý³£µÄÏµÍ³µ÷ÓÃread/writeµÄÁ÷³ÌÊÇÔõÑùµÄÄØ£¿
-- ¶ÁÈ¡£ºÄÚºË»º´æÓÐÐèÒªµÄÎÄ¼þÊý¾Ý:ÄÚºË»º³åÇø->ÓÃ»§»º³åÇø;Ã»ÓÐ:Ó²ÅÌ->ÄÚºË»º³åÇø->ÓÃ»§»º³åÇø;
-- Ð´»Ø£ºÊý¾Ý»á´ÓÓÃ»§µØÖ·¿Õ¼ä¿½±´µ½²Ù×÷ÏµÍ³ÄÚºËµØÖ·¿Õ¼äµÄÒ³»º´æÖÐÈ¥£¬ÕâÊÇwrite¾Í»áÖ±½Ó·µ»Ø£¬²Ù×÷ÏµÍ³»áÔÚÇ¡µ±µÄÊ±»úÐ´Èë´ÅÅÌ£¬Õâ¾ÍÊÇ´«ËµÖÐµÄ
-*/
-
-//direct AIO¿ÉÒÔ²Î¿¼http://blog.csdn.net/bengda/article/details/21871413
-ngx_int_t
-ngx_directio_on(ngx_fd_t fd)
-{
-    int  flags;
-
-    flags = fcntl(fd, F_GETFL);
-
-    if (flags == -1) {
-        return NGX_FILE_ERROR;
-    }
-
-    /* 
-    ÆÕÍ¨»º´æI/OÓÅµã: »º´æ I/O Ê¹ÓÃÁË²Ù×÷ÏµÍ³ÄÚºË»º³åÇø£¬ÔÚÒ»¶¨³Ì¶ÈÉÏ·ÖÀëÁËÓ¦ÓÃ³ÌÐò¿Õ¼äºÍÊµ¼ÊµÄÎïÀíÉè±¸¡£»º´æ I/O ¿ÉÒÔ¼õÉÙ¶ÁÅÌµÄ´ÎÊý£¬´Ó¶øÌá¸ßÐÔÄÜ¡£
-    È±µã£ºÔÚ»º´æ I/O »úÖÆÖÐ£¬DMA ·½Ê½¿ÉÒÔ½«Êý¾ÝÖ±½Ó´Ó´ÅÅÌ¶Áµ½Ò³»º´æÖÐ£¬»òÕß½«Êý¾Ý´ÓÒ³»º´æÖ±½ÓÐ´»Øµ½´ÅÅÌÉÏ£¬¶ø²»ÄÜÖ±½ÓÔÚÓ¦ÓÃ³ÌÐòµØÖ·¿Õ¼äºÍ´ÅÅÌÖ®¼ä
-        ½øÐÐÊý¾Ý´«Êä£¬ÕâÑùµÄ»°£¬Êý¾ÝÔÚ´«Êä¹ý³ÌÖÐÐèÒªÔÚÓ¦ÓÃ³ÌÐòµØÖ·¿Õ¼äºÍÒ³»º´æÖ®¼ä½øÐÐ¶à´ÎÊý¾Ý¿½±´²Ù×÷£¬ÕâÐ©Êý¾Ý¿½±´²Ù×÷Ëù´øÀ´µÄ CPU ÒÔ¼°ÄÚ´æ¿ªÏúÊÇ·Ç³£´óµÄ¡£
-    direct I/OÓÅµã:Ö±½Ó I/O ×îÖ÷ÒªµÄÓÅµã¾ÍÊÇÍ¨¹ý¼õÉÙ²Ù×÷ÏµÍ³ÄÚºË»º³åÇøºÍÓ¦ÓÃ³ÌÐòµØÖ·¿Õ¼äµÄÊý¾Ý¿½±´´ÎÊý£¬½µµÍÁË¶ÔÎÄ¼þ¶ÁÈ¡ºÍÐ´ÈëÊ±Ëù´øÀ´µÄ CPU 
-        µÄÊ¹ÓÃÒÔ¼°ÄÚ´æ´ø¿íµÄÕ¼ÓÃ¡£Õâ¶ÔÓÚÄ³Ð©ÌØÊâµÄÓ¦ÓÃ³ÌÐò£¬±ÈÈç×Ô»º´æÓ¦ÓÃ³ÌÐòÀ´Ëµ£¬²»Ê§ÎªÒ»ÖÖºÃµÄÑ¡Ôñ¡£Èç¹ûÒª´«ÊäµÄÊý¾ÝÁ¿ºÜ´ó£¬Ê¹ÓÃÖ±½Ó I/O 
-        µÄ·½Ê½½øÐÐÊý¾Ý´«Êä£¬¶ø²»ÐèÒª²Ù×÷ÏµÍ³ÄÚºËµØÖ·¿Õ¼ä¿½±´Êý¾Ý²Ù×÷µÄ²ÎÓë£¬Õâ½«»á´ó´óÌá¸ßÐÔÄÜ¡£
-    direct I/OÈ±µã: ÉèÖÃÖ±½Ó I/O µÄ¿ªÏú·Ç³£´ó£¬¶øÖ±½Ó I/O ÓÖ²»ÄÜÌá¹©»º´æ I/O µÄÓÅÊÆ¡£»º´æ I/O µÄ¶Á²Ù×÷¿ÉÒÔ´Ó¸ßËÙ»º³å´æ´¢Æ÷ÖÐ»ñÈ¡Êý¾Ý£¬¶øÖ±½Ó 
-        I/O µÄ¶ÁÊý¾Ý²Ù×÷»áÔì³É´ÅÅÌµÄÍ¬²½¶Á£¬Õâ»á´øÀ´ÐÔÄÜÉÏµÄ²îÒì , ²¢ÇÒµ¼ÖÂ½ø³ÌÐèÒª½Ï³¤µÄÊ±¼ä²ÅÄÜÖ´ÐÐÍê
-    ×Ü½á:
-    Linux ÖÐµÄÖ±½Ó I/O ·ÃÎÊÎÄ¼þ·½Ê½¿ÉÒÔ¼õÉÙ CPU µÄÊ¹ÓÃÂÊÒÔ¼°ÄÚ´æ´ø¿íµÄÕ¼ÓÃ£¬µ«ÊÇÖ±½Ó I/O ÓÐÊ±ºòÒ²»á¶ÔÐÔÄÜ²úÉú¸ºÃæÓ°Ïì¡£ËùÒÔÔÚÊ¹ÓÃ
-    Ö±½Ó I/O Ö®Ç°Ò»¶¨Òª¶ÔÓ¦ÓÃ³ÌÐòÓÐÒ»¸öºÜÇåÐÑµÄÈÏÊ¶£¬Ö»ÓÐÔÚÈ·¶¨ÁËÉèÖÃ»º³å I/O µÄ¿ªÏú·Ç³£¾Þ´óµÄÇé¿öÏÂ£¬²Å¿¼ÂÇÊ¹ÓÃÖ±½Ó I/O¡£Ö±½Ó I/O 
-    ¾­³£ÐèÒª¸úÒì²½ I/O ½áºÏÆðÀ´Ê¹ÓÃ
-    
-    ÆÕÍ¨»º´æI/O: Ó²ÅÌ->ÄÚºË»º³åÇø->ÓÃ»§»º³åÇø Ð´Êý¾ÝÐ´µÀ»º³åÇøÖÐ¾Í·µ»Ø£¬Ò»°ãÓÉÄÚºË¶¨ÆÚÐ´µÀ´ÅÅÌ(»òÕßÖ±½Óµ÷ÓÃAPIÖ¸¶¨ÒªÐ´Èë´ÅÅÌ)£¬
-    ¶Á²Ù×÷Ê×ÏÈ¼ì²é»º³åÇøÊÇ·ñÓÐËùÐèµÄÎÄ¼þÄÚÈÝ£¬Ã»ÓÐ¾Í³å´ÅÅÌ¶Áµ½ÄÚºË»º³åÇø£¬ÔÚ´ÓÄÚºË»º³åÇøµ½ÓÃ»§»º³åÇø
-    O_DIRECTÎªÖ±½ÓI/O·½Ê½£¬Ó²ÅÌ->ÓÃ»§»º³åÇø£¬ÉÙÁËÄÚºË»º³åÇø²Ù×÷£¬µ«ÊÇÖ±½Ó´ÅÅÌ²Ù×÷ºÜ·ÑÊ±,ËùÒÔÖ±½ÓI/OÒ»°ã½èÖúAIOºÍEPOLLÊµÏÖ
-    ²Î¿¼:http://blog.csdn.net/bengda/article/details/21871413  http://www.ibm.com/developerworks/cn/linux/l-cn-directio/index.html
-    */
-    return fcntl(fd, F_SETFL, flags | O_DIRECT);
-}
-
-
-ngx_int_t
-ngx_directio_off(ngx_fd_t fd)
-{
-    int  flags;
-
-    flags = fcntl(fd, F_GETFL);
-
-    if (flags == -1) {
-        return NGX_FILE_ERROR;
-    }
-
-    return fcntl(fd, F_SETFL, flags & ~O_DIRECT);
-}
-
-#endif
-
-
-#if (NGX_HAVE_STATFS)
-
-/*
-¹¦ÄÜÃèÊö£º   
-²éÑ¯ÎÄ¼þÏµÍ³Ïà¹ØµÄÐÅÏ¢¡£ 
-    
-ÓÃ·¨£º   
-#include <sys/vfs.h>    / * »òÕß <sys/statfs.h> * / 
-int statfs(const char *path, struct statfs *buf); 
-int fstatfs(int fd, struct statfs *buf); 
-  
-  ²ÎÊý£º   
-path: Î»ÓÚÐèÒª²éÑ¯ÐÅÏ¢µÄÎÄ¼þÏµÍ³µÄÎÄ¼þÂ·¾¶Ãû¡£     
-fd£º Î»ÓÚÐèÒª²éÑ¯ÐÅÏ¢µÄÎÄ¼þÏµÍ³µÄÎÄ¼þÃèÊö´Ê¡£ 
-buf£ºÒÔÏÂ½á¹¹ÌåµÄÖ¸Õë±äÁ¿£¬ÓÃÓÚ´¢´æÎÄ¼þÏµÍ³Ïà¹ØµÄÐÅÏ¢ 
-struct statfs { 
-    long    f_type;     / * ÎÄ¼þÏµÍ³ÀàÐÍ  * / 
-   long    f_bsize;    / * ¾­¹ýÓÅ»¯µÄ´«Êä¿é´óÐ¡  * / 
-   long    f_blocks;   / * ÎÄ¼þÏµÍ³Êý¾Ý¿é×ÜÊý * / 
-   long    f_bfree;    / * ¿ÉÓÃ¿éÊý * / 
-     long    f_bavail;   / * ·Ç³¬¼¶ÓÃ»§¿É»ñÈ¡µÄ¿éÊý * / 
-   long    f_files;    / * ÎÄ¼þ½áµã×ÜÊý * / 
-   long    f_ffree;    / * ¿ÉÓÃÎÄ¼þ½áµãÊý * / 
-   fsid_t  f_fsid;     / * ÎÄ¼þÏµÍ³±êÊ¶ * / 
-   long    f_namelen;  / * ÎÄ¼þÃûµÄ×î´ó³¤¶È * / 
-}; 
- 
-·µ»ØËµÃ÷£º   
-³É¹¦Ö´ÐÐÊ±£¬·µ»Ø0¡£Ê§°Ü·µ»Ø-1£¬errno±»ÉèÎªÒÔÏÂµÄÄ³¸öÖµ   
-  
-EACCES£º (statfs())ÎÄ¼þ»òÂ·¾¶ÃûÖÐ°üº¬µÄÄ¿Â¼²»¿É·ÃÎÊ 
-EBADF £º (fstatfs()) ÎÄ¼þÃèÊö´ÊÎÞÐ§ 
-EFAULT£º ÄÚ´æµØÖ·ÎÞÐ§ 
-EINTR £º ²Ù×÷ÓÉÐÅºÅÖÐ¶Ï 
-EIO    £º ¶ÁÐ´³ö´í 
-ELOOP £º (statfs())½âÊÍÂ·¾¶Ãû¹ý³ÌÖÐ´æÔÚÌ«¶àµÄ·ûºÅÁ¬½Ó 
-ENAMETOOLONG£º(statfs()) Â·¾¶ÃûÌ«³¤ 
-ENOENT£º(statfs()) ÎÄ¼þ²»´æÔÚ 
-ENOMEM£º ºËÐÄÄÚ´æ²»×ã 
-ENOSYS£º ÎÄ¼þÏµÍ³²»Ö§³Öµ÷ÓÃ 
-ENOTDIR£º(statfs())Â·¾¶ÃûÖÐµ±×÷Ä¿Â¼µÄ×é¼þ²¢·ÇÄ¿Â¼ 
-EOVERFLOW£ºÐÅÏ¢Òç³ö
- 
-Ò»¸ö¼òµ¥µÄÀý×Ó£º
-#include <sys/vfs.h>
-#include <stdio.h>
-int main()
-{
-    struct statfs diskInfo;
-    statfs("/",&diskInfo);
-    unsigned long long blocksize = diskInfo.f_bsize;// Ã¿¸öblockÀïÃæ°üº¬µÄ×Ö½ÚÊý
-    unsigned long long totalsize = blocksize * diskInfo.f_blocks;//×ÜµÄ×Ö½ÚÊý
-    printf("TOTAL_SIZE == %lu MB/n",totalsize>>20); // 1024*1024 =1MB  »»Ëã³ÉMBµ¥Î»
-    unsigned long long freeDisk = diskInfo.f_bfree*blocksize; //ÔÙ¼ÆËãÏÂÊ£ÓàµÄ¿Õ¼ä´óÐ¡
-    printf("DISK_FREE == %ld MB/n",freeDisk>>20);
- return 0;
-}
-*/
-
-//»ñÈ¡ÎÄ¼þÏµÍ³µÄblock size  
-size_t
-ngx_fs_bsize(u_char *name)
-{
-    struct statfs  fs;
-
-    if (statfs((char *) name, &fs) == -1) {
-        return 512;
-    }
-
-    if ((fs.f_bsize % 512) != 0) {
-        return 512;
-    }
-
-    return (size_t) fs.f_bsize; // Ã¿¸öblockÀïÃæ°üº¬µÄ×Ö½ÚÊý
-}
-
-#elif (NGX_HAVE_STATVFS)
-
-size_t
-ngx_fs_bsize(u_char *name)
-{
-    struct statvfs  fs;
-
-    if (statvfs((char *) name, &fs) == -1) {
-        return 512;
-    }
-
-    if ((fs.f_frsize % 512) != 0) {
-        return 512;
-    }
-
-    return (size_t) fs.f_frsize;
-}
-
-#else
-
-size_t
-ngx_fs_bsize(u_char *name)
-{
-    return 512;
-}
-
-#endif
-
+Linux fcntlå‡½æ•°è¯¦è§£(2011-07-18 20:22:14)è½¬è½½

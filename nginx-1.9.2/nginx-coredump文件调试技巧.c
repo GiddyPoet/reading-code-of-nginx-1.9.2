@@ -1,17 +1,17 @@
 /*
-×î½ü±àĞ´nginxÄ£¿éµÄÊ±ºò£¬·¢ÏÖworker½ø³ÌÀÏÊÇ´òÓ¡:
+æœ€è¿‘ç¼–å†™nginxæ¨¡å—çš„æ—¶å€™ï¼Œå‘ç°workerè¿›ç¨‹è€æ˜¯æ‰“å°:
 2025/02/13 13:11:03[                 ngx_signal_handler,   927]  [notice] 32580#32580: signal 17 (SIGCHLD) received
-ÎªÁË¶¨Î»
-nginxÅäÖÃ·½·¨
+ä¸ºäº†å®šä½
+nginxé…ç½®æ–¹æ³•
 worker_rlimit_core  100M;
 working_directory   /path/to/cores/;
-×¢ÒâÕâÀïÒ»¶¨Òª±£Ö¤/pathÄ¿Â¼ÓĞ¶ÁĞ´È¨ÏŞ£¬·ñÔò²»»á²úÉúcoredumpÎÄ¼ş
+æ³¨æ„è¿™é‡Œä¸€å®šè¦ä¿è¯/pathç›®å½•æœ‰è¯»å†™æƒé™ï¼Œå¦åˆ™ä¸ä¼šäº§ç”Ÿcoredumpæ–‡ä»¶
 
 
-Ò²¿ÉÒÔ½øĞĞÏµÍ³ÅäÖÃ£¬¼ûÏÂÃæ:
-ulimit -c 1024(ÏŞÖÆÎÄ¼ş´óĞ¡) »òÕßunlimited £¬Õâ¸öÒª×¢Òâ£¬Èç¹û²»×öÏŞÖÆ£¬coredumpÎÄ¼ş»áºÜ´ó£¬³ÔµôºÜ¶à´ÅÅÌ¿Õ¼ä
+ä¹Ÿå¯ä»¥è¿›è¡Œç³»ç»Ÿé…ç½®ï¼Œè§ä¸‹é¢:
+ulimit -c 1024(é™åˆ¶æ–‡ä»¶å¤§å°) æˆ–è€…unlimited ï¼Œè¿™ä¸ªè¦æ³¨æ„ï¼Œå¦‚æœä¸åšé™åˆ¶ï¼Œcoredumpæ–‡ä»¶ä¼šå¾ˆå¤§ï¼Œåƒæ‰å¾ˆå¤šç£ç›˜ç©ºé—´
 
-cat /proc/sys/kernel/core_pattern ²é¿´coredumpÎÄ¼ş´æ·ÅÂ·¾¶
+cat /proc/sys/kernel/core_pattern æŸ¥çœ‹coredumpæ–‡ä»¶å­˜æ”¾è·¯å¾„
 
 
 echo 0 > /proc/sys/kernel/core_uses_pid
@@ -20,20 +20,20 @@ echo /var/corefile/core-%e > /path/core_pattern
 echo 0 > /proc/sys/kernel/core_uses_pid
 echo /var/corefile/core-%e > /proc/sys/kernel/core_pattern
 
-//corefileĞ¯´ø½ø³ÌºÅ
+//corefileæºå¸¦è¿›ç¨‹å·
 echo 1 > /proc/sys/kernel/core_uses_pid
 echo /var/corefile/core-%e-%p-%t > /proc/sys/kernel/core_pattern
 
-ËÄ¡¢gdbµ÷ÊÔcodedump:
+å››ã€gdbè°ƒè¯•codedump:
 gdb programfile codedumpfile
 (gdb) bt
 
 
 
-ÉÏÃæÁ½¾äÖ´ĞĞºó£¬¿ÉÒÔ±£Ö¤coredumpÎÄ¼şÎªcore-nginx
+ä¸Šé¢ä¸¤å¥æ‰§è¡Œåï¼Œå¯ä»¥ä¿è¯coredumpæ–‡ä»¶ä¸ºcore-nginx
 
-Ö´ĞĞ³É¹¦Ö»ÓĞ´òÓ¡ÁË:Segmentation fault (core dumped)²Å»áÓĞcoredumpÎÄ¼ş²úÉú
-´òÓ¡:Segmentation fault Ã»ÓĞ´òÓ¡(core dumped)Ôò²»»á²ÎÊıcoredumpÎÄ¼ş
+æ‰§è¡ŒæˆåŠŸåªæœ‰æ‰“å°äº†:Segmentation fault (core dumped)æ‰ä¼šæœ‰coredumpæ–‡ä»¶äº§ç”Ÿ
+æ‰“å°:Segmentation fault æ²¡æœ‰æ‰“å°(core dumped)åˆ™ä¸ä¼šå‚æ•°coredumpæ–‡ä»¶
 
 
 
@@ -50,50 +50,50 @@ Segmentation fault (core dumped)
 root@root:/var/yyz# 
 
 $grep signal error.log
-2012/12/24 16:39:56 [alert] 13661#0: worker process 13666 exited on signal 11  Ã»ÓĞcoredumpÎÄ¼ş²úÉú
+2012/12/24 16:39:56 [alert] 13661#0: worker process 13666 exited on signal 11  æ²¡æœ‰coredumpæ–‡ä»¶äº§ç”Ÿ
 
-Èç¹ûÔÚ½ø³ÌÍË³öºó£¬ÓĞcoredumpÎÄ¼ş²úÉú£¬Ôò»á´ò³öÈçÏÂÈÕÖ¾£º
+å¦‚æœåœ¨è¿›ç¨‹é€€å‡ºåï¼Œæœ‰coredumpæ–‡ä»¶äº§ç”Ÿï¼Œåˆ™ä¼šæ‰“å‡ºå¦‚ä¸‹æ—¥å¿—ï¼š
 $grep signal error.log
 2012/12/24 16:39:56 [alert] 13661#0: worker process 13666 exited on signal 11 (core dumped) 
 
-ËÄ¡¢gdbµ÷ÊÔcodedump:
+å››ã€gdbè°ƒè¯•codedump:
 gdb programfile codedumpfile
 (gdb) bt
 
 
 
 
-2.coreÎÄ¼şµÄÃû³ÆºÍÉú³ÉÂ·¾¶
+2.coreæ–‡ä»¶çš„åç§°å’Œç”Ÿæˆè·¯å¾„
 ----------------------------
-coreÎÄ¼şÉú³ÉÂ·¾¶:
-ÊäÈë¿ÉÖ´ĞĞÎÄ¼şÔËĞĞÃüÁîµÄÍ¬Ò»Â·¾¶ÏÂ¡£
- ÈôÏµÍ³Éú³ÉµÄcoreÎÄ¼ş²»´øÆäËûÈÎºÎÀ©Õ¹Ãû³Æ£¬ÔòÈ«²¿ÃüÃûÎªcore¡£ĞÂµÄcoreÎÄ¼şÉú³É½«¸²¸ÇÔ­À´µÄcoreÎÄ¼ş¡£
+coreæ–‡ä»¶ç”Ÿæˆè·¯å¾„:
+è¾“å…¥å¯æ‰§è¡Œæ–‡ä»¶è¿è¡Œå‘½ä»¤çš„åŒä¸€è·¯å¾„ä¸‹ã€‚
+ è‹¥ç³»ç»Ÿç”Ÿæˆçš„coreæ–‡ä»¶ä¸å¸¦å…¶ä»–ä»»ä½•æ‰©å±•åç§°ï¼Œåˆ™å…¨éƒ¨å‘½åä¸ºcoreã€‚æ–°çš„coreæ–‡ä»¶ç”Ÿæˆå°†è¦†ç›–åŸæ¥çš„coreæ–‡ä»¶ã€‚
 
-1£©/proc/sys/kernel/core_uses_pid¿ÉÒÔ¿ØÖÆcoreÎÄ¼şµÄÎÄ¼şÃûÖĞÊÇ·ñÌí¼Ópid×÷ÎªÀ©Õ¹¡£ÎÄ¼şÄÚÈİÎª1£¬±íÊ¾Ìí¼Ópid×÷ÎªÀ©Õ¹Ãû£¬Éú³ÉµÄcoreÎÄ¼ş¸ñÊ½Îªcore.xxxx£»Îª0Ôò±íÊ¾Éú³ÉµÄcoreÎÄ¼şÍ¬Ò»ÃüÃûÎªcore¡£
- ¿ÉÍ¨¹ıÒÔÏÂÃüÁîĞŞ¸Ä´ËÎÄ¼ş£º
+1ï¼‰/proc/sys/kernel/core_uses_pidå¯ä»¥æ§åˆ¶coreæ–‡ä»¶çš„æ–‡ä»¶åä¸­æ˜¯å¦æ·»åŠ pidä½œä¸ºæ‰©å±•ã€‚æ–‡ä»¶å†…å®¹ä¸º1ï¼Œè¡¨ç¤ºæ·»åŠ pidä½œä¸ºæ‰©å±•åï¼Œç”Ÿæˆçš„coreæ–‡ä»¶æ ¼å¼ä¸ºcore.xxxxï¼›ä¸º0åˆ™è¡¨ç¤ºç”Ÿæˆçš„coreæ–‡ä»¶åŒä¸€å‘½åä¸ºcoreã€‚
+ å¯é€šè¿‡ä»¥ä¸‹å‘½ä»¤ä¿®æ”¹æ­¤æ–‡ä»¶ï¼š
 echo "1" > c
 
-2£©proc/sys/kernel/core_pattern¿ÉÒÔ¿ØÖÆcoreÎÄ¼ş±£´æÎ»ÖÃºÍÎÄ¼şÃû¸ñÊ½¡£
- ¿ÉÍ¨¹ıÒÔÏÂÃüÁîĞŞ¸Ä´ËÎÄ¼ş£º
-echo "/corefile/core-%e-%p-%t" > core_pattern£¬¿ÉÒÔ½«coreÎÄ¼şÍ³Ò»Éú³Éµ½/corefileÄ¿Â¼ÏÂ£¬²úÉúµÄÎÄ¼şÃûÎªcore-ÃüÁîÃû-pid-Ê±¼ä´Á
- ÒÔÏÂÊÇ²ÎÊıÁĞ±í:
- %p - insert pid into filename Ìí¼Ópid
- %u - insert current uid into filename Ìí¼Óµ±Ç°uid
- %g - insert current gid into filename Ìí¼Óµ±Ç°gid
- %s - insert signal that caused the coredump into the filename Ìí¼Óµ¼ÖÂ²úÉúcoreµÄĞÅºÅ
-%t - insert UNIX time that the coredump occurred into filename Ìí¼ÓcoreÎÄ¼şÉú³ÉÊ±µÄunixÊ±¼ä
-%h - insert hostname where the coredump happened into filename Ìí¼ÓÖ÷»úÃû
-%e - insert coredumping executable name into filename Ìí¼ÓÃüÁîÃû
+2ï¼‰proc/sys/kernel/core_patternå¯ä»¥æ§åˆ¶coreæ–‡ä»¶ä¿å­˜ä½ç½®å’Œæ–‡ä»¶åæ ¼å¼ã€‚
+ å¯é€šè¿‡ä»¥ä¸‹å‘½ä»¤ä¿®æ”¹æ­¤æ–‡ä»¶ï¼š
+echo "/corefile/core-%e-%p-%t" > core_patternï¼Œå¯ä»¥å°†coreæ–‡ä»¶ç»Ÿä¸€ç”Ÿæˆåˆ°/corefileç›®å½•ä¸‹ï¼Œäº§ç”Ÿçš„æ–‡ä»¶åä¸ºcore-å‘½ä»¤å-pid-æ—¶é—´æˆ³
+ ä»¥ä¸‹æ˜¯å‚æ•°åˆ—è¡¨:
+ %p - insert pid into filename æ·»åŠ pid
+ %u - insert current uid into filename æ·»åŠ å½“å‰uid
+ %g - insert current gid into filename æ·»åŠ å½“å‰gid
+ %s - insert signal that caused the coredump into the filename æ·»åŠ å¯¼è‡´äº§ç”Ÿcoreçš„ä¿¡å·
+%t - insert UNIX time that the coredump occurred into filename æ·»åŠ coreæ–‡ä»¶ç”Ÿæˆæ—¶çš„unixæ—¶é—´
+%h - insert hostname where the coredump happened into filename æ·»åŠ ä¸»æœºå
+%e - insert coredumping executable name into filename æ·»åŠ å‘½ä»¤å
 
-ÏêÏ¸³ö´¦²Î¿¼£ºhttp://www.nginx.cn/1521.html
+è¯¦ç»†å‡ºå¤„å‚è€ƒï¼šhttp://www.nginx.cn/1521.html
 
-ËÄ¡¢gdbµ÷ÊÔcodedump:
+å››ã€gdbè°ƒè¯•codedump:
 gdb programfile codedumpfile
 (gdb) bt
 
 
 
-°Ñcore-nginx¿½±´µ½nginx¿ÉÖ´ĞĞÎÄ¼şÍ¬Ò»Ä¿Â¼ÏÂÃæ
+æŠŠcore-nginxæ‹·è´åˆ°nginxå¯æ‰§è¡Œæ–‡ä»¶åŒä¸€ç›®å½•ä¸‹é¢
 
 root@root:/var/yyz/corefile# gdb --core core-nginx 
 GNU gdb (GDB) 7.1
@@ -118,563 +118,4 @@ Reading symbols from /var/yyz/corefile/nginx...done.
 (gdb) bt
 #0  0x0805106a in ngx_vslprintf (
     buf=0xbff2d720 "TTP_SERVER_REWRITE_PHASE)\nent_del_timer,    39]  [debug] 32581#32581: *1 < ngx_http_process_request,  2013>  event timer del: 3: 4256695641\ncess_request_headers,  1412]", 
-    last=0xbff2de90 "{·|\034vĞ\016\b|Ï\017\bØĞ\016\b\bßò¿ùo\a\b\b", fmt=<value optimized out>, 
-    args=0xbff2ded4 "¬T\017\b\f\bØĞ\016\b|Ï\017\bØĞ\016\b\bßò¿\230s\a\bØĞ\016\b`ü\v\blêä\003ØĞ\016\b|Ï\017\bØĞ\016\b(ßò¿ \021\a\bØĞ\016\b\214Ï\017\bØĞ\016\b\b\032\020\b\b\032\020\b\220Ù\021\bHßò¿¾\022\a\bØĞ\016\bØÃ\r\b3H\f\b\b\032\020\b\220Ù\021\bØĞ\016\bøßò¿8\225\a\bØĞ\016\b¤Ù\021\b¸ÓZ·\020(") at src/core/ngx_string.c:332
-#1  0x0804cc3d in ngx_log_error_core (level=8, log=0x80e6c88, filename=0x80c3a60 "ngx_http_core_find_config_phase", lineno=1865, err=0, fmt=0x80c3828 "find config phase: %ui (%s), uri:%V")
-    at src/core/ngx_log.c:229
-#2  0x08076ff9 in ngx_http_core_find_config_phase (r=0x80ed0d8, ph=0x80fcf8c) at src/http/ngx_http_core_module.c:1863
-#3  0x080711a0 in ngx_http_core_run_phases (r=0x80ed0d8) at src/http/ngx_http_core_module.c:1649
-#4  0x080712be in ngx_http_handler (r=0x1) at src/http/ngx_http_core_module.c:1576
-#5  0x08079538 in ngx_http_process_request (r=0x80ed0d8) at src/http/ngx_http_request.c:2038
-#6  0x0807ba2d in ngx_http_process_request_headers (rev=0x811d990) at src/http/ngx_http_request.c:1429
-#7  0x0807bf60 in ngx_http_process_request_line (rev=0x811d990) at src/http/ngx_http_request.c:1069
-#8  0x0807c558 in ngx_http_wait_request_handler (rev=0x811d990) at src/http/ngx_http_request.c:529
-#9  0x0806d022 in ngx_epoll_process_events (cycle=0x80e7888, timer=20000, flags=<value optimized out>) at src/event/modules/ngx_epoll_module.c:1741
-#10 0x08063e21 in ngx_process_events_and_timers (cycle=0x80e7888) at src/event/ngx_event.c:366
-#11 0x0806abce in ngx_worker_process_cycle (cycle=0x80e7888, data=0x0) at src/os/unix/ngx_process_cycle.c:1069
-#12 0x0806940b in ngx_spawn_process (cycle=0x80e7888, proc=0x806aad5 <ngx_worker_process_cycle>, data=0x0, name=0x80c0e7b "worker process", respawn=-3) at src/os/unix/ngx_process.c:252
-#13 0x0806a082 in ngx_start_worker_processes (cycle=<value optimized out>, n=<value optimized out>, type=<value optimized out>) at src/os/unix/ngx_process_cycle.c:622
-#14 0x0806b2b8 in ngx_master_process_cycle (cycle=0x80e7888) at src/os/unix/ngx_process_cycle.c:300
-#15 0x0804c22f in main (argc=1, argv=0xbff2e554) at src/core/nginx.c:453
-(gdb) 
-
-
-
-
-
-
-
-
-°´ÕÕÁ÷³ÌÒ»Â·ÅÅ²éÏÂÈ¥£¬·¢ÏÖNginx·ÃÎÊÈÕÖ¾ÀïÃæÓĞ´óÁ¿µÄhttp 504 err code
-
-tail -f /var/log/messages  »òÕßdemsg²é¿´ÊÇ·ñÓĞ¶Î´íÎó
-
-Í¬Ê±³öÏÖ´óÁ¿µÄÀàËÆ´íÎóĞÅÏ¢
-
-nginx[1234]: segfault at 0000000000000008 rip 000000000043edf8 rsp 00007fff34a21fa0 error 4
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-NginxÎÊÌâ¶¨Î»Ö®¼à¿Ø½ø³ÌÒì³£ÍË³ö
-
-Dec 25th, 2012 nginx  Posted by lifeibo | Comments 
-
-
-nginxÔÚÔËĞĞ¹ı³ÌÖĞÊÇ·ñÎÈ¶¨£¬ÊÇ·ñÓĞÒì³£ÍË³ö¹ı£¿ÕâÀï×Ü½á¼¸ÏîÆ½Ê±»áÓÃµ½µÄĞ¡¼¼ÇÉ¡£
-
-1. ÔÚerror.logÖĞ²é¿´ÊÇ·ñÓĞsignalÏî£¬Èç¹ûÓĞ£¬¿´¿´signalÊÇ¶àÉÙ¡£
-
-±ÈÈç£¬ÕâÊÇÒ»¸öÒì³£ÍË³öµÄÇé¿ö£º
-$grep signal error.log
-
-2012/12/24 16:39:56 [alert] 13661#0: worker process 13666 exited on signal 11
-
-
-Èç¹ûÔÚ½ø³ÌÍË³öºó£¬ÓĞcoredumpÎÄ¼ş²úÉú£¬Ôò»á´ò³öÈçÏÂÈÕÖ¾£º
-$grep signal error.log
-
-2012/12/24 16:39:56 [alert] 13661#0: worker process 13666 exited on signal 11 (core dumped) 
-
-
-2. ¼òµ¥·½Ê½£¬¿´½ø³ÌºÅÊÇ·ñÁ¬Ğø
-
-Ò»°ãÀ´Ëµ£¬ÔÚworker½ø³ÌÆô¶¯Ê±£¬Æä½ø³ÌºÅ¶¼ÊÇÁ¬ĞøµÄ£¨ÖÁÉÙÏà²î²»ÊÇºÜÔ¶£©£¬Èç¹ûÓĞ½ø³ÌÍË³ö£¬Æä½ø³ÌºÅ¾Í²»Ò»¶¨Á¬Ğø¡£
-$ps aux | grep nginx
-
-lizi      7223  0.0  0.0  74844  2024 ?        Ss   13:32   0:00 nginx: master process ./nginx
-lizi      7292  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7293  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7294  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7295  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7296  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7297  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7298  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7299  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7300  0.0  0.0  78856  5468 ?        S    13:33   0:00 nginx: worker process
-lizi      7301  0.0  0.0  78856  5452 ?        S    13:33   0:00 nginx: worker process
-
-
-¿ÉÒÔ¿´µ½£¬10¸öworker½ø³Ì£¬»ù±¾´Ó7292µ½7301£¬½ø³ÌºÅÁ¬Ğø¡£
- ÈçÏÂ£º
-$ps aux | grep nginx
-
-nobody    9492 16659 26 09:18 ?        01:10:41 nginx: worker process
-root      16659     1  0 Dec24 ?       00:00:00 nginx: master process ./nginx
-nobody   16663 16659 11 Dec24 ?        02:41:38 nginx: worker process
-nobody   19344 16659 24 10:18 ?        00:50:54 nginx: worker process
-nobody    25447 16659 28 07:41 ?        01:43:56 nginx: worker process 
-
-
-½ø³ÌºÅÒÑ²»ÔÙÁ¬Ğø£¬ËµÃ÷nginx¿ÉÄÜÓĞ¹¤×÷½ø³ÌÒì³£ÍË³ö¡£
-
-3. ²é¿´dmesgÏµÍ³ÏûÏ¢¡£
-
-ÔÚmanÊÖ²áÀïÃæÊÇÕâÃ´ÃèÊödmesgµÄ£º
-DESCRIPTION
-dmesg is used to examine or control the kernel ring buffer.
-
-
-²é¿´dmesgÊÇ¼ì²âÏµÍ³ÔËĞĞ×´Ì¬µÄ³£ÓÃÊÖ¶Î£¬Í¨³£¿ÉÒÔ°ïÎÒÃÇÅÅ²éºÜ¶àÎÊÌâ¡£µ±È»£¬Èç¹ûÓĞ½ø³ÌÒì³£ÍË³ö£¬dmesgÒ²¿ÉÒÔ¿´µ½¡£
-$dmesg
-
-nginx[24721]: segfault at 0000000000000001 rip 0000000000000001 rsp 00007ffff58d8180 error 14
-nginx[1729]: segfault at 0000000000000190 rip 00000000004c2d27 rsp 00007ffff58d8340 error 4
-nginx[22002]: segfault at ffffffffffffffff rip 000000001c959744 rsp 00007fff43caac18 error 6
-
-
-rip±íÊ¾³ÌĞòÍË³öÊ±µÄip¼Ä´æÆ÷ÄÚÈİ£¬µ±Ã»ÓĞcoreÎÄ¼ş¿ÉÓÃÊ±£¬¿É¸ù¾İ´ËÖµÒÔ¼°·´»ã±àÀ´²éÕÒ³ÌĞòcoreµÄÎ»ÖÃ¡£
-
-4. ´ò¿ªcoredumpÎÄ¼ş¡£
-
-Ò»°ãÎÒÃÇÔÚ³ÌĞòÆô¶¯Ç°£¬Í¨¹ıulimit -c ulimitedÀ´ÉèÖÃcoreÎÄ¼şµÄ´óĞ¡£¬Ò²¿ÉÒÔĞŞ¸Ä/etc/security/limits.confÎÄ¼ş£¬Ìí¼ÓÈçÏÂĞÅÏ¢£º
-admin               soft    core            1000000
-admin               hard    core            1000000
-
-
-Ò²¿ÉÒÔÖ±½ÓĞŞ¸ÄnginxµÄÅäÖÃÎÄ¼ş£¬Ìí¼ÓÈçÏÂÅäÖÃÏî£º
-worker_rlimit_core 10000m;
-
-
-¶ø´ËÊ±£¬ÔÚlimitÏµÍ³ÖĞ£¬Ä¬ÈÏcoredumpÎÄ¼ş»áĞ´ÔÚÆô¶¯nginxÊ±µÄÄ¿Â¼£¬Èç¹ûnginxÔÚÆô¶¯Ê±worker½ø³ÌµÄÓÃ»§Ã»ÓĞÈ¨ÏŞĞ´µ½Õâ¸öÄ¿Â¼£¬½ø³ÌÔÚÒì³£ÍË³öÊ±£¬¾ÍÎŞ·¨²úÉúcoredumpÎÄ¼ş¡£ÓÉÓÚnginxÆô¶¯ºó£¬»òÕßÊÇÓÉ±ğÈËÆô¶¯£¬ÎÒÃÇÎŞ·¨ÖªµÀnginxÔÚÆô¶¯Ê±µÄÄ¿Â¼£¬Ò²¾ÍÎŞ·¨ÖªµÀcoreÎÄ¼şµÄÄ¿Â¼¡£ÎÒÔø¾­Åöµ½¹ıÕâÑùµÄÎÊÌâ£¬Í¨¹ıÈÕÖ¾²é¿´£¬ÊÇcoredump³öÀ´ÁË£¬µ«È´ÕÒ²»µ½coredumpµÄÎÄ¼ş¡£
-
-ÕâÀïÓĞÒ»¸öĞ¡¼¼ÇÉ£¬²é¿´/proc/pid/cwd¿ÉÒÔ¿´µ½½ø³ÌµÄ¹¤×÷Ä¿Â¼£¬¶øcoreÎÄ¼ş»á²úÉúÔÚ¹¤×÷Ä¿Â¼¡£
-
-nginx¿ÉÒÔÅäÖÃ¹¤×÷Ä¿Â¼À´¸Ä±äÄ¬ÈÏµÄ¹¤×÷Ä¿Â¼£¬ÓÚÊÇ£¬ÎÒÃÇĞèÒªÅäÖÃworking_directoryÎªÄ¿µÄ¹¤×÷Ä¿Â¼£¬ÎÒÃÇµÄcoreÎÄ¼şÒ²»á²úÉúÔÚÕâ¸öÄ¿Â¼¡£
-working_directory /path/to/core;
-
-
-working_directoryÓë±àÒëÊ±Ö¸¶¨µÄ--prefix=/path²»Í¬£¬ºóÕß±íÊ¾ÔÚÅäÖÃÎÄ¼şÖĞËùÓÃµÄÏà¶ÔÂ·¾¶ËùÉú²úµÄ¾ø¶ÔÂ·¾¶¡£ËùÒÔ£¬working_directory²»»áÓ°Ïìµ½ÅäÖÃµÄÒıÓÃÂ·¾¶£¬¶ø½ö½öÊÇÎªÁË¸Ä±äcoreÎÄ¼şµÄÂ·¾¶£¬µ±È»nginx±ØĞëÓĞĞ´Õâ¸öÄ¿Â¼µÄÈ¨ÏŞ£¬·ñÔòÎŞ·¨core³öÀ´¡£
-
-ËùÒÔ£¬ÕâÀï£¬ÎÒÍÆ¼öµÄ×ö·¨ÊÇ£¬ÅäÖÃworker_rlimit_coreÓëworking_directoryÕâÁ½¸öÖ¸Áî£¬ÕâÑù£¬¾Í²»ĞèÒªĞŞ¸Ä²Ù×÷ÏµÍ³µÄ²ÎÊı¾Í¿ÉÒÔÕı³£core³öÀ´ÁË¡£
-
-ÒÔÉÏÕâĞ©ÊÇÆ½Ê±ÓÃµ½µÄÒ»Ğ©¼¼ÇÉµÄ×Ü½á£¬´ó¼ÒÍæµÃ¿ªĞÄ£¡
-
-
-
-
-
-
-
-
-
-Linux»·¾³ÏÂ¶Î´íÎóµÄ²úÉúÔ­Òò¼°µ÷ÊÔ·½·¨Ğ¡½á
-×î½üÔÚLinux»·¾³ÏÂ×öCÓïÑÔÏîÄ¿£¬ÓÉÓÚÊÇÔÚÒ»¸öÔ­ÓĞÏîÄ¿»ù´¡Ö®ÉÏ½øĞĞ¶ş´Î¿ª·¢£¬¶øÇÒÏîÄ¿¹¤³ÌÅÓ´ó¸´ÔÓ£¬³öÏÖÁË²»ÉÙÎÊÌâ£¬ÆäÖĞÓöµ½×î¶à¡¢»¨
-·ÑÊ±¼ä×î³¤µÄÎÊÌâ¾ÍÊÇÖøÃûµÄ¡°¶Î´íÎó¡±£¨Segmentation Fault£©¡£½è´Ë»ú»áÏµÍ³Ñ§Ï°ÁËÒ»ÏÂ£¬ÕâÀï¶ÔLinux»·¾³ÏÂµÄ¶Î´íÎó×ö¸öĞ¡½á£¬·½±ãÒÔºó
-Í¬ÀàÎÊÌâµÄÅÅ²éÓë½â¾ö¡£ 
-
-1. ¶Î´íÎóÊÇÊ²Ã´ 
-
-Ò»¾ä»°À´Ëµ£¬¶Î´íÎóÊÇÖ¸·ÃÎÊµÄÄÚ´æ³¬³öÁËÏµÍ³¸øÕâ¸ö³ÌĞòËùÉè¶¨µÄÄÚ´æ¿Õ¼ä£¬ÀıÈç·ÃÎÊÁË²»´æÔÚµÄÄÚ´æµØÖ·¡¢·ÃÎÊÁËÏµÍ³±£»¤µÄÄÚ´æµØÖ·¡¢·ÃÎÊÁË
-Ö»¶ÁµÄÄÚ´æµØÖ·µÈµÈÇé¿ö¡£ÕâÀïÌùÒ»¸ö¶ÔÓÚ¡°¶Î´íÎó¡±µÄ×¼È·¶¨Òå£¨²Î¿¼Answers.com£©£º 
-
-A segmentation fault (often shortened to segfault) is a particular error condition that can occur during the operation of computer 
-software. In short, a segmentation fault occurs when a program attempts to access a memory location that it is not allowed to access, 
-or attempts to access a memory location in a way that is not allowed (e.g., attempts to write to a read-only location, or to overwrite 
-part of the operating system). Systems based on processors like the Motorola 68000 tend to refer to these events as Address or Bus errors. 
-
-Segmentation is one approach to memory management and protection in the operating system. It has been superseded by paging for most 
-purposes, but much of the terminology of segmentation is still used, "segmentation fault" being an example. Some operating systems 
-still have segmentation at some logical level although paging is used as the main memory management policy. 
-
-On Unix-like operating systems, a process that accesses invalid memory receives the SIGSEGV signal. On Microsoft Windows, a process 
-that accesses invalid memory receives the STATUS_ACCESS_VIOLATION exception. 
-
-2. ¶Î´íÎó²úÉúµÄÔ­Òò 
-2.1 ·ÃÎÊ²»´æÔÚµÄÄÚ´æµØÖ· 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-#include<stdio.h> 
-#include<stdlib.h> 
-void main() 
-{ 
-int *ptr = NULL; 
-*ptr = 0; 
-} 
-
-
-2.2 ·ÃÎÊÏµÍ³±£»¤µÄÄÚ´æµØÖ· 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-#include<stdio.h> 
-#include<stdlib.h> 
-void main() 
-{ 
-int *ptr = (int *)0; 
-*ptr = 100; 
-} 
-
-
-2.3 ·ÃÎÊÖ»¶ÁµÄÄÚ´æµØÖ· 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-#include<stdio.h> 
-#include<stdlib.h> 
-#include<string.h> 
-void main() 
-{ 
-char *ptr = "test"; 
-strcpy(ptr, "TEST"); 
-} 
-
-
-2.4 Õ»Òç³ö 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-#include<stdio.h> 
-#include<stdlib.h> 
-void main() 
-{ 
-main(); 
-} 
-
-
-µÈµÈÆäËûÔ­Òò¡£ 
-
-3. ¶Î´íÎóĞÅÏ¢µÄ»ñÈ¡ 
-³ÌĞò·¢Éú¶Î´íÎóÊ±£¬ÌáÊ¾ĞÅÏ¢ºÜÉÙ£¬ÏÂÃæÓĞ¼¸ÖÖ²é¿´¶Î´íÎóµÄ·¢ÉúĞÅÏ¢µÄÍ¾¾¶¡£ 
-
-3.1 dmesg 
-dmesg¿ÉÒÔÔÚÓ¦ÓÃ³ÌĞòcrashµôÊ±£¬ÏÔÊ¾ÄÚºËÖĞ±£´æµÄÏà¹ØĞÅÏ¢¡£ÈçÏÂËùÊ¾£¬Í¨¹ıdmesgÃüÁî¿ÉÒÔ²é¿´·¢Éú¶Î´íÎóµÄ³ÌĞòÃû³Æ¡¢ÒıÆğ¶Î´íÎó·¢ÉúµÄ
-ÄÚ´æµØÖ·¡¢Ö¸ÁîÖ¸ÕëµØÖ·¡¢¶ÑÕ»Ö¸ÕëµØÖ·¡¢´íÎó´úÂë¡¢´íÎóÔ­ÒòµÈ¡£ÒÔ³ÌĞò2.3ÎªÀı£º 
-
-panfeng@ubuntu:~/segfault$ dmesg 
-[ 2329.479037] segfault3[2700]: segfault at 80484e0 ip 00d2906a sp bfbbec3c error 7 in libc-2.10.1.so[cb4000+13e000] 
-3.2 -g 
-Ê¹ÓÃgcc±àÒë³ÌĞòµÄÔ´ÂëÊ±£¬¼ÓÉÏ-g²ÎÊı£¬ÕâÑù¿ÉÒÔÊ¹µÃÉú³ÉµÄ¶ş½øÖÆÎÄ¼şÖĞ¼ÓÈë¿ÉÒÔÓÃÓÚgdbµ÷ÊÔµÄÓĞÓÃĞÅÏ¢¡£ÒÔ³ÌĞò2.3ÎªÀı£º 
-
-panfeng@ubuntu:~/segfault$ gcc -g -o segfault3 segfault3.c 
-3.3 nm 
-Ê¹ÓÃnmÃüÁîÁĞ³ö¶ş½øÖÆÎÄ¼şÖĞµÄ·ûºÅ±í£¬°üÀ¨·ûºÅµØÖ·¡¢·ûºÅÀàĞÍ¡¢·ûºÅÃûµÈ£¬ÕâÑù¿ÉÒÔ°ïÖú¶¨Î»ÔÚÄÄÀï·¢ÉúÁË¶Î´íÎó¡£ÒÔ³ÌĞò2.3ÎªÀı£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ nm segfault3 
-08049f20 d _DYNAMIC 
-08049ff4 d _GLOBAL_OFFSET_TABLE_ 
-080484dc R _IO_stdin_used 
-w _Jv_RegisterClasses 
-08049f10 d __CTOR_END__ 
-08049f0c d __CTOR_LIST__ 
-08049f18 D __DTOR_END__ 
-08049f14 d __DTOR_LIST__ 
-080484ec r __FRAME_END__ 
-08049f1c d __JCR_END__ 
-08049f1c d __JCR_LIST__ 
-0804a014 A __bss_start 
-0804a00c D __data_start 
-08048490 t __do_global_ctors_aux 
-08048360 t __do_global_dtors_aux 
-0804a010 D __dso_handle 
-w __gmon_start__ 
-0804848a T __i686.get_pc_thunk.bx 
-08049f0c d __init_array_end 
-08049f0c d __init_array_start 
-08048420 T __libc_csu_fini 
-08048430 T __libc_csu_init 
-U __libc_start_main@@GLIBC_2.0 
-0804a014 A _edata 
-0804a01c A _end 
-080484bc T _fini 
-080484d8 R _fp_hw 
-080482bc T _init 
-08048330 T _start 
-0804a014 b completed.6990 
-0804a00c W data_start 
-0804a018 b dtor_idx.6992 
-080483c0 t frame_dummy 
-080483e4 T main 
-U memcpy@@GLIBC_2.0 
-
-
-3.4 ldd 
-Ê¹ÓÃlddÃüÁî²é¿´¶ş½øÖÆ³ÌĞòµÄ¹²ÏíÁ´½Ó¿âÒÀÀµ£¬°üÀ¨¿âµÄÃû³Æ¡¢ÆğÊ¼µØÖ·£¬ÕâÑù¿ÉÒÔÈ·¶¨¶Î´íÎóµ½µ×ÊÇ·¢ÉúÔÚÁË×Ô¼ºµÄ³ÌĞòÖĞ»¹ÊÇÒÀÀµµÄ¹²Ïí
-¿âÖĞ¡£ÒÔ³ÌĞò2.3ÎªÀı£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ ldd ./segfault3 
-linux-gate.so.1 => (0x00e08000) 
-libc.so.6 => /lib/tls/i686/cmov/libc.so.6 (0x00675000) 
-/lib/ld-linux.so.2 (0x00482000) 
-
-
-4. ¶Î´íÎóµÄµ÷ÊÔ·½·¨ 
-4.1 Ê¹ÓÃprintfÊä³öĞÅÏ¢ 
-Õâ¸öÊÇ¿´ËÆ×î¼òµ¥µ«ÍùÍùºÜ¶àÇé¿öÏÂÊ®·ÖÓĞĞ§µÄµ÷ÊÔ·½Ê½£¬Ò²Ğí¿ÉÒÔËµÊÇ³ÌĞòÔ±ÓÃµÄ×î¶àµÄµ÷ÊÔ·½Ê½¡£¼òµ¥À´Ëµ£¬¾ÍÊÇÔÚ³ÌĞòµÄÖØÒª´úÂë¸½½ü¼ÓÉÏÏñ
-printfÕâÀàÊä³öĞÅÏ¢£¬ÕâÑù¿ÉÒÔ¸ú×Ù²¢´òÓ¡³ö¶Î´íÎóÔÚ´úÂëÖĞ¿ÉÄÜ³öÏÖµÄÎ»ÖÃ¡£ 
-
-ÎªÁË·½±ãÊ¹ÓÃÕâÖÖ·½·¨£¬¿ÉÒÔÊ¹ÓÃÌõ¼ş±àÒëÖ¸Áî#ifdef DEBUGºÍ#endif°Ñprintfº¯Êı°üÆğÀ´¡£ÕâÑùÔÚ³ÌĞò±àÒëÊ±£¬Èç¹û¼ÓÉÏ-DDEBUG²ÎÊı¾ÍÄÜ²é¿´µ÷
-ÊÔĞÅÏ¢£»·ñÔò²»¼Ó¸Ã²ÎÊı¾Í²»»áÏÔÊ¾µ÷ÊÔĞÅÏ¢¡£ 
-
-4.2 Ê¹ÓÃgccºÍgdb 
-4.2.1 µ÷ÊÔ²½Öè 
-1¡¢ÎªÁËÄÜ¹»Ê¹ÓÃgdbµ÷ÊÔ³ÌĞò£¬ÔÚ±àÒë½×¶Î¼ÓÉÏ-g²ÎÊı£¬ÒÔ³ÌĞò2.3ÎªÀı£º 
-
-panfeng@ubuntu:~/segfault$ gcc -g -o segfault3 segfault3.c 
-2¡¢Ê¹ÓÃgdbÃüÁîµ÷ÊÔ³ÌĞò£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ gdb ./segfault3 
-GNU gdb (GDB) 7.0-ubuntu 
-Copyright (C) 2009 Free Software Foundation, Inc. 
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html> 
-This is free software: you are free to change and redistribute it. 
-There is NO WARRANTY, to the extent permitted by law. Type "show copying" 
-and "show warranty" for details. 
-This GDB was configured as "i486-linux-gnu". 
-For bug reporting instructions, please see: 
-<http://www.gnu.org/software/gdb/bugs/>... 
-Reading symbols from /home/panfeng/segfault/segfault3...done. 
-(gdb) 
-
-
-3¡¢½øÈëgdbºó£¬ÔËĞĞ³ÌĞò£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-(gdb) run 
-Starting program: /home/panfeng/segfault/segfault3 
-
-Program received signal SIGSEGV, Segmentation fault. 
-0x001a306a in memcpy () from /lib/tls/i686/cmov/libc.so.6 
-(gdb) 
-
-
-´ÓÊä³ö¿´³ö£¬³ÌĞò2.3ÊÕµ½SIGSEGVĞÅºÅ£¬´¥·¢¶Î´íÎó£¬²¢ÌáÊ¾µØÖ·0x001a306a¡¢µ÷ÓÃmemcpy±¨µÄ´í£¬Î»ÓÚ/lib/tls/i686/cmov/libc.so.6¿âÖĞ¡£ 
-
-4¡¢Íê³Éµ÷ÊÔºó£¬ÊäÈëquitÃüÁîÍË³ögdb£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-(gdb) quit 
-A debugging session is active. 
-
-Inferior 1 [process 3207] will be killed. 
-
-Quit anyway? (y or n) y 
-
-
-4.2.2 ÊÊÓÃ³¡¾° 
-1¡¢½öµ±ÄÜÈ·¶¨³ÌĞòÒ»¶¨»á·¢Éú¶Î´íÎóµÄÇé¿öÏÂÊ¹ÓÃ¡£ 
-
-2¡¢µ±³ÌĞòµÄÔ´Âë¿ÉÒÔ»ñµÃµÄÇé¿öÏÂ£¬Ê¹ÓÃ-g²ÎÊı±àÒë³ÌĞò¡£ 
-
-3¡¢Ò»°ãÓÃÓÚ²âÊÔ½×¶Î£¬Éú²ú»·¾³ÏÂgdb»áÓĞ¸±×÷ÓÃ£ºÊ¹³ÌĞòÔËĞĞ¼õÂı£¬ÔËĞĞ²»¹»ÎÈ¶¨£¬µÈµÈ¡£ 
-
-4¡¢¼´Ê¹ÔÚ²âÊÔ½×¶Î£¬Èç¹û³ÌĞò¹ıÓÚ¸´ÔÓ£¬gdbÒ²²»ÄÜ´¦Àí¡£ 
-
-4.3 Ê¹ÓÃcoreÎÄ¼şºÍgdb 
-ÔÚ4.2½ÚÖĞÌáµ½¶Î´íÎó»á´¥·¢SIGSEGVĞÅºÅ£¬Í¨¹ıman 7 signal£¬¿ÉÒÔ¿´µ½SIGSEGVÄ¬ÈÏµÄhandler»á´òÓ¡¶Î´íÎó³ö´íĞÅÏ¢£¬²¢²úÉúcoreÎÄ¼ş£¬ÓÉ´Ë
-ÎÒÃÇ¿ÉÒÔ½èÖúÓÚ³ÌĞòÒì³£ÍË³öÊ±Éú³ÉµÄcoreÎÄ¼şÖĞµÄµ÷ÊÔĞÅÏ¢£¬Ê¹ÓÃgdb¹¤¾ßÀ´µ÷ÊÔ³ÌĞòÖĞµÄ¶Î´íÎó¡£ 
-
-4.3.1 µ÷ÊÔ²½Öè 
-1¡¢ÔÚÒ»Ğ©Linux°æ±¾ÏÂ£¬Ä¬ÈÏÊÇ²»²úÉúcoreÎÄ¼şµÄ£¬Ê×ÏÈ¿ÉÒÔ²é¿´Ò»ÏÂÏµÍ³coreÎÄ¼şµÄ´óĞ¡ÏŞÖÆ£º 
-
-panfeng@ubuntu:~/segfault$ ulimit -c 
-0 
-2¡¢¿ÉÒÔ¿´µ½Ä¬ÈÏÉèÖÃÇé¿öÏÂ£¬±¾»úLinux»·¾³ÏÂ·¢Éú¶Î´íÎóÊ±²»»á×Ô¶¯Éú³ÉcoreÎÄ¼ş£¬ÏÂÃæÉèÖÃÏÂcoreÎÄ¼şµÄ´óĞ¡ÏŞÖÆ£¨µ¥Î»ÎªKB£©£º 
-
-panfeng@ubuntu:~/segfault$ ulimit -c 1024 
-panfeng@ubuntu:~/segfault$ ulimit -c 
-1024 
-3¡¢ÔËĞĞ³ÌĞò2.3£¬·¢Éú¶Î´íÎóÉú³ÉcoreÎÄ¼ş£º 
-
-panfeng@ubuntu:~/segfault$ ./segfault3 
-¶Î´íÎó (core dumped) 
-4¡¢¼ÓÔØcoreÎÄ¼ş£¬Ê¹ÓÃgdb¹¤¾ß½øĞĞµ÷ÊÔ£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ gdb ./segfault3 ./core 
-GNU gdb (GDB) 7.0-ubuntu 
-Copyright (C) 2009 Free Software Foundation, Inc. 
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html> 
-This is free software: you are free to change and redistribute it. 
-There is NO WARRANTY, to the extent permitted by law. Type "show copying" 
-and "show warranty" for details. 
-This GDB was configured as "i486-linux-gnu". 
-For bug reporting instructions, please see: 
-<http://www.gnu.org/software/gdb/bugs/>... 
-Reading symbols from /home/panfeng/segfault/segfault3...done. 
-
-warning: Can't read pathname for load map: ÊäÈë/Êä³ö´íÎó. 
-Reading symbols from /lib/tls/i686/cmov/libc.so.6...(no debugging symbols found)...done. 
-Loaded symbols for /lib/tls/i686/cmov/libc.so.6 
-Reading symbols from /lib/ld-linux.so.2...(no debugging symbols found)...done. 
-Loaded symbols for /lib/ld-linux.so.2 
-Core was generated by `./segfault3'. 
-Program terminated with signal 11, Segmentation fault. 
-#0 0x0018506a in memcpy () from /lib/tls/i686/cmov/libc.6 
-
-
-´ÓÊä³ö¿´³ö£¬Í¬4.2.1ÖĞÒ»ÑùµÄ¶Î´íÎóĞÅÏ¢¡£ 
-
-5¡¢Íê³Éµ÷ÊÔºó£¬ÊäÈëquitÃüÁîÍË³ögdb£º 
-
-(gdb) quit 
-4.3.2 ÊÊÓÃ³¡¾° 
-1¡¢ÊÊºÏÓÚÔÚÊµ¼ÊÉú³É»·¾³ÏÂµ÷ÊÔ³ÌĞòµÄ¶Î´íÎó£¨¼´ÔÚ²»ÓÃÖØĞÂ·¢Éú¶Î´íÎóµÄÇé¿öÏÂÖØÏÖ¶Î´íÎó£©¡£ 
-
-2¡¢µ±³ÌĞòºÜ¸´ÔÓ£¬coreÎÄ¼şÏàµ±´óÊ±£¬¸Ã·½·¨²»¿ÉÓÃ¡£ 
-
-4.4 Ê¹ÓÃobjdump 
-4.4.1 µ÷ÊÔ²½Öè 
-1¡¢Ê¹ÓÃdmesgÃüÁî£¬ÕÒµ½×î½ü·¢ÉúµÄ¶Î´íÎóÊä³öĞÅÏ¢£º 
-
-panfeng@ubuntu:~/segfault$ dmesg 
-... ... 
-[17257.502808] segfault3[3320]: segfault at 80484e0 ip 0018506a sp bfc1cd6c error 7 in libc-2.10.1.so[110000+13e000] 
-ÆäÖĞ£¬¶ÔÎÒÃÇ½ÓÏÂÀ´µÄµ÷ÊÔ¹ı³ÌÓĞÓÃµÄÊÇ·¢Éú¶Î´íÎóµÄµØÖ·£º80484e0ºÍÖ¸ÁîÖ¸ÕëµØÖ·£º0018506a¡£ 
-
-2¡¢Ê¹ÓÃobjdumpÉú³É¶ş½øÖÆµÄÏà¹ØĞÅÏ¢£¬ÖØ¶¨Ïòµ½ÎÄ¼şÖĞ£º 
-
-panfeng@ubuntu:~/segfault$ objdump -d ./segfault3 > segfault3Dump 
-ÆäÖĞ£¬Éú³ÉµÄsegfault3DumpÎÄ¼şÖĞ°üº¬ÁË¶ş½øÖÆÎÄ¼şµÄsegfault3µÄ»ã±à´úÂë¡£ 
-
-3¡¢ÔÚsegfault3DumpÎÄ¼şÖĞ²éÕÒ·¢Éú¶Î´íÎóµÄµØÖ·£º 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ grep -n -A 10 -B 10 "80484e0" ./segfault3Dump 
-121- 80483df: ff d0 call *%eax 
-122- 80483e1: c9 leave 
-123- 80483e2: c3 ret 
-124- 80483e3: 90 nop 
-125- 
-126-080483e4 <main>: 
-127- 80483e4: 55 push %ebp 
-128- 80483e5: 89 e5 mov %esp,%ebp 
-129- 80483e7: 83 e4 f0 and $0xfffffff0,%esp 
-130- 80483ea: 83 ec 20 sub $0x20,%esp 
-131: 80483ed: c7 44 24 1c e0 84 04 movl $0x80484e0,0x1c(%esp) 
-132- 80483f4: 08 
-133- 80483f5: b8 e5 84 04 08 mov $0x80484e5,%eax 
-134- 80483fa: c7 44 24 08 05 00 00 movl $0x5,0x8(%esp) 
-135- 8048401: 00 
-136- 8048402: 89 44 24 04 mov %eax,0x4(%esp) 
-137- 8048406: 8b 44 24 1c mov 0x1c(%esp),%eax 
-138- 804840a: 89 04 24 mov %eax,(%esp) 
-139- 804840d: e8 0a ff ff ff call 804831c <memcpy@plt> 
-140- 8048412: c9 leave 
-141- 8048413: c3 ret 
-
-
-Í¨¹ı¶ÔÒÔÉÏ»ã±à´úÂë·ÖÎö£¬µÃÖª¶Î´íÎó·¢Éúmainº¯Êı£¬¶ÔÓ¦µÄ»ã±àÖ¸ÁîÊÇmovl $0x80484e0,0x1c(%esp)£¬½ÓÏÂÀ´´ò¿ª³ÌĞòµÄÔ´Âë£¬ÕÒµ½»ã±àÖ¸
-Áî¶ÔÓ¦µÄÔ´Âë£¬Ò²¾Í¶¨Î»µ½¶Î´íÎóÁË¡£ 
-
-4.4.2 ÊÊÓÃ³¡¾° 
-1¡¢²»ĞèÒª-g²ÎÊı±àÒë£¬²»ĞèÒª½èÖúÓÚcoreÎÄ¼ş£¬µ«ĞèÒªÓĞÒ»¶¨µÄ»ã±àÓïÑÔ»ù´¡¡£ 
-
-2¡¢Èç¹ûÊ¹ÓÃÁËgcc±àÒëÓÅ»¯²ÎÊı£¨-O1£¬-O2£¬-O3£©µÄ»°£¬Éú³ÉµÄ»ã±àÖ¸Áî½«»á±»ÓÅ»¯£¬Ê¹µÃµ÷ÊÔ¹ı³ÌÓĞĞ©ÄÑ¶È¡£ 
-
-4.5 Ê¹ÓÃcatchsegv 
-catchsegvÃüÁî×¨ÃÅÓÃÀ´ÆË»ñ¶Î´íÎó£¬ËüÍ¨¹ı¶¯Ì¬¼ÓÔØÆ÷£¨ld-linux.so£©µÄÔ¤¼ÓÔØ»úÖÆ£¨PRELOAD£©°ÑÒ»¸öÊÂÏÈĞ´ºÃµÄ¿â£¨/lib/libSegFault.so£©
-¼ÓÔØÉÏ£¬ÓÃÓÚ²¶×½¶Ï´íÎóµÄ³ö´íĞÅÏ¢¡£ 
-
-¸´ÖÆ´úÂë ´úÂëÈçÏÂ:
-
-
-panfeng@ubuntu:~/segfault$ catchsegv ./segfault3 
-Segmentation fault (core dumped) 
-*** Segmentation fault 
-Register dump: 
-
-EAX: 00000000 EBX: 00fb3ff4 ECX: 00000002 EDX: 00000000 
-ESI: 080484e5 EDI: 080484e0 EBP: bfb7ad38 ESP: bfb7ad0c 
-
-EIP: 00ee806a EFLAGS: 00010203 
-
-CS: 0073 DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b 
-
-Trap: 0000000e Error: 00000007 OldMask: 00000000 
-ESP/signal: bfb7ad0c CR2: 080484e0 
-
-Backtrace: 
-/lib/libSegFault.so[0x3b606f] 
-??:0(??)[0xc76400] 
-/lib/tls/i686/cmov/libc.so.6(__libc_start_main+0xe6)[0xe89b56] 
-/build/buildd/eglibc-2.10.1/csu/../sysdeps/i386/elf/start.S:122(_start)[0x8048351] 
-
-Memory map: 
-
-00258000-00273000 r-xp 00000000 08:01 157 /lib/ld-2.10.1.so 
-00273000-00274000 r--p 0001a000 08:01 157 /lib/ld-2.10.1.so 
-00274000-00275000 rw-p 0001b000 08:01 157 /lib/ld-2.10.1.so 
-003b4000-003b7000 r-xp 00000000 08:01 13105 /lib/libSegFault.so 
-003b7000-003b8000 r--p 00002000 08:01 13105 /lib/libSegFault.so 
-003b8000-003b9000 rw-p 00003000 08:01 13105 /lib/libSegFault.so 
-00c76000-00c77000 r-xp 00000000 00:00 0 [vdso] 
-00e0d000-00e29000 r-xp 00000000 08:01 4817 /lib/libgcc_s.so.1 
-00e29000-00e2a000 r--p 0001b000 08:01 4817 /lib/libgcc_s.so.1 
-00e2a000-00e2b000 rw-p 0001c000 08:01 4817 /lib/libgcc_s.so.1 
-00e73000-00fb1000 r-xp 00000000 08:01 1800 /lib/tls/i686/cmov/libc-2.10.1.so 
-00fb1000-00fb2000 ---p 0013e000 08:01 1800 /lib/tls/i686/cmov/libc-2.10.1.so 
-00fb2000-00fb4000 r--p 0013e000 08:01 1800 /lib/tls/i686/cmov/libc-2.10.1.so 
-00fb4000-00fb5000 rw-p 00140000 08:01 1800 /lib/tls/i686/cmov/libc-2.10.1.so 
-00fb5000-00fb8000 rw-p 00000000 00:00 0 
-08048000-08049000 r-xp 00000000 08:01 303895 /home/panfeng/segfault/segfault3 
-08049000-0804a000 r--p 00000000 08:01 303895 /home/panfeng/segfault/segfault3 
-0804a000-0804b000 rw-p 00001000 08:01 303895 /home/panfeng/segfault/segfault3 
-09432000-09457000 rw-p 00000000 00:00 0 [heap] 
-b78cf000-b78d1000 rw-p 00000000 00:00 0 
-b78df000-b78e1000 rw-p 00000000 00:00 0 
-bfb67000-bfb7c000 rw-p 00000000 00:00 0 [stack] 
-
-
-5. Ò»Ğ©×¢ÒâÊÂÏî 
-1¡¢³öÏÖ¶Î´íÎóÊ±£¬Ê×ÏÈÓ¦¸ÃÏëµ½¶Î´íÎóµÄ¶¨Òå£¬´ÓËü³ö·¢¿¼ÂÇÒı·¢´íÎóµÄÔ­Òò¡£ 
-
-2¡¢ÔÚÊ¹ÓÃÖ¸ÕëÊ±£¬¶¨ÒåÁËÖ¸Õëºó¼ÇµÃ³õÊ¼»¯Ö¸Õë£¬ÔÚÊ¹ÓÃµÄÊ±ºò¼ÇµÃÅĞ¶ÏÊÇ·ñÎªNULL¡£ 
-
-3¡¢ÔÚÊ¹ÓÃÊı×éÊ±£¬×¢ÒâÊı×éÊÇ·ñ±»³õÊ¼»¯£¬Êı×éÏÂ±êÊÇ·ñÔ½½ç£¬Êı×éÔªËØÊÇ·ñ´æÔÚµÈ¡£ 
-
-4¡¢ÔÚ·ÃÎÊ±äÁ¿Ê±£¬×¢Òâ±äÁ¿ËùÕ¼µØÖ·¿Õ¼äÊÇ·ñÒÑ¾­±»³ÌĞòÊÍ·Åµô¡£ 
-
-5¡¢ÔÚ´¦Àí±äÁ¿Ê±£¬×¢Òâ±äÁ¿µÄ¸ñÊ½¿ØÖÆÊÇ·ñºÏÀíµÈ¡£ 
-
-6. ²Î¿¼×ÊÁÏÁĞ±í 
-1¡¢http://www.docin.com/p-105923877.html 
-
-2¡¢http://blog.chinaunix.net/space.php?uid=317451&do=blog&id=92412 
-
-
-
-//corefileĞ¯´ø½ø³ÌºÅ
-echo 1 > /proc/sys/kernel/core_uses_pid
-echo /var/corefile/core-%e-%p-%t > /proc/sys/kernel/core_pattern
-
-
-ËÄ¡¢gdbµ÷ÊÔcodedump:
-gdb programfile codedumpfile
-(gdb) bt
-
-*/
+    last=0xbff2de90 "{

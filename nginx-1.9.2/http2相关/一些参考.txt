@@ -1,17 +1,17 @@
-HPACKÍêÈ«½âÎö:http://www.jianshu.com/p/f44b930cfcac
+HPACKå®Œå…¨è§£æ:http://www.jianshu.com/p/f44b930cfcac
 HPACK   https://imququ.com/post/header-compression-in-http2.html
-Ê¹ÓÃ nghttp2 µ÷ÊÔ HTTP/2 Á÷Á¿ https://imququ.com/post/intro-to-nghttp2.html
-NGINX HTTP2¹Ù·½ËµÃ÷:https://www.nginx.com/blog/http2-r7/
+ä½¿ç”¨ nghttp2 è°ƒè¯• HTTP/2 æµé‡ https://imququ.com/post/intro-to-nghttp2.html
+NGINX HTTP2å®˜æ–¹è¯´æ˜:https://www.nginx.com/blog/http2-r7/
 Rules of Thumb for HTTP/2 Push:https://docs.google.com/document/d/1K0NykTXBbbbTlv60t5MyJvXjqKGsCVNYHyLEXIxYMv0/edit#
-°Ù¶ÈÍÅ¶Ó·­ÒëµÄhttp2ÖĞÎÄĞ­Òé£ºhttps://github.com/fex-team/http2-spec/blob/master/HTTP2%E4%B8%AD%E8%8B%B1%E5%AF%B9%E7%85%A7%E7%89%88(06-29).md
+ç™¾åº¦å›¢é˜Ÿç¿»è¯‘çš„http2ä¸­æ–‡åè®®ï¼šhttps://github.com/fex-team/http2-spec/blob/master/HTTP2%E4%B8%AD%E8%8B%B1%E5%AF%B9%E7%85%A7%E7%89%88(06-29).md
 
-netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'   TCP×´Ì¬Í³¼Æ
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'   TCPçŠ¶æ€ç»Ÿè®¡
 
 
 
-http2»·¾³´î½¨: 
-³õ´ÎÊ¹ÓÃnginx ´î½¨http2.0    	http://www.open-open.com/lib/view/open1452660300917.html 
-Ô´Âë°²×°Éı¼¶ Nginx µ½×îĞÂ°æ£¨µ±Ç°ÊÇ1.9.14£© http://www.tuicool.com/articles/aqyMve Nginx+HTTPS(SSL/TLS)  http://www.cnblogs.com/doseoer/p/5663203.html
-SSL/TLSĞ­ÒéÔËĞĞ»úÖÆµÄ¸ÅÊö		http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html
-HTTP2Ö¡¸ñÊ½						http://www.blogjava.net/yongboy/archive/2015/03/20/423655.html
-HTTP/2±Ê¼ÇÖ®Á÷ºÍ¶àÂ·¸´ÓÃ        http://www.blogjava.net/yongboy/archive/2015/03/19/423611.aspx
+http2ç¯å¢ƒæ­å»º: 
+åˆæ¬¡ä½¿ç”¨nginx æ­å»ºhttp2.0    	http://www.open-open.com/lib/view/open1452660300917.html 
+æºç å®‰è£…å‡çº§ Nginx åˆ°æœ€æ–°ç‰ˆï¼ˆå½“å‰æ˜¯1.9.14ï¼‰ http://www.tuicool.com/articles/aqyMve Nginx+HTTPS(SSL/TLS)  http://www.cnblogs.com/doseoer/p/5663203.html
+SSL/TLSåè®®è¿è¡Œæœºåˆ¶çš„æ¦‚è¿°		http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html
+HTTP2å¸§æ ¼å¼						http://www.blogjava.net/yongboy/archive/2015/03/20/423655.html
+HTTP/2ç¬”è®°ä¹‹æµå’Œå¤šè·¯å¤ç”¨        http://www.blogjava.net/yongboy/archive/2015/03/19/423611.aspx

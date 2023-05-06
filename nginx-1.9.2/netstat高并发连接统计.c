@@ -1,113 +1,113 @@
 /*
-·þÎñÆ÷ÉÏµÄÒ»Ð©Í³¼ÆÊý¾Ý£º
+æœåŠ¡å™¨ä¸Šçš„ä¸€äº›ç»Ÿè®¡æ•°æ®ï¼š
 
-1)Í³¼Æ80¶Ë¿ÚÁ¬½ÓÊý
+1)ç»Ÿè®¡80ç«¯å£è¿žæŽ¥æ•°
 netstat -nat|grep -i "80"|wc -l
 
-2£©Í³¼ÆhttpdÐ­ÒéÁ¬½ÓÊý
+2ï¼‰ç»Ÿè®¡httpdåè®®è¿žæŽ¥æ•°
 ps -ef|grep httpd|wc -l
 
-3£©¡¢Í³¼ÆÒÑÁ¬½ÓÉÏµÄ£¬×´Ì¬Îª¡°established
+3ï¼‰ã€ç»Ÿè®¡å·²è¿žæŽ¥ä¸Šçš„ï¼ŒçŠ¶æ€ä¸ºâ€œestablished
 netstat -na|grep ESTABLISHED|wc -l
 
-4)¡¢²é³öÄÄ¸öIPµØÖ·Á¬½Ó×î¶à,½«Æä·âÁË.
+4)ã€æŸ¥å‡ºå“ªä¸ªIPåœ°å€è¿žæŽ¥æœ€å¤š,å°†å…¶å°äº†.
 netstat -na|grep ESTABLISHED|awk {print $5}|awk -F: {print $1}|sort|uniq -c|sort -r +0n
 
 netstat -na|grep SYN|awk {print $5}|awk -F: {print $1}|sort|uniq -c|sort -r +0n
 
 ---------------------------------------------------------------------------------------------
 
-1¡¢²é¿´apacheµ±Ç°²¢·¢·ÃÎÊÊý£º
+1ã€æŸ¥çœ‹apacheå½“å‰å¹¶å‘è®¿é—®æ•°ï¼š
 netstat -an | grep ESTABLISHED | wc -l
 
-¶Ô±Èhttpd.confÖÐMaxClientsµÄÊý×Ö²î¾à¶àÉÙ¡£
+å¯¹æ¯”httpd.confä¸­MaxClientsçš„æ•°å­—å·®è·å¤šå°‘ã€‚
 
-2¡¢²é¿´ÓÐ¶àÉÙ¸ö½ø³ÌÊý£º
+2ã€æŸ¥çœ‹æœ‰å¤šå°‘ä¸ªè¿›ç¨‹æ•°ï¼š
 ps aux|grep httpd|wc -l
 
-3¡¢¿ÉÒÔÊ¹ÓÃÈçÏÂ²ÎÊý²é¿´Êý¾Ý
+3ã€å¯ä»¥ä½¿ç”¨å¦‚ä¸‹å‚æ•°æŸ¥çœ‹æ•°æ®
 server-status?auto
 
 #ps -ef|grep httpd|wc -l
 1388
-Í³¼Æhttpd½ø³ÌÊý£¬Á¬¸öÇëÇó»áÆô¶¯Ò»¸ö½ø³Ì£¬Ê¹ÓÃÓÚApache·þÎñÆ÷¡£
-±íÊ¾ApacheÄÜ¹»´¦Àí1388¸ö²¢·¢ÇëÇó£¬Õâ¸öÖµApache¿É¸ù¾Ý¸ºÔØÇé¿ö×Ô¶¯µ÷Õû¡£
+ç»Ÿè®¡httpdè¿›ç¨‹æ•°ï¼Œè¿žä¸ªè¯·æ±‚ä¼šå¯åŠ¨ä¸€ä¸ªè¿›ç¨‹ï¼Œä½¿ç”¨äºŽApacheæœåŠ¡å™¨ã€‚
+è¡¨ç¤ºApacheèƒ½å¤Ÿå¤„ç†1388ä¸ªå¹¶å‘è¯·æ±‚ï¼Œè¿™ä¸ªå€¼Apacheå¯æ ¹æ®è´Ÿè½½æƒ…å†µè‡ªåŠ¨è°ƒæ•´ã€‚
 
 #netstat -nat|grep -i "80"|wc -l
 4341
-netstat -an»á´òÓ¡ÏµÍ³µ±Ç°ÍøÂçÁ´½Ó×´Ì¬£¬¶øgrep -i "80"ÊÇÓÃÀ´ÌáÈ¡Óë80¶Ë¿ÚÓÐ¹ØµÄÁ¬½ÓµÄ£¬wc -l½øÐÐÁ¬½ÓÊýÍ³¼Æ¡£
-×îÖÕ·µ»ØµÄÊý×Ö¾ÍÊÇµ±Ç°ËùÓÐ80¶Ë¿ÚµÄÇëÇó×ÜÊý¡£
+netstat -anä¼šæ‰“å°ç³»ç»Ÿå½“å‰ç½‘ç»œé“¾æŽ¥çŠ¶æ€ï¼Œè€Œgrep -i "80"æ˜¯ç”¨æ¥æå–ä¸Ž80ç«¯å£æœ‰å…³çš„è¿žæŽ¥çš„ï¼Œwc -lè¿›è¡Œè¿žæŽ¥æ•°ç»Ÿè®¡ã€‚
+æœ€ç»ˆè¿”å›žçš„æ•°å­—å°±æ˜¯å½“å‰æ‰€æœ‰80ç«¯å£çš„è¯·æ±‚æ€»æ•°ã€‚
 
 #netstat -na|grep ESTABLISHED|wc -l
 376
-netstat -an»á´òÓ¡ÏµÍ³µ±Ç°ÍøÂçÁ´½Ó×´Ì¬£¬¶øgrep ESTABLISHED ÌáÈ¡³öÒÑ½¨Á¢Á¬½ÓµÄÐÅÏ¢¡£ È»ºówc -lÍ³¼Æ¡£
-×îÖÕ·µ»ØµÄÊý×Ö¾ÍÊÇµ±Ç°ËùÓÐ80¶Ë¿ÚµÄÒÑ½¨Á¢Á¬½ÓµÄ×ÜÊý¡£
+netstat -anä¼šæ‰“å°ç³»ç»Ÿå½“å‰ç½‘ç»œé“¾æŽ¥çŠ¶æ€ï¼Œè€Œgrep ESTABLISHED æå–å‡ºå·²å»ºç«‹è¿žæŽ¥çš„ä¿¡æ¯ã€‚ ç„¶åŽwc -lç»Ÿè®¡ã€‚
+æœ€ç»ˆè¿”å›žçš„æ•°å­—å°±æ˜¯å½“å‰æ‰€æœ‰80ç«¯å£çš„å·²å»ºç«‹è¿žæŽ¥çš„æ€»æ•°ã€‚
 
-netstat -nat||grep ESTABLISHED|wc - ¿É²é¿´ËùÓÐ½¨Á¢Á¬½ÓµÄÏêÏ¸¼ÇÂ¼
+netstat -nat||grep ESTABLISHED|wc - å¯æŸ¥çœ‹æ‰€æœ‰å»ºç«‹è¿žæŽ¥çš„è¯¦ç»†è®°å½•
 
-²é¿´ApacheµÄ²¢·¢ÇëÇóÊý¼°ÆäTCPÁ¬½Ó×´Ì¬£º
-¡¡¡¡LinuxÃüÁî£º
+æŸ¥çœ‹Apacheçš„å¹¶å‘è¯·æ±‚æ•°åŠå…¶TCPè¿žæŽ¥çŠ¶æ€ï¼š
+ã€€ã€€Linuxå‘½ä»¤ï¼š
 netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
 
-£¨ÕâÌõÓï¾äÊÇ´Ó ÐÂÀË»¥¶¯ÉçÇøÊÂÒµ²¿ ÐÂÀË»¥¶¯ÉçÇøÊÂÒµ²¿¼¼Êõ×Ü¼àÍõÀÏ´óÄÇ¶ù»ñµÃµÄ£¬·Ç³£²»´í£©·µ»Ø½á¹ûÊ¾Àý£º
-¡¡¡¡LAST_ACK 5
-¡¡¡¡SYN_RECV 30
-¡¡¡¡ESTABLISHED 1597
-¡¡¡¡FIN_WAIT1 51
-¡¡¡¡FIN_WAIT2 504
-¡¡¡¡TIME_WAIT 1057
-¡¡¡¡ÆäÖÐµÄ
-SYN_RECV±íÊ¾ÕýÔÚµÈ´ý´¦ÀíµÄÇëÇóÊý£»
-ESTABLISHED±íÊ¾Õý³£Êý¾Ý´«Êä×´Ì¬£»
-TIME_WAIT±íÊ¾´¦ÀíÍê±Ï£¬µÈ´ý³¬Ê±½áÊøµÄÇëÇóÊý¡£
+ï¼ˆè¿™æ¡è¯­å¥æ˜¯ä»Ž æ–°æµªäº’åŠ¨ç¤¾åŒºäº‹ä¸šéƒ¨ æ–°æµªäº’åŠ¨ç¤¾åŒºäº‹ä¸šéƒ¨æŠ€æœ¯æ€»ç›‘çŽ‹è€å¤§é‚£å„¿èŽ·å¾—çš„ï¼Œéžå¸¸ä¸é”™ï¼‰è¿”å›žç»“æžœç¤ºä¾‹ï¼š
+ã€€ã€€LAST_ACK 5
+ã€€ã€€SYN_RECV 30
+ã€€ã€€ESTABLISHED 1597
+ã€€ã€€FIN_WAIT1 51
+ã€€ã€€FIN_WAIT2 504
+ã€€ã€€TIME_WAIT 1057
+ã€€ã€€å…¶ä¸­çš„
+SYN_RECVè¡¨ç¤ºæ­£åœ¨ç­‰å¾…å¤„ç†çš„è¯·æ±‚æ•°ï¼›
+ESTABLISHEDè¡¨ç¤ºæ­£å¸¸æ•°æ®ä¼ è¾“çŠ¶æ€ï¼›
+TIME_WAITè¡¨ç¤ºå¤„ç†å®Œæ¯•ï¼Œç­‰å¾…è¶…æ—¶ç»“æŸçš„è¯·æ±‚æ•°ã€‚
 
 ---------------------------------------------------------------------------------------------
 
-²é¿´Apache²¢·¢ÇëÇóÊý¼°ÆäTCPÁ¬½Ó×´Ì¬
+æŸ¥çœ‹Apacheå¹¶å‘è¯·æ±‚æ•°åŠå…¶TCPè¿žæŽ¥çŠ¶æ€
 
-²é¿´httpd½ø³ÌÊý£¨¼´preforkÄ£Ê½ÏÂApacheÄÜ¹»´¦ÀíµÄ²¢·¢ÇëÇóÊý£©£º
-¡¡¡¡LinuxÃüÁî£º
+æŸ¥çœ‹httpdè¿›ç¨‹æ•°ï¼ˆå³preforkæ¨¡å¼ä¸‹Apacheèƒ½å¤Ÿå¤„ç†çš„å¹¶å‘è¯·æ±‚æ•°ï¼‰ï¼š
+ã€€ã€€Linuxå‘½ä»¤ï¼š
 
 ps -ef | grep httpd | wc -l
 
-¡¡¡¡·µ»Ø½á¹ûÊ¾Àý£º
-¡¡¡¡1388
-¡¡¡¡±íÊ¾ApacheÄÜ¹»´¦Àí1388¸ö²¢·¢ÇëÇó£¬Õâ¸öÖµApache¿É¸ù¾Ý¸ºÔØÇé¿ö×Ô¶¯µ÷Õû£¬ÎÒÕâ×é·þÎñÆ÷ÖÐÃ¿Ì¨µÄ·åÖµÔø´ïµ½¹ý2002¡£
+ã€€ã€€è¿”å›žç»“æžœç¤ºä¾‹ï¼š
+ã€€ã€€1388
+ã€€ã€€è¡¨ç¤ºApacheèƒ½å¤Ÿå¤„ç†1388ä¸ªå¹¶å‘è¯·æ±‚ï¼Œè¿™ä¸ªå€¼Apacheå¯æ ¹æ®è´Ÿè½½æƒ…å†µè‡ªåŠ¨è°ƒæ•´ï¼Œæˆ‘è¿™ç»„æœåŠ¡å™¨ä¸­æ¯å°çš„å³°å€¼æ›¾è¾¾åˆ°è¿‡2002ã€‚
 
-²é¿´ApacheµÄ²¢·¢ÇëÇóÊý¼°ÆäTCPÁ¬½Ó×´Ì¬£º
-¡¡¡¡LinuxÃüÁî£º
+æŸ¥çœ‹Apacheçš„å¹¶å‘è¯·æ±‚æ•°åŠå…¶TCPè¿žæŽ¥çŠ¶æ€ï¼š
+ã€€ã€€Linuxå‘½ä»¤ï¼š
 
 netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
-·µ»Ø½á¹ûÊ¾Àý£º
-¡¡¡¡LAST_ACK 5
-¡¡¡¡SYN_RECV 30
-¡¡¡¡ESTABLISHED 1597
-¡¡¡¡FIN_WAIT1 51
-¡¡¡¡FIN_WAIT2 504
-¡¡¡¡TIME_WAIT 1057
-¡¡¡¡ÆäÖÐµÄSYN_RECV±íÊ¾ÕýÔÚµÈ´ý´¦ÀíµÄÇëÇóÊý£»ESTABLISHED±íÊ¾Õý³£Êý¾Ý´«Êä×´Ì¬£»TIME_WAIT±íÊ¾´¦ÀíÍê±Ï£¬µÈ´ý³¬Ê±½áÊøµÄÇëÇóÊý¡£
-¡¡¡¡×´Ì¬£ºÃèÊö
+è¿”å›žç»“æžœç¤ºä¾‹ï¼š
+ã€€ã€€LAST_ACK 5
+ã€€ã€€SYN_RECV 30
+ã€€ã€€ESTABLISHED 1597
+ã€€ã€€FIN_WAIT1 51
+ã€€ã€€FIN_WAIT2 504
+ã€€ã€€TIME_WAIT 1057
+ã€€ã€€å…¶ä¸­çš„SYN_RECVè¡¨ç¤ºæ­£åœ¨ç­‰å¾…å¤„ç†çš„è¯·æ±‚æ•°ï¼›ESTABLISHEDè¡¨ç¤ºæ­£å¸¸æ•°æ®ä¼ è¾“çŠ¶æ€ï¼›TIME_WAITè¡¨ç¤ºå¤„ç†å®Œæ¯•ï¼Œç­‰å¾…è¶…æ—¶ç»“æŸçš„è¯·æ±‚æ•°ã€‚
+ã€€ã€€çŠ¶æ€ï¼šæè¿°
 
-¡¡¡¡CLOSED£ºÎÞÁ¬½ÓÊÇ»î¶¯ µÄ»òÕýÔÚ½øÐÐ
+ã€€ã€€CLOSEDï¼šæ— è¿žæŽ¥æ˜¯æ´»åŠ¨ çš„æˆ–æ­£åœ¨è¿›è¡Œ
 
-¡¡¡¡LISTEN£º·þÎñÆ÷ÔÚµÈ´ý½øÈëºô½Ð
+ã€€ã€€LISTENï¼šæœåŠ¡å™¨åœ¨ç­‰å¾…è¿›å…¥å‘¼å«
 
-¡¡¡¡SYN_RECV£ºÒ»¸öÁ¬½ÓÇëÇóÒÑ¾­µ½´ï£¬µÈ´ýÈ·ÈÏ
+ã€€ã€€SYN_RECVï¼šä¸€ä¸ªè¿žæŽ¥è¯·æ±‚å·²ç»åˆ°è¾¾ï¼Œç­‰å¾…ç¡®è®¤
 
-¡¡¡¡SYN_SENT£ºÓ¦ÓÃÒÑ¾­¿ªÊ¼£¬´ò¿ªÒ»¸öÁ¬½Ó
+ã€€ã€€SYN_SENTï¼šåº”ç”¨å·²ç»å¼€å§‹ï¼Œæ‰“å¼€ä¸€ä¸ªè¿žæŽ¥
 
-¡¡¡¡ESTABLISHED£ºÕý³£Êý¾Ý´«Êä×´Ì¬
+ã€€ã€€ESTABLISHEDï¼šæ­£å¸¸æ•°æ®ä¼ è¾“çŠ¶æ€
 
-¡¡¡¡FIN_WAIT1£ºÓ¦ÓÃËµËüÒÑ¾­Íê³É
+ã€€ã€€FIN_WAIT1ï¼šåº”ç”¨è¯´å®ƒå·²ç»å®Œæˆ
 
-¡¡¡¡FIN_WAIT2£ºÁíÒ»±ßÒÑÍ¬ÒâÊÍ·Å
+ã€€ã€€FIN_WAIT2ï¼šå¦ä¸€è¾¹å·²åŒæ„é‡Šæ”¾
 
-¡¡¡¡ITMED_WAIT£ºµÈ´ýËùÓÐ·Ö×éËÀµô
+ã€€ã€€ITMED_WAITï¼šç­‰å¾…æ‰€æœ‰åˆ†ç»„æ­»æŽ‰
 
-¡¡¡¡CLOSING£ºÁ½±ßÍ¬Ê±³¢ÊÔ¹Ø±Õ
+ã€€ã€€CLOSINGï¼šä¸¤è¾¹åŒæ—¶å°è¯•å…³é—­
 
-¡¡¡¡TIME_WAIT£ºÁíÒ»±ßÒÑ³õÊ¼»¯Ò»¸öÊÍ·Å
+ã€€ã€€TIME_WAITï¼šå¦ä¸€è¾¹å·²åˆå§‹åŒ–ä¸€ä¸ªé‡Šæ”¾
 
-¡¡¡¡LAST_ACK£ºµÈ´ýËùÓÐ·Ö×éËÀ
+ã€€ã€€LAST_ACKï¼šç­‰å¾…æ‰€æœ‰åˆ†ç»„æ­»
 
 */

@@ -1,6 +1,6 @@
 
 CC =	cc
-CFLAGS =  -pipe  -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g 
+CFLAGS =  -pipe  -O -W -Wall -Wpointer-arith -Wno-unused -Werror -g 
 CPP =	cc -E
 LINK =	$(CC)
 
@@ -73,7 +73,6 @@ CORE_DEPS = src/core/nginx.h \
 	src/os/unix/ngx_process_cycle.h \
 	src/os/unix/ngx_linux_config.h \
 	src/os/unix/ngx_linux.h \
-	src/core/ngx_thread_pool.h \
 	src/core/ngx_regex.h \
 	objs/ngx_auto_config.h
 
@@ -99,9 +98,6 @@ HTTP_DEPS = src/http/ngx_http.h \
 
 HTTP_INCS = -I src/http \
 	-I src/http/modules
-
-
-ADDON_DEPS = $(CORE_DEPS)  ./src/redis2-nginx-module-master//src/ddebug.h ./src/redis2-nginx-module-master//src/ngx_http_redis2_module.h ./src/redis2-nginx-module-master//src/ngx_http_redis2_handler.h ./src/redis2-nginx-module-master//src/ngx_http_redis2_reply.h ./src/redis2-nginx-module-master//src/ngx_http_redis2_util.h $(HTTP_DEPS)
 
 
 objs/nginx:	objs/src/core/nginx.o \
@@ -165,11 +161,6 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/os/unix/ngx_linux_init.o \
 	objs/src/event/modules/ngx_epoll_module.o \
 	objs/src/os/unix/ngx_linux_sendfile_chain.o \
-	objs/src/os/unix/ngx_linux_aio_read.o \
-	objs/src/core/ngx_thread_pool.o \
-	objs/src/os/unix/ngx_thread_cond.o \
-	objs/src/os/unix/ngx_thread_mutex.o \
-	objs/src/os/unix/ngx_thread_id.o \
 	objs/src/core/ngx_regex.o \
 	objs/src/http/ngx_http.o \
 	objs/src/http/ngx_http_core_module.o \
@@ -214,23 +205,11 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_memcached_module.o \
 	objs/src/http/modules/ngx_http_empty_gif_module.o \
 	objs/src/http/modules/ngx_http_browser_module.o \
-	objs/src/http/modules/ngx_http_secure_link_module.o \
 	objs/src/http/modules/ngx_http_upstream_hash_module.o \
 	objs/src/http/modules/ngx_http_upstream_ip_hash_module.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/src/http/modules/ngx_http_upstream_zone_module.o \
-	objs/addon/mytest_config/mytest_config.o \
-	objs/addon/my_test_module/ngx_http_mytest_module.o \
-	objs/addon/mytest_subrequest/ngx_http_subrequest_mytest_module.o \
-	objs/addon/mytest_upstream/mytest_upstream.o \
-	objs/addon/ngx_http_myfilter_module/ngx_http_myfilter_module.o \
-	objs/addon/sendfile_test/sendfile_test.o \
-	objs/addon/nginx-requestkey-module-master/ngx_http_accesskey_module.o \
-	objs/addon/src/ngx_http_redis2_module.o \
-	objs/addon/src/ngx_http_redis2_handler.o \
-	objs/addon/src/ngx_http_redis2_reply.o \
-	objs/addon/src/ngx_http_redis2_util.o \
 	objs/ngx_modules.o
 
 	$(LINK) -o objs/nginx \
@@ -295,11 +274,6 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/os/unix/ngx_linux_init.o \
 	objs/src/event/modules/ngx_epoll_module.o \
 	objs/src/os/unix/ngx_linux_sendfile_chain.o \
-	objs/src/os/unix/ngx_linux_aio_read.o \
-	objs/src/core/ngx_thread_pool.o \
-	objs/src/os/unix/ngx_thread_cond.o \
-	objs/src/os/unix/ngx_thread_mutex.o \
-	objs/src/os/unix/ngx_thread_id.o \
 	objs/src/core/ngx_regex.o \
 	objs/src/http/ngx_http.o \
 	objs/src/http/ngx_http_core_module.o \
@@ -344,25 +318,13 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_memcached_module.o \
 	objs/src/http/modules/ngx_http_empty_gif_module.o \
 	objs/src/http/modules/ngx_http_browser_module.o \
-	objs/src/http/modules/ngx_http_secure_link_module.o \
 	objs/src/http/modules/ngx_http_upstream_hash_module.o \
 	objs/src/http/modules/ngx_http_upstream_ip_hash_module.o \
 	objs/src/http/modules/ngx_http_upstream_least_conn_module.o \
 	objs/src/http/modules/ngx_http_upstream_keepalive_module.o \
 	objs/src/http/modules/ngx_http_upstream_zone_module.o \
-	objs/addon/mytest_config/mytest_config.o \
-	objs/addon/my_test_module/ngx_http_mytest_module.o \
-	objs/addon/mytest_subrequest/ngx_http_subrequest_mytest_module.o \
-	objs/addon/mytest_upstream/mytest_upstream.o \
-	objs/addon/ngx_http_myfilter_module/ngx_http_myfilter_module.o \
-	objs/addon/sendfile_test/sendfile_test.o \
-	objs/addon/nginx-requestkey-module-master/ngx_http_accesskey_module.o \
-	objs/addon/src/ngx_http_redis2_module.o \
-	objs/addon/src/ngx_http_redis2_handler.o \
-	objs/addon/src/ngx_http_redis2_reply.o \
-	objs/addon/src/ngx_http_redis2_util.o \
 	objs/ngx_modules.o \
-	-lpthread -lpthread -lcrypt -lpcre -lcrypto -lcrypto -lz
+	-lpthread -lcrypt -lpcre -lcrypto -lcrypto -lz
 	
 
 
@@ -800,41 +762,6 @@ objs/src/os/unix/ngx_linux_sendfile_chain.o:	$(CORE_DEPS) \
 		src/os/unix/ngx_linux_sendfile_chain.c
 
 
-objs/src/os/unix/ngx_linux_aio_read.o:	$(CORE_DEPS) \
-	src/os/unix/ngx_linux_aio_read.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
-		-o objs/src/os/unix/ngx_linux_aio_read.o \
-		src/os/unix/ngx_linux_aio_read.c
-
-
-objs/src/core/ngx_thread_pool.o:	$(CORE_DEPS) \
-	src/core/ngx_thread_pool.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
-		-o objs/src/core/ngx_thread_pool.o \
-		src/core/ngx_thread_pool.c
-
-
-objs/src/os/unix/ngx_thread_cond.o:	$(CORE_DEPS) \
-	src/os/unix/ngx_thread_cond.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
-		-o objs/src/os/unix/ngx_thread_cond.o \
-		src/os/unix/ngx_thread_cond.c
-
-
-objs/src/os/unix/ngx_thread_mutex.o:	$(CORE_DEPS) \
-	src/os/unix/ngx_thread_mutex.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
-		-o objs/src/os/unix/ngx_thread_mutex.o \
-		src/os/unix/ngx_thread_mutex.c
-
-
-objs/src/os/unix/ngx_thread_id.o:	$(CORE_DEPS) \
-	src/os/unix/ngx_thread_id.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
-		-o objs/src/os/unix/ngx_thread_id.o \
-		src/os/unix/ngx_thread_id.c
-
-
 objs/src/core/ngx_regex.o:	$(CORE_DEPS) \
 	src/core/ngx_regex.c
 	$(CC) -c -g $(CFLAGS) $(CORE_INCS) \
@@ -1143,13 +1070,6 @@ objs/src/http/modules/ngx_http_browser_module.o:	$(CORE_DEPS) $(HTTP_DEPS) \
 		src/http/modules/ngx_http_browser_module.c
 
 
-objs/src/http/modules/ngx_http_secure_link_module.o:	$(CORE_DEPS) $(HTTP_DEPS) \
-	src/http/modules/ngx_http_secure_link_module.c
-	$(CC) -c -g $(CFLAGS) $(CORE_INCS) $(HTTP_INCS) \
-		-o objs/src/http/modules/ngx_http_secure_link_module.o \
-		src/http/modules/ngx_http_secure_link_module.c
-
-
 objs/src/http/modules/ngx_http_upstream_hash_module.o:	$(CORE_DEPS) $(HTTP_DEPS) \
 	src/http/modules/ngx_http_upstream_hash_module.c
 	$(CC) -c -g $(CFLAGS) $(CORE_INCS) $(HTTP_INCS) \
@@ -1183,83 +1103,6 @@ objs/src/http/modules/ngx_http_upstream_zone_module.o:	$(CORE_DEPS) $(HTTP_DEPS)
 	$(CC) -c -g $(CFLAGS) $(CORE_INCS) $(HTTP_INCS) \
 		-o objs/src/http/modules/ngx_http_upstream_zone_module.o \
 		src/http/modules/ngx_http_upstream_zone_module.c
-
-
-objs/addon/mytest_config/mytest_config.o:	$(ADDON_DEPS) \
-	./src/mytest_config/mytest_config.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/mytest_config/mytest_config.o \
-		./src/mytest_config/mytest_config.c
-
-
-objs/addon/my_test_module/ngx_http_mytest_module.o:	$(ADDON_DEPS) \
-	./src/my_test_module/ngx_http_mytest_module.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/my_test_module/ngx_http_mytest_module.o \
-		./src/my_test_module/ngx_http_mytest_module.c
-
-
-objs/addon/mytest_subrequest/ngx_http_subrequest_mytest_module.o:	$(ADDON_DEPS) \
-	./src/mytest_subrequest/ngx_http_subrequest_mytest_module.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/mytest_subrequest/ngx_http_subrequest_mytest_module.o \
-		./src/mytest_subrequest/ngx_http_subrequest_mytest_module.c
-
-
-objs/addon/mytest_upstream/mytest_upstream.o:	$(ADDON_DEPS) \
-	./src/mytest_upstream/mytest_upstream.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/mytest_upstream/mytest_upstream.o \
-		./src/mytest_upstream/mytest_upstream.c
-
-
-objs/addon/ngx_http_myfilter_module/ngx_http_myfilter_module.o:	$(ADDON_DEPS) \
-	./src/ngx_http_myfilter_module/ngx_http_myfilter_module.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/ngx_http_myfilter_module/ngx_http_myfilter_module.o \
-		./src/ngx_http_myfilter_module/ngx_http_myfilter_module.c
-
-
-objs/addon/sendfile_test/sendfile_test.o:	$(ADDON_DEPS) \
-	./src/sendfile_test/sendfile_test.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/sendfile_test/sendfile_test.o \
-		./src/sendfile_test/sendfile_test.c
-
-
-objs/addon/nginx-requestkey-module-master/ngx_http_accesskey_module.o:	$(ADDON_DEPS) \
-	./src/nginx-requestkey-module-master//ngx_http_accesskey_module.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/nginx-requestkey-module-master/ngx_http_accesskey_module.o \
-		./src/nginx-requestkey-module-master//ngx_http_accesskey_module.c
-
-
-objs/addon/src/ngx_http_redis2_module.o:	$(ADDON_DEPS) \
-	./src/redis2-nginx-module-master//src/ngx_http_redis2_module.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/src/ngx_http_redis2_module.o \
-		./src/redis2-nginx-module-master//src/ngx_http_redis2_module.c
-
-
-objs/addon/src/ngx_http_redis2_handler.o:	$(ADDON_DEPS) \
-	./src/redis2-nginx-module-master//src/ngx_http_redis2_handler.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/src/ngx_http_redis2_handler.o \
-		./src/redis2-nginx-module-master//src/ngx_http_redis2_handler.c
-
-
-objs/addon/src/ngx_http_redis2_reply.o:	$(ADDON_DEPS) \
-	./src/redis2-nginx-module-master//src/ngx_http_redis2_reply.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/src/ngx_http_redis2_reply.o \
-		./src/redis2-nginx-module-master//src/ngx_http_redis2_reply.c
-
-
-objs/addon/src/ngx_http_redis2_util.o:	$(ADDON_DEPS) \
-	./src/redis2-nginx-module-master//src/ngx_http_redis2_util.c
-	$(CC) -c -g $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/src/ngx_http_redis2_util.o \
-		./src/redis2-nginx-module-master//src/ngx_http_redis2_util.c
 
 
 manpage:	objs/nginx.8

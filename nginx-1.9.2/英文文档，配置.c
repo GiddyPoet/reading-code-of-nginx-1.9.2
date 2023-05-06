@@ -41,11 +41,11 @@ Determines whether nginx should become a daemon. Mainly used during development.
 
 Syntax:  debug_connection address | CIDR | unix:;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  events
  
 
-Enables debugging log for selected client connections. Other connections will use logging level set by the error_log directive. Debugged connections are specified by IPv4 or IPv6 (1.3.0, 1.2.1) address or network. A connection may also be specified using a hostname. For connections using UNIX-domain sockets (1.3.0, 1.2.1), debugging log is enabled by the °∞unix:°± parameter. 
+Enables debugging log for selected client connections. Other connections will use logging level set by the error_log directive. Debugged connections are specified by IPv4 or IPv6 (1.3.0, 1.2.1) address or network. A connection may also be specified using a hostname. For connections using UNIX-domain sockets (1.3.0, 1.2.1), debugging log is enabled by the ‚Äúunix:‚Äù parameter. 
 
 events {
     debug_connection 127.0.0.1;
@@ -57,11 +57,11 @@ events {
     ...
 }
 
-For this directive to work, nginx needs to be built with --with-debug, see °∞A debugging log°±. 
+For this directive to work, nginx needs to be built with --with-debug, see ‚ÄúA debugging log‚Äù. 
 
 Syntax:  debug_points abort | stop;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -77,11 +77,11 @@ Context:  main, http, mail, stream, server, location
 
 Configures logging. Several logs can be specified on the same level (1.5.2). 
 
-The first parameter defines a file that will store the log. The special value stderr selects the standard error file. Logging to syslog can be configured by specifying the °∞syslog:°± prefix. Logging to a cyclic memory buffer can be configured by specifying the °∞memory:°± prefix and buffer size, and is generally used for debugging (1.7.11). 
+The first parameter defines a file that will store the log. The special value stderr selects the standard error file. Logging to syslog can be configured by specifying the ‚Äúsyslog:‚Äù prefix. Logging to a cyclic memory buffer can be configured by specifying the ‚Äúmemory:‚Äù prefix and buffer size, and is generally used for debugging (1.7.11). 
 
 The second parameter determines the level of logging. Log levels above are listed in the order of increasing severity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged. For example, the default level error will cause error, crit, alert, and emerg messages to be logged. If this parameter is omitted then error is used. 
 
-For debug logging to work, nginx needs to be built with --with-debug, see °∞A debugging log°±. 
+For debug logging to work, nginx needs to be built with --with-debug, see ‚ÄúA debugging log‚Äù. 
 
 The directive can be specified on the stream level starting from version 1.7.11. 
 
@@ -112,7 +112,7 @@ The NGINX environment variable is used internally by nginx and should not be set
 
 Syntax:  events { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -120,7 +120,7 @@ Provides the configuration file context in which the directives that affect conn
 
 Syntax:  include file | mask;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  any
  
 
@@ -137,7 +137,7 @@ Default:  lock_file logs/nginx.lock;
 Context:  main
  
 
-nginx uses the locking mechanism to implement accept_mutex and serialize access to shared memory. On most systems the locks are implemented using atomic operations, and this directive is ignored. On other systems the °∞lock file°± mechanism is used. This directive specifies a prefix for the names of lock files. 
+nginx uses the locking mechanism to implement accept_mutex and serialize access to shared memory. On most systems the locks are implemented using atomic operations, and this directive is ignored. On other systems the ‚Äúlock file‚Äù mechanism is used. This directive specifies a prefix for the names of lock files. 
 
 Syntax:  master_process on | off;
  
@@ -165,7 +165,7 @@ Context:  main
 
 This directive appeared in version 1.1.12. 
 
-Enables or disables the use of °∞just-in-time compilation°± (PCRE JIT) for the regular expressions known by the time of configuration parsing. 
+Enables or disables the use of ‚Äújust-in-time compilation‚Äù (PCRE JIT) for the regular expressions known by the time of configuration parsing. 
 
 PCRE JIT can speed up processing of regular expressions significantly. 
 
@@ -181,7 +181,7 @@ Defines a file that will store the process ID of the main process.
 
 Syntax:  ssl_engine device;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -203,7 +203,7 @@ In the event that all threads in the pool are busy, a new task will wait in the 
 
 Syntax:  timer_resolution interval;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -221,7 +221,7 @@ Internal implementation of the interval depends on the method used:
 
 Syntax:  use method;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  events
  
 
@@ -257,7 +257,7 @@ It should be kept in mind that this number includes all connections (e.g. connec
 
 Syntax:  worker_cpu_affinity cpumask ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -296,13 +296,13 @@ Context:  main
 
 Defines the number of worker processes. 
 
-The optimal value depends on many factors including (but not limited to) the number of CPU cores, the number of hard disk drives that store data, and load pattern. When one is in doubt, setting it to the number of available CPU cores would be a good start (the value °∞auto°± will try to autodetect it). 
+The optimal value depends on many factors including (but not limited to) the number of CPU cores, the number of hard disk drives that store data, and load pattern. When one is in doubt, setting it to the number of available CPU cores would be a good start (the value ‚Äúauto‚Äù will try to autodetect it). 
 
 The auto parameter is supported starting from versions 1.3.8 and 1.2.5. 
 
 Syntax:  worker_rlimit_core size;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -310,7 +310,7 @@ Changes the limit on the largest size of a core file (RLIMIT_CORE) for worker pr
 
 Syntax:  worker_rlimit_nofile number;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -318,7 +318,7 @@ Changes the limit on the maximum number of open files (RLIMIT_NOFILE) for worker
 
 Syntax:  working_directory directory;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -351,7 +351,7 @@ The ngx_http_rewrite_module module directives are processed in the following ord
 Directives
 Syntax:  break;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location, if
  
 
@@ -368,7 +368,7 @@ if ($slow) {
 
 Syntax:  if (condition) { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location
  
 
@@ -376,14 +376,14 @@ The specified condition is evaluated. If true, this module directives specified 
 
 A condition may be any of the following: 
 
-?a variable name; false if the value of a variable is an empty string or °∞0°±; 
-Before version 1.0.1, any string starting with °∞0°± was considered a false value. 
-?comparison of a variable with a string using the °∞=°± and °∞!=°± operators; 
-?matching of a variable against a regular expression using the °∞~°± (for case-sensitive matching) and °∞~*°± (for case-insensitive matching) operators. Regular expressions can contain captures that are made available for later reuse in the $1..$9 variables. Negative operators °∞!~°± and °∞!~*°± are also available. If a regular expression includes the °∞}°± or °∞;°± characters, the whole expressions should be enclosed in single or double quotes. 
-?checking of a file existence with the °∞-f°± and °∞!-f°± operators; 
-?checking of a directory existence with the °∞-d°± and °∞!-d°± operators; 
-?checking of a file, directory, or symbolic link existence with the °∞-e°± and °∞!-e°± operators; 
-?checking for an executable file with the °∞-x°± and °∞!-x°± operators. 
+?a variable name; false if the value of a variable is an empty string or ‚Äú0‚Äù; 
+Before version 1.0.1, any string starting with ‚Äú0‚Äù was considered a false value. 
+?comparison of a variable with a string using the ‚Äú=‚Äù and ‚Äú!=‚Äù operators; 
+?matching of a variable against a regular expression using the ‚Äú~‚Äù (for case-sensitive matching) and ‚Äú~*‚Äù (for case-insensitive matching) operators. Regular expressions can contain captures that are made available for later reuse in the $1..$9 variables. Negative operators ‚Äú!~‚Äù and ‚Äú!~*‚Äù are also available. If a regular expression includes the ‚Äú}‚Äù or ‚Äú;‚Äù characters, the whole expressions should be enclosed in single or double quotes. 
+?checking of a file existence with the ‚Äú-f‚Äù and ‚Äú!-f‚Äù operators; 
+?checking of a directory existence with the ‚Äú-d‚Äù and ‚Äú!-d‚Äù operators; 
+?checking of a file, directory, or symbolic link existence with the ‚Äú-e‚Äù and ‚Äú!-e‚Äù operators; 
+?checking for an executable file with the ‚Äú-x‚Äù and ‚Äú!-x‚Äù operators. 
 
 Examples: 
 
@@ -413,7 +413,7 @@ Syntax:  return code [text];
 return code URL;
 return URL;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location, if
  
 
@@ -421,10 +421,10 @@ Stops processing and returns the specified code to a client. The non-standard co
 
 Starting from version 0.8.42, it is possible to specify either a redirect URL (for codes 301, 302, 303, and 307), or the response body text (for other codes). A response body text and redirect URL can contain variables. As a special case, a redirect URL can be specified as a URI local to this server, in which case the full redirect URL is formed according to the request scheme ($scheme) and the server_name_in_redirect and port_in_redirect directives. 
 
-In addition, a URL for temporary redirect with the code 302 can be specified as the sole parameter. Such a parameter should start with the °∞http://°±, °∞https://°±, or °∞$scheme°± string. A URL can contain variables. 
+In addition, a URL for temporary redirect with the code 302 can be specified as the sole parameter. Such a parameter should start with the ‚Äúhttp://‚Äù, ‚Äúhttps://‚Äù, or ‚Äú$scheme‚Äù string. A URL can contain variables. 
 
 
-Only the following codes could be returned before version 0.7.51: 204, 400, 402 °™ 406, 408, 410, 411, 413, 416, and 500 °™ 504. 
+Only the following codes could be returned before version 0.7.51: 204, 400, 402 ‚Äï 406, 408, 410, 411, 413, 416, and 500 ‚Äï 504. 
 
 The code 307 was not treated as a redirect until versions 1.1.16 and 1.0.13. 
 
@@ -432,11 +432,11 @@ See also the error_page directive.
 
 Syntax:  rewrite regex replacement [flag];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location, if
  
 
-If the specified regular expression matches a request URI, URI is changed as specified in the replacement string. The rewrite directives are executed sequentially in order of their appearance in the configuration file. It is possible to terminate further processing of the directives using flags. If a replacement string starts with °∞http://°± or °∞https://°±, the processing stops and the redirect is returned to a client. 
+If the specified regular expression matches a request URI, URI is changed as specified in the replacement string. The rewrite directives are executed sequentially in order of their appearance in the configuration file. It is possible to terminate further processing of the directives using flags. If a replacement string starts with ‚Äúhttp://‚Äù or ‚Äúhttps://‚Äù, the processing stops and the redirect is returned to a client. 
 
 An optional flag parameter can be one of: 
 
@@ -445,7 +445,7 @@ stops processing the current set of ngx_http_rewrite_module directives and start
 break
 stops processing the current set of ngx_http_rewrite_module directives as with the break directive; 
 redirect
-returns a temporary redirect with the 302 code; used if a replacement string does not start with °∞http://°± or °∞https://°±; 
+returns a temporary redirect with the 302 code; used if a replacement string does not start with ‚Äúhttp://‚Äù or ‚Äúhttps://‚Äù; 
 permanent
 returns a permanent redirect with the 301 code. 
 The full redirect URL is formed according to the request scheme ($scheme) and the server_name_in_redirect and port_in_redirect directives. 
@@ -460,7 +460,7 @@ server {
     ...
 }
 
-But if these directives are put inside the °∞/download/°± location, the last flag should be replaced by break, or otherwise nginx will make 10 cycles and return the 500 error: 
+But if these directives are put inside the ‚Äú/download/‚Äù location, the last flag should be replaced by break, or otherwise nginx will make 10 cycles and return the 500 error: 
 
 location /download/ {
     rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 break;
@@ -472,7 +472,7 @@ If a replacement string includes the new request arguments, the previous request
 
 rewrite ^/users/(.*)$ /show?user=$1? last;
 
-If a regular expression includes the °∞}°± or °∞;°± characters, the whole expressions should be enclosed in single or double quotes. 
+If a regular expression includes the ‚Äú}‚Äù or ‚Äú;‚Äù characters, the whole expressions should be enclosed in single or double quotes. 
 
 Syntax:  rewrite_log on | off;
  
@@ -484,7 +484,7 @@ Enables or disables logging of ngx_http_rewrite_module module directives process
 
 Syntax:  set $variable value;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location, if
  
 
@@ -626,11 +626,11 @@ Determines whether nginx should become a daemon. Mainly used during development.
 
 Syntax:  debug_connection address | CIDR | unix:;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  events
  
 
-Enables debugging log for selected client connections. Other connections will use logging level set by the error_log directive. Debugged connections are specified by IPv4 or IPv6 (1.3.0, 1.2.1) address or network. A connection may also be specified using a hostname. For connections using UNIX-domain sockets (1.3.0, 1.2.1), debugging log is enabled by the °∞unix:°± parameter. 
+Enables debugging log for selected client connections. Other connections will use logging level set by the error_log directive. Debugged connections are specified by IPv4 or IPv6 (1.3.0, 1.2.1) address or network. A connection may also be specified using a hostname. For connections using UNIX-domain sockets (1.3.0, 1.2.1), debugging log is enabled by the ‚Äúunix:‚Äù parameter. 
 
 events {
     debug_connection 127.0.0.1;
@@ -642,11 +642,11 @@ events {
     ...
 }
 
-For this directive to work, nginx needs to be built with --with-debug, see °∞A debugging log°±. 
+For this directive to work, nginx needs to be built with --with-debug, see ‚ÄúA debugging log‚Äù. 
 
 Syntax:  debug_points abort | stop;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -662,11 +662,11 @@ Context:  main, http, mail, stream, server, location
 
 Configures logging. Several logs can be specified on the same level (1.5.2). 
 
-The first parameter defines a file that will store the log. The special value stderr selects the standard error file. Logging to syslog can be configured by specifying the °∞syslog:°± prefix. Logging to a cyclic memory buffer can be configured by specifying the °∞memory:°± prefix and buffer size, and is generally used for debugging (1.7.11). 
+The first parameter defines a file that will store the log. The special value stderr selects the standard error file. Logging to syslog can be configured by specifying the ‚Äúsyslog:‚Äù prefix. Logging to a cyclic memory buffer can be configured by specifying the ‚Äúmemory:‚Äù prefix and buffer size, and is generally used for debugging (1.7.11). 
 
 The second parameter determines the level of logging. Log levels above are listed in the order of increasing severity. Setting a certain log level will cause all messages of the specified and more severe log levels to be logged. For example, the default level error will cause error, crit, alert, and emerg messages to be logged. If this parameter is omitted then error is used. 
 
-For debug logging to work, nginx needs to be built with --with-debug, see °∞A debugging log°±. 
+For debug logging to work, nginx needs to be built with --with-debug, see ‚ÄúA debugging log‚Äù. 
 
 The directive can be specified on the stream level starting from version 1.7.11. 
 
@@ -697,7 +697,7 @@ The NGINX environment variable is used internally by nginx and should not be set
 
 Syntax:  events { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -705,7 +705,7 @@ Provides the configuration file context in which the directives that affect conn
 
 Syntax:  include file | mask;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  any
  
 
@@ -722,7 +722,7 @@ Default:  lock_file logs/nginx.lock;
 Context:  main
  
 
-nginx uses the locking mechanism to implement accept_mutex and serialize access to shared memory. On most systems the locks are implemented using atomic operations, and this directive is ignored. On other systems the °∞lock file°± mechanism is used. This directive specifies a prefix for the names of lock files. 
+nginx uses the locking mechanism to implement accept_mutex and serialize access to shared memory. On most systems the locks are implemented using atomic operations, and this directive is ignored. On other systems the ‚Äúlock file‚Äù mechanism is used. This directive specifies a prefix for the names of lock files. 
 
 Syntax:  master_process on | off;
  
@@ -750,7 +750,7 @@ Context:  main
 
 This directive appeared in version 1.1.12. 
 
-Enables or disables the use of °∞just-in-time compilation°± (PCRE JIT) for the regular expressions known by the time of configuration parsing. 
+Enables or disables the use of ‚Äújust-in-time compilation‚Äù (PCRE JIT) for the regular expressions known by the time of configuration parsing. 
 
 PCRE JIT can speed up processing of regular expressions significantly. 
 
@@ -766,7 +766,7 @@ Defines a file that will store the process ID of the main process.
 
 Syntax:  ssl_engine device;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -788,7 +788,7 @@ In the event that all threads in the pool are busy, a new task will wait in the 
 
 Syntax:  timer_resolution interval;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -806,7 +806,7 @@ Internal implementation of the interval depends on the method used:
 
 Syntax:  use method;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  events
  
 
@@ -842,7 +842,7 @@ It should be kept in mind that this number includes all connections (e.g. connec
 
 Syntax:  worker_cpu_affinity cpumask ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -881,13 +881,13 @@ Context:  main
 
 Defines the number of worker processes. 
 
-The optimal value depends on many factors including (but not limited to) the number of CPU cores, the number of hard disk drives that store data, and load pattern. When one is in doubt, setting it to the number of available CPU cores would be a good start (the value °∞auto°± will try to autodetect it). 
+The optimal value depends on many factors including (but not limited to) the number of CPU cores, the number of hard disk drives that store data, and load pattern. When one is in doubt, setting it to the number of available CPU cores would be a good start (the value ‚Äúauto‚Äù will try to autodetect it). 
 
 The auto parameter is supported starting from versions 1.3.8 and 1.2.5. 
 
 Syntax:  worker_rlimit_core size;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -895,7 +895,7 @@ Changes the limit on the largest size of a core file (RLIMIT_CORE) for worker pr
 
 Syntax:  worker_rlimit_nofile number;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -903,7 +903,7 @@ Changes the limit on the maximum number of open files (RLIMIT_NOFILE) for worker
 
 Syntax:  working_directory directory;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -1021,7 +1021,7 @@ location /video/ {
     output_buffers 1 128k;
 }
 
-On Linux, directio can only be used for reading blocks that are aligned on 512-byte boundaries (or 4K for XFS). File°Øs unaligned end is read in blocking mode. The same holds true for byte range requests and for FLV requests not from the beginning of a file: reading of unaligned data at the beginning and end of a file will be blocking. 
+On Linux, directio can only be used for reading blocks that are aligned on 512-byte boundaries (or 4K for XFS). File‚Äôs unaligned end is read in blocking mode. The same holds true for byte range requests and for FLV requests not from the beginning of a file: reading of unaligned data at the beginning and end of a file will be blocking. 
 
 When both AIO and sendfile are enabled on Linux, AIO is used for files that are larger than or equal to the size specified in the directio directive, while sendfile is used for files of smaller sizes or when directio is disabled. 
 
@@ -1037,7 +1037,7 @@ location /video/ {
     sendfile       on;
     aio            threads;
 }
-Read and send file operations are offloaded to threads of the specified pool. If the pool name is omitted, the pool with the name °∞default°± is used. The pool name can also be set with variables: 
+Read and send file operations are offloaded to threads of the specified pool. If the pool name is omitted, the pool with the name ‚Äúdefault‚Äù is used. The pool name can also be set with variables: 
 
 aio threads=pool$disk;
 By default, multi-threading is disabled, it should be enabled with the --with-threads configuration parameter. Currently, multi-threading is compatible only with the epoll, kqueue, and eventport methods. Multi-threaded sending of files is only supported on Linux. 
@@ -1046,7 +1046,7 @@ See also the sendfile directive.
 
 Syntax:  alias path;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location
  
 
@@ -1055,7 +1055,7 @@ Defines a replacement for the specified location. For example, with the followin
 location /i/ {
     alias /data/w3/images/;
 }
-on request of °∞/i/top.gif°±, the file /data/w3/images/top.gif will be sent. 
+on request of ‚Äú/i/top.gif‚Äù, the file /data/w3/images/top.gif will be sent. 
 
 The path value can contain variables, except $document_root and $realpath_root. 
 
@@ -1065,7 +1065,7 @@ location ~ ^/users/(.+\.(?:gif|jpe?g|png))$ {
     alias /data/w3/images/$1;
 }
 
-When location matches the last part of the directive°Øs value: 
+When location matches the last part of the directive‚Äôs value: 
 
 location /images/ {
     alias /data/w3/images/;
@@ -1082,7 +1082,7 @@ Default:  chunked_transfer_encoding on;
 Context:  http, server, location
  
 
-Allows disabling chunked transfer encoding in HTTP/1.1. It may come in handy when using a software failing to support chunked encoding despite the standard°Øs requirement. 
+Allows disabling chunked transfer encoding in HTTP/1.1. It may come in handy when using a software failing to support chunked encoding despite the standard‚Äôs requirement. 
 
 Syntax:  client_body_buffer_size size;
  
@@ -1155,7 +1155,7 @@ Default:  client_max_body_size 1m;
 Context:  http, server, location
  
 
-Sets the maximum allowed size of the client request body, specified in the °∞Content-Length°± request header field. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size. 
+Sets the maximum allowed size of the client request body, specified in the ‚ÄúContent-Length‚Äù request header field. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size. 
 
 Syntax:  connection_pool_size size;
  
@@ -1231,7 +1231,7 @@ The ngx_http_autoindex_module, ngx_http_random_index_module, and ngx_http_dav_mo
 
 Syntax:  error_page code ... [=[response]] uri;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location, if in location
  
 
@@ -1242,7 +1242,7 @@ Example:
 error_page 404             /404.html;
 error_page 500 502 503 504 /50x.html;
 
-Furthermore, it is possible to change the response code to another using the °∞=response°± syntax, for example: 
+Furthermore, it is possible to change the response code to another using the ‚Äú=response‚Äù syntax, for example: 
 
 error_page 404 =200 /empty.gif;
 
@@ -1277,11 +1277,11 @@ Context:  http, server, location
 
 This directive appeared in version 1.3.3. 
 
-Enables or disables automatic generation of the °∞ETag°± response header field for static resources. 
+Enables or disables automatic generation of the ‚ÄúETag‚Äù response header field for static resources. 
 
 Syntax:  http { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  main
  
 
@@ -1295,14 +1295,14 @@ Context:  http, server, location
 
 This directive appeared in version 0.7.24. 
 
-Specifies how to compare modification time of a response with the time in the °∞If-Modified-Since°± request header field: 
+Specifies how to compare modification time of a response with the time in the ‚ÄúIf-Modified-Since‚Äù request header field: 
 
 off
-the °∞If-Modified-Since°± request header field is ignored (0.7.34); 
+the ‚ÄúIf-Modified-Since‚Äù request header field is ignored (0.7.34); 
 exact
 exact match; 
 before
-modification time of a response is less than or equal to the time in the °∞If-Modified-Since°± request header field. 
+modification time of a response is less than or equal to the time in the ‚ÄúIf-Modified-Since‚Äù request header field. 
 
 Syntax:  ignore_invalid_headers on | off;
  
@@ -1316,15 +1316,15 @@ If the directive is specified on the server level, its value is only used if a s
 
 Syntax:  internal;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location
  
 
 Specifies that a given location can only be used for internal requests. For external requests, the client error 404 (Not Found) is returned. Internal requests are the following: 
 
 ?requests redirected by the error_page, index, random_index, and try_files directives; 
-?requests redirected by the °∞X-Accel-Redirect°± response header field from an upstream server; 
-?subrequests formed by the °∞include virtual°± command of the ngx_http_ssi_module module and by the ngx_http_addition_module module directives; 
+?requests redirected by the ‚ÄúX-Accel-Redirect‚Äù response header field from an upstream server; 
+?subrequests formed by the ‚Äúinclude virtual‚Äù command of the ngx_http_ssi_module module and by the ngx_http_addition_module module directives; 
 ?requests changed by the rewrite directive. 
 
 Example: 
@@ -1335,7 +1335,7 @@ location /404.html {
     internal;
 }
 
-There is a limit of 10 internal redirects per request to prevent request processing cycles that can occur in incorrect configurations. If this limit is reached, the error 500 (Internal Server Error) is returned. In such cases, the °∞rewrite or internal redirection cycle°± message can be seen in the error log. 
+There is a limit of 10 internal redirects per request to prevent request processing cycles that can occur in incorrect configurations. If this limit is reached, the error 500 (Internal Server Error) is returned. In such cases, the ‚Äúrewrite or internal redirection cycle‚Äù message can be seen in the error log. 
 
 Syntax:  keepalive_disable none | browser ...;
  
@@ -1363,9 +1363,9 @@ Default:  keepalive_timeout 75s;
 Context:  http, server, location
  
 
-The first parameter sets a timeout during which a keep-alive client connection will stay open on the server side. The zero value disables keep-alive client connections. The optional second parameter sets a value in the °∞Keep-Alive: timeout=time°± response header field. Two parameters may differ. 
+The first parameter sets a timeout during which a keep-alive client connection will stay open on the server side. The zero value disables keep-alive client connections. The optional second parameter sets a value in the ‚ÄúKeep-Alive: timeout=time‚Äù response header field. Two parameters may differ. 
 
-The °∞Keep-Alive: timeout=time°± header field is recognized by Mozilla and Konqueror. MSIE closes keep-alive connections by itself in about 60 seconds. 
+The ‚ÄúKeep-Alive: timeout=time‚Äù header field is recognized by Mozilla and Konqueror. MSIE closes keep-alive connections by itself in about 60 seconds. 
 
 Syntax:  large_client_header_buffers number size;
  
@@ -1377,7 +1377,7 @@ Sets the maximum number and size of buffers used for reading large client reques
 
 Syntax:  limit_except method ... { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location
  
 
@@ -1408,7 +1408,7 @@ server {
     ...
 }
 
-Rate limit can also be set in the °∞X-Accel-Limit-Rate°± header field of a proxied server response. This capability can be disabled using the proxy_ignore_headers, fastcgi_ignore_headers, uwsgi_ignore_headers, and scgi_ignore_headers directives. 
+Rate limit can also be set in the ‚ÄúX-Accel-Limit-Rate‚Äù header field of a proxied server response. This capability can be disabled using the proxy_ignore_headers, fastcgi_ignore_headers, uwsgi_ignore_headers, and scgi_ignore_headers directives. 
 
 Syntax:  limit_rate_after size;
  
@@ -1438,11 +1438,11 @@ This directive appeared in versions 1.1.0 and 1.0.6.
 
 Controls how nginx closes client connections. 
 
-The default value °∞on°± instructs nginx to wait for and process additional data from a client before fully closing a connection, but only if heuristics suggests that a client may be sending more data. 
+The default value ‚Äúon‚Äù instructs nginx to wait for and process additional data from a client before fully closing a connection, but only if heuristics suggests that a client may be sending more data. 
 
-The value °∞always°± will cause nginx to unconditionally wait for and process additional client data. 
+The value ‚Äúalways‚Äù will cause nginx to unconditionally wait for and process additional client data. 
 
-The value °∞off°± tells nginx to never wait for more data and close the connection immediately. This behavior breaks the protocol and should not be used under normal circumstances. 
+The value ‚Äúoff‚Äù tells nginx to never wait for more data and close the connection immediately. This behavior breaks the protocol and should not be used under normal circumstances. 
 
 Syntax:  lingering_time time;
  
@@ -1458,7 +1458,7 @@ Default:  lingering_timeout 5s;
 Context:  http, server, location
  
 
-When lingering_close is in effect, this directive specifies the maximum waiting time for more client data to arrive. If data are not received during this time, the connection is closed. Otherwise, the data are read and ignored, and nginx starts waiting for more data again. The °∞wait-read-ignore°± cycle is repeated, but no longer than specified by the lingering_time directive. 
+When lingering_close is in effect, this directive specifies the maximum waiting time for more client data to arrive. If data are not received during this time, the connection is closed. Otherwise, the data are read and ignored, and nginx starts waiting for more data again. The ‚Äúwait-read-ignore‚Äù cycle is repeated, but no longer than specified by the lingering_time directive. 
 
 Syntax:  listen address[:port] [default_server] [ssl] [spdy] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [ipv6only=on|off] [reuseport] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
 listen port [default_server] [ssl] [spdy] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number] [rcvbuf=size] [sndbuf=size] [accept_filter=filter] [deferred] [bind] [ipv6only=on|off] [reuseport] [so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt]];
@@ -1479,7 +1479,7 @@ IPv6 addresses (0.7.36) are specified in square brackets:
 
 listen [::]:8000;
 listen [::1];
-UNIX-domain sockets (0.8.21) are specified with the °∞unix:°± prefix: 
+UNIX-domain sockets (0.8.21) are specified with the ‚Äúunix:‚Äù prefix: 
 
 listen unix:/var/run/nginx.sock;
 
@@ -1504,7 +1504,7 @@ In versions prior to 0.8.21, they could only be specified in the listen directiv
 setfib=number 
 this parameter (0.8.44) sets the associated routing table, FIB (the SO_SETFIB option) for the listening socket. This currently works only on FreeBSD. 
 fastopen=number 
-enables °∞TCP Fast Open°± for the listening socket (1.5.8) and limits the maximum length for the queue of connections that have not yet completed the three-way handshake. 
+enables ‚ÄúTCP Fast Open‚Äù for the listening socket (1.5.8) and limits the maximum length for the queue of connections that have not yet completed the three-way handshake. 
 Do not enable this feature unless the server can handle receiving the same SYN packet with data more than once. 
 backlog=number 
 sets the backlog parameter in the listen() call that limits the maximum length for the queue of pending connections. By default, backlog is set to -1 on FreeBSD, DragonFly BSD, and Mac OS X, and to 511 on other platforms. 
@@ -1520,12 +1520,12 @@ bind
 instructs to make a separate bind() call for a given address:port pair. This is useful because if there are several listen directives with the same port but different addresses, and one of the listen directives listens on all addresses for the given port (*:port), nginx will bind() only to *:port. It should be noted that the getsockname() system call will be made in this case to determine the address that accepted the connection. If the setfib, backlog, rcvbuf, sndbuf, accept_filter, deferred, ipv6only, or so_keepalive parameters are used then for a given address:port pair a separate bind() call will always be made. 
 ipv6only=on|off 
 this parameter (0.7.42) determines (via the IPV6_V6ONLY socket option) whether an IPv6 socket listening on a wildcard address [::] will accept only IPv6 connections or both IPv6 and IPv4 connections. This parameter is turned on by default. It can only be set once on start. 
-Prior to version 1.3.4, if this parameter was omitted then the operating system°Øs settings were in effect for the socket. 
+Prior to version 1.3.4, if this parameter was omitted then the operating system‚Äôs settings were in effect for the socket. 
 reuseport 
 this parameter (1.9.1) instructs to create an individual listening socket for each worker process (using the SO_REUSEPORT socket option), allowing a kernel to distribute incoming connections between worker processes. This currently works only on Linux 3.9+ and DragonFly BSD. 
 Inappropriate use of this option may have its security implications. 
 so_keepalive=on|off|[keepidle]:[keepintvl]:[keepcnt] 
-this parameter (1.1.11) configures the °∞TCP keepalive°± behavior for the listening socket. If this parameter is omitted then the operating system°Øs settings will be in effect for the socket. If it is set to the value °∞on°±, the SO_KEEPALIVE option is turned on for the socket. If it is set to the value °∞off°±, the SO_KEEPALIVE option is turned off for the socket. Some operating systems support setting of TCP keepalive parameters on a per-socket basis using the TCP_KEEPIDLE, TCP_KEEPINTVL, and TCP_KEEPCNT socket options. On such systems (currently, Linux 2.4+, NetBSD 5+, and FreeBSD 9.0-STABLE), they can be configured using the keepidle, keepintvl, and keepcnt parameters. One or two parameters may be omitted, in which case the system default setting for the corresponding socket option will be in effect. For example, 
+this parameter (1.1.11) configures the ‚ÄúTCP keepalive‚Äù behavior for the listening socket. If this parameter is omitted then the operating system‚Äôs settings will be in effect for the socket. If it is set to the value ‚Äúon‚Äù, the SO_KEEPALIVE option is turned on for the socket. If it is set to the value ‚Äúoff‚Äù, the SO_KEEPALIVE option is turned off for the socket. Some operating systems support setting of TCP keepalive parameters on a per-socket basis using the TCP_KEEPIDLE, TCP_KEEPINTVL, and TCP_KEEPCNT socket options. On such systems (currently, Linux 2.4+, NetBSD 5+, and FreeBSD 9.0-STABLE), they can be configured using the keepidle, keepintvl, and keepcnt parameters. One or two parameters may be omitted, in which case the system default setting for the corresponding socket option will be in effect. For example, 
 so_keepalive=30m::10will set the idle timeout (TCP_KEEPIDLE) to 30 minutes, leave the probe interval (TCP_KEEPINTVL) at its system default, and set the probes count (TCP_KEEPCNT) to 10 probes. 
 
 Example: 
@@ -1535,15 +1535,15 @@ listen 127.0.0.1 default_server accept_filter=dataready backlog=1024;
 Syntax:  location [ = | ~ | ~* | ^~ ] uri { ... }
 location @name { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location
  
 
 Sets configuration depending on a request URI. 
 
-The matching is performed against a normalized URI, after decoding the text encoded in the °∞%XX°± form, resolving references to relative path components °∞.°± and °∞..°±, and possible compression of two or more adjacent slashes into a single slash. 
+The matching is performed against a normalized URI, after decoding the text encoded in the ‚Äú%XX‚Äù form, resolving references to relative path components ‚Äú.‚Äù and ‚Äú..‚Äù, and possible compression of two or more adjacent slashes into a single slash. 
 
-A location can either be defined by a prefix string, or by a regular expression. Regular expressions are specified with the preceding °∞~*°± modifier (for case-insensitive matching), or the °∞~°± modifier (for case-sensitive matching). To find location matching a given request, nginx first checks locations defined using the prefix strings (prefix locations). Among them, the location with the longest matching prefix is selected and remembered. Then regular expressions are checked, in the order of their appearance in the configuration file. The search of regular expressions terminates on the first match, and the corresponding configuration is used. If no match with a regular expression is found then the configuration of the prefix location remembered earlier is used. 
+A location can either be defined by a prefix string, or by a regular expression. Regular expressions are specified with the preceding ‚Äú~*‚Äù modifier (for case-insensitive matching), or the ‚Äú~‚Äù modifier (for case-sensitive matching). To find location matching a given request, nginx first checks locations defined using the prefix strings (prefix locations). Among them, the location with the longest matching prefix is selected and remembered. Then regular expressions are checked, in the order of their appearance in the configuration file. The search of regular expressions terminates on the first match, and the corresponding configuration is used. If no match with a regular expression is found then the configuration of the prefix location remembered earlier is used. 
 
 location blocks can be nested, with some exceptions mentioned below. 
 
@@ -1551,14 +1551,14 @@ For case-insensitive operating systems such as Mac OS X and Cygwin, matching wit
 
 Regular expressions can contain captures (0.7.40) that can later be used in other directives. 
 
-If the longest matching prefix location has the °∞^~°± modifier then regular expressions are not checked. 
+If the longest matching prefix location has the ‚Äú^~‚Äù modifier then regular expressions are not checked. 
 
-Also, using the °∞=°± modifier it is possible to define an exact match of URI and location. If an exact match is found, the search terminates. For example, if a °∞/°± request happens frequently, defining °∞location = /°± will speed up the processing of these requests, as search terminates right after the first comparison. Such a location cannot obviously contain nested locations. 
+Also, using the ‚Äú=‚Äù modifier it is possible to define an exact match of URI and location. If an exact match is found, the search terminates. For example, if a ‚Äú/‚Äù request happens frequently, defining ‚Äúlocation = /‚Äù will speed up the processing of these requests, as search terminates right after the first comparison. Such a location cannot obviously contain nested locations. 
 
 
-In versions from 0.7.1 to 0.8.41, if a request matched the prefix location without the °∞=°± and °∞^~°± modifiers, the search also terminated and regular expressions were not checked. 
+In versions from 0.7.1 to 0.8.41, if a request matched the prefix location without the ‚Äú=‚Äù and ‚Äú^~‚Äù modifiers, the search also terminated and regular expressions were not checked. 
 
-Let°Øs illustrate the above by an example: 
+Let‚Äôs illustrate the above by an example: 
 
 location = / {
     [ configuration A ]
@@ -1579,9 +1579,9 @@ location ^~ /images/ {
 location ~* \.(gif|jpg|jpeg)$ {
     [ configuration E ]
 }
-The °∞/°± request will match configuration A, the °∞/index.html°± request will match configuration B, the °∞/documents/document.html°± request will match configuration C, the °∞/images/1.gif°± request will match configuration D, and the °∞/documents/1.jpg°± request will match configuration E. 
+The ‚Äú/‚Äù request will match configuration A, the ‚Äú/index.html‚Äù request will match configuration B, the ‚Äú/documents/document.html‚Äù request will match configuration C, the ‚Äú/images/1.gif‚Äù request will match configuration D, and the ‚Äú/documents/1.jpg‚Äù request will match configuration E. 
 
-The °∞@°± prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. They cannot be nested, and cannot contain nested locations. 
+The ‚Äú@‚Äù prefix defines a named location. Such a location is not used for a regular request processing, but instead used for request redirection. They cannot be nested, and cannot contain nested locations. 
 
 If a location is defined by a prefix string that ends with the slash character, and requests are processed by one of proxy_pass, fastcgi_pass, uwsgi_pass, scgi_pass, or memcached_pass, then the special processing is performed. In response to a request with URI equal to this string, but without the trailing slash, a permanent redirect with the code 301 will be returned to the requested URI with the slash appended. If this is not desired, an exact match of the URI and location could be defined like this: 
 
@@ -1611,7 +1611,7 @@ Enables or disables logging of subrequests into access_log.
 
 Syntax:  max_ranges number;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -1627,14 +1627,14 @@ Context:  http, server
 
 Enables or disables compression of two or more adjacent slashes in a URI into a single slash. 
 
-Note that compression is essential for the correct matching of prefix string and regular expression locations. Without it, the °∞//scripts/one.php°± request would not match 
+Note that compression is essential for the correct matching of prefix string and regular expression locations. Without it, the ‚Äú//scripts/one.php‚Äù request would not match 
 
 location /scripts/ {
     ...
 }
-and might be processed as a static file. So it gets converted to °∞/scripts/one.php°±. 
+and might be processed as a static file. So it gets converted to ‚Äú/scripts/one.php‚Äù. 
 
-Turning the compression off can become necessary if a URI contains base64-encoded names, since base64 uses the °∞/°± character internally. However, for security considerations, it is better to avoid turning the compression off. 
+Turning the compression off can become necessary if a URI contains base64-encoded names, since base64 uses the ‚Äú/‚Äù character internally. However, for security considerations, it is better to avoid turning the compression off. 
 
 If the directive is specified on the server level, its value is only used if a server is a default one. The value specified also applies to all virtual servers listening on the same address and port. 
 
@@ -1665,7 +1665,7 @@ Configures a cache that can store:
 
 ?open file descriptors, their sizes and modification times; 
 ?information on existence of directories; 
-?file lookup errors, such as °∞file not found°±, °∞no read permission°±, and so on. 
+?file lookup errors, such as ‚Äúfile not found‚Äù, ‚Äúno read permission‚Äù, and so on. 
 Caching of errors should be enabled separately by the open_file_cache_errors directive. 
 
 The directive has the following parameters: 
@@ -1777,7 +1777,7 @@ It should be noted that timed out keep-alive connections are closed normally.
 
 Syntax:  resolver address ... [valid=time] [ipv6=on|off];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -1817,7 +1817,7 @@ Sets the root directory for requests. For example, with the following configurat
 location /i/ {
     root /data/w3;
 }
-The /data/w3/i/top.gif file will be sent in response to the °∞/i/top.gif°± request. 
+The /data/w3/i/top.gif file will be sent in response to the ‚Äú/i/top.gif‚Äù request. 
 
 The path value can contain variables, except $document_root and $realpath_root. 
 
@@ -1890,11 +1890,11 @@ When set to a non-zero value, limits the amount of data that can be transferred 
 
 Syntax:  server { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
-Sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the °∞Host°± request header field) virtual servers. Instead, the listen directives describe all addresses and ports that should accept connections for the server, and the server_name directive lists all server names. Example configurations are provided in the °∞How nginx processes a request°± document. 
+Sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the ‚ÄúHost‚Äù request header field) virtual servers. Instead, the listen directives describe all addresses and ports that should accept connections for the server, and the server_name directive lists all server names. Example configurations are provided in the ‚ÄúHow nginx processes a request‚Äù document. 
 
 Syntax:  server_name name ...;
  
@@ -1910,7 +1910,7 @@ server {
 
 The first name becomes the primary server name. 
 
-Server names can include an asterisk (°∞*°±) replacing the first or last part of a name: 
+Server names can include an asterisk (‚Äú*‚Äù) replacing the first or last part of a name: 
 
 server {
     server_name example.com *.example.com www.example.*;
@@ -1923,7 +1923,7 @@ server {
     server_name .example.com;
 }
 
-It is also possible to use regular expressions in server names, preceding the name with a tilde (°∞~°±): 
+It is also possible to use regular expressions in server names, preceding the name with a tilde (‚Äú~‚Äù): 
 
 server {
     server_name www.example.com ~^www\d+\.example\.com$;
@@ -1965,22 +1965,22 @@ server {
     }
 }
 
-If the directive°Øs parameter is set to °∞$hostname°± (0.9.4), the machine°Øs hostname is inserted. 
+If the directive‚Äôs parameter is set to ‚Äú$hostname‚Äù (0.9.4), the machine‚Äôs hostname is inserted. 
 
 It is also possible to specify an empty server name (0.7.11): 
 
 server {
     server_name www.example.com "";
 }
-It allows this server to process requests without the °∞Host°± header field °™ instead of the default server °™ for the given address:port pair. This is the default setting. 
+It allows this server to process requests without the ‚ÄúHost‚Äù header field ‚Äï instead of the default server ‚Äï for the given address:port pair. This is the default setting. 
 
-Before 0.8.48, the machine°Øs hostname was used by default. 
+Before 0.8.48, the machine‚Äôs hostname was used by default. 
 
 During searching for a virtual server by name, if the name matches more than one of the specified variants, (e.g. both a wildcard name and regular expression match), the first matching variant will be chosen, in the following order of priority: 
 
 1.the exact name 
-2.the longest wildcard name starting with an asterisk, e.g. °∞*.example.com°± 
-3.the longest wildcard name ending with an asterisk, e.g. °∞mail.*°± 
+2.the longest wildcard name starting with an asterisk, e.g. ‚Äú*.example.com‚Äù 
+3.the longest wildcard name ending with an asterisk, e.g. ‚Äúmail.*‚Äù 
 4.the first matching regular expression (in order of appearance in the configuration file) 
 
 Detailed description of server names is provided in a separate Server names document. 
@@ -1991,7 +1991,7 @@ Default:  server_name_in_redirect off;
 Context:  http, server, location
  
 
-Enables or disables the use of the primary server name, specified by the server_name directive, in redirects issued by nginx. When the use of the primary server name is disabled, the name from the °∞Host°± request header field is used. If this field is not present, the IP address of the server is used. 
+Enables or disables the use of the primary server name, specified by the server_name directive, in redirects issued by nginx. When the use of the primary server name is disabled, the name from the ‚ÄúHost‚Äù request header field is used. If this field is not present, the IP address of the server is used. 
 
 The use of a port in redirects is controlled by the port_in_redirect directive. 
 
@@ -2001,7 +2001,7 @@ Default:  server_names_hash_bucket_size 32|64|128;
 Context:  http
  
 
-Sets the bucket size for the server names hash tables. The default value depends on the size of the processor°Øs cache line. The details of setting up hash tables are provided in a separate document. 
+Sets the bucket size for the server names hash tables. The default value depends on the size of the processor‚Äôs cache line. The details of setting up hash tables are provided in a separate document. 
 
 Syntax:  server_names_hash_max_size size;
  
@@ -2017,7 +2017,7 @@ Default:  server_tokens on;
 Context:  http, server, location
  
 
-Enables or disables emitting nginx version in error messages and in the °∞Server°± response header field. 
+Enables or disables emitting nginx version in error messages and in the ‚ÄúServer‚Äù response header field. 
 
 Syntax:  tcp_nodelay on | off;
  
@@ -2041,11 +2041,11 @@ Enables or disables the use of the TCP_NOPUSH socket option on FreeBSD or the TC
 Syntax:  try_files file ... uri;
 try_files file ... =code;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  server, location
  
 
-Checks the existence of files in the specified order and uses the first found file for request processing; the processing is performed in the current context. The path to a file is constructed from the file parameter according to the root and alias directives. It is possible to check directory°Øs existence by specifying a slash at the end of a name, e.g. °∞$uri/°±. If none of the files were found, an internal redirect to the uri specified in the last parameter is made. For example: 
+Checks the existence of files in the specified order and uses the first found file for request processing; the processing is performed in the current context. The path to a file is constructed from the file parameter according to the root and alias directives. It is possible to check directory‚Äôs existence by specifying a slash at the end of a name, e.g. ‚Äú$uri/‚Äù. If none of the files were found, an internal redirect to the uri specified in the last parameter is made. For example: 
 
 location /images/ {
     try_files $uri /images/default.gif;
@@ -2165,7 +2165,7 @@ types {
 
 A sufficiently full mapping table is distributed with nginx in the conf/mime.types file. 
 
-To make a particular location emit the °∞application/octet-stream°± MIME type for all requests, the following configuration can be used: 
+To make a particular location emit the ‚Äúapplication/octet-stream‚Äù MIME type for all requests, the following configuration can be used: 
 
 location /download/ {
     types        { }
@@ -2180,7 +2180,7 @@ Context:  http, server, location
 
 Sets the bucket size for the types hash tables. The details of setting up hash tables are provided in a separate document. 
 
-Prior to version 1.5.13, the default value depended on the size of the processor°Øs cache line. 
+Prior to version 1.5.13, the default value depended on the size of the processor‚Äôs cache line. 
 
 Syntax:  types_hash_max_size size;
  
@@ -2226,9 +2226,9 @@ argument name in the request line
 $args
 arguments in the request line 
 $binary_remote_addr
-client address in a binary form, value°Øs length is always 4 bytes 
+client address in a binary form, value‚Äôs length is always 4 bytes 
 $body_bytes_sent
-number of bytes sent to a client, not counting the response header; this variable is compatible with the °∞%B°± parameter of the mod_log_config Apache module 
+number of bytes sent to a client, not counting the response header; this variable is compatible with the ‚Äú%B‚Äù parameter of the mod_log_config Apache module 
 $bytes_sent
 number of bytes sent to a client (1.3.8, 1.2.5) 
 $connection
@@ -2236,25 +2236,25 @@ connection serial number (1.3.8, 1.2.5)
 $connection_requests
 current number of requests made through a connection (1.3.8, 1.2.5) 
 $content_length
-°∞Content-Length°± request header field 
+‚ÄúContent-Length‚Äù request header field 
 $content_type
-°∞Content-Type°± request header field 
+‚ÄúContent-Type‚Äù request header field 
 $cookie_name
 the name cookie 
 $document_root
-root or alias directive°Øs value for the current request 
+root or alias directive‚Äôs value for the current request 
 $document_uri
 same as $uri 
 $host
-in this order of precedence: host name from the request line, or host name from the °∞Host°± request header field, or the server name matching a request 
+in this order of precedence: host name from the request line, or host name from the ‚ÄúHost‚Äù request header field, or the server name matching a request 
 $hostname
 host name 
 $http_name
 arbitrary request header field; the last part of a variable name is the field name converted to lower case with dashes replaced by underscores 
 $https
-°∞on°± if connection operates in SSL mode, or an empty string otherwise 
+‚Äúon‚Äù if connection operates in SSL mode, or an empty string otherwise 
 $is_args
-°∞?°± if a request line has arguments, or an empty string otherwise 
+‚Äú?‚Äù if a request line has arguments, or an empty string otherwise 
 $limit_rate
 setting this variable enables response rate limiting; see limit_rate 
 $msec
@@ -2264,7 +2264,7 @@ nginx version
 $pid
 PID of the worker process 
 $pipe
-°∞p°± if request was pipelined, °∞.°± otherwise (1.3.12, 1.2.7) 
+‚Äúp‚Äù if request was pipelined, ‚Äú.‚Äù otherwise (1.3.12, 1.2.7) 
 $proxy_protocol_addr
 client address from the PROXY protocol header, or an empty string otherwise (1.5.12) 
 The PROXY protocol must be previously enabled by setting the proxy_protocol parameter in the listen directive. 
@@ -2272,7 +2272,7 @@ The PROXY protocol must be previously enabled by setting the proxy_protocol para
 $query_string
 same as $args 
 $realpath_root
-an absolute pathname corresponding to the root or alias directive°Øs value for the current request, with all symbolic links resolved to real paths 
+an absolute pathname corresponding to the root or alias directive‚Äôs value for the current request, with all symbolic links resolved to real paths 
 $remote_addr
 client address 
 $remote_port
@@ -2283,26 +2283,26 @@ $request
 full original request line 
 $request_body
 request body 
-The variable°Øs value is made available in locations processed by the proxy_pass, fastcgi_pass, uwsgi_pass, and scgi_pass directives. 
+The variable‚Äôs value is made available in locations processed by the proxy_pass, fastcgi_pass, uwsgi_pass, and scgi_pass directives. 
 
 $request_body_file
 name of a temporary file with the request body 
 At the end of processing, the file needs to be removed. To always write the request body to a file, client_body_in_file_only needs to be enabled. When the name of a temporary file is passed in a proxied request or in a request to a FastCGI/uwsgi/SCGI server, passing the request body should be disabled by the proxy_pass_request_body off, fastcgi_pass_request_body off, uwsgi_pass_request_body off, or scgi_pass_request_body off directives, respectively. 
 
 $request_completion
-°∞OK°± if a request has completed, or an empty string otherwise 
+‚ÄúOK‚Äù if a request has completed, or an empty string otherwise 
 $request_filename
 file path for the current request, based on the root or alias directives, and the request URI 
 $request_length
 request length (including request line, header, and request body) (1.3.12, 1.2.7) 
 $request_method
-request method, usually °∞GET°± or °∞POST°± 
+request method, usually ‚ÄúGET‚Äù or ‚ÄúPOST‚Äù 
 $request_time
 request processing time in seconds with a milliseconds resolution (1.3.9, 1.2.6); time elapsed since the first bytes were read from the client 
 $request_uri
 full original request URI (with arguments) 
 $scheme
-request scheme, °∞http°± or °∞https°± 
+request scheme, ‚Äúhttp‚Äù or ‚Äúhttps‚Äù 
 $sent_http_name
 arbitrary response header field; the last part of a variable name is the field name converted to lower case with dashes replaced by underscores 
 $server_addr
@@ -2314,7 +2314,7 @@ name of the server which accepted a request
 $server_port
 port of the server which accepted a request 
 $server_protocol
-request protocol, usually °∞HTTP/1.0°± or °∞HTTP/1.1°± 
+request protocol, usually ‚ÄúHTTP/1.0‚Äù or ‚ÄúHTTP/1.1‚Äù 
 $status
 response status (1.3.2, 1.2.2) 
 $tcpinfo_rtt, $tcpinfo_rttvar, $tcpinfo_snd_cwnd, $tcpinfo_rcv_space 
@@ -2391,7 +2391,7 @@ server {
 Directives
 Syntax:  upstream name { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
@@ -2411,11 +2411,11 @@ By default, requests are distributed between the servers using a weighted round-
 
 Syntax:  server address [parameters];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
-Defines the address and other parameters of a server. The address can be specified as a domain name or IP address, with an optional port, or as a UNIX-domain socket path specified after the °∞unix:°± prefix. If a port is not specified, the port 80 is used. A domain name that resolves to several IP addresses defines multiple servers at once. 
+Defines the address and other parameters of a server. The address can be specified as a domain name or IP address, with an optional port, or as a UNIX-domain socket path specified after the ‚Äúunix:‚Äù prefix. If a port is not specified, the port 80 is used. A domain name that resolves to several IP addresses defines multiple servers at once. 
 
 The following parameters can be defined: 
 
@@ -2462,19 +2462,19 @@ If there is only a single server in a group, max_fails, fail_timeout and slow_st
 
 Syntax:  zone name [size];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
 This directive appeared in version 1.9.0. 
 
-Defines the name and size of the shared memory zone that keeps the group°Øs configuration and run-time state that are shared between worker processes. Several groups may share the same zone. In this case, it is enough to specify the size only once. 
+Defines the name and size of the shared memory zone that keeps the group‚Äôs configuration and run-time state that are shared between worker processes. Several groups may share the same zone. In this case, it is enough to specify the size only once. 
 
 Additionally, as part of our commercial subscription, such groups allow changing the group membership or modifying the settings of a particular server without the need of restarting nginx. The configuration is accessible via a special location handled by upstream_conf. 
 
 Syntax:  hash key [consistent];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2486,7 +2486,7 @@ If the consistent parameter is specified the ketama consistent hashing method wi
 
 Syntax:  ip_hash;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2512,7 +2512,7 @@ Until versions 1.3.1 and 1.2.2, it was not possible to specify a weight for serv
 
 Syntax:  keepalive connections;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2543,7 +2543,7 @@ server {
 
 }
 
-For HTTP, the proxy_http_version directive should be set to °∞1.1°± and the °∞Connection°± header field should be cleared: 
+For HTTP, the proxy_http_version directive should be set to ‚Äú1.1‚Äù and the ‚ÄúConnection‚Äù header field should be cleared: 
 
 upstream http_backend {
     server 127.0.0.1:8080;
@@ -2563,7 +2563,7 @@ server {
 }
 
 
-Alternatively, HTTP/1.0 persistent connections can be used by passing the °∞Connection: Keep-Alive°± header field to an upstream server, though this method is not recommended. 
+Alternatively, HTTP/1.0 persistent connections can be used by passing the ‚ÄúConnection: Keep-Alive‚Äù header field to an upstream server, though this method is not recommended. 
 
 For FastCGI servers, it is required to set fastcgi_keep_conn for keepalive connections to work: 
 
@@ -2590,7 +2590,7 @@ SCGI and uwsgi protocols do not have a notion of keepalive connections.
 
 Syntax:  least_conn;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2600,7 +2600,7 @@ Specifies that a group should use a load balancing method where a request is pas
 
 Syntax:  least_time header | last_byte;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2615,7 +2615,7 @@ This directive is available as part of our commercial subscription.
 
 Syntax:  health_check [parameters];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location
  
 
@@ -2630,7 +2630,7 @@ sets the number of consecutive failed health checks of a particular server after
 passes=number 
 sets the number of consecutive passed health checks of a particular server after which the server will be considered healthy, by default, 1; 
 uri=uri 
-defines the URI used in health check requests, by default, °∞/°±; 
+defines the URI used in health check requests, by default, ‚Äú/‚Äù; 
 match=name 
 specifies the match block configuring the tests that a response should pass in order for a health check to pass; by default, the response should have status code 2xx or 3xx. 
 
@@ -2640,7 +2640,7 @@ location / {
     proxy_pass http://backend;
     health_check;
 }
-will send °∞/°± requests to each server in the backend group every five seconds. If any communication error or timeout occurs, or a proxied server responds with the status code other than 2xx or 3xx, the health check will fail, and the server will be considered unhealthy. Client requests are not passed to unhealthy servers. 
+will send ‚Äú/‚Äù requests to each server in the backend group every five seconds. If any communication error or timeout occurs, or a proxied server responds with the status code other than 2xx or 3xx, the health check will fail, and the server will be considered unhealthy. Client requests are not passed to unhealthy servers. 
 
 Health checks can be configured to test the status code of a response, presence of certain header fields and their values, and the body contents. Tests are configured separately using the match directive and referenced in the match parameter. For example: 
 
@@ -2659,7 +2659,7 @@ http {
         body ~ "Welcome to nginx!";
     }
 }
-This configuration tells that for a health check to pass, the response to a health check request should succeed, have status 200, content type °∞text/html°±, and contain °∞Welcome to nginx!°± in the body. 
+This configuration tells that for a health check to pass, the response to a health check request should succeed, have status 200, content type ‚Äútext/html‚Äù, and contain ‚ÄúWelcome to nginx!‚Äù in the body. 
 
 The server group must reside in the shared memory. 
 
@@ -2673,7 +2673,7 @@ This directive is available as part of our commercial subscription.
 
 Syntax:  match name { ... }
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
@@ -2697,22 +2697,22 @@ status 301-303 307;
 status is either 301, 302, 303, or 307
 
 header Content-Type = text/html;
-header contains °∞Content-Type°± with value text/html 
+header contains ‚ÄúContent-Type‚Äù with value text/html 
 header Content-Type != text/html;
-header contains °∞Content-Type°± with value other than text/html 
+header contains ‚ÄúContent-Type‚Äù with value other than text/html 
 header Connection ~ close;
-header contains °∞Connection°± with value matching regular expression close 
+header contains ‚ÄúConnection‚Äù with value matching regular expression close 
 header Connection !~ close;
-header contains °∞Connection°± with value not matching regular expression close 
+header contains ‚ÄúConnection‚Äù with value not matching regular expression close 
 header Host;
-header contains °∞Host°±
+header contains ‚ÄúHost‚Äù
 header ! X-Accel-Redirect;
-header lacks °∞X-Accel-Redirect°±
+header lacks ‚ÄúX-Accel-Redirect‚Äù
 
 body ~ "Welcome to nginx!";
-body matches regular expression °∞Welcome to nginx!°± 
+body matches regular expression ‚ÄúWelcome to nginx!‚Äù 
 body !~ "Welcome to nginx!";
-body does not match regular expression °∞Welcome to nginx!°± 
+body does not match regular expression ‚ÄúWelcome to nginx!‚Äù 
 
 If several tests are specified, the response matches only if it matches all tests. 
 
@@ -2745,7 +2745,7 @@ This directive is available as part of our commercial subscription.
 
 Syntax:  queue number [timeout=time];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2762,7 +2762,7 @@ Syntax:  sticky cookie name [expires=time] [domain=domain] [httponly] [secure] [
 sticky route $variable ...;
 sticky learn create=$variable lookup=$variable zone=name:size [timeout=time];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2785,7 +2785,7 @@ A request that comes from a client not yet bound to a particular server is passe
 The first parameter sets the name of the cookie to be set or inspected. Additional parameters may be as follows: 
 
 expires=time
-Sets the time for which a browser should keep the cookie. The special value max will cause the cookie to expire on °∞31 Dec 2037 23:55:55 GMT°±. If the parameter is not specified, it will cause the cookie to expire at the end of a browser session. 
+Sets the time for which a browser should keep the cookie. The special value max will cause the cookie to expire on ‚Äú31 Dec 2037 23:55:55 GMT‚Äù. If the parameter is not specified, it will cause the cookie to expire at the end of a browser session. 
 domain=domain
 Defines the domain for which the cookie is set. 
 httponly
@@ -2797,7 +2797,7 @@ Defines the path for which the cookie is set.
 If any parameters are omitted, the corresponding cookie fields are not set. 
 
 route
-When the route method is used, proxied server assigns client a route on receipt of the first request. All subsequent requests from this client will carry routing information in a cookie or URI. This information is compared with the °∞route°± parameter of the server directive to identify the server to which the request should be proxied. If the designated server cannot process a request, the new server is selected by the configured balancing method as if there is no routing information in the request. 
+When the route method is used, proxied server assigns client a route on receipt of the first request. All subsequent requests from this client will carry routing information in a cookie or URI. This information is compared with the ‚Äúroute‚Äù parameter of the server directive to identify the server to which the request should be proxied. If the designated server cannot process a request, the new server is selected by the configured balancing method as if there is no routing information in the request. 
 
 The parameters of the route method specify variables that may contain routing information. The first non-empty variable is used to find the matching server. 
 
@@ -2817,7 +2817,7 @@ upstream backend {
 
     sticky route $route_cookie $route_uri;
 }
-Here, the route is taken from the °∞JSESSIONID°± cookie if present in a request. Otherwise, the route from the URI is used. 
+Here, the route is taken from the ‚ÄúJSESSIONID‚Äù cookie if present in a request. Otherwise, the route from the URI is used. 
 
 learn
 When the learn method (1.7.1) is used, nginx analyzes upstream server responses and learns server-initiated sessions usually passed in an HTTP cookie. 
@@ -2831,7 +2831,7 @@ upstream backend {
           lookup=$cookie_examplecookie
           zone=client_sessions:1m;
 }
-In the example, the upstream server creates a session by setting the cookie °∞EXAMPLECOOKIE°± in the response. Further requests with this cookie will be passed to the same server. If the server cannot process the request, the new server is selected as if the client has not been bound yet. 
+In the example, the upstream server creates a session by setting the cookie ‚ÄúEXAMPLECOOKIE‚Äù in the response. Further requests with this cookie will be passed to the same server. If the server cannot process the request, the new server is selected as if the client has not been bound yet. 
 
 The parameters create and lookup specify variables that indicate how new sessions are created and existing sessions are searched, respectively. Both parameters may be specified more than once, in which case the first non-empty variable is used. 
 
@@ -2843,7 +2843,7 @@ This directive is available as part of our commercial subscription.
 
 Syntax:  sticky_cookie_insert name [expires=time] [domain=domain] [path=path];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  upstream
  
 
@@ -2855,17 +2855,17 @@ Embedded Variables
 The ngx_http_upstream_module module supports the following embedded variables: 
 
 $upstream_addr
-keeps the IP address and port, or the path to the UNIX-domain socket of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas, e.g. °∞192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock°±. If an internal redirect from one server group to another happens, initiated by °∞X-Accel-Redirect°± or error_page, then the server addresses from different groups are separated by colons, e.g. °∞192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock : 192.168.10.1:80, 192.168.10.2:80°±. 
+keeps the IP address and port, or the path to the UNIX-domain socket of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas, e.g. ‚Äú192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock‚Äù. If an internal redirect from one server group to another happens, initiated by ‚ÄúX-Accel-Redirect‚Äù or error_page, then the server addresses from different groups are separated by colons, e.g. ‚Äú192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock : 192.168.10.1:80, 192.168.10.2:80‚Äù. 
 $upstream_cache_status 
-keeps the status of accessing a response cache (0.8.3). The status can be either °∞MISS°±, °∞BYPASS°±, °∞EXPIRED°±, °∞STALE°±, °∞UPDATING°±, °∞REVALIDATED°±, or °∞HIT°±. 
+keeps the status of accessing a response cache (0.8.3). The status can be either ‚ÄúMISS‚Äù, ‚ÄúBYPASS‚Äù, ‚ÄúEXPIRED‚Äù, ‚ÄúSTALE‚Äù, ‚ÄúUPDATING‚Äù, ‚ÄúREVALIDATED‚Äù, or ‚ÄúHIT‚Äù. 
 $upstream_connect_time 
 keeps time spent on establishing a connection with the upstream server (1.9.1); the time is kept in seconds with millisecond resolution. In case of SSL, includes time spent on handshake. Times of several connections are separated by commas and colons like addresses in the $upstream_addr variable. 
 $upstream_cookie_name 
-cookie with the specified name sent by the upstream server in the °∞Set-Cookie°± response header field (1.7.1). Only the cookies from the response of the last server are saved. 
+cookie with the specified name sent by the upstream server in the ‚ÄúSet-Cookie‚Äù response header field (1.7.1). Only the cookies from the response of the last server are saved. 
 $upstream_header_time 
 keeps time spent on receiving the response header from the upstream server (1.7.10); the time is kept in seconds with millisecond resolution. Times of several responses are separated by commas and colons like addresses in the $upstream_addr variable. 
 $upstream_http_name
-keep server response header fields. For example, the °∞Server°± response header field is available through the $upstream_http_server variable. The rules of converting header field names to variable names are the same as for the variables that start with the °∞$http_°± prefix. Only the header fields from the response of the last server are saved. 
+keep server response header fields. For example, the ‚ÄúServer‚Äù response header field is available through the $upstream_http_server variable. The rules of converting header field names to variable names are the same as for the variables that start with the ‚Äú$http_‚Äù prefix. Only the header fields from the response of the last server are saved. 
 $upstream_response_length 
 keeps the length of the response obtained from the upstream server (0.7.27); the length is kept in bytes. Lengths of several responses are separated by commas and colons like addresses in the $upstream_addr variable. 
 $upstream_response_time 
@@ -2958,7 +2958,7 @@ location / {
 Directives
 Syntax:  proxy_bind address | off;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -2986,7 +2986,7 @@ When buffering is enabled, nginx receives a response from the proxied server as 
 
 When buffering is disabled, the response is passed to a client synchronously, immediately as it is received. nginx will not try to read the whole response from the proxied server. The maximum size of the data that nginx can receive from the server at a time is set by the proxy_buffer_size directive. 
 
-Buffering can also be enabled or disabled by passing °∞yes°± or °∞no°± in the °∞X-Accel-Buffering°± response header field. This capability can be disabled using the proxy_ignore_headers directive. 
+Buffering can also be enabled or disabled by passing ‚Äúyes‚Äù or ‚Äúno‚Äù in the ‚ÄúX-Accel-Buffering‚Äù response header field. This capability can be disabled using the proxy_ignore_headers directive. 
 
 Syntax:  proxy_buffers number size;
  
@@ -3014,11 +3014,11 @@ Defines a shared memory zone used for caching. The same zone can be used in seve
 
 Syntax:  proxy_cache_bypass string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be taken from the cache: 
+Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be taken from the cache: 
 
 proxy_cache_bypass $cookie_nocache $arg_nocache$arg_comment;
 proxy_cache_bypass $http_pragma    $http_authorization;
@@ -3033,7 +3033,7 @@ Context:  http, server, location
 Defines a key for caching, for example 
 
 proxy_cache_key "$host$request_uri $cookie_user";
-By default, the directive°Øs value is close to the string 
+By default, the directive‚Äôs value is close to the string 
 
 proxy_cache_key $scheme$proxy_host$uri$is_args$args;
 
@@ -3077,7 +3077,7 @@ Context:  http, server, location
 
 This directive appeared in version 0.7.59. 
 
-If the client request method is listed in this directive then the response will be cached. °∞GET°± and °∞HEAD°± methods are always added to the list, though it is recommended to specify them explicitly. See also the proxy_no_cache directive. 
+If the client request method is listed in this directive then the response will be cached. ‚ÄúGET‚Äù and ‚ÄúHEAD‚Äù methods are always added to the list, though it is recommended to specify them explicitly. See also the proxy_no_cache directive. 
 
 Syntax:  proxy_cache_min_uses number;
  
@@ -3089,7 +3089,7 @@ Sets the number of requests after which the response will be cached.
 
 Syntax:  proxy_cache_path path [levels=levels] [use_temp_path=on|off] keys_zone=name:size [inactive=time] [max_size=size] [loader_files=number] [loader_sleep=time] [loader_threshold=time];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
@@ -3106,21 +3106,21 @@ In addition, all active keys and information about data are stored in a shared m
 
 Cached data that are not accessed during the time specified by the inactive parameter get removed from the cache regardless of their freshness. By default, inactive is set to 10 minutes. 
 
-The special °∞cache manager°± process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
+The special ‚Äúcache manager‚Äù process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
 
-A minute after the start the special °∞cache loader°± process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
+A minute after the start the special ‚Äúcache loader‚Äù process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
 
 Syntax:  proxy_cache_purge string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
 This directive appeared in version 1.5.7. 
 
-Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
+Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
 
-If the cache key of a purge request ends with an asterisk (°∞*°±), all cache entries matching the wildcard key will be removed from the cache. 
+If the cache key of a purge request ends with an asterisk (‚Äú*‚Äù), all cache entries matching the wildcard key will be removed from the cache. 
 
 Example configuration: 
 
@@ -3151,7 +3151,7 @@ Context:  http, server, location
 
 This directive appeared in version 1.5.7. 
 
-Enables revalidation of expired cache items using conditional requests with the °∞If-Modified-Since°± and °∞If-None-Match°± header fields. 
+Enables revalidation of expired cache items using conditional requests with the ‚ÄúIf-Modified-Since‚Äù and ‚ÄúIf-None-Match‚Äù header fields. 
 
 Syntax:  proxy_cache_use_stale error | timeout | invalid_header | updating | http_500 | http_502 | http_503 | http_504 | http_403 | http_404 | off ...;
  
@@ -3159,7 +3159,7 @@ Default:  proxy_cache_use_stale off;
 Context:  http, server, location
  
 
-Determines in which cases a stale cached response can be used when an error occurs during communication with the proxied server. The directive°Øs parameters match the parameters of the proxy_next_upstream directive. 
+Determines in which cases a stale cached response can be used when an error occurs during communication with the proxied server. The directive‚Äôs parameters match the parameters of the proxy_next_upstream directive. 
 
 The error parameter also permits using a stale cached response if a proxied server to process a request cannot be selected. 
 
@@ -3169,7 +3169,7 @@ To minimize the number of accesses to proxied servers when populating a new cach
 
 Syntax:  proxy_cache_valid [code ...] time;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3192,10 +3192,10 @@ proxy_cache_valid any      1m;
 
 Parameters of caching can also be set directly in the response header. This has higher priority than setting of caching time using the directive. 
 
-?The °∞X-Accel-Expires°± header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
-?If the header does not include the °∞X-Accel-Expires°± field, parameters of caching may be set in the header fields °∞Expires°± or °∞Cache-Control°±. 
-?If the header includes the °∞Set-Cookie°± field, such a response will not be cached. 
-?If the header includes the °∞Vary°± field with the special value °∞*°±, such a response will not be cached (1.7.7). If the header includes the °∞Vary°± field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
+?The ‚ÄúX-Accel-Expires‚Äù header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
+?If the header does not include the ‚ÄúX-Accel-Expires‚Äù field, parameters of caching may be set in the header fields ‚ÄúExpires‚Äù or ‚ÄúCache-Control‚Äù. 
+?If the header includes the ‚ÄúSet-Cookie‚Äù field, such a response will not be cached. 
+?If the header includes the ‚ÄúVary‚Äù field with the special value ‚Äú*‚Äù, such a response will not be cached (1.7.7). If the header includes the ‚ÄúVary‚Äù field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
 Processing of one or more of these response header fields can be disabled using the proxy_ignore_headers directive. 
 
 Syntax:  proxy_connect_timeout time;
@@ -3215,10 +3215,10 @@ Context:  http, server, location
 
 This directive appeared in version 1.1.15. 
 
-Sets a text that should be changed in the domain attribute of the °∞Set-Cookie°± header fields of a proxied server response. Suppose a proxied server returned the °∞Set-Cookie°± header field with the attribute °∞domain=localhost°±. The directive 
+Sets a text that should be changed in the domain attribute of the ‚ÄúSet-Cookie‚Äù header fields of a proxied server response. Suppose a proxied server returned the ‚ÄúSet-Cookie‚Äù header field with the attribute ‚Äúdomain=localhost‚Äù. The directive 
 
 proxy_cookie_domain localhost example.org;
-will rewrite this attribute to °∞domain=example.org°±. 
+will rewrite this attribute to ‚Äúdomain=example.org‚Äù. 
 
 A dot at the beginning of the domain and replacement strings and the domain attribute is ignored. Matching is case-insensitive. 
 
@@ -3226,7 +3226,7 @@ The domain and replacement strings can contain variables:
 
 proxy_cookie_domain www.$host $host;
 
-The directive can also be specified using regular expressions. In this case, domain should start from the °∞~°± symbol. A regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can also be specified using regular expressions. In this case, domain should start from the ‚Äú~‚Äù symbol. A regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_cookie_domain ~\.(?P<sl_domain>[-0-9a-z]+\.[a-z]+)$ $sl_domain;
 
@@ -3250,16 +3250,16 @@ Context:  http, server, location
 
 This directive appeared in version 1.1.15. 
 
-Sets a text that should be changed in the path attribute of the °∞Set-Cookie°± header fields of a proxied server response. Suppose a proxied server returned the °∞Set-Cookie°± header field with the attribute °∞path=/two/some/uri/°±. The directive 
+Sets a text that should be changed in the path attribute of the ‚ÄúSet-Cookie‚Äù header fields of a proxied server response. Suppose a proxied server returned the ‚ÄúSet-Cookie‚Äù header field with the attribute ‚Äúpath=/two/some/uri/‚Äù. The directive 
 
 proxy_cookie_path /two/ /;
-will rewrite this attribute to °∞path=/some/uri/°±. 
+will rewrite this attribute to ‚Äúpath=/some/uri/‚Äù. 
 
 The path and replacement strings can contain variables: 
 
 proxy_cookie_path $uri /some$uri;
 
-The directive can also be specified using regular expressions. In this case, path should either start from the °∞~°± symbol for a case-sensitive matching, or from the °∞~*°± symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can also be specified using regular expressions. In this case, path should either start from the ‚Äú~‚Äù symbol for a case-sensitive matching, or from the ‚Äú~*‚Äù symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_cookie_path ~*^/user/([^/]+) /u/$1;
 
@@ -3282,7 +3282,7 @@ Context:  http, server, location
 
 This directive appeared in version 1.7.7. 
 
-Enables byte-range support for both cached and uncached responses from the proxied server regardless of the °∞Accept-Ranges°± field in these responses. 
+Enables byte-range support for both cached and uncached responses from the proxied server regardless of the ‚ÄúAccept-Ranges‚Äù field in these responses. 
 
 Syntax:  proxy_headers_hash_bucket_size size;
  
@@ -3302,11 +3302,11 @@ Sets the maximum size of hash tables used by the proxy_hide_header and proxy_set
 
 Syntax:  proxy_hide_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-By default, nginx does not pass the header fields °∞Date°±, °∞Server°±, °∞X-Pad°±, and °∞X-Accel-...°± from the response of a proxied server to a client. The proxy_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the proxy_pass_header directive can be used. 
+By default, nginx does not pass the header fields ‚ÄúDate‚Äù, ‚ÄúServer‚Äù, ‚ÄúX-Pad‚Äù, and ‚ÄúX-Accel-...‚Äù from the response of a proxied server to a client. The proxy_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the proxy_pass_header directive can be used. 
 
 Syntax:  proxy_http_version 1.0 | 1.1;
  
@@ -3328,19 +3328,19 @@ Determines whether the connection with a proxied server should be closed when a 
 
 Syntax:  proxy_ignore_headers field ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Disables processing of certain response header fields from the proxied server. The following fields can be ignored: °∞X-Accel-Redirect°±, °∞X-Accel-Expires°±, °∞X-Accel-Limit-Rate°± (1.1.6), °∞X-Accel-Buffering°± (1.1.6), °∞X-Accel-Charset°± (1.1.6), °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°± (0.8.44), and °∞Vary°± (1.7.7). 
+Disables processing of certain response header fields from the proxied server. The following fields can be ignored: ‚ÄúX-Accel-Redirect‚Äù, ‚ÄúX-Accel-Expires‚Äù, ‚ÄúX-Accel-Limit-Rate‚Äù (1.1.6), ‚ÄúX-Accel-Buffering‚Äù (1.1.6), ‚ÄúX-Accel-Charset‚Äù (1.1.6), ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù (0.8.44), and ‚ÄúVary‚Äù (1.7.7). 
 
 If not disabled, processing of these header fields has the following effect: 
 
-?°∞X-Accel-Expires°±, °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°±, and °∞Vary°± set the parameters of response caching; 
-?°∞X-Accel-Redirect°± performs an internal redirect to the specified URI; 
-?°∞X-Accel-Limit-Rate°± sets the rate limit for transmission of a response to a client; 
-?°∞X-Accel-Buffering°± enables or disables buffering of a response; 
-?°∞X-Accel-Charset°± sets the desired charset of a response. 
+?‚ÄúX-Accel-Expires‚Äù, ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù, and ‚ÄúVary‚Äù set the parameters of response caching; 
+?‚ÄúX-Accel-Redirect‚Äù performs an internal redirect to the specified URI; 
+?‚ÄúX-Accel-Limit-Rate‚Äù sets the rate limit for transmission of a response to a client; 
+?‚ÄúX-Accel-Buffering‚Äù enables or disables buffering of a response; 
+?‚ÄúX-Accel-Charset‚Äù sets the desired charset of a response. 
 
 Syntax:  proxy_intercept_errors on | off;
  
@@ -3375,7 +3375,7 @@ This restriction does not apply to responses that will be cached or stored on di
 
 Syntax:  proxy_method method;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3438,11 +3438,11 @@ Limits the number of possible tries for passing a request to the next server. Th
 
 Syntax:  proxy_no_cache string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be saved: 
+Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be saved: 
 
 proxy_no_cache $cookie_nocache $arg_nocache$arg_comment;
 proxy_no_cache $http_pragma    $http_authorization;
@@ -3450,14 +3450,14 @@ Can be used along with the proxy_cache_bypass directive.
 
 Syntax:  proxy_pass URL;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location, if in location, limit_except
  
 
-Sets the protocol and address of a proxied server and an optional URI to which a location should be mapped. As a protocol, °∞http°± or °∞https°± can be specified. The address can be specified as a domain name or IP address, and an optional port: 
+Sets the protocol and address of a proxied server and an optional URI to which a location should be mapped. As a protocol, ‚Äúhttp‚Äù or ‚Äúhttps‚Äù can be specified. The address can be specified as a domain name or IP address, and an optional port: 
 
 proxy_pass http://localhost:8000/uri/;
-or as a UNIX-domain socket path specified after the word °∞unix°± and enclosed in colons: 
+or as a UNIX-domain socket path specified after the word ‚Äúunix‚Äù and enclosed in colons: 
 
 proxy_pass http://unix:/tmp/backend.socket:/uri/;
 
@@ -3501,7 +3501,7 @@ WebSocket proxying requires special configuration and is supported since version
 
 Syntax:  proxy_pass_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3557,15 +3557,15 @@ Default:  proxy_redirect default;
 Context:  http, server, location
  
 
-Sets the text that should be changed in the °∞Location°± and °∞Refresh°± header fields of a proxied server response. Suppose a proxied server returned the header field °∞Location: http://localhost:8000/two/some/uri/°±. The directive 
+Sets the text that should be changed in the ‚ÄúLocation‚Äù and ‚ÄúRefresh‚Äù header fields of a proxied server response. Suppose a proxied server returned the header field ‚ÄúLocation: http://localhost:8000/two/some/uri/‚Äù. The directive 
 
 proxy_redirect http://localhost:8000/two/ http://frontend/one/;
-will rewrite this string to °∞Location: http://frontend/one/some/uri/°±. 
+will rewrite this string to ‚ÄúLocation: http://frontend/one/some/uri/‚Äù. 
 
 A server name may be omitted in the replacement string: 
 
 proxy_redirect http://localhost:8000/two/ /;
-then the primary server°Øs name and port, if different from 80, will be inserted. 
+then the primary server‚Äôs name and port, if different from 80, will be inserted. 
 
 The default replacement specified by the default parameter uses the parameters of the location and proxy_pass directives. Hence, the two configurations below are equivalent: 
 
@@ -3586,7 +3586,7 @@ A redirect can also contain (1.1.11) variables:
 
 proxy_redirect http://$proxy_host:8000/ /;
 
-The directive can be specified (1.1.11) using regular expressions. In this case, redirect should either start with the °∞~°± symbol for a case-sensitive matching, or with the °∞~*°± symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can be specified (1.1.11) using regular expressions. In this case, redirect should either start with the ‚Äú~‚Äù symbol for a case-sensitive matching, or with the ‚Äú~*‚Äù symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_redirect ~^(http://[^:]+):\d+(/.+)$ $1$2;
 proxy_redirect ~* /user/([^/]+)/(.+)$      http://$1.example.com/$2;
@@ -3644,7 +3644,7 @@ Sets a timeout for transmitting a request to the proxied server. The timeout is 
 
 Syntax:  proxy_set_body value;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3661,11 +3661,11 @@ Allows redefining or appending fields to the request header passed to the proxie
 proxy_set_header Host       $proxy_host;
 proxy_set_header Connection close;
 
-An unchanged °∞Host°± request header field can be passed like this: 
+An unchanged ‚ÄúHost‚Äù request header field can be passed like this: 
 
 proxy_set_header Host       $http_host;
 
-However, if this field is not present in a client request header then nothing will be passed. In such a case it is better to use the $host variable - its value equals the server name in the °∞Host°± request header field or the primary server name if this field is not present: 
+However, if this field is not present in a client request header then nothing will be passed. In such a case it is better to use the $host variable - its value equals the server name in the ‚ÄúHost‚Äù request header field or the primary server name if this field is not present: 
 
 proxy_set_header Host       $host;
 
@@ -3679,7 +3679,7 @@ proxy_set_header Accept-Encoding "";
 
 Syntax:  proxy_ssl_certificate file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3689,7 +3689,7 @@ Specifies a file with the certificate in the PEM format used for authentication 
 
 Syntax:  proxy_ssl_certificate_key file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3709,11 +3709,11 @@ This directive appeared in version 1.5.6.
 
 Specifies the enabled ciphers for requests to a proxied HTTPS server. The ciphers are specified in the format understood by the OpenSSL library. 
 
-The full list can be viewed using the °∞openssl ciphers°± command. 
+The full list can be viewed using the ‚Äúopenssl ciphers‚Äù command. 
 
 Syntax:  proxy_ssl_crl file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3735,7 +3735,7 @@ By default, the host part of the proxy_pass URL is used.
 
 Syntax:  proxy_ssl_password_file file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3759,7 +3759,7 @@ Default:  proxy_ssl_session_reuse on;
 Context:  http, server, location
  
 
-Determines whether SSL sessions can be reused when working with the proxied server. If the errors °∞SSL3_GET_FINISHED:digest check failed°± appear in the logs, try disabling session reuse. 
+Determines whether SSL sessions can be reused when working with the proxied server. If the errors ‚ÄúSSL3_GET_FINISHED:digest check failed‚Äù appear in the logs, try disabling session reuse. 
 
 Syntax:  proxy_ssl_protocols [SSLv2] [SSLv3] [TLSv1] [TLSv1.1] [TLSv1.2];
  
@@ -3773,7 +3773,7 @@ Enables the specified protocols for requests to a proxied HTTPS server.
 
 Syntax:  proxy_ssl_trusted_certificate file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -3811,7 +3811,7 @@ Enables saving of files to a disk. The on parameter saves files with paths corre
 
 proxy_store /data/www$original_uri;
 
-The modification time of files is set according to the received °∞Last-Modified°± response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the proxy_temp_path directive, are put on the same file system. 
+The modification time of files is set according to the received ‚ÄúLast-Modified‚Äù response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the proxy_temp_path directive, are put on the same file system. 
 
 This directive can be used to create local copies of static unchangeable files, e.g.: 
 
@@ -3892,9 +3892,9 @@ The ngx_http_proxy_module module supports embedded variables that can be used to
 $proxy_host
 name and port of a proxied server as specified in the proxy_pass directive;
 $proxy_port
-port of a proxied server as specified in the proxy_pass directive, or the protocol°Øs default port;
+port of a proxied server as specified in the proxy_pass directive, or the protocol‚Äôs default port;
 $proxy_add_x_forwarded_for
-the °∞X-Forwarded-For°± client request header field with the $remote_addr variable appended to it, separated by a comma. If the °∞X-Forwarded-For°± field is not present in the client request header, the $proxy_add_x_forwarded_for variable is equal to the $remote_addr variable.
+the ‚ÄúX-Forwarded-For‚Äù client request header field with the $remote_addr variable appended to it, separated by a comma. If the ‚ÄúX-Forwarded-For‚Äù field is not present in the client request header, the $proxy_add_x_forwarded_for variable is equal to the $remote_addr variable.
 
 
 
@@ -3924,7 +3924,7 @@ The rules are checked in sequence until the first match is found. In this exampl
 Directives
 Syntax:  allow address | CIDR | unix: | all;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location, limit_except
  
 
@@ -3932,7 +3932,7 @@ Allows access for the specified network or address. If the special value unix: i
 
 Syntax:  deny address | CIDR | unix: | all;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location, limit_except
  
 
@@ -4037,7 +4037,7 @@ location / {
 Directives
 Syntax:  proxy_bind address | off;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4065,7 +4065,7 @@ When buffering is enabled, nginx receives a response from the proxied server as 
 
 When buffering is disabled, the response is passed to a client synchronously, immediately as it is received. nginx will not try to read the whole response from the proxied server. The maximum size of the data that nginx can receive from the server at a time is set by the proxy_buffer_size directive. 
 
-Buffering can also be enabled or disabled by passing °∞yes°± or °∞no°± in the °∞X-Accel-Buffering°± response header field. This capability can be disabled using the proxy_ignore_headers directive. 
+Buffering can also be enabled or disabled by passing ‚Äúyes‚Äù or ‚Äúno‚Äù in the ‚ÄúX-Accel-Buffering‚Äù response header field. This capability can be disabled using the proxy_ignore_headers directive. 
 
 Syntax:  proxy_buffers number size;
  
@@ -4093,11 +4093,11 @@ Defines a shared memory zone used for caching. The same zone can be used in seve
 
 Syntax:  proxy_cache_bypass string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be taken from the cache: 
+Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be taken from the cache: 
 
 proxy_cache_bypass $cookie_nocache $arg_nocache$arg_comment;
 proxy_cache_bypass $http_pragma    $http_authorization;
@@ -4112,7 +4112,7 @@ Context:  http, server, location
 Defines a key for caching, for example 
 
 proxy_cache_key "$host$request_uri $cookie_user";
-By default, the directive°Øs value is close to the string 
+By default, the directive‚Äôs value is close to the string 
 
 proxy_cache_key $scheme$proxy_host$uri$is_args$args;
 
@@ -4156,7 +4156,7 @@ Context:  http, server, location
 
 This directive appeared in version 0.7.59. 
 
-If the client request method is listed in this directive then the response will be cached. °∞GET°± and °∞HEAD°± methods are always added to the list, though it is recommended to specify them explicitly. See also the proxy_no_cache directive. 
+If the client request method is listed in this directive then the response will be cached. ‚ÄúGET‚Äù and ‚ÄúHEAD‚Äù methods are always added to the list, though it is recommended to specify them explicitly. See also the proxy_no_cache directive. 
 
 Syntax:  proxy_cache_min_uses number;
  
@@ -4168,7 +4168,7 @@ Sets the number of requests after which the response will be cached.
 
 Syntax:  proxy_cache_path path [levels=levels] [use_temp_path=on|off] keys_zone=name:size [inactive=time] [max_size=size] [loader_files=number] [loader_sleep=time] [loader_threshold=time];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
@@ -4185,21 +4185,21 @@ In addition, all active keys and information about data are stored in a shared m
 
 Cached data that are not accessed during the time specified by the inactive parameter get removed from the cache regardless of their freshness. By default, inactive is set to 10 minutes. 
 
-The special °∞cache manager°± process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
+The special ‚Äúcache manager‚Äù process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
 
-A minute after the start the special °∞cache loader°± process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
+A minute after the start the special ‚Äúcache loader‚Äù process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
 
 Syntax:  proxy_cache_purge string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
 This directive appeared in version 1.5.7. 
 
-Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
+Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
 
-If the cache key of a purge request ends with an asterisk (°∞*°±), all cache entries matching the wildcard key will be removed from the cache. 
+If the cache key of a purge request ends with an asterisk (‚Äú*‚Äù), all cache entries matching the wildcard key will be removed from the cache. 
 
 Example configuration: 
 
@@ -4230,7 +4230,7 @@ Context:  http, server, location
 
 This directive appeared in version 1.5.7. 
 
-Enables revalidation of expired cache items using conditional requests with the °∞If-Modified-Since°± and °∞If-None-Match°± header fields. 
+Enables revalidation of expired cache items using conditional requests with the ‚ÄúIf-Modified-Since‚Äù and ‚ÄúIf-None-Match‚Äù header fields. 
 
 Syntax:  proxy_cache_use_stale error | timeout | invalid_header | updating | http_500 | http_502 | http_503 | http_504 | http_403 | http_404 | off ...;
  
@@ -4238,7 +4238,7 @@ Default:  proxy_cache_use_stale off;
 Context:  http, server, location
  
 
-Determines in which cases a stale cached response can be used when an error occurs during communication with the proxied server. The directive°Øs parameters match the parameters of the proxy_next_upstream directive. 
+Determines in which cases a stale cached response can be used when an error occurs during communication with the proxied server. The directive‚Äôs parameters match the parameters of the proxy_next_upstream directive. 
 
 The error parameter also permits using a stale cached response if a proxied server to process a request cannot be selected. 
 
@@ -4248,7 +4248,7 @@ To minimize the number of accesses to proxied servers when populating a new cach
 
 Syntax:  proxy_cache_valid [code ...] time;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4271,10 +4271,10 @@ proxy_cache_valid any      1m;
 
 Parameters of caching can also be set directly in the response header. This has higher priority than setting of caching time using the directive. 
 
-?The °∞X-Accel-Expires°± header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
-?If the header does not include the °∞X-Accel-Expires°± field, parameters of caching may be set in the header fields °∞Expires°± or °∞Cache-Control°±. 
-?If the header includes the °∞Set-Cookie°± field, such a response will not be cached. 
-?If the header includes the °∞Vary°± field with the special value °∞*°±, such a response will not be cached (1.7.7). If the header includes the °∞Vary°± field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
+?The ‚ÄúX-Accel-Expires‚Äù header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
+?If the header does not include the ‚ÄúX-Accel-Expires‚Äù field, parameters of caching may be set in the header fields ‚ÄúExpires‚Äù or ‚ÄúCache-Control‚Äù. 
+?If the header includes the ‚ÄúSet-Cookie‚Äù field, such a response will not be cached. 
+?If the header includes the ‚ÄúVary‚Äù field with the special value ‚Äú*‚Äù, such a response will not be cached (1.7.7). If the header includes the ‚ÄúVary‚Äù field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
 Processing of one or more of these response header fields can be disabled using the proxy_ignore_headers directive. 
 
 Syntax:  proxy_connect_timeout time;
@@ -4294,10 +4294,10 @@ Context:  http, server, location
 
 This directive appeared in version 1.1.15. 
 
-Sets a text that should be changed in the domain attribute of the °∞Set-Cookie°± header fields of a proxied server response. Suppose a proxied server returned the °∞Set-Cookie°± header field with the attribute °∞domain=localhost°±. The directive 
+Sets a text that should be changed in the domain attribute of the ‚ÄúSet-Cookie‚Äù header fields of a proxied server response. Suppose a proxied server returned the ‚ÄúSet-Cookie‚Äù header field with the attribute ‚Äúdomain=localhost‚Äù. The directive 
 
 proxy_cookie_domain localhost example.org;
-will rewrite this attribute to °∞domain=example.org°±. 
+will rewrite this attribute to ‚Äúdomain=example.org‚Äù. 
 
 A dot at the beginning of the domain and replacement strings and the domain attribute is ignored. Matching is case-insensitive. 
 
@@ -4305,7 +4305,7 @@ The domain and replacement strings can contain variables:
 
 proxy_cookie_domain www.$host $host;
 
-The directive can also be specified using regular expressions. In this case, domain should start from the °∞~°± symbol. A regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can also be specified using regular expressions. In this case, domain should start from the ‚Äú~‚Äù symbol. A regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_cookie_domain ~\.(?P<sl_domain>[-0-9a-z]+\.[a-z]+)$ $sl_domain;
 
@@ -4329,16 +4329,16 @@ Context:  http, server, location
 
 This directive appeared in version 1.1.15. 
 
-Sets a text that should be changed in the path attribute of the °∞Set-Cookie°± header fields of a proxied server response. Suppose a proxied server returned the °∞Set-Cookie°± header field with the attribute °∞path=/two/some/uri/°±. The directive 
+Sets a text that should be changed in the path attribute of the ‚ÄúSet-Cookie‚Äù header fields of a proxied server response. Suppose a proxied server returned the ‚ÄúSet-Cookie‚Äù header field with the attribute ‚Äúpath=/two/some/uri/‚Äù. The directive 
 
 proxy_cookie_path /two/ /;
-will rewrite this attribute to °∞path=/some/uri/°±. 
+will rewrite this attribute to ‚Äúpath=/some/uri/‚Äù. 
 
 The path and replacement strings can contain variables: 
 
 proxy_cookie_path $uri /some$uri;
 
-The directive can also be specified using regular expressions. In this case, path should either start from the °∞~°± symbol for a case-sensitive matching, or from the °∞~*°± symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can also be specified using regular expressions. In this case, path should either start from the ‚Äú~‚Äù symbol for a case-sensitive matching, or from the ‚Äú~*‚Äù symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_cookie_path ~*^/user/([^/]+) /u/$1;
 
@@ -4361,7 +4361,7 @@ Context:  http, server, location
 
 This directive appeared in version 1.7.7. 
 
-Enables byte-range support for both cached and uncached responses from the proxied server regardless of the °∞Accept-Ranges°± field in these responses. 
+Enables byte-range support for both cached and uncached responses from the proxied server regardless of the ‚ÄúAccept-Ranges‚Äù field in these responses. 
 
 Syntax:  proxy_headers_hash_bucket_size size;
  
@@ -4381,11 +4381,11 @@ Sets the maximum size of hash tables used by the proxy_hide_header and proxy_set
 
 Syntax:  proxy_hide_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-By default, nginx does not pass the header fields °∞Date°±, °∞Server°±, °∞X-Pad°±, and °∞X-Accel-...°± from the response of a proxied server to a client. The proxy_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the proxy_pass_header directive can be used. 
+By default, nginx does not pass the header fields ‚ÄúDate‚Äù, ‚ÄúServer‚Äù, ‚ÄúX-Pad‚Äù, and ‚ÄúX-Accel-...‚Äù from the response of a proxied server to a client. The proxy_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the proxy_pass_header directive can be used. 
 
 Syntax:  proxy_http_version 1.0 | 1.1;
  
@@ -4407,19 +4407,19 @@ Determines whether the connection with a proxied server should be closed when a 
 
 Syntax:  proxy_ignore_headers field ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Disables processing of certain response header fields from the proxied server. The following fields can be ignored: °∞X-Accel-Redirect°±, °∞X-Accel-Expires°±, °∞X-Accel-Limit-Rate°± (1.1.6), °∞X-Accel-Buffering°± (1.1.6), °∞X-Accel-Charset°± (1.1.6), °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°± (0.8.44), and °∞Vary°± (1.7.7). 
+Disables processing of certain response header fields from the proxied server. The following fields can be ignored: ‚ÄúX-Accel-Redirect‚Äù, ‚ÄúX-Accel-Expires‚Äù, ‚ÄúX-Accel-Limit-Rate‚Äù (1.1.6), ‚ÄúX-Accel-Buffering‚Äù (1.1.6), ‚ÄúX-Accel-Charset‚Äù (1.1.6), ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù (0.8.44), and ‚ÄúVary‚Äù (1.7.7). 
 
 If not disabled, processing of these header fields has the following effect: 
 
-?°∞X-Accel-Expires°±, °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°±, and °∞Vary°± set the parameters of response caching; 
-?°∞X-Accel-Redirect°± performs an internal redirect to the specified URI; 
-?°∞X-Accel-Limit-Rate°± sets the rate limit for transmission of a response to a client; 
-?°∞X-Accel-Buffering°± enables or disables buffering of a response; 
-?°∞X-Accel-Charset°± sets the desired charset of a response. 
+?‚ÄúX-Accel-Expires‚Äù, ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù, and ‚ÄúVary‚Äù set the parameters of response caching; 
+?‚ÄúX-Accel-Redirect‚Äù performs an internal redirect to the specified URI; 
+?‚ÄúX-Accel-Limit-Rate‚Äù sets the rate limit for transmission of a response to a client; 
+?‚ÄúX-Accel-Buffering‚Äù enables or disables buffering of a response; 
+?‚ÄúX-Accel-Charset‚Äù sets the desired charset of a response. 
 
 Syntax:  proxy_intercept_errors on | off;
  
@@ -4454,7 +4454,7 @@ This restriction does not apply to responses that will be cached or stored on di
 
 Syntax:  proxy_method method;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4517,11 +4517,11 @@ Limits the number of possible tries for passing a request to the next server. Th
 
 Syntax:  proxy_no_cache string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be saved: 
+Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be saved: 
 
 proxy_no_cache $cookie_nocache $arg_nocache$arg_comment;
 proxy_no_cache $http_pragma    $http_authorization;
@@ -4529,14 +4529,14 @@ Can be used along with the proxy_cache_bypass directive.
 
 Syntax:  proxy_pass URL;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location, if in location, limit_except
  
 
-Sets the protocol and address of a proxied server and an optional URI to which a location should be mapped. As a protocol, °∞http°± or °∞https°± can be specified. The address can be specified as a domain name or IP address, and an optional port: 
+Sets the protocol and address of a proxied server and an optional URI to which a location should be mapped. As a protocol, ‚Äúhttp‚Äù or ‚Äúhttps‚Äù can be specified. The address can be specified as a domain name or IP address, and an optional port: 
 
 proxy_pass http://localhost:8000/uri/;
-or as a UNIX-domain socket path specified after the word °∞unix°± and enclosed in colons: 
+or as a UNIX-domain socket path specified after the word ‚Äúunix‚Äù and enclosed in colons: 
 
 proxy_pass http://unix:/tmp/backend.socket:/uri/;
 
@@ -4580,7 +4580,7 @@ WebSocket proxying requires special configuration and is supported since version
 
 Syntax:  proxy_pass_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4636,15 +4636,15 @@ Default:  proxy_redirect default;
 Context:  http, server, location
  
 
-Sets the text that should be changed in the °∞Location°± and °∞Refresh°± header fields of a proxied server response. Suppose a proxied server returned the header field °∞Location: http://localhost:8000/two/some/uri/°±. The directive 
+Sets the text that should be changed in the ‚ÄúLocation‚Äù and ‚ÄúRefresh‚Äù header fields of a proxied server response. Suppose a proxied server returned the header field ‚ÄúLocation: http://localhost:8000/two/some/uri/‚Äù. The directive 
 
 proxy_redirect http://localhost:8000/two/ http://frontend/one/;
-will rewrite this string to °∞Location: http://frontend/one/some/uri/°±. 
+will rewrite this string to ‚ÄúLocation: http://frontend/one/some/uri/‚Äù. 
 
 A server name may be omitted in the replacement string: 
 
 proxy_redirect http://localhost:8000/two/ /;
-then the primary server°Øs name and port, if different from 80, will be inserted. 
+then the primary server‚Äôs name and port, if different from 80, will be inserted. 
 
 The default replacement specified by the default parameter uses the parameters of the location and proxy_pass directives. Hence, the two configurations below are equivalent: 
 
@@ -4665,7 +4665,7 @@ A redirect can also contain (1.1.11) variables:
 
 proxy_redirect http://$proxy_host:8000/ /;
 
-The directive can be specified (1.1.11) using regular expressions. In this case, redirect should either start with the °∞~°± symbol for a case-sensitive matching, or with the °∞~*°± symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
+The directive can be specified (1.1.11) using regular expressions. In this case, redirect should either start with the ‚Äú~‚Äù symbol for a case-sensitive matching, or with the ‚Äú~*‚Äù symbols for case-insensitive matching. The regular expression can contain named and positional captures, and replacement can reference them: 
 
 proxy_redirect ~^(http://[^:]+):\d+(/.+)$ $1$2;
 proxy_redirect ~* /user/([^/]+)/(.+)$      http://$1.example.com/$2;
@@ -4723,7 +4723,7 @@ Sets a timeout for transmitting a request to the proxied server. The timeout is 
 
 Syntax:  proxy_set_body value;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4740,11 +4740,11 @@ Allows redefining or appending fields to the request header passed to the proxie
 proxy_set_header Host       $proxy_host;
 proxy_set_header Connection close;
 
-An unchanged °∞Host°± request header field can be passed like this: 
+An unchanged ‚ÄúHost‚Äù request header field can be passed like this: 
 
 proxy_set_header Host       $http_host;
 
-However, if this field is not present in a client request header then nothing will be passed. In such a case it is better to use the $host variable - its value equals the server name in the °∞Host°± request header field or the primary server name if this field is not present: 
+However, if this field is not present in a client request header then nothing will be passed. In such a case it is better to use the $host variable - its value equals the server name in the ‚ÄúHost‚Äù request header field or the primary server name if this field is not present: 
 
 proxy_set_header Host       $host;
 
@@ -4758,7 +4758,7 @@ proxy_set_header Accept-Encoding "";
 
 Syntax:  proxy_ssl_certificate file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4768,7 +4768,7 @@ Specifies a file with the certificate in the PEM format used for authentication 
 
 Syntax:  proxy_ssl_certificate_key file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4788,11 +4788,11 @@ This directive appeared in version 1.5.6.
 
 Specifies the enabled ciphers for requests to a proxied HTTPS server. The ciphers are specified in the format understood by the OpenSSL library. 
 
-The full list can be viewed using the °∞openssl ciphers°± command. 
+The full list can be viewed using the ‚Äúopenssl ciphers‚Äù command. 
 
 Syntax:  proxy_ssl_crl file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4814,7 +4814,7 @@ By default, the host part of the proxy_pass URL is used.
 
 Syntax:  proxy_ssl_password_file file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4838,7 +4838,7 @@ Default:  proxy_ssl_session_reuse on;
 Context:  http, server, location
  
 
-Determines whether SSL sessions can be reused when working with the proxied server. If the errors °∞SSL3_GET_FINISHED:digest check failed°± appear in the logs, try disabling session reuse. 
+Determines whether SSL sessions can be reused when working with the proxied server. If the errors ‚ÄúSSL3_GET_FINISHED:digest check failed‚Äù appear in the logs, try disabling session reuse. 
 
 Syntax:  proxy_ssl_protocols [SSLv2] [SSLv3] [TLSv1] [TLSv1.1] [TLSv1.2];
  
@@ -4852,7 +4852,7 @@ Enables the specified protocols for requests to a proxied HTTPS server.
 
 Syntax:  proxy_ssl_trusted_certificate file;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -4890,7 +4890,7 @@ Enables saving of files to a disk. The on parameter saves files with paths corre
 
 proxy_store /data/www$original_uri;
 
-The modification time of files is set according to the received °∞Last-Modified°± response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the proxy_temp_path directive, are put on the same file system. 
+The modification time of files is set according to the received ‚ÄúLast-Modified‚Äù response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the proxy_temp_path directive, are put on the same file system. 
 
 This directive can be used to create local copies of static unchangeable files, e.g.: 
 
@@ -4971,9 +4971,9 @@ The ngx_http_proxy_module module supports embedded variables that can be used to
 $proxy_host
 name and port of a proxied server as specified in the proxy_pass directive;
 $proxy_port
-port of a proxied server as specified in the proxy_pass directive, or the protocol°Øs default port;
+port of a proxied server as specified in the proxy_pass directive, or the protocol‚Äôs default port;
 $proxy_add_x_forwarded_for
-the °∞X-Forwarded-For°± client request header field with the $remote_addr variable appended to it, separated by a comma. If the °∞X-Forwarded-For°± field is not present in the client request header, the $proxy_add_x_forwarded_for variable is equal to the $remote_addr variable.
+the ‚ÄúX-Forwarded-For‚Äù client request header field with the $remote_addr variable appended to it, separated by a comma. If the ‚ÄúX-Forwarded-For‚Äù field is not present in the client request header, the $proxy_add_x_forwarded_for variable is equal to the $remote_addr variable.
 
 
 
@@ -4982,7 +4982,7 @@ We are interested in your ideas about the future of app development and delivery
 Help shape the future and be the first to see the results. Get started
 
 english
-ß‚ßÂß„ß„ß‹ß⁄ß€
+—Ä—É—Å—Å–∫–∏–π
 
 news
 about
@@ -5069,7 +5069,7 @@ location / {
 Directives
 Syntax:  fastcgi_bind address | off;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5099,7 +5099,7 @@ When buffering is enabled, nginx receives a response from the FastCGI server as 
 
 When buffering is disabled, the response is passed to a client synchronously, immediately as it is received. nginx will not try to read the whole response from the FastCGI server. The maximum size of the data that nginx can receive from the server at a time is set by the fastcgi_buffer_size directive. 
 
-Buffering can also be enabled or disabled by passing °∞yes°± or °∞no°± in the °∞X-Accel-Buffering°± response header field. This capability can be disabled using the fastcgi_ignore_headers directive. 
+Buffering can also be enabled or disabled by passing ‚Äúyes‚Äù or ‚Äúno‚Äù in the ‚ÄúX-Accel-Buffering‚Äù response header field. This capability can be disabled using the fastcgi_ignore_headers directive. 
 
 Syntax:  fastcgi_buffers number size;
  
@@ -5127,11 +5127,11 @@ Defines a shared memory zone used for caching. The same zone can be used in seve
 
 Syntax:  fastcgi_cache_bypass string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be taken from the cache: 
+Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be taken from the cache: 
 
 fastcgi_cache_bypass $cookie_nocache $arg_nocache$arg_comment;
 fastcgi_cache_bypass $http_pragma    $http_authorization;
@@ -5139,7 +5139,7 @@ Can be used along with the fastcgi_no_cache directive.
 
 Syntax:  fastcgi_cache_key string;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5187,7 +5187,7 @@ Context:  http, server, location
 
 This directive appeared in version 0.7.59. 
 
-If the client request method is listed in this directive then the response will be cached. °∞GET°± and °∞HEAD°± methods are always added to the list, though it is recommended to specify them explicitly. See also the fastcgi_no_cache directive. 
+If the client request method is listed in this directive then the response will be cached. ‚ÄúGET‚Äù and ‚ÄúHEAD‚Äù methods are always added to the list, though it is recommended to specify them explicitly. See also the fastcgi_no_cache directive. 
 
 Syntax:  fastcgi_cache_min_uses number;
  
@@ -5199,7 +5199,7 @@ Sets the number of requests after which the response will be cached.
 
 Syntax:  fastcgi_cache_path path [levels=levels] [use_temp_path=on|off] keys_zone=name:size [inactive=time] [max_size=size] [loader_files=number] [loader_sleep=time] [loader_threshold=time] [purger=on|off] [purger_files=number] [purger_sleep=time] [purger_threshold=time];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http
  
 
@@ -5216,15 +5216,15 @@ In addition, all active keys and information about data are stored in a shared m
 
 Cached data that are not accessed during the time specified by the inactive parameter get removed from the cache regardless of their freshness. By default, inactive is set to 10 minutes. 
 
-The special °∞cache manager°± process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
+The special ‚Äúcache manager‚Äù process monitors the maximum cache size set by the max_size parameter. When this size is exceeded, it removes the least recently used data. 
 
-A minute after the start the special °∞cache loader°± process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
+A minute after the start the special ‚Äúcache loader‚Äù process is activated. It loads information about previously cached data stored on file system into a cache zone. The loading is done in iterations. During one iteration no more than loader_files items are loaded (by default, 100). Besides, the duration of one iteration is limited by the loader_threshold parameter (by default, 200 milliseconds). Between iterations, a pause configured by the loader_sleep parameter (by default, 50 milliseconds) is made. 
 
 Additionally, the following parameters are available as part of our commercial subscription: 
 
 
 purger=on|off 
-Instructs whether cache entries that match a wildcard key will be removed from the disk by the cache purger (1.7.12). Setting the parameter to on (default is off) will activate the °∞cache purger°± process that permanently iterates through all cache entries and deletes the entries that match the wildcard key. 
+Instructs whether cache entries that match a wildcard key will be removed from the disk by the cache purger (1.7.12). Setting the parameter to on (default is off) will activate the ‚Äúcache purger‚Äù process that permanently iterates through all cache entries and deletes the entries that match the wildcard key. 
 purger_files=number 
 Sets the number of items that will be scanned during one iteration (1.7.12). By default, purger_files is set to 10. 
 purger_threshold=number 
@@ -5234,15 +5234,15 @@ Sets a pause between iterations (1.7.12). By default, purger_sleep is set to 50 
 
 Syntax:  fastcgi_cache_purge string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
 This directive appeared in version 1.5.7. 
 
-Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
+Defines conditions under which the request will be considered a cache purge request. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the cache entry with a corresponding cache key is removed. The result of successful operation is indicated by returning the 204 (No Content) response. 
 
-If the cache key of a purge request ends with an asterisk (°∞*°±), all cache entries matching the wildcard key will be removed from the cache. However, these entries will remain on the disk until they are deleted for either inactivity, or processed by the cache purger (1.7.12), or a client attempts to access them. 
+If the cache key of a purge request ends with an asterisk (‚Äú*‚Äù), all cache entries matching the wildcard key will be removed from the cache. However, these entries will remain on the disk until they are deleted for either inactivity, or processed by the cache purger (1.7.12), or a client attempts to access them. 
 
 Example configuration: 
 
@@ -5273,7 +5273,7 @@ Context:  http, server, location
 
 This directive appeared in version 1.5.7. 
 
-Enables revalidation of expired cache items using conditional requests with the °∞If-Modified-Since°± and °∞If-None-Match°± header fields. 
+Enables revalidation of expired cache items using conditional requests with the ‚ÄúIf-Modified-Since‚Äù and ‚ÄúIf-None-Match‚Äù header fields. 
 
 Syntax:  fastcgi_cache_use_stale error | timeout | invalid_header | updating | http_500 | http_503 | http_403 | http_404 | off ...;
  
@@ -5281,7 +5281,7 @@ Default:  fastcgi_cache_use_stale off;
 Context:  http, server, location
  
 
-Determines in which cases a stale cached response can be used when an error occurs during communication with the FastCGI server. The directive°Øs parameters match the parameters of the fastcgi_next_upstream directive. 
+Determines in which cases a stale cached response can be used when an error occurs during communication with the FastCGI server. The directive‚Äôs parameters match the parameters of the fastcgi_next_upstream directive. 
 
 The error parameter also permits using a stale cached response if a FastCGI server to process a request cannot be selected. 
 
@@ -5291,7 +5291,7 @@ To minimize the number of accesses to FastCGI servers when populating a new cach
 
 Syntax:  fastcgi_cache_valid [code ...] time;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5314,15 +5314,15 @@ fastcgi_cache_valid any      1m;
 
 Parameters of caching can also be set directly in the response header. This has higher priority than setting of caching time using the directive. 
 
-?The °∞X-Accel-Expires°± header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
-?If the header does not include the °∞X-Accel-Expires°± field, parameters of caching may be set in the header fields °∞Expires°± or °∞Cache-Control°±. 
-?If the header includes the °∞Set-Cookie°± field, such a response will not be cached. 
-?If the header includes the °∞Vary°± field with the special value °∞*°±, such a response will not be cached (1.7.7). If the header includes the °∞Vary°± field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
+?The ‚ÄúX-Accel-Expires‚Äù header field sets caching time of a response in seconds. The zero value disables caching for a response. If the value starts with the @ prefix, it sets an absolute time in seconds since Epoch, up to which the response may be cached. 
+?If the header does not include the ‚ÄúX-Accel-Expires‚Äù field, parameters of caching may be set in the header fields ‚ÄúExpires‚Äù or ‚ÄúCache-Control‚Äù. 
+?If the header includes the ‚ÄúSet-Cookie‚Äù field, such a response will not be cached. 
+?If the header includes the ‚ÄúVary‚Äù field with the special value ‚Äú*‚Äù, such a response will not be cached (1.7.7). If the header includes the ‚ÄúVary‚Äù field with another value, such a response will be cached taking into account the corresponding request header fields (1.7.7). 
 Processing of one or more of these response header fields can be disabled using the fastcgi_ignore_headers directive. 
 
 Syntax:  fastcgi_catch_stderr string;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5351,15 +5351,15 @@ Context:  http, server, location
 
 This directive appeared in version 1.7.7. 
 
-Enables byte-range support for both cached and uncached responses from the FastCGI server regardless of the °∞Accept-Ranges°± field in these responses. 
+Enables byte-range support for both cached and uncached responses from the FastCGI server regardless of the ‚ÄúAccept-Ranges‚Äù field in these responses. 
 
 Syntax:  fastcgi_hide_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-By default, nginx does not pass the header fields °∞Status°± and °∞X-Accel-...°± from the response of a FastCGI server to a client. The fastcgi_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the fastcgi_pass_header directive can be used. 
+By default, nginx does not pass the header fields ‚ÄúStatus‚Äù and ‚ÄúX-Accel-...‚Äù from the response of a FastCGI server to a client. The fastcgi_hide_header directive sets additional fields that will not be passed. If, on the contrary, the passing of fields needs to be permitted, the fastcgi_pass_header directive can be used. 
 
 Syntax:  fastcgi_ignore_client_abort on | off;
  
@@ -5371,23 +5371,23 @@ Determines whether the connection with a FastCGI server should be closed when a 
 
 Syntax:  fastcgi_ignore_headers field ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Disables processing of certain response header fields from the FastCGI server. The following fields can be ignored: °∞X-Accel-Redirect°±, °∞X-Accel-Expires°±, °∞X-Accel-Limit-Rate°± (1.1.6), °∞X-Accel-Buffering°± (1.1.6), °∞X-Accel-Charset°± (1.1.6), °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°± (0.8.44), and °∞Vary°± (1.7.7). 
+Disables processing of certain response header fields from the FastCGI server. The following fields can be ignored: ‚ÄúX-Accel-Redirect‚Äù, ‚ÄúX-Accel-Expires‚Äù, ‚ÄúX-Accel-Limit-Rate‚Äù (1.1.6), ‚ÄúX-Accel-Buffering‚Äù (1.1.6), ‚ÄúX-Accel-Charset‚Äù (1.1.6), ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù (0.8.44), and ‚ÄúVary‚Äù (1.7.7). 
 
 If not disabled, processing of these header fields has the following effect: 
 
-?°∞X-Accel-Expires°±, °∞Expires°±, °∞Cache-Control°±, °∞Set-Cookie°±, and °∞Vary°± set the parameters of response caching; 
-?°∞X-Accel-Redirect°± performs an internal redirect to the specified URI; 
-?°∞X-Accel-Limit-Rate°± sets the rate limit for transmission of a response to a client; 
-?°∞X-Accel-Buffering°± enables or disables buffering of a response; 
-?°∞X-Accel-Charset°± sets the desired charset of a response. 
+?‚ÄúX-Accel-Expires‚Äù, ‚ÄúExpires‚Äù, ‚ÄúCache-Control‚Äù, ‚ÄúSet-Cookie‚Äù, and ‚ÄúVary‚Äù set the parameters of response caching; 
+?‚ÄúX-Accel-Redirect‚Äù performs an internal redirect to the specified URI; 
+?‚ÄúX-Accel-Limit-Rate‚Äù sets the rate limit for transmission of a response to a client; 
+?‚ÄúX-Accel-Buffering‚Äù enables or disables buffering of a response; 
+?‚ÄúX-Accel-Charset‚Äù sets the desired charset of a response. 
 
 Syntax:  fastcgi_index name;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5395,7 +5395,7 @@ Sets a file name that will be appended after a URI that ends with a slash, in th
 
 fastcgi_index index.php;
 fastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;
-and the °∞/page.php°± request, the SCRIPT_FILENAME parameter will be equal to °∞/home/www/scripts/php/page.php°±, and with the °∞/°± request it will be equal to °∞/home/www/scripts/php/index.php°±. 
+and the ‚Äú/page.php‚Äù request, the SCRIPT_FILENAME parameter will be equal to ‚Äú/home/www/scripts/php/page.php‚Äù, and with the ‚Äú/‚Äù request it will be equal to ‚Äú/home/www/scripts/php/index.php‚Äù. 
 
 Syntax:  fastcgi_intercept_errors on | off;
  
@@ -5491,11 +5491,11 @@ Limits the number of possible tries for passing a request to the next server. Th
 
 Syntax:  fastcgi_no_cache string ...;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
-Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to °∞0°± then the response will not be saved: 
+Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to ‚Äú0‚Äù then the response will not be saved: 
 
 fastcgi_no_cache $cookie_nocache $arg_nocache$arg_comment;
 fastcgi_no_cache $http_pragma    $http_authorization;
@@ -5503,7 +5503,7 @@ Can be used along with the fastcgi_cache_bypass directive.
 
 Syntax:  fastcgi_param parameter value [if_not_empty];
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5522,7 +5522,7 @@ fastcgi_param REQUEST_METHOD  $request_method;
 fastcgi_param CONTENT_TYPE    $content_type;
 fastcgi_param CONTENT_LENGTH  $content_length;
 
-If PHP was built with the --enable-force-cgi-redirect configuration parameter, the REDIRECT_STATUS parameter should also be passed with the value °∞200°±: 
+If PHP was built with the --enable-force-cgi-redirect configuration parameter, the REDIRECT_STATUS parameter should also be passed with the value ‚Äú200‚Äù: 
 
 fastcgi_param REDIRECT_STATUS 200;
 
@@ -5532,7 +5532,7 @@ fastcgi_param HTTPS           $https if_not_empty;
 
 Syntax:  fastcgi_pass address;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location, if in location
  
 
@@ -5547,7 +5547,7 @@ If a domain name resolves to several addresses, all of them will be used in a ro
 
 Syntax:  fastcgi_pass_header field;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  http, server, location
  
 
@@ -5611,7 +5611,7 @@ Sets a timeout for transmitting a request to the FastCGI server. The timeout is 
 
 Syntax:  fastcgi_split_path_info regex;
  
-Default:  °™  
+Default:  ‚Äï  
 Context:  location
  
 
@@ -5621,7 +5621,7 @@ location ~ ^(.+\.php)(.*)$ {
     fastcgi_split_path_info       ^(.+\.php)(.*)$;
     fastcgi_param SCRIPT_FILENAME /path/to/php$fastcgi_script_name;
     fastcgi_param PATH_INFO       $fastcgi_path_info;
-and the °∞/show.php/article/0001°± request, the SCRIPT_FILENAME parameter will be equal to °∞/path/to/php/show.php°±, and the PATH_INFO parameter will be equal to °∞/article/0001°±. 
+and the ‚Äú/show.php/article/0001‚Äù request, the SCRIPT_FILENAME parameter will be equal to ‚Äú/path/to/php/show.php‚Äù, and the PATH_INFO parameter will be equal to ‚Äú/article/0001‚Äù. 
 
 Syntax:  fastcgi_store on | off | string;
  
@@ -5633,7 +5633,7 @@ Enables saving of files to a disk. The on parameter saves files with paths corre
 
 fastcgi_store /data/www$original_uri;
 
-The modification time of files is set according to the received °∞Last-Modified°± response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the fastcgi_temp_path directive, are put on the same file system. 
+The modification time of files is set according to the received ‚ÄúLast-Modified‚Äù response header field. The response is first written to a temporary file, and then the file is renamed. Starting from version 0.8.9, temporary files and the persistent store can be put on different file systems. However, be aware that in this case a file is copied across two file systems instead of the cheap renaming operation. It is thus recommended that for any given location both saved files and a directory holding temporary files, set by the fastcgi_temp_path directive, are put on the same file system. 
 
 This directive can be used to create local copies of static unchangeable files, e.g.: 
 
@@ -5693,16 +5693,16 @@ a temporary file might look like this:
 See also the use_temp_path parameter of the fastcgi_cache_path directive. 
 
 Parameters Passed to a FastCGI Server
-HTTP request header fields are passed to a FastCGI server as parameters. In applications and scripts running as FastCGI servers, these parameters are usually made available as environment variables. For example, the °∞User-Agent°± header field is passed as the HTTP_USER_AGENT parameter. In addition to HTTP request header fields, it is possible to pass arbitrary parameters using the fastcgi_param directive. 
+HTTP request header fields are passed to a FastCGI server as parameters. In applications and scripts running as FastCGI servers, these parameters are usually made available as environment variables. For example, the ‚ÄúUser-Agent‚Äù header field is passed as the HTTP_USER_AGENT parameter. In addition to HTTP request header fields, it is possible to pass arbitrary parameters using the fastcgi_param directive. 
 
 Embedded Variables
 The ngx_http_fastcgi_module module supports embedded variables that can be used to set parameters using the fastcgi_param directive: 
 
 $fastcgi_script_name 
-request URI or, if a URI ends with a slash, request URI with an index file name configured by the fastcgi_index directive appended to it. This variable can be used to set the SCRIPT_FILENAME and PATH_TRANSLATED parameters that determine the script name in PHP. For example, for the °∞/info/°± request with the following directives 
+request URI or, if a URI ends with a slash, request URI with an index file name configured by the fastcgi_index directive appended to it. This variable can be used to set the SCRIPT_FILENAME and PATH_TRANSLATED parameters that determine the script name in PHP. For example, for the ‚Äú/info/‚Äù request with the following directives 
 fastcgi_index index.php;
 fastcgi_param SCRIPT_FILENAME /home/www/scripts/php$fastcgi_script_name;
-the SCRIPT_FILENAME parameter will be equal to °∞/home/www/scripts/php/info/index.php°±. 
+the SCRIPT_FILENAME parameter will be equal to ‚Äú/home/www/scripts/php/info/index.php‚Äù. 
 When using the fastcgi_split_path_info directive, the $fastcgi_script_name variable equals the value of the first capture set by the directive. 
 
 $fastcgi_path_info
@@ -5735,7 +5735,7 @@ secure_link expression;
  
 
 Default: 
-°™  
+‚Äï  
 
 Context: 
 http, server, location
@@ -5745,7 +5745,7 @@ Defines a string with variables from which the checksum value and lifetime of a 
 
 Variables used in an expression are usually associated with a request; see example below. 
 
-The checksum value extracted from the string is compared with the MD5 hash value of the expression defined by the secure_link_md5 directive. If the checksums are different, the $secure_link variable is set to an empty string. If the checksums are the same, the link lifetime is checked. If the link has a limited lifetime and the time has expired, the $secure_link variable is set to °∞0°±. Otherwise, it is set to °∞1°±. The MD5 hash value passed in a request is encoded in base64url. 
+The checksum value extracted from the string is compared with the MD5 hash value of the expression defined by the secure_link_md5 directive. If the checksums are different, the $secure_link variable is set to an empty string. If the checksums are the same, the link lifetime is checked. If the link has a limited lifetime and the time has expired, the $secure_link variable is set to ‚Äú0‚Äù. Otherwise, it is set to ‚Äú1‚Äù. The MD5 hash value passed in a request is encoded in base64url. 
 
 If a link has a limited lifetime, the expiration time is set in seconds since Epoch (Thu, 01 Jan 1970 00:00:00 GMT). The value is specified in the expression after the MD5 hash, and is separated by a comma. The expiration time passed in a request is available through the $secure_link_expires variable for a use in the secure_link_md5 directive. If the expiration time is not specified, a link has the unlimited lifetime. 
 
@@ -5756,7 +5756,7 @@ secure_link_md5 expression;
  
 
 Default: 
-°™  
+‚Äï  
 
 Context: 
 http, server, location
@@ -5786,7 +5786,7 @@ location /s/ {
 }
 
 
-The °∞/s/link?md5=_e4Nc3iduzkWRm01TBBNYw&expires=2147483647°± link restricts access to °∞/s/link°± for the client with the IP address 127.0.0.1. The link also has the limited lifetime until January 19, 2038 (GMT). 
+The ‚Äú/s/link?md5=_e4Nc3iduzkWRm01TBBNYw&expires=2147483647‚Äù link restricts access to ‚Äú/s/link‚Äù for the client with the IP address 127.0.0.1. The link also has the limited lifetime until January 19, 2038 (GMT). 
 
 On UNIX, the md5 request argument value can be obtained as: 
 
@@ -5803,7 +5803,7 @@ secure_link_secret word;
  
 
 Default: 
-°™  
+‚Äï  
 
 Context: 
 location
@@ -5837,7 +5837,7 @@ location /secure/ {
 }
 
 
-A request of °∞/p/5e814704a28d9bc1914ff19fa0c4a00a/link°± will be internally redirected to °∞/secure/link°±. 
+A request of ‚Äú/p/5e814704a28d9bc1914ff19fa0c4a00a/link‚Äù will be internally redirected to ‚Äú/secure/link‚Äù. 
 
 On UNIX, the hash value for this example can be obtained as: 
 
