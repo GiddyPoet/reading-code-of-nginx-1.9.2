@@ -165,7 +165,7 @@ cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
 ----------------------------------------
 checking for crypt()
 
-/usr/bin/ld: /tmp/ccXabgBL.o: in function `main':
+/usr/bin/ld: /tmp/cc2Q5DGL.o: in function `main':
 autotest.c:(.text+0x17): undefined reference to `crypt'
 collect2: error: ld returned 1 exit status
 ----------
@@ -279,7 +279,7 @@ checking for statvfs()
 ----------------------------------------
 checking for dlopen()
 
-/usr/bin/ld: /tmp/ccWympeR.o: in function `main':
+/usr/bin/ld: /tmp/ccAwFq3S.o: in function `main':
 autotest.c:(.text+0x13): undefined reference to `dlopen'
 collect2: error: ld returned 1 exit status
 ----------
@@ -377,7 +377,32 @@ checking for accept4()
 
 
 ----------------------------------------
-checking for eventfd()
+checking for kqueue AIO support
+
+objs/autotest.c: In function 'main':
+objs/autotest.c:8:56: error: 'SIGEV_KEVENT' undeclared (first use in this function)
+    8 |                       iocb.aio_sigevent.sigev_notify = SIGEV_KEVENT;
+      |                                                        ^~~~~~~~~~~~
+objs/autotest.c:8:56: note: each undeclared identifier is reported only once for each function it appears in
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <aio.h>
+
+int main() {
+    int  n; struct aiocb  iocb;
+                      iocb.aio_sigevent.sigev_notify = SIGEV_KEVENT;
+                      n = aio_read(&iocb);
+    return 0;
+}
+
+----------
+cc -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for Linux AIO support
 
 
 ----------------------------------------
@@ -447,7 +472,7 @@ objs/autotest.c: In function 'main':
 objs/autotest.c:7:5: warning: implicit declaration of function 'setproctitle' [-Wimplicit-function-declaration]
     7 |     setproctitle("test");;
       |     ^~~~~~~~~~~~
-/usr/bin/ld: /tmp/ccvBApNZ.o: in function `main':
+/usr/bin/ld: /tmp/ccuvxGfq.o: in function `main':
 autotest.c:(.text+0x15): undefined reference to `setproctitle'
 collect2: error: ld returned 1 exit status
 ----------
@@ -476,7 +501,7 @@ checking for pwrite()
 ----------------------------------------
 checking for sys_nerr
 
-/usr/bin/ld: /tmp/ccgH9l3X.o: in function `main':
+/usr/bin/ld: /tmp/ccpciRyo.o: in function `main':
 autotest.c:(.text+0xa): warning: `sys_nerr' is deprecated; use `strerror' or `strerror_r' instead
 135
 ----------------------------------------
@@ -506,7 +531,7 @@ checking for System V shared memory
 ----------------------------------------
 checking for POSIX semaphores
 
-/usr/bin/ld: /tmp/ccr8Ggiy.o: in function `main':
+/usr/bin/ld: /tmp/ccADxhHX.o: in function `main':
 autotest.c:(.text+0x2d): undefined reference to `sem_init'
 /usr/bin/ld: autotest.c:(.text+0x45): undefined reference to `sem_destroy'
 collect2: error: ld returned 1 exit status

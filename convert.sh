@@ -47,7 +47,7 @@ main() {
 
 	for f in $(find $IN_DIR -type f); do
 		fname=$(echo $f | awk -F "$IN_DIR" '{print $2}')
-		if echo "$fname" | grep -q -i -E '\.c$|\.txt$'; then
+		if echo "$fname" | grep -q -i -E '\.c$|\.txt$|\.h$'; then
 			out_fname=$OUT_DIR/$fname
 			iconv_file $FROM_ENCODING $TO_ENCODING $f $out_fname
 		else
