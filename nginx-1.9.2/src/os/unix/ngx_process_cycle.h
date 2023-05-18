@@ -12,36 +12,36 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 
-//æ‰“å¼€é¢‘é“ï¼Œä½¿ç”¨é¢‘é“è¿™ç§æ–¹å¼é€šä¿¡å‰å¿…é¡»å‘é€çš„å‘½ä»¤
+//´ò¿ªÆµµÀ£¬Ê¹ÓÃÆµµÀÕâÖÖ·½Ê½Í¨ĞÅÇ°±ØĞë·¢ËÍµÄÃüÁî
 #define NGX_CMD_OPEN_CHANNEL   1
-//å…³é—­å·²ç»æ‰“å¼€çš„é¢‘é“ï¼Œå®é™…ä¸Šä¹Ÿå°±æ˜¯å…³é—­å¥—æ¥å­—
+//¹Ø±ÕÒÑ¾­´ò¿ªµÄÆµµÀ£¬Êµ¼ÊÉÏÒ²¾ÍÊÇ¹Ø±ÕÌ×½Ó×Ö
 #define NGX_CMD_CLOSE_CHANNEL  2
-//è¦æ±‚æ¥æ”¶æ–¹æ­£å¸¸åœ°é€€å‡ºè¿›ç¨‹
+//ÒªÇó½ÓÊÕ·½Õı³£µØÍË³ö½ø³Ì
 #define NGX_CMD_QUIT           3
-//è¦æ±‚æ¥æ”¶æ–¹å¼ºåˆ¶åœ°ç»“æŸè¿›ç¨‹
+//ÒªÇó½ÓÊÕ·½Ç¿ÖÆµØ½áÊø½ø³Ì
 #define NGX_CMD_TERMINATE      4
-//è¦æ±‚æ¥æ”¶æ–¹é‡æ–°æ‰“å¼€è¿›ç¨‹å·²ç»æ‰“å¼€è¿‡çš„æ–‡ä»¶
+//ÒªÇó½ÓÊÕ·½ÖØĞÂ´ò¿ª½ø³ÌÒÑ¾­´ò¿ª¹ıµÄÎÄ¼ş
 #define NGX_CMD_REOPEN         5
 
 
-#define NGX_PROCESS_SINGLE     0 //å•è¿›ç¨‹æ–¹å¼  //å¦‚æœé…ç½®çš„æ˜¯å•è¿›ç¨‹å·¥ä½œæ¨¡å¼  
-#define NGX_PROCESS_MASTER     1 //æ­£å¸¸è¿è¡Œçš„master+å¤šworkerè¿›ç¨‹æ¨¡å¼ä¸­çš„ä¸»è¿›ç¨‹æ˜¯è¯¥æ¨¡å¼
-#define NGX_PROCESS_SIGNALLER  2 //æ˜¯nginx -så‘é€ä¿¡å·çš„è¿›ç¨‹
-#define NGX_PROCESS_WORKER     3 //æ­£å¸¸è¿è¡Œçš„master+å¤šworkerè¿›ç¨‹æ¨¡å¼ä¸­çš„workerå­è¿›ç¨‹æ˜¯è¯¥æ¨¡å¼
-#define NGX_PROCESS_HELPER     4 //åšè¿‡æœŸç¼“å­˜æ–‡ä»¶æ¸…ç†çš„cache_managerå¤„äºè¯¥æ¨¡å¼
+#define NGX_PROCESS_SINGLE     0 //µ¥½ø³Ì·½Ê½  //Èç¹ûÅäÖÃµÄÊÇµ¥½ø³Ì¹¤×÷Ä£Ê½  
+#define NGX_PROCESS_MASTER     1 //Õı³£ÔËĞĞµÄmaster+¶àworker½ø³ÌÄ£Ê½ÖĞµÄÖ÷½ø³ÌÊÇ¸ÃÄ£Ê½
+#define NGX_PROCESS_SIGNALLER  2 //ÊÇnginx -s·¢ËÍĞÅºÅµÄ½ø³Ì
+#define NGX_PROCESS_WORKER     3 //Õı³£ÔËĞĞµÄmaster+¶àworker½ø³ÌÄ£Ê½ÖĞµÄworker×Ó½ø³ÌÊÇ¸ÃÄ£Ê½
+#define NGX_PROCESS_HELPER     4 //×ö¹ıÆÚ»º´æÎÄ¼şÇåÀíµÄcache_manager´¦ÓÚ¸ÃÄ£Ê½
 
 /*
 static ngx_cache_manager_ctx_t  ngx_cache_manager_ctx = {
     ngx_cache_manager_process_handler, "cache manager process", 0
 };
 static ngx_cache_manager_ctx_t  ngx_cache_loader_ctx = {
-    ngx_cache_loader_process_handler, "cache loader process", 60000  //è¿›ç¨‹åˆ›å»ºå60000mç§’æ‰§è¡Œngx_cache_loader_process_handler,åœ¨ngx_cache_manager_process_cycleä¸­æ·»åŠ çš„å®šæ—¶å™¨
+    ngx_cache_loader_process_handler, "cache loader process", 60000  //½ø³Ì´´½¨ºó60000mÃëÖ´ĞĞngx_cache_loader_process_handler,ÔÚngx_cache_manager_process_cycleÖĞÌí¼ÓµÄ¶¨Ê±Æ÷
 };
 */
 typedef struct { //ngx_cache_manager_process_cycle
     ngx_event_handler_pt       handler; //ngx_cache_manager_process_handler  ngx_cache_loader_process_handler
-    char                      *name; //è¿›ç¨‹å
-    ngx_msec_t                 delay; //å»¶è¿Ÿå¤šé•¿æ—¶é—´æ‰§è¡Œä¸Šé¢çš„handlerï¼Œé€šè¿‡å®šæ—¶å™¨å®ç°ï¼Œè§ngx_cache_manager_process_cycle
+    char                      *name; //½ø³ÌÃû
+    ngx_msec_t                 delay; //ÑÓ³Ù¶à³¤Ê±¼äÖ´ĞĞÉÏÃæµÄhandler£¬Í¨¹ı¶¨Ê±Æ÷ÊµÏÖ£¬¼ûngx_cache_manager_process_cycle
 } ngx_cache_manager_ctx_t;
 
 

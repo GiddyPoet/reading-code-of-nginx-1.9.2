@@ -88,4 +88,91 @@ ngx_thread_mutex_create(ngx_thread_mutex_t *mtx, ngx_log_t *log)
     }
 
     /*
-    濡
+    如果mutex类型是 PTHREAD_MUTEX_ERRORCHECK，那么将进行错误检查。如果一个线程企图对一个已经锁住的mutex进行relock，将返回一
+    个错误。如果一个线程对未加锁的或已经unlock的mutex对象进行unlock操作，将返回一个错误。 
+     */
+    err = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
+    if (err != 0) {
+        ngx_log_error(NGX_LOG_EMERG, log, err,
+                      "pthread_mutexattr_settype"
+                      "(PTHREAD_MUTEX_ERRORCHECK) failed");
+        return NGX_ERROR;
+    }
+
+    err = pthread_mutex_init(mtx, &attr);
+    if (err != 0) {
+        ngx_log_error(NGX_LOG_EMERG, log, err,
+                      "pthread_mutex_init() failed");
+        return NGX_ERROR;
+    }
+
+    err = pthread_mutexattr_destroy(&attr);
+    if (err != 0) {
+        ngx_log_error(NGX_LOG_ALERT, log, err,
+                      "pthread_mutexattr_destroy() failed");
+    }
+
+    ngx_log_debug1(NGX_LOG_DEBUG_CORE, log, 0,
+                   "pthread_mutex_init(%p)", mtx);
+    return NGX_OK;
+}
+
+
+ngx_int_t
+ngx_thread_mutex_destroy(ngx_thread_mutex_t *mtx, ngx_log_t *log)
+{
+    ngx_err_t  err;
+
+    err = pthread_mutex_destroy(mtx);
+    if (err != 0) {
+        ngx_log_error(NGX_LOG_ALERT, log, err,
+                      "pthread_mutex_destroy() failed");
+        return NGX_ERROR;
+    }
+
+    ngx_log_debug1(NGX_LOG_DEBUG_CORE, log, 0,
+                   "pthread_mutex_destroy(%p)", mtx);
+    return NGX_OK;
+}
+
+
+ngx_int_t
+ngx_thread_mutex_lock(ngx_thread_mutex_t *mtx, ngx_log_t *log)
+{
+    ngx_err_t  err;
+
+    ngx_log_debug1(NGX_LOG_DEBUG_CORE, log, 0,
+                   "pthread_mutex_lock(%p) enter", mtx);
+
+    err = pthread_mutex_lock(mtx);
+    if (err == 0) {
+        return NGX_OK;
+    }
+
+    ngx_log_error(NGX_LOG_ALERT, log, err, "pthread_mutex_lock() failed");
+
+    return NGX_ERROR;
+}
+
+
+ngx_int_t
+ngx_thread_mutex_unlock(ngx_thread_mutex_t *mtx, ngx_log_t *log)
+{
+    ngx_err_t  err;
+
+    err = pthread_mutex_unlock(mtx);
+
+#if 0
+    ngx_time_update();
+#endif
+
+    if (err == 0) {
+        ngx_log_debug1(NGX_LOG_DEBUG_CORE, log, 0,
+                       "pthread_mutex_unlock(%p) exit", mtx);
+        return NGX_OK;
+    }
+
+    ngx_log_error(NGX_LOG_ALERT, log, err, "pthread_mutex_unlock() failed");
+
+    return NGX_ERROR;
+}
