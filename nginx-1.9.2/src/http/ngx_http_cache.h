@@ -10,7 +10,7 @@
 #define _NGX_HTTP_CACHE_H_INCLUDED_
 
 /*
-»º´æÉæ¼°Ïà¹Ø:
+ç¼“å­˜æ¶‰åŠç›¸å…³:
 ?http://blog.csdn.net/brainkick/article/details/8535242 
 ?http://blog.csdn.net/brainkick/article/details/8570698 
 ?http://blog.csdn.net/brainkick/article/details/8583335 
@@ -24,17 +24,17 @@
 
 
 #define NGX_HTTP_CACHE_MISS          1
-//xxx_cache_bypass ÅäÖÃÖ¸Áî¿ÉÒÔÊ¹Âú×ã¼È¶¨Ìõ¼şµÄÇëÇóÈÆ¹ı»º´æÊı¾İ£¬µ«ÊÇÕâĞ©ÇëÇóµÄÏìÓ¦Êı¾İÒÀÈ»¿ÉÒÔ±» upstream Ä£¿é»º´æ¡£ 
-#define NGX_HTTP_CACHE_BYPASS        2 //ËµÃ÷²»ÄÜ´Ó»º´æ»ñÈ¡£¬Ó¦¸Ã´Óºó¶Ë»ñÈ¡ Í¨¹ıxxx_cache_bypassÉèÖÃÅĞ¶Ïngx_http_test_predicates(r, u->conf->cache_bypass)
-#define NGX_HTTP_CACHE_EXPIRED       3  //»º´æÄÚÈİ¹ıÆÚ£¬µ±Ç°ÇëÇóĞèÒªÏòºó¶ËÇëÇóĞÂµÄÏìÓ¦Êı¾İ¡£
-//¼ûngx_http_file_cache_open->ngx_http_file_cache_read£¬È»ºóÔÚngx_http_upstream_cache»á°Ñu->cache_status = NGX_HTTP_CACHE_EXPIRED;
-#define NGX_HTTP_CACHE_STALE         4 //±íÊ¾×Ô¼ºÊÇµÚÒ»¸ö·¢ÏÖ¸Ã»º´æ¹ıÆÚµÄ¿Í»§¶ËÇëÇó£¬Òò´Ë×Ô¼ºĞèÒª´Óºó¶Ë´ÓĞÂ»ñÈ¡
-#define NGX_HTTP_CACHE_UPDATING      5 //»º´æÄÚÈİ¹ıÆÚ£¬Í¬Ê±¼ºÓĞÍ¬ÑùÊ¹ÓÃ¸Ã»º´æ½ÚµãµÄÆäËüÇëÇóÕıÔÚÏòÇëÇóĞÂµÄÏìÓ¦Êı¾İ¡£µÈÆäËûÇëÇó»ñÈ¡Íêºó¶ËÊı¾İºó£¬×Ô¼ºÔÚ¶Á»º´æÎÄ¼şÏò¿Í»§¶Ë·¢ËÍ
+//xxx_cache_bypass é…ç½®æŒ‡ä»¤å¯ä»¥ä½¿æ»¡è¶³æ—¢å®šæ¡ä»¶çš„è¯·æ±‚ç»•è¿‡ç¼“å­˜æ•°æ®ï¼Œä½†æ˜¯è¿™äº›è¯·æ±‚çš„å“åº”æ•°æ®ä¾ç„¶å¯ä»¥è¢« upstream æ¨¡å—ç¼“å­˜ã€‚ 
+#define NGX_HTTP_CACHE_BYPASS        2 //è¯´æ˜ä¸èƒ½ä»ç¼“å­˜è·å–ï¼Œåº”è¯¥ä»åç«¯è·å– é€šè¿‡xxx_cache_bypassè®¾ç½®åˆ¤æ–­ngx_http_test_predicates(r, u->conf->cache_bypass)
+#define NGX_HTTP_CACHE_EXPIRED       3  //ç¼“å­˜å†…å®¹è¿‡æœŸï¼Œå½“å‰è¯·æ±‚éœ€è¦å‘åç«¯è¯·æ±‚æ–°çš„å“åº”æ•°æ®ã€‚
+//è§ngx_http_file_cache_open->ngx_http_file_cache_readï¼Œç„¶ååœ¨ngx_http_upstream_cacheä¼šæŠŠu->cache_status = NGX_HTTP_CACHE_EXPIRED;
+#define NGX_HTTP_CACHE_STALE         4 //è¡¨ç¤ºè‡ªå·±æ˜¯ç¬¬ä¸€ä¸ªå‘ç°è¯¥ç¼“å­˜è¿‡æœŸçš„å®¢æˆ·ç«¯è¯·æ±‚ï¼Œå› æ­¤è‡ªå·±éœ€è¦ä»åç«¯ä»æ–°è·å–
+#define NGX_HTTP_CACHE_UPDATING      5 //ç¼“å­˜å†…å®¹è¿‡æœŸï¼ŒåŒæ—¶å·±æœ‰åŒæ ·ä½¿ç”¨è¯¥ç¼“å­˜èŠ‚ç‚¹çš„å…¶å®ƒè¯·æ±‚æ­£åœ¨å‘è¯·æ±‚æ–°çš„å“åº”æ•°æ®ã€‚ç­‰å…¶ä»–è¯·æ±‚è·å–å®Œåç«¯æ•°æ®åï¼Œè‡ªå·±åœ¨è¯»ç¼“å­˜æ–‡ä»¶å‘å®¢æˆ·ç«¯å‘é€
 #define NGX_HTTP_CACHE_REVALIDATED   6
-#define NGX_HTTP_CACHE_HIT           7 //»º´æÕı³£ÃüÖĞ
+#define NGX_HTTP_CACHE_HIT           7 //ç¼“å­˜æ­£å¸¸å‘½ä¸­
 /*
-Òò»º´æ½Úµã±»²éÑ¯´ÎÊı»¹Î´´ï `min_uses`£¬¶Ô´ËÇëÇó½ûÓÃ»º´æ»úÖÆ¼ÌĞøÇëÇó´¦Àí£¬µ«ÊÇ²»ÔÙ»º´æÆäÏìÓ¦Êı¾İ (`u->cacheable = 0`)¡£
-case NGX_HTTP_CACHE_SCARCE: (º¯Êıngx_http_upstream_cache)
+å› ç¼“å­˜èŠ‚ç‚¹è¢«æŸ¥è¯¢æ¬¡æ•°è¿˜æœªè¾¾ `min_uses`ï¼Œå¯¹æ­¤è¯·æ±‚ç¦ç”¨ç¼“å­˜æœºåˆ¶ç»§ç»­è¯·æ±‚å¤„ç†ï¼Œä½†æ˜¯ä¸å†ç¼“å­˜å…¶å“åº”æ•°æ® (`u->cacheable = 0`)ã€‚
+case NGX_HTTP_CACHE_SCARCE: (å‡½æ•°ngx_http_upstream_cache)
         u->cacheable = 0;
 
 */
@@ -47,450 +47,46 @@ case NGX_HTTP_CACHE_SCARCE: (º¯Êıngx_http_upstream_cache)
 #define NGX_HTTP_CACHE_VERSION       3
 
 
-typedef struct { //´´½¨¿Õ¼äºÍ¸³Öµ¼ûngx_http_file_cache_valid_set_slot
-    ngx_uint_t                       status; //2XX 3XX 4XX 5XXµÈ£¬Èç¹ûÎª0±íÊ¾proxy_cache_valid any 3m;
-    time_t                           valid; //proxy_cache_valid xxx 4m;ÖĞµÄ4m
+typedef struct { //åˆ›å»ºç©ºé—´å’Œèµ‹å€¼è§ngx_http_file_cache_valid_set_slot
+    ngx_uint_t                       status; //2XX 3XX 4XX 5XXç­‰ï¼Œå¦‚æœä¸º0è¡¨ç¤ºproxy_cache_valid any 3m;
+    time_t                           valid; //proxy_cache_valid xxx 4m;ä¸­çš„4m
 } ngx_http_cache_valid_t;
 
-//½á¹¹Ìå ngx_http_file_cache_node_t ±£´æ´ÅÅÌ»º´æÎÄ¼şÔÚÄÚ´æÖĞµÄÃèÊöĞÅÏ¢ 
-//Ò»¸öcacheÎÄ¼ş¶ÔÓ¦Ò»¸önode£¬Õâ¸önodeÖĞÖ÷Òª±£´æÁËcache µÄkeyºÍuniq£¬ uniqÖ÷ÒªÊÇ¹ØÁªÎÄ¼ş£¬¶økeyÊÇÓÃÓÚºìºÚÊ÷¡£
+//ç»“æ„ä½“ ngx_http_file_cache_node_t ä¿å­˜ç£ç›˜ç¼“å­˜æ–‡ä»¶åœ¨å†…å­˜ä¸­çš„æè¿°ä¿¡æ¯ 
+//ä¸€ä¸ªcacheæ–‡ä»¶å¯¹åº”ä¸€ä¸ªnodeï¼Œè¿™ä¸ªnodeä¸­ä¸»è¦ä¿å­˜äº†cache çš„keyå’Œuniqï¼Œ uniqä¸»è¦æ˜¯å…³è”æ–‡ä»¶ï¼Œè€Œkeyæ˜¯ç”¨äºçº¢é»‘æ ‘ã€‚
 
 /*
-Îªºó¶ËÓ¦´ğ»ØÀ´µÄÊı¾İ´´½¨»º´æÎÄ¼şÓÃ¸Ãº¯Êı»ñÈ¡»º´æÎÄ¼şÃû£¬¿Í»§¶ËÇëÇó¹ıÀ´ºó£¬Ò²ÊÇ²ÉÓÃ¸Ãº¯Êı»ñÈ¡»º´æÎÄ¼şÃû£¬Ö»Òª
-proxy_cache_key $scheme$proxy_host$request_uriÅäÖÃÖĞµÄ±äÁ¿¶ÔÓ¦µÄÖµÒ»Ñù£¬Ôò»ñÈ¡µ½µÄÎÄ¼şÃû¿Ï¶¨ÊÇÒ»ÑùµÄ£¬¼´Ê¹ÊÇ²»Í¬µÄ¿Í»§¶Ër£¬²Î¿¼ngx_http_file_cache_name
-ÒòÎª²»Í¬¿Í»§¶ËµÄproxy_cache_keyÅäÖÃµÄ¶ÔÓ¦±äÁ¿valueÒ»Ñù£¬ÔòËûÃÇ¼ÆËã³öÀ´µÄngx_http_cache_s->key[]Ò²»áÒ»Ñù£¬ËûÃÇµÄÔÚºìºÚÊ÷ºÍqueue¶ÓÁĞÖĞµÄ
-node½ÚµãÒ²»áÊÇÍ¬Ò»¸ö£¬²Î¿¼ngx_http_file_cache_lookup  
+ä¸ºåç«¯åº”ç­”å›æ¥çš„æ•°æ®åˆ›å»ºç¼“å­˜æ–‡ä»¶ç”¨è¯¥å‡½æ•°è·å–ç¼“å­˜æ–‡ä»¶åï¼Œå®¢æˆ·ç«¯è¯·æ±‚è¿‡æ¥åï¼Œä¹Ÿæ˜¯é‡‡ç”¨è¯¥å‡½æ•°è·å–ç¼“å­˜æ–‡ä»¶åï¼Œåªè¦
+proxy_cache_key $scheme$proxy_host$request_urié…ç½®ä¸­çš„å˜é‡å¯¹åº”çš„å€¼ä¸€æ ·ï¼Œåˆ™è·å–åˆ°çš„æ–‡ä»¶åè‚¯å®šæ˜¯ä¸€æ ·çš„ï¼Œå³ä½¿æ˜¯ä¸åŒçš„å®¢æˆ·ç«¯rï¼Œå‚è€ƒngx_http_file_cache_name
+å› ä¸ºä¸åŒå®¢æˆ·ç«¯çš„proxy_cache_keyé…ç½®çš„å¯¹åº”å˜é‡valueä¸€æ ·ï¼Œåˆ™ä»–ä»¬è®¡ç®—å‡ºæ¥çš„ngx_http_cache_s->key[]ä¹Ÿä¼šä¸€æ ·ï¼Œä»–ä»¬çš„åœ¨çº¢é»‘æ ‘å’Œqueueé˜Ÿåˆ—ä¸­çš„
+nodeèŠ‚ç‚¹ä¹Ÿä¼šæ˜¯åŒä¸€ä¸ªï¼Œå‚è€ƒngx_http_file_cache_lookup  
 */
 
 /*
-   Í¬Ò»¸ö¿Í»§¶ËÇëÇórÖ»ÓµÓĞÒ»¸ör->ngx_http_cache_tºÍr->ngx_http_cache_t->ngx_http_file_cache_t½á¹¹£¬Í¬Ò»¸ö¿Í»§¶Ë¿ÉÄÜ»áÇëÇóºó¶ËµÄ¶à¸öuri£¬
-   ÔòÔÚÏòºó¶Ë·¢ÆğÇëÇóÇ°£¬ÔÚngx_http_file_cache_open->ngx_http_file_cache_existsÖĞ»á°´ÕÕproxy_cache_key $scheme$proxy_host$request_uri¼ÆËã³öÀ´µÄ
-   MD5À´´´½¨¶ÔÓ¦µÄºìºÚÊ÷½Úµã£¬È»ºóÌí¼Óµ½ngx_http_file_cache_t->sh->rbtreeºìºÚÊ÷ÖĞ¡£
+   åŒä¸€ä¸ªå®¢æˆ·ç«¯è¯·æ±‚råªæ‹¥æœ‰ä¸€ä¸ªr->ngx_http_cache_tå’Œr->ngx_http_cache_t->ngx_http_file_cache_tç»“æ„ï¼ŒåŒä¸€ä¸ªå®¢æˆ·ç«¯å¯èƒ½ä¼šè¯·æ±‚åç«¯çš„å¤šä¸ªuriï¼Œ
+   åˆ™åœ¨å‘åç«¯å‘èµ·è¯·æ±‚å‰ï¼Œåœ¨ngx_http_file_cache_open->ngx_http_file_cache_existsä¸­ä¼šæŒ‰ç…§proxy_cache_key $scheme$proxy_host$request_uriè®¡ç®—å‡ºæ¥çš„
+   MD5æ¥åˆ›å»ºå¯¹åº”çš„çº¢é»‘æ ‘èŠ‚ç‚¹ï¼Œç„¶åæ·»åŠ åˆ°ngx_http_file_cache_t->sh->rbtreeçº¢é»‘æ ‘ä¸­ã€‚
 */
 
 /*
-»º´æÎÄ¼şstat×´Ì¬ĞÅÏ¢ngx_cached_open_file_s(ngx_open_file_cache_t->rbtree(expire_queue)µÄ³ÉÔ±   )ÔÚngx_expire_old_cached_files½øĞĞÊ§Ğ§ÅĞ¶Ï, 
-»º´æÎÄ¼şÄÚÈİĞÅÏ¢(ÊµÊµÔÚÔÚµÄÎÄ¼şĞÅÏ¢)ngx_http_file_cache_node_t(ngx_http_file_cache_s->shÖĞµÄ³ÉÔ±)ÔÚngx_http_file_cache_expire½øĞĞÊ§Ğ§ÅĞ¶Ï¡£
+ç¼“å­˜æ–‡ä»¶statçŠ¶æ€ä¿¡æ¯ngx_cached_open_file_s(ngx_open_file_cache_t->rbtree(expire_queue)çš„æˆå‘˜   )åœ¨ngx_expire_old_cached_filesè¿›è¡Œå¤±æ•ˆåˆ¤æ–­, 
+ç¼“å­˜æ–‡ä»¶å†…å®¹ä¿¡æ¯(å®å®åœ¨åœ¨çš„æ–‡ä»¶ä¿¡æ¯)ngx_http_file_cache_node_t(ngx_http_file_cache_s->shä¸­çš„æˆå‘˜)åœ¨ngx_http_file_cache_expireè¿›è¡Œå¤±æ•ˆåˆ¤æ–­ã€‚
 */
 
-//¸Ã½á¹¹ÎªÊ²Ã´ÄÜ´ú±íÒ»¸ö»º´æÎÄ¼ş? ÒòÎªngx_http_file_cache_node_tÖĞµÄnode+key[]¾ÍÊÇÒ»¸ö¶ÔÓ¦µÄ»º´æÎÄ¼şµÄÄ¿Â¼f/27/46492fbf0d9d35d3753c66851e81627fÖĞµÄ46492fbf0d9d35d3753c66851e81627f£¬×¢Òâf/27¾ÍÊÇ×îÎ²²¿µÄ×Ö½Ú
-//¸Ã½á¹¹Ê½ºìºÚÊ÷½Úµã£¬±»Ìí¼Óµ½ngx_http_file_cache_t->sh->rbtreeºìºÚÊ÷ÖĞÒÔ¼°ngx_http_file_cache_t->sh->queue¶ÓÁĞÖĞ
-typedef struct { //ngx_http_file_cache_addÖĞ´´½¨ //ngx_http_file_cache_existsÖĞ´´½¨¿Õ¼äºÍ¸³Öµ    
-    ngx_rbtree_node_t                node; /* »º´æ²éÑ¯Ê÷µÄ½Úµã */ //node¾ÍÊÇ±¾ngx_http_file_cache_node_t½á¹¹µÄÇ°Ãængx_rbtree_node_t¸ö×Ö½Ú
-    ngx_queue_t                      queue; /* LRUÒ³ÃæÖÃ»»Ëã·¨ ¶ÓÁĞÖĞµÄ½Úµã */
+//è¯¥ç»“æ„ä¸ºä»€ä¹ˆèƒ½ä»£è¡¨ä¸€ä¸ªç¼“å­˜æ–‡ä»¶? å› ä¸ºngx_http_file_cache_node_tä¸­çš„node+key[]å°±æ˜¯ä¸€ä¸ªå¯¹åº”çš„ç¼“å­˜æ–‡ä»¶çš„ç›®å½•f/27/46492fbf0d9d35d3753c66851e81627fä¸­çš„46492fbf0d9d35d3753c66851e81627fï¼Œæ³¨æ„f/27å°±æ˜¯æœ€å°¾éƒ¨çš„å­—èŠ‚
+//è¯¥ç»“æ„å¼çº¢é»‘æ ‘èŠ‚ç‚¹ï¼Œè¢«æ·»åŠ åˆ°ngx_http_file_cache_t->sh->rbtreeçº¢é»‘æ ‘ä¸­ä»¥åŠngx_http_file_cache_t->sh->queueé˜Ÿåˆ—ä¸­
+typedef struct { //ngx_http_file_cache_addä¸­åˆ›å»º //ngx_http_file_cache_existsä¸­åˆ›å»ºç©ºé—´å’Œèµ‹å€¼    
+    ngx_rbtree_node_t                node; /* ç¼“å­˜æŸ¥è¯¢æ ‘çš„èŠ‚ç‚¹ */ //nodeå°±æ˜¯æœ¬ngx_http_file_cache_node_tç»“æ„çš„å‰é¢ngx_rbtree_node_tä¸ªå­—èŠ‚
+    ngx_queue_t                      queue; /* LRUé¡µé¢ç½®æ¢ç®—æ³• é˜Ÿåˆ—ä¸­çš„èŠ‚ç‚¹ */
     
-    //²Î¿¼ngx_http_file_cache_exists£¬´æ´¢µÄÊÇngx_http_cache_t->keyÖĞµÄºóÃæÒ»Ğ©×Ö½Ú
+    //å‚è€ƒngx_http_file_cache_existsï¼Œå­˜å‚¨çš„æ˜¯ngx_http_cache_t->keyä¸­çš„åé¢ä¸€äº›å­—èŠ‚
     u_char                           key[NGX_HTTP_CACHE_KEY_LEN
                                          - sizeof(ngx_rbtree_key_t)]; 
 
-    //ngx_http_file_cache_existsÖĞµÚÒ»´Î´´½¨µÄÊ±ºòÄ¬ÈÏÎª1  ngx_http_file_cache_update»á¼ô1£¬
-    //ngx_http_upstream_finalize_request->ngx_http_file_cache_freeÒ²»á¼õ1  ngx_http_file_cache_existsÖĞ¼Ó1£¬±íÊ¾ÓĞ¶àÉÙ¸ö¿Í»§¶ËÁ¬½ÓÔÚ»ñÈ¡¸Ã»º´æ
-    unsigned                         count:20;    /* ÒıÓÃ¼ÆÊı */ //²Î¿¼
-    //Ö»»á×ö×ÔÔö²Ù×÷£¬¼ûngx_http_file_cache_existsÖĞ¼Ó1£¬±íÊ¾×Ü¹²ÓĞ¶àÉÙ¸ö¿Í»§¶ËÇëÇó¸Ã»º´æ£¬¼´Ê¹ºÍ¸Ã¿Í»§¶ËÁ¬½Ó¶Ï¿ªÒ²²»»á×ö¼õ1²Ù×÷
-    unsigned                         uses:10;    /* ±»ÇëÇó²éÑ¯µ½µÄ´ÎÊı */     //¶àÉÙÇëÇóÔÚÊ¹ÓÃ  ngx_http_file_cache_existsÃ»²éÕÒµ½Ò»´Î×ÔÔöÒ»´Î
+    //ngx_http_file_cache_existsä¸­ç¬¬ä¸€æ¬¡åˆ›å»ºçš„æ—¶å€™é»˜è®¤ä¸º1  ngx_http_file_cache_updateä¼šå‰ª1ï¼Œ
+    //ngx_http_upstream_finalize_request->ngx_http_file_cache_freeä¹Ÿä¼šå‡1  ngx_http_file_cache_existsä¸­åŠ 1ï¼Œè¡¨ç¤ºæœ‰å¤šå°‘ä¸ªå®¢æˆ·ç«¯è¿æ¥åœ¨è·å–è¯¥ç¼“å­˜
+    unsigned                         count:20;    /* å¼•ç”¨è®¡æ•° */ //å‚è€ƒ
+    //åªä¼šåšè‡ªå¢æ“ä½œï¼Œè§ngx_http_file_cache_existsä¸­åŠ 1ï¼Œè¡¨ç¤ºæ€»å…±æœ‰å¤šå°‘ä¸ªå®¢æˆ·ç«¯è¯·æ±‚è¯¥ç¼“å­˜ï¼Œå³ä½¿å’Œè¯¥å®¢æˆ·ç«¯è¿æ¥æ–­å¼€ä¹Ÿä¸ä¼šåšå‡1æ“ä½œ
+    unsigned                         uses:10;    /* è¢«è¯·æ±‚æŸ¥è¯¢åˆ°çš„æ¬¡æ•° */     //å¤šå°‘è¯·æ±‚åœ¨ä½¿ç”¨  ngx_http_file_cache_existsæ²¡æŸ¥æ‰¾åˆ°ä¸€æ¬¡è‡ªå¢ä¸€æ¬¡
 /*
-valid_sec , valid_msec ¨C »º´æÄÚÈİµÄ¹ıÆÚÊ±¼ä£¬»º´æÄÚÈİ¹ıÆÚºó±»²éÑ¯ Ê±»áÓÉ ngx_http_file_cache_read ·µ»Ø NGX_HTTP_CACHE_STALE £¬
-È»ºóÓÉfastcgi_cache_use_staleÅäÖÃÖ¸Áî¾ö¶¨ÊÇ·ñ¼°ºÎÖÖÇé¿öÏÂÊ¹ÓÃ¹ıÆÚÄÚÈİ¡£ 
-*/
-    unsigned                         valid_msec:10;
-    /*
-    µ±ºó¶ËÏìÓ¦Âë >= NGX_HTTP_SPECIAL_RESPONSE , ²¢ÇÒ´ò¿ªÁËfastcgi_intercept_errors ÅäÖÃ£¬Í¬Ê± fastcgi_cache_valid ÅäÖÃÖ¸ÁîºÍ 
-error_page ÅäÖÃÖ¸ÁîÒ²¶Ô¸ÃÏìÓ¦Âë×öÁËÉè¶¨µÄÇé¿öÏÂ£¬¸Ã×Ö¶Î¼ÇÂ¼ÏìÓ¦Âë£¬ ²¢ÁĞµÄvalid_sec×Ö¶Î¼ÇÂ¼¸ÃÏìÓ¦ÂëµÄ³ÖĞøÊ±¼ä¡£ÕâÖÖerror½Úµã²¢²»¶Ô 
-Ó¦Êµ¼ÊµÄ»º´æÎÄ¼ş¡£
-     */
-    unsigned                         error:10;
-/*
-¸Ã»º´æ½ÚµãÊÇ·ñÓĞ¶ÔÓ¦µÄ»º´æÎÄ¼ş¡£ĞÂ´´½¨µÄ»º´æ½Úµã»òÕß¹ıÆÚµÄerror½Úµã (²Î¼ûerror×Ö¶Î£¬µ±error²»µÈÓÚ0Ê±£¬Nginx ËæºóÒ²²» 
-»áÔÙ¹ØĞÄ¸Ã½ÚµãµÄexists×Ö¶ÎÖµ) ¸Ã×Ö¶ÎÖµÎª0¡£µ±Õı³£½Úµã(errorµÈÓÚ0) µÄexistsÎª0Ê±£¬½øÈëcache lock Ä£Ê½¡£ 
-*/ //Ö»ÓĞ¿Í»§¶ËÇëÇó¸Ãuri´ÎÊı´ïµ½Proxy_cache_min_uses 3ÖĞµÄ3´Î²Å»áÖÃ1£¬¼ûngx_http_file_cache_exists£¬ÒòÎªÈç¹ûÃ»ÓĞ´ïµ½3´Î£¬Ôòu->cachable = 0
-    //±íÊ¾¸Ã»º´æÎÄ¼şÊÇ·ñ´æÔÚ£¬Proxy_cache_min_uses 3£¬ÔòµÚ3´Îºó¿ªÊ¼»ñÈ¡ºó¶ËÊı¾İ£¬»ñÈ¡Íê±ÏºóÔÚngx_http_file_cache_updateÖĞÖÃ1
-    unsigned                         exists:1;//ÊÇ·ñ´æÔÚ¶ÔÓ¦µÄcacheÎÄ¼ş£¬
-//updating ¨C »º´æÄÚÈİ¹ıÆÚ£¬Ä³¸öÇëÇóÕıÔÚ»ñÈ¡ÓĞĞ§µÄºó¶ËÏìÓ¦²¢¸üĞÂ´Ë»º´æ½Úµã¡£²Î¼û ngx_http_cache_t::updating ¡£ 
-    unsigned                         updating:1; //¿Í»§¶ËÇëÇóµ½nginxºó£¬·¢ÏÖ»º´æ¹ıÆÚ£¬Ôò»áÖØĞÂ´Óºó¶Ë»ñÈ¡Êı¾İ£¬updatingÖÃ1£¬¼ûngx_http_file_cache_read
-    //²Î¿¼ngx_http_file_cache_delete
-    unsigned                         deleting:1;     /* ÕıÔÚ±»ÇåÀíÖĞ */     //ÊÇ·ñÕıÔÚÉ¾³ı
-                                     /* 11 unused bits */
-    //ÎÄ¼şinode½ÚµãºÅ£¬
-    ngx_file_uniq_t                  uniq;//ÎÄ¼şµÄuniq  ¸³Öµ¼ûngx_http_file_cache_update
-    //expires ¨C »º´æ½ÚµãµÄ¿É»ØÊÕÊ±¼ä (¸½´ø»º´æÄÚÈİ)¡£ 
-    time_t                           expire;//cacheÊ§Ğ§Ê±¼ä  ¸ÃnodeÊ§Ğ§Ê±¼ä£¬²Î¿¼ngx_http_file_cache_exists
-    time_t                           valid_sec; //±ÈÈçcache controlÖĞµÄmax-age
-    size_t                           body_start; //ÆäÊµÓ¦¸ÃÊÇbody´óĞ¡  ¸³Öµ¼ûngx_http_file_cache_update
-    off_t                            fs_size; //ÎÄ¼ş´óĞ¡   ¸³Öµ¼ûngx_http_file_cache_update
-    ngx_msec_t                       lock_time;
-} ngx_http_file_cache_node_t;
-
-//²Î¿¼: nginx proxy cache·ÖÎö  http://blog.csdn.net/xiaolang85/article/details/38260041
-//²Î¿¼:nginx proxy cacheµÄÊµÏÖÔ­Àí http://blog.itpub.net/15480802/viewspace-1421409/
-/*
-ÇëÇó¶ÔÓ¦µÄ»º´æÌõÄ¿µÄÍêÕûĞÅÏ¢ (ÇëÇóÊ¹ÓÃµÄ»º´æ file_cache ¡¢»º´æÌõÄ¿¶ÔÓ¦µÄ»º´æ½ÚµãĞÅÏ¢ node ¡¢»º´æÎÄ¼ş file ¡¢key Öµ¼°Æä¼ìÑé crc32 µÈµÈ) 
-¶¼ÁÙÊ±±£´æÓÚngx_http_cache_t(r->cache) ½á¹¹ÌåÖĞ£¬Õâ¸ö½á¹¹ÌåÖĞµÄĞÅÏ¢Á¿»ù±¾ÉÏÏàµ±ÓÚngx_http_file_cache_header_t ºÍ ngx_http_file_cache_node_tµÄ×ÜºÍ£º 
-*/ //ngx_http_upstream_cache->ngx_http_file_cache_newÖĞ´´½¨¿Õ¼ä
-
-/*
-   Í¬Ò»¸ö¿Í»§¶ËÇëÇórÖ»ÓµÓĞÒ»¸ör->ngx_http_cache_tºÍr->ngx_http_cache_t->ngx_http_file_cache_t½á¹¹£¬Í¬Ò»¸ö¿Í»§¶Ë¿ÉÄÜ»áÇëÇóºó¶ËµÄ¶à¸öuri£¬
-   ÔòÔÚÏòºó¶Ë·¢ÆğÇëÇóÇ°£¬ÔÚngx_http_file_cache_open->ngx_http_file_cache_existsÖĞ»á°´ÕÕproxy_cache_key $scheme$proxy_host$request_uri¼ÆËã³öÀ´µÄ
-   MD5À´´´½¨¶ÔÓ¦µÄºìºÚÊ÷½Úµã£¬È»ºóÌí¼Óµ½ngx_http_file_cache_t->sh->rbtreeºìºÚÊ÷ÖĞ¡£ËùÒÔ²»Í¬µÄ¿Í»§¶Ëuri»áÓĞ²»Í¬µÄnode½Úµã´æÔÚÓÚºìºÚÊ÷ÖĞ
-*/
-
-/*ngx_http_upstream_init_request->ngx_http_upstream_cache ¿Í»§¶Ë»ñÈ¡»º´æ ºó¶ËÓ¦´ğ»ØÀ´Êı¾İºóÔÚngx_http_upstream_send_response->ngx_http_file_cache_create
-ÖĞ´´½¨ÁÙÊ±ÎÄ¼ş£¬È»ºóÔÚngx_event_pipe_write_chain_to_temp_file°Ñ¶ÁÈ¡µÄºó¶ËÊı¾İĞ´ÈëÁÙÊ±ÎÄ¼ş£¬×îºóÔÚ
-ngx_http_upstream_send_response->ngx_http_upstream_process_request->ngx_http_file_cache_updateÖĞ°ÑÁÙÊ±ÎÄ¼şÄÚÈİrename(Ïàµ±ÓÚmv)µ½proxy_cache_pathÖ¸¶¨
-µÄcacheÄ¿Â¼ÏÂÃæ
-*/
-struct ngx_http_cache_s {//±£´æÓÚngx_http_request_s->cache
-    //cache file: "/var/yyz/cache_xxx/c/c1/13cc494353644acaed96a080cac13c1c"ngx_http_file_cache_nameÖĞ°Ñpath+level+key
-    ngx_file_t                       file;    /* »º´æÎÄ¼şÃèÊö½á¹¹Ìå */ //cache fileµÄ´´½¨¼ûngx_http_file_cache_name
-    //³õÊ¼»¯ÔÚngx_http_file_cache_new  proxy_cache_key $scheme$proxy_host$request_uri
-    //ngx_http_xxx_create_key°Ñxxx_cache_key (proxy_cache_key  fastcgi_cache_key)ÖĞµÄÅäÖÃµÄvalue½âÎö³öÀ´±£´æµ½kyesÊı×éÖĞ£¬Ò»°ãÖ»»áÉúĞ§Ò»¸öxxx_cache_key£¬
-    ngx_array_t                      keys; //ÕâÀïÃæ´æ´¢µÄÖµÊÇ´Óngx_http_xxx_create_keyÀ´µÄ(ÀıÈçngx_http_fastcgi_create_key)
-    uint32_t                         crc32; //ngx_http_file_cache_create_key,¾ÍÊÇÉÏÃæµÄkeysÊı×éÖĞµÄËùÓĞxxx_cache_keyÅäÖÃÖĞµÄ×Ö·û´®½øĞĞcrc32Ğ£ÑéÖµ
-    //proxy_cache_key  fastcgi_cache_keyÅäÖÃµÄ²ÎÊı×Ö·û´®ÁĞ±í½øĞĞMD5¼ÆËãµÄ½á¹û£¬¼ûngx_http_file_cache_create_key
-    //ÀıÈçproxy_cache_key $scheme$proxy_host$request_uriÔòÎªÕâÈı¸ö²ÎÊı¶ÔÓ¦µÄvalue½øĞĞMD5ÔËËãµÄ½á¹û
-    u_char                           key[NGX_HTTP_CACHE_KEY_LEN];//xxx_cache_keyÅäÖÃ×Ö·û´®½øĞĞMD5ÔËËãµÄÖµ ngx_http_file_cache_create_key
-    //ngx_memcpy(c->main, c->key, NGX_HTTP_CACHE_KEY_LEN);
-    u_char                           main[NGX_HTTP_CACHE_KEY_LEN];//»ñÈ¡xxx_cache_keyÅäÖÃ×Ö·û´®½øĞĞMD5ÔËËãµÄÖµ
-
-    //ÎÄ¼şinode½ÚµãºÅ
-    ngx_file_uniq_t                  uniq; //¸³Öµ¼ûngx_http_file_cache_exists£¬ÕæÕıµÄÀ´Ô´ÔÚ//ÎÄ¼şµÄuniq  ¸³Öµ¼ûngx_http_file_cache_update
-    //²Î¿¼ngx_http_upstream_process_cache_control  ngx_http_upstream_process_accel_expires ¿ÉÒÔÓÉºó¶ËÓ¦´ğÍ·²¿ĞĞ¾ö¶¨
-    //Èç¹ûºó¶ËÃ»ÓĞĞ¯´øÕâÁ½¸öº¯ÊıÖĞÍ·²¿ĞĞĞ¯´øµÄÊ±¼ä£¬ÔòÍ¨¹ıngx_http_file_cache_valid(fastcgi_cache_valid proxy_cache_valid xxx 4m;)»ñÈ¡Ê±¼ä
-    //ÔÚngx_http_file_cache_readÖĞ¶ÁÈ¡»º´æµÄÊ±ºò£¬»áÍ¨¹ıif (c->valid_sec < now) { }ÅĞ¶Ï»º´æÊÇ·ñ¹ıÆÚ£¬
-    time_t                           valid_sec; //¸³Öµ¼ûngx_http_upstream_send_response(Ò²¾ÍÊÇfastcgi_cache_validÉèÖÃµÄÓĞĞ§Ê±¼ä)  //Ã¿´ÎnginxÍË³öµÄÊ±ºò£¬ÀıÈçkill nginx¶¼»á¼á³Ö»º´æÎÄ¼ş£¬Èç¹û¹ıÆÚ£¬Ôò»áÉ¾³ı
-    //ºó¶ËĞ¯´øµÄÍ·²¿ĞĞ"Last-Modified:XXX"¸³Öµ£¬¼ûngx_http_upstream_process_last_modified
-    time_t                           last_modified;
-    
-    time_t                           date;
-
-    /*
-     EtagÈ·¶¨ä¯ÀÀÆ÷»º´æ£º EtagµÄÔ­ÀíÊÇ½«ÎÄ¼ş×ÊÔ´±àºÅÒ»¸öetagÖµ£¬Response¸ø·ÃÎÊÕß£¬·ÃÎÊÕßÔÙ´ÎÇëÇóÊ±£¬´ø×ÅÕâ¸öEtagÖµ£¬Óë·şÎñ¶ËËùÇëÇó
-     µÄÎÄ¼şµÄEtag¶Ô±È£¬Èç¹û²»Í¬ÁË¾ÍÖØĞÂ·¢ËÍ¼ÓÔØ£¬Èç¹ûÏàÍ¬£¬Ôò·µ»Ø304. HTTP/1.1304 Not Modified
-     */ //etagÉèÖÃ¼ûngx_http_set_etag
-    ngx_str_t                        etag; //ºó¶Ë·µ»ØÍ·²¿ĞĞ "etab:xxxx"
-    ngx_str_t                        vary;//ºó¶Ë·µ»ØµÄÍ·²¿ĞĞ´øÓĞvary:xxx  ¼ûngx_http_upstream_process_vary
-    u_char                           variant[NGX_HTTP_CACHE_KEY_LEN];
-
-    /*
-     ////[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header][body]
-    c->header_start = sizeof(ngx_http_file_cache_header_t)
-                      + sizeof(ngx_http_file_cache_key) + len + 1; //+1ÊÇÒòÎªkeyºóÃæÓĞÓĞ¸ö'\N'
-     */ //Êµ¼ÊÔÚ½ÓÊÕºó¶ËµÚÒ»¸öÍ·²¿ĞĞÏà¹ØĞÅÏ¢µÄÊ±ºò£¬»áÔ¤Áôu->buffer.pos += r->cache->header_start;×Ö½Ú£¬¼ûngx_http_upstream_process_header
-     //±íÊ¾»º´æÖĞµÄheader²¿·ÖÄÚÈİ³¤¶È[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header]³¤¶È
-     //Ğ´»º³åÇø·â×°¹ı³Ì²Î¿¼:ngx_http_file_cache_set_header        ×¢ÒâºÍÏÂÃæµÄbody_startµÄÇø±ğ
-    size_t                           header_start; //¼ûngx_http_file_cache_create_key
-    //r->cache->body_start = (u_short) (u->buffer.pos - u->buffer.start); ¼ûngx_http_upstream_send_response//±¾´Îepoll´Óºó¶Ë¶ÁÈ¡Êı¾İµÄ³¤¶È,²¢×¼±¸»º´æ
-    //c->body_start = u->conf->buffer_size; //xxx_buffer_size(fastcgi_buffer_size proxy_buffer_size memcached_buffer_size)
-    //»º´æÖĞ[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header][body]µÄ[body]Ç°Ãæ²¿·ÖµÄ×Ö½Ú³¤¶È
-    //ºó¶Ë·µ»ØµÄÍøÒ³°üÌå²¿·ÖÔÚbufferÖĞµÄ´æ´¢Î»ÖÃ
-
-    //ngx_http_upstream_send_responseÖĞµÄ(r->cache->body_start = (u_short) (u->buffer.pos - u->buffer.start); 
-    //ºó¶Ë·µ»ØµÄÍøÒ³°üÌå²¿·ÖÔÚbufferÖĞµÄ´æ´¢Î»ÖÃ£¬Ò²¾ÍÊÇ³öÈ¥ºó¶ËÍ·²¿ĞĞ²¿·ÖºóµÄ¿ªÊ¼´¦,Ëµ°×ÁËbody_start¾ÍÊÇ»º´æÎÄ¼şÖĞÍ·²¿ĞĞÏà¹Ø²¿·ÖµÄ³¤¶È
-    /*
-    root@root:/var/yyz# cat cache_xxx/f/27/46492fbf0d9d35d3753c66851e81627f   ·â°ü¹ı³Ì¼ûngx_http_file_cache_set_header
-     3hwhdBw
-     KEY: /test2.php
-     
-     X-Powered-By: PHP/5.2.13
-     Content-type: text/html
-    //body_start¾ÍÊÇÉÏÃæÕâÒ»¶ÎÄÚ´æÄÚÈİ³¤¶È
-    
-     <Html> 
-     <title>file update</title>
-     <body> 
-     <form method="post" action="" enctype="multipart/form-data">
-     <input type="file" name="file" /> 
-     <input type="submit" value="submit" /> 
-     </form> 
-     </body> 
-     </html>
-
-     ×¢ÒâµÚÈıĞĞÄÄÀïÆäÊµÓĞ8×Ö½ÚµÄfastcgi±íÊ¾Í·²¿½á¹¹ngx_http_fastcgi_header_t£¬Í¨¹ıvi cache_xxx/f/27/46492fbf0d9d35d3753c66851e81627f¿ÉÒÔ¿´³ö
-
- offset    0  1  2  3   4  5  6  7   8  9  a  b   c  d  e  f  0123456789abcdef
-00000000 <03>00 00 00  ab 53 83 56  ff ff ff ff  2b 02 82 56  ....«S.V+..V
-00000010  64 42 77 17  00 00 91 00  ce 00 00 00  00 00 00 00  dBw...........
-00000020  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000030  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000040  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000050  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000060  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000070  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  ................
-00000080  0a 4b 45 59  3a 20 2f 74  65 73 74 32  2e 70 68 70  .KEY: /test2.php
-00000090  0a 01 06 00  01 01 0c 04  00 58 2d 50  6f 77 65 72  .........X-Power
-000000a0  65 64 2d 42  79 3a 20 50  48 50 2f 35  2e 32 2e 31  ed-By: PHP/5.2.1
-000000b0  33 0d 0a 43  6f 6e 74 65  6e 74 2d 74  79 70 65 3a  3..Content-type:
-000000c0  20 74 65 78  74 2f 68 74  6d 6c 0d 0a  0d 0a 3c 48   text/html....<H
-000000d0  74 6d 6c 3e  20 0d 0a 3c  74 69 74 6c  65 3e 66 69  tml> ..<title>fi
-000000e0  6c 65 20 75  70 64 61 74  65 3c 2f 74  69 74 6c 65  le update</title
-000000f0  3e 0d 0a 3c  62 6f 64 79  3e 20 0d 0a  3c 66 6f 72  >..<body> ..<for
-
- offset    0  1  2  3   4  5  6  7   8  9  a  b   c  d  e  f  0123456789abcdef
-00000100  6d 20 6d 65  74 68 6f 64  3d 22 70 6f  73 74 22 20  m method="post"
-00000110  61 63 74 69  6f 6e 3d 22  22 20 65 6e  63 74 79 70  action="" enctyp
-00000120  65 3d 22 6d  75 6c 74 69  70 61 72 74  2f 66 6f 72  e="multipart/for
-00000130  6d 2d 64 61  74 61 22 3e  0d 0a 3c 69  6e 70 75 74  m-data">..<input
-00000140  20 74 79 70  65 3d 22 66  69 6c 65 22  20 6e 61 6d   type="file" nam
-00000150  65 3d 22 66  69 6c 65 22  20 2f 3e 20  0d 0a 3c 69  e="file" /> ..<i
-00000160  6e 70 75 74  20 74 31 31  31 31 31 31  31 31 31 31  nput t1111111111
-00000170  31 31 31 31  31 31 31 31  31 31 31 31  31 31 31 31  1111111111111111
-00000180  31 31 31 31  31 31 31 31  31 31 31 31  31 31 31 31  1111111111111111
-00000190  31 31 31 31  31 31 31 31  31 31 31 31  31 31 31 31  1111111111111111
-000001a0  31 31 31 31  31 31 31 31  31 31 31 31  31 79 70 65  1111111111111ype
-000001b0  3d 22 73 75  62 6d 69 74  22 20 76 61  6c 75 65 3d  ="submit" value=
-000001c0  22 73 75 62  6d 69 74 22  20 2f 3e 20  0d 0a 3c 2f  "submit" /> ..</
-000001d0  66 6f 72 6d  3e 20 0d 0a  3c 2f 62 6f  64 79 3e 20  form> ..</body>
-000001e0  0d 0a 3c 2f  68 74 6d 6c  3e 20 0d 0a               ..</html> ..
-
-
-header_start: [ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"] Ò²¾ÍÊÇÉÏÃæµÄµÚÒ»ĞĞºÍµÚ¶şĞĞ
-body_start: [ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header]Ò²¾ÍÊÇÉÏÃæµÄµÚÒ»µ½µÚÎåĞĞÄÚÈİ
-Òò´Ë:body_start = header_start + [header]²¿·Ö(ÀıÈçfastcgi·µ»ØµÄÍ·²¿ĞĞ±êÊ¶²¿·Ö)
-     */ 
-     //body_start¾ÍÊÇÉÏÃæµÄÍ·²¿Ïà¹Ø²¿·ÖµÄ³¤¶È£¬»º´æÖĞ[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header][body]µÄ[body]Ç°Ãæ²¿·ÖµÄ×Ö½Ú³¤¶È
-    //¿Í»§¶Ë»ñÈ¡»º´æÎÄ¼şÖĞÇ°Ãæ[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header]²¿·ÖÔÚº¯Êıngx_http_file_cache_openÖĞ
-
-    size_t                           body_start;//Ğ´»º³åÇøÍ·²¿ÄÚÈİ·â×°¹ı³Ì²Î¿¼:ngx_http_file_cache_set_header
-    
-    off_t                            length;//»º´æÎÄ¼şµÄ´óĞ¡£¬¼ûngx_http_file_cache_open
-    off_t                            fs_size;//ÎÄ¼şngx_http_file_cache_t->bsize×Ö½Ú¶ÔÆë£¬¼ûngx_http_file_cache_open
-//c->min_uses = u->conf->cache_min_uses; //Proxy_cache_min_uses number Ä¬ÈÏÎª1£¬µ±¿Í»§¶Ë·¢ËÍÏàÍ¬ÇëÇó´ïµ½¹æ¶¨´ÎÊıºó£¬nginx²Å¶ÔÏìÓ¦Êı¾İ½øĞĞ»º´æ£»
-    ngx_uint_t                       min_uses;
-    ngx_uint_t                       error;
-    ngx_uint_t                       valid_msec;
-
-    ngx_buf_t                       *buf;/* ´æ´¢»º´æÎÄ¼şÍ· */ //ngx_http_file_cache_openÖĞ´´½¨¿Õ¼ä
-    
-
-    ngx_http_file_cache_t           *file_cache;//Í¨¹ıngx_http_upstream_cache->ngx_http_upstream_cache_get»ñÈ¡
-    //ngx_http_file_cache_node_t  ×î½ü»ñÈ¡µ½µÄ(ĞÂ´´½¨»òÕß±éÀú²éÑ¯µÃµ½µÄ)ngx_http_file_cache_node_t£¬¼ûngx_http_file_cache_exists
-    //ÔÚ»ñÈ¡ºó¶ËÊı¾İÇ°£¬Ê×ÏÈ»á»á²éÕÒ»º´æÊÇ·ñÓĞ»º´æ¸ÃÇëÇóÊı¾İ£¬Èç¹ûÃ»ÓĞ£¬Ôò»áÔÚngx_http_file_cache_openÖĞ´´½¨node,È»ºó¼ÌĞøÈ¥ºó¶Ë»ñÈ¡Êı¾İ
-    ngx_http_file_cache_node_t      *node; //ngx_http_file_cache_existsÖĞ´´½¨¿Õ¼äºÍ¸³Öµ
-
-#if (NGX_THREADS)
-//ngx_http_file_cache_aio_read->ngx_thread_readÖĞ´´½¨¿Õ¼äºÍ¸³Öµ
-    ngx_thread_task_t               *thread_task;
-#endif
-
-    ngx_msec_t                       lock_timeout; //²Î¿¼ÏÂÃæµÄlock  //proxy_cache_lock_timeout ÉèÖÃ£¬Ä¬ÈÏ5S
-    ngx_msec_t                       lock_age; //XXX_cache_lock_age  proxy_cache_lock_age
-    ngx_msec_t                       lock_time;
-    ngx_msec_t                       wait_time;
-
-    ngx_event_t                      wait_event;
-
-/*
-Õâ¸öÖ÷Òª½â¾öÒ»¸öÎÊÌâ: //proxy_cache_lock Ä¬ÈÏoff 0  //proxy_cache_lock_timeout ÉèÖÃ£¬Ä¬ÈÏ5S
-¼ÙÉèÏÖÔÚÓÖÁ½¸ö¿Í»§¶Ë£¬Ò»¸ö¿Í»§¶ËÕıÔÚ»ñÈ¡ºó¶ËÊı¾İ£¬²¢ÇÒºó¶Ë·µ»ØÁËÒ»²¿·Ö£¬Ôònginx»á»º´æÕâÒ»²¿·Ö£¬²¢ÇÒµÈ´ıËùÓĞºó¶ËÊı¾İ·µ»Ø¼ÌĞø»º´æ¡£
-µ«ÊÇÔÚ»º´æµÄ¹ı³ÌÖĞÈç¹û¿Í»§¶Ë2Ò³À´Ïëºó¶ËÈ¥Í¬ÑùµÄÊı¾İuriµÈ¶¼Ò»Ñù£¬Ôò»áÈ¥µ½¿Í»§¶Ë»º´æÒ»°ëµÄÊı¾İ£¬ÕâÊ±ºò¾Í¿ÉÒÔÍ¨¹ı¸ÃÅäÖÃÀ´½â¾öÕâ¸öÎÊÌâ£¬
-Ò²¾ÍÊÇ¿Í»§¶Ë1»¹Ã»»º´æÍêÈ«²¿Êı¾İµÄ¹ı³ÌÖĞ¿Í»§¶Ë2Ö»ÓĞµÈ¿Í»§¶Ë1»ñÈ¡ÍêÈ«²¿ºó¶ËÊı¾İ£¬»òÕß»ñÈ¡µ½proxy_cache_lock_timeout³¬Ê±£¬Ôò¿Í»§¶Ë2Ö»ÓĞ´Óºó¶Ë»ñÈ¡Êı¾İ
-*/
-    unsigned                         lock:1;//c->lock = u->conf->cache_lock;
-    /* 
-     »º´æÄÚÈİ¼º¹ıÆÚ£¬µ±Ç°ÇëÇóÕıµÈ´ıÆäËüÇëÇó¸üĞÂ´Ë»º´æ½Úµã¡£ ×¢ÒâÕâÊÇÍ¬Ò»¸ö¿Í»§¶ËrÇëÇó£¬Í¬Ò»¸ö¿Í»§¶ËÔÚ»ñÈ¡ºó¶ËÊı¾İµÄ¹ı³ÌÖĞ(ºó¶ËÊı¾İ»¹Ã»·µ»Ø)£¬ÓÖ·¢ËÍÒ»´ÎgetÇëÇó
-     */
-     /* ngx_http_file_cache_openÈç¹û·µ»ØNGX_AGAIN£¬Ôò»áÔÚº¯ÊıÍâÖ´ĞĞÏÂÃæµÄ´úÂë£¬Ò²¾ÍÊÇµÈ´ıÇ°ÃæµÄÇëÇóºó¶Ë·µ»Øºó£¬ÔÙ´Î´¥·¢ºóÃæµÄÇëÇóÖ´ĞĞngx_http_upstream_init_request¹ı³Ì
-        ÕâÊ±ºòÇ°Ãæ´Óºó¶Ë»ñÈ¡µÄÊı¾İ¿Ï¶¨ÒÑ¾­µÃµ½»º´æ
-        r->write_event_handler = ngx_http_upstream_init_request;  //ÕâÃ´´¥·¢¸Ãwrite handlerÄØ?ÒòÎªÇ°ÃæµÄÇëÇó»ñÈ¡µ½ºó¶ËÊı¾İºó£¬ÔÚ´¥·¢epoll_inµÄÍ¬Ê±
-        Ò²»á´¥·¢epoll_out£¬´Ó¶ø»áÖ´ĞĞ¸Ãº¯Êı
-        return;  
-     */
-    unsigned                         waiting:1; //ngx_http_file_cache_lockÖĞÖÃ1
-
-    unsigned                         updated:1;
-/* updating ¨C »º´æÄÚÈİ¼º¹ıÆÚ£¬²¢ÇÒµ±Ç°ÇëÇóÕıÔÚ»ñÈ¡ÓĞĞ§µÄºó¶ËÏìÓ¦²¢¸üĞÂ´Ë»º´æ½Úµã¡£²Î¼û ngx_http_file_cache_node:updating ¡£ 
-Èç¹ûÒ»¸ö¿Í»§¶ËÔÚ»ñÈ¡ºó¶ËÊı¾İ£¬ÓĞ¿ÉÄÜĞèÒªºÍºó¶Ë¶à´Îepoll read²ÅÄÜ»ñÈ¡Íê£¬ÔòÔÚ»ñÈ¡¹ı³ÌÖĞµ±Ò»¸ö¶ÔÏóÎ´»º´æÍêÕûÊ±£¬
-Ò»¸öÃûÎªupdatingµÄ³ÉÔ±»áÖÃ1£¬Í¬Ê±exists³ÉÔ±ÖÃ0
-*/  //¿Í»§¶ËÇëÇóµ½nginxºó£¬·¢ÏÖ»º´æ¹ıÆÚ£¬Ôò»áÖØĞÂ´Óºó¶Ë»ñÈ¡Êı¾İ£¬updatingÖÃ1£¬¼ûngx_http_file_cache_read
-    unsigned                         updating:1;
-//¸ÃÇëÇóµÄ»º´æÒÑ¾­´æÔÚ£¬²¢ÇÒ¶Ô¸Ã»º´æµÄÇëÇó´ÎÊı´ïµ½ÁË×îµÍÒªÇó´ÎÊımin_uses,Ôòexists»áÔÚngx_http_file_cache_existsÖĞÖÃ1
-//Ö»ÓĞ¿Í»§¶ËÇëÇó¸Ãuri´ÎÊı´ïµ½Proxy_cache_min_uses 3ÖĞµÄ3´Î²Å»áÖÃ1£¬¼ûngx_http_file_cache_exists£¬ÒòÎªÈç¹ûÃ»ÓĞ´ïµ½3´Î£¬Ôòu->cachable = 0
-
-//±íÊ¾¸Ã»º´æÎÄ¼şÊÇ·ñ´æÔÚ£¬Proxy_cache_min_uses 3£¬ÔòµÚ3´Îºó¿ªÊ¼»ñÈ¡ºó¶ËÊı¾İ£¬»ñÈ¡Íê±ÏºóÔÚngx_http_file_cache_updateÖĞÖÃ1£¬µ«ÊÇÖ»ÓĞÔÚµØ4´ÎÇëÇóµÄÊ±ºò²Å»áÔÚngx_http_file_cache_exists¸³ÖµÎª1
-    unsigned                         exists:1; 
-   
-    unsigned                         temp_file:1;
-    //Ö»ÓĞ´ò¿ªfile aio²Å»áÔÚngx_http_file_cache_aio_readÖĞÖÃ1£¬±íÊ¾ÒÑ¾­Í¨ÖªÄÚºË½øĞĞ¶Á²Ù×÷£¬Ö»ÊÇÏÖÔÚ»¹Ã»ÓĞ¶ÁÈ¡Íê±Ï£¬ÄÚºËÍê³É¶ÁÈ¡ºó»áÍ¨¹ıepollÊÂ¼şÍ¨Öª
-    // ×¢ÒâÕâÊÇÍ¬Ò»¸ö¿Í»§¶ËrÇëÇó£¬Í¬Ò»¸ö¿Í»§¶ËÔÚ»ñÈ¡ºó¶ËÊı¾İµÄ¹ı³ÌÖĞ(ºó¶ËÊı¾İ»¹Ã»·µ»Ø)£¬ÓÖ·¢ËÍÒ»´ÎgetÇëÇó£¬×¢ÒâÖ»ÓĞaio²ÅÓĞ¸ÃÇé¿ö
-    unsigned                         reading:1; 
-    unsigned                         secondary:1;
-};
-
-/*
-Ã¿¸öÎÄ¼şÏµÍ³ÖĞµÄ»º´æÎÄ¼ş¶¼ÓĞ¹Ì¶¨µÄ´æ´¢¸ñÊ½£¬ÆäÖĞ ngx_http_file_cache_header_tÎª°üÍ·½á¹¹£¬´æ´¢»º´æÎÄ¼şµÄÏà¹ØĞÅÏ¢
-(ĞŞ¸ÄÊ±¼ä¡¢»º´æ key µÄ crc32 Öµ¡¢ºÍÓÃÓÚÖ¸Ã÷ HTTP ÏìÓ¦°üÍ·ºÍ°üÌåÔÚ»º´æÎÄ¼şÖĞÆ«ÒÆÎ»ÖÃµÄ×Ö¶ÎµÈ)£º
-
-root@root:/var/yyz/cache_xxx# cat b/7d/bf6813c2bc0becb369a8d8367b6b77db 
-ª­oVŒ­oVZ"  
-KEY: /test.php
-IX-Powered-By: PHP/5.2.13
-Content-type: text/html
-
-//ÏÂÃæ²ÅÊÇÕæÕıµÄÎÄ¼şÄÚÈİ
-<Html> 
-<Head> 
-<title>Your page Subject and domain name</title>
-
-<Meta NAME="" CONTENT="">
-"" your others meta tagB
-"" your others meta tag
-"" your others meta tag
-"" your others meta tag
-"" your others meta tag
-"" your others meta tag
-"" your others meta tag
-*/ 
-//Êµ¼ÊÔÚ½ÓÊÕºó¶ËµÚÒ»¸öÍ·²¿ĞĞÏà¹ØĞÅÏ¢µÄÊ±ºò£¬»áÔ¤Áôu->buffer.pos += r->cache->header_start;×Ö½Ú£¬¼ûngx_http_upstream_process_header
-//[ngx_http_file_cache_header_t]["\nKEY: "][orig_key]["\n"][header][body] £¬¼ûngx_http_file_cache_create_key
-typedef struct { //Ğ´ÈëÎÄ¼şÇ°¸³ÖµµÈ¼ûngx_http_file_cache_set_header£¬¶ÁÈ¡ÎÄ¼şÖĞµÄ¸ÃÍ·²¿½á¹¹ÔÚngx_http_file_cache_read
-    ngx_uint_t                       version;
-    time_t                           valid_sec;
-    time_t                           last_modified;
-    time_t                           date;
-    uint32_t                         crc32;
-    u_short                          valid_msec;
-    /*
-    ////[ngx_http_file_cache_header_t]["\nKEY: "][orig_key]["\n"][header][body]
-    c->header_start = sizeof(ngx_http_file_cache_header_t)
-                      + sizeof(ngx_http_file_cache_key) + len + 1; 
-     */
-    u_short                          header_start; //Ö¸Ïò¸Ã
-     /*
-    root@root:/var/yyz# cat cache_xxx/f/27/46492fbf0d9d35d3753c66851e81627f   ·â°ü¹ı³Ì¼ûngx_http_file_cache_set_header
-     3hwhdBw
-     KEY: /test2.php
-     
-     X-Powered-By: PHP/5.2.13
-     Content-type: text/html
-    //body_start¾ÍÊÇÉÏÃæÕâÒ»¶ÎÄÚ´æÄÚÈİ³¤¶È
-    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    
-     <Html> 
-     <title>file update</title>
-     <body> 
-     <form method="post" action="" enctype="multipart/form-data">
-     <input type="file" name="file" /> 
-     <input type="submit" value="submit" /> 
-     </form> 
-     </body> 
-     </html>
-     */ 
-    //´´½¨´æ·Å»º´æÎÄ¼şÖĞÇ°Ãæ[ngx_http_file_cache_header_t]["\nKEY: "][fastcgi_cache_keyÖĞµÄKEY]["\n"][header]²¿·ÖµÄÄÚÈİ³¤¶È¿Õ¼ä,Ò²¾ÍÊÇ
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Ç°ÃæµÄÄÚÈİ
-    u_short                          body_start;
-    u_char                           etag_len;
-    /*
-     EtagÈ·¶¨ä¯ÀÀÆ÷»º´æ£º EtagµÄÔ­ÀíÊÇ½«ÎÄ¼ş×ÊÔ´±àºÅÒ»¸öetagÖµ£¬Response¸ø·ÃÎÊÕß£¬·ÃÎÊÕßÔÙ´ÎÇëÇóÊ±£¬´ø×ÅÕâ¸öEtagÖµ£¬Óë·şÎñ¶ËËùÇëÇó
-     µÄÎÄ¼şµÄEtag¶Ô±È£¬Èç¹û²»Í¬ÁË¾ÍÖØĞÂ·¢ËÍ¼ÓÔØ£¬Èç¹ûÏàÍ¬£¬Ôò·µ»Ø304. HTTP/1.1304 Not Modified
-     */ //etagÉèÖÃ¼ûngx_http_set_etag
-    u_char                           etag[NGX_HTTP_CACHE_ETAG_LEN];
-    u_char                           vary_len;
-    u_char                           vary[NGX_HTTP_CACHE_VARY_LEN];
-    u_char                           variant[NGX_HTTP_CACHE_KEY_LEN];
-} ngx_http_file_cache_header_t;
-
-//ngx_http_file_cache_init´´½¨¿Õ¼äºÍ³õÊ¼»¯    
-//ngx_http_file_cache_s->sh³ÉÔ±¾ÍÊÇ¸Ã½á¹¹
-
-/*
-»º´æÎÄ¼şstat×´Ì¬ĞÅÏ¢ngx_cached_open_file_sÔÚngx_expire_old_cached_files½øĞĞÊ§Ğ§ÅĞ¶Ï, »º´æÎÄ¼şÄÚÈİĞÅÏ¢(ÊµÊµÔÚÔÚµÄÎÄ¼şĞÅÏ¢)
-ngx_http_file_cache_node_tÔÚngx_http_file_cache_expire½øĞĞÊ§Ğ§ÅĞ¶Ï¡£
-*/
-
-/*ËùÓĞµÄngx_http_file_cache_node_t³ıÁËÌí¼Óµ½ÉÏÃæµÄrbtreeºìºÚÊ÷Íâ£¬»¹»áÌí¼Óµ½¶ÓÁĞqueueÖĞ£¬ºìºÚÊ÷ÓÃÓÚ°´ÕÕkeyÀ´²éÕÒ¶ÔÓ¦µÄnode½Úµã£¬²Î¿¼
-    ngx_http_file_cache_lookup¡£queueÓÃÓÚ¿ìËÙ»ñÈ¡×îÏÈÌí¼Óµ½queue¶ÔÁËºÍ×îºóÌí¼Óqueue¶ÔÁËµÄnode½ÚµãÓÃÓÚÉ¾³ı¸úĞÂµÈ£¬²Î¿¼ngx_http_file_cache_expire*/
-typedef struct { //ÓÃÓÚ±£´æ»º´æ½Úµã ºÍ »º´æµÄµ±Ç°×´Ì¬ (ÊÇ·ñÕıÔÚ´Ó´ÅÅÌ¼ÓÔØ¡¢µ±Ç°»º´æ´óĞ¡µÈ)£»
-    //ÒÔngx_http_cache_t->key×Ö·û´®ÖĞµÄ×îÇ°Ãæ4×Ö½ÚÎªkeyÀ´ÔÚºìºÚÊ÷ÖĞ±äÁ¿£¬¼ûngx_http_file_cache_lookup
-    ngx_rbtree_t                     rbtree; //ºìºÚÊ÷³õÊ¼»¯ÔÚngx_http_file_cache_init
-    //ºìºÚÊ÷³õÊ¼»¯ÔÚngx_http_file_cache_init
-    ngx_rbtree_node_t                sentinel; //sentinelÉÚ±ø´ú±íÍâ²¿½Úµã£¬ËùÓĞµÄÒ¶×ÓÒÔ¼°¸ù²¿µÄ¸¸½Úµã£¬¶¼Ö¸ÏòÕâ¸öÎ¨Ò»µÄÉÚ±ønil£¬ÉÚ±øµÄÑÕÉ«ÎªºÚÉ«
-    /*ËùÓĞµÄngx_http_file_cache_node_t³ıÁËÌí¼Óµ½ÉÏÃæµÄrbtreeºìºÚÊ÷Íâ£¬»¹»áÌí¼Óµ½¶ÓÁĞqueueÖĞ£¬ºìºÚÊ÷ÓÃÓÚ°´ÕÕkeyÀ´²éÕÒ¶ÔÓ¦µÄnode½Úµã£¬²Î¿¼
-    ngx_http_file_cache_lookup¡£queueÓÃÓÚ¿ìËÙ»ñÈ¡×îÏÈÌí¼Óµ½queue¶ÔÁËºÍ×îºóÌí¼Óqueue¶ÔÁËµÄnode½ÚµãÓÃÓÚÉ¾³ı¸úĞÂµÈ£¬²Î¿¼ngx_http_file_cache_expire*/
-    ngx_queue_t                      queue;//¶ÓÁĞ³õÊ¼»¯ÔÚngx_http_file_cache_init£¬
-    //cold±íÊ¾Õâ¸öcacheÊÇ·ñÒÑ¾­±»loader½ø³Ìload¹ıÁË(ngx_cache_loader_process_handler->ngx_http_file_cache_loader)  
-    //ngx_http_file_cache_loaderÖÃ0£¬±íÊ¾»º´æÎÄ¼şÒÑ¾­¼ÓÔØÍê±Ï£¬ngx_http_file_cache_initÄ¬ÈÏ³õÊ¼»¯ÊÇÖÃ1µÄ
-    //test=0,±íÊ¾½ø³ÌÆğÀ´ºó»º´æÎÄ¼şÒÑ¾­¼ÓÔØÍê±Ï£¬Îª1±íÊ¾½ø³Ì¸ÕÆğÀ´»¹Ã»ÓĞ¼ÓÔØ»º´æÎÄ¼ş£¬Ä¬ÈÏÖµ1
-    ngx_atomic_t                     cold;  /* »º´æÊÇ·ñ¿ÉÓÃ (¼ÓÔØÍê±Ï) */ //½ø³ÌÆğÀ´ºóÒ»°ã60s¿ªÊ¼¼ÓÔØ»º´æÄ¿Â¼£¬¼û
-    ngx_atomic_t                     loading;  /* ÊÇ·ñÕıÔÚ±» loader ½ø³Ì¼ÓÔØ */ //ÕıÔÚloadÕâ¸öcache  loader½ø³Ìpid£¬¼ûngx_http_file_cache_loader
-    //»º´æÎÄ¼ş×Ü´óĞ¡£¬ÔÚÎÄ¼şÀÏ»¯É¾³ıºó£¬size»á¼õÈ¥É¾µôÕâ²¿·Ö´óĞ¡£¬¼ûngx_http_file_cache_delete
-    off_t                            size;    /* ³õÊ¼»¯Îª 0 */ //Õ¼ÓÃÁË»º´æ¿Õ¼äµÄ×Ü´óĞ¡£¬¸³Öµ¼ûngx_http_file_cache_update  
-} ngx_http_file_cache_sh_t; //×¢Òângx_http_file_cache_sh_tºÍngx_open_file_cache_tµÄÇø±ğ
-//»º´æºÃÎÄÕÂ²Î¿¼:»º´æ·şÎñÆ÷Éæ¼°ÓëÊµÏÖ(Ò»  µ½  Îå) http://blog.csdn.net/brainkick/article/details/8535242
-
-/*ngx_http_upstream_init_request->ngx_http_upstream_cache ¿Í»§¶Ë»ñÈ¡»º´æ ºó¶ËÓ¦´ğ»ØÀ´Êı¾İºóÔÚngx_http_upstream_send_response->ngx_http_file_cache_create
-ÖĞ´´½¨ÁÙÊ±ÎÄ¼ş£¬È»ºóÔÚngx_event_pipe_write_chain_to_temp_file°Ñ¶ÁÈ¡µÄºó¶ËÊı¾İĞ´ÈëÁÙÊ±ÎÄ¼ş£¬×îºóÔÚ
-ngx_http_upstream_send_response->ngx_http_upstream_process_request->ngx_http_file_cache_updateÖĞ°ÑÁÙÊ±ÎÄ¼şÄÚÈİrename(Ïàµ±ÓÚmv)µ½proxy_cache_pathÖ¸¶¨
-µÄcacheÄ¿Â¼ÏÂÃæ
-*/
-
-/*
-»º´æÎÄ¼şstat×´Ì¬ĞÅÏ¢ngx_cached_open_file_s(ngx_open_file_cache_t->rbtree(expire_queue)µÄ³ÉÔ±   )ÔÚngx_expire_old_cached_files½øĞĞÊ§Ğ§ÅĞ¶Ï, 
-»º´æÎÄ¼şÄÚÈİĞÅÏ¢(ÊµÊµÔÚÔÚµÄÎÄ¼şĞÅÏ¢)ngx_http_file_cache_node_t(ngx_http_file_cache_s->shÖĞµÄ³ÉÔ±)ÔÚngx_http_file_cache_expire½øĞĞÊ§Ğ§ÅĞ¶Ï¡£
-*/
-
-/*
-   Í¬Ò»¸ö¿Í»§¶ËÇëÇórÖ»ÓµÓĞÒ»¸ör->ngx_http_cache_tºÍr->ngx_http_cache_t->ngx_http_file_cache_t½á¹¹£¬Í¬Ò»¸ö¿Í»§¶Ë¿ÉÄÜ»áÇëÇóºó¶ËµÄ¶à¸öuri£¬
-   ÔòÔÚÏòºó¶Ë·¢ÆğÇëÇóÇ°£¬ÔÚngx_http_file_cache_open->ngx_http_file_cache_existsÖĞ»á°´ÕÕproxy_cache_key $scheme$proxy_host$request_uri¼ÆËã³öÀ´µÄ
-   MD5À´´´½¨¶ÔÓ¦µÄºìºÚÊ÷½Úµã£¬È»ºóÌí¼Óµ½ngx_http_file_cache_t->sh->rbtreeºìºÚÊ÷ÖĞ¡£ËùÒÔ²»Í¬µÄ¿Í»§¶Ëuri»áÓĞ²»Í¬µÄnode½Úµã´æÔÚÓÚºìºÚÊ÷ÖĞ
-*/
-
-//»ñÈ¡¸Ã½á¹¹ngx_http_upstream_cache_get£¬Êµ¼ÊÉÏÊÇÍ¨¹ıproxy_cache xxx»òÕßfastcgi_cache xxxÀ´»ñÈ¡¹²ÏíÄÚ´æ¿éÃûµÄ£¬Òò´Ë±ØĞëÉèÖÃproxy_cache»òÕßfastcgi_cache
-struct ngx_http_file_cache_s { //ngx_http_file_cache_set_slotÖĞ´´½¨¿Õ¼ä£¬±£´æÔÚngx_http_proxy_main_conf_t->cachesÊı×éÖĞ
-    //sh Î¬»¤ LRU ½á¹¹ÓÃÓÚ±£´æ»º´æ½Úµã ºÍ »º´æµÄµ±Ç°×´Ì¬ (ÊÇ·ñÕıÔÚ´Ó´ÅÅÌ¼ÓÔØ¡¢µ±Ç°»º´æ´óĞ¡µÈ)£»
-    ngx_http_file_cache_sh_t        *sh; //ngx_http_file_cache_initÖĞ·ÖÅä¿Õ¼ä
-    //shpoolÊÇÓÃÓÚ¹ÜÀí¹²ÏíÄÚ´æµÄ slab allocator £¬ËùÓĞ»º´æ½ÚµãÕ¼ÓÃ¿Õ¼ä¶¼ÓÉËü½øĞĞ·ÖÅä
-    ngx_slab_pool_t                 *shpool;
-
-    ngx_path_t                      *path;//ngx_http_file_cache_set_slotÖĞ´´½¨ngx_path_t¿Õ¼ä  
-    /*
-Ä¬ÈÏÇé¿öÏÂp->temp_file->path = u->conf->temp_path; Ò²¾ÍÊÇÓÉngx_http_fastcgi_temp_pathÖ¸¶¨Â·¾¶£¬µ«ÊÇÈç¹ûÊÇ»º´æ·½Ê½(p->cacheable=1)²¢ÇÒÅäÖÃ
-proxy_cache_path(fastcgi_cache_path) /a/bµÄÊ±ºò´øÓĞuse_temp_path=off(±íÊ¾²»Ê¹ÓÃngx_http_fastcgi_temp_pathÅäÖÃµÄpath)£¬
-Ôòp->temp_file->path = r->cache->file_cache->temp_path; Ò²¾ÍÊÇÁÙÊ±ÎÄ¼ş/a/b/temp¡£use_temp_path=off±íÊ¾²»Ê¹ÓÃngx_http_fastcgi_temp_path
-ÅäÖÃµÄÂ·¾¶£¬¶øÊ¹ÓÃÖ¸¶¨µÄÁÙÊ±Â·¾¶/a/b/temp   ¼ûngx_http_upstream_send_response 
-*/
-    //Èç¹ûproxy_cache_path /aa/bb use_temp_path=off £¬Ôòtemp_pathÄ¬ÈÏÎª/aa/bb/temp
-    ngx_path_t                      *temp_path; //proxy_cache_path´øÓĞuse_temp_path=on   ¸³Öµ²Î¿¼ngx_http_file_cache_set_slot
-
-    off_t                            max_size;//»º´æÕ¼ÓÃÓ²ÅÌ´óĞ¡×î´óÕâÃ´¶à proxy_cache_path max_size=128m ×î¶àÔİÓÃ128M
-    size_t                           bsize; //ÎÄ¼şÏµÍ³µÄblock size  ngx_http_file_cache_initÖĞ¸³Öµ
-
-    time_t                           inactive; //ÉèÖÃ»º´æ×¤ÁôÊ±¼ä   //proxy_cache_path inactive=30m ±íÊ¾¸Ãproxy_cache30 ÌìÊ§Ğ§
-
-    ngx_uint_t                       files;//µ±Ç°ÓĞ¶àÉÙ¸öcacheÎÄ¼ş(³¬¹ıloader_filesÖ®ºó»á±»Çå0)
-    //loader_filesÕâ¸öÖµÒ²¾ÍÊÇÒ»¸öãĞÖµ£¬µ±loadµÄÎÄ¼ş¸öÊı´óÓÚÕâ¸öÖµÖ®ºó£¬load½ø³Ì»á¶ÌÔİµÄĞİÃß(Ê±¼äÎ»loader_sleep)
-    ngx_uint_t                       loader_files;//proxy_cache_path´øÓĞloader_files= ±íÊ¾×î¶àÓĞ¶àÉÙ¸öcacheÎÄ¼ş
-    ngx_msec_t                       last;//×îºó±»manage»òÕßloader·ÃÎÊµÄÊ±¼ä
-    //loader_filesÕâ¸öÖµÒ²¾ÍÊÇÒ»¸öãĞÖµ£¬µ±loadµÄÎÄ¼ş¸öÊı´óÓÚÕâ¸öÖµÖ®ºó£¬load½ø³Ì»á¶ÌÔİµÄĞİÃß(Ê±¼äÎ»loader_sleep)
-    //loader_sleepºÍÉÏÃæµÄloader_filesÅäºÏÊ¹ÓÃ£¬µ±ÎÄ¼ş¸öÊı´óÓÚloader_files£¬¾Í»áĞİÃß
-    //loader_thresholdÅäºÏÉÏÃæµÄlast£¬Ò²¾ÍÊÇloader±éÀúµÄĞİÃß¼ä¸ô¡£
-    
-    //loader_sleepºÍÉÏÃæµÄloader_filesÅäºÏÊ¹ÓÃ£¬µ±ÎÄ¼ş¸öÊı´óÓÚloader_files£¬¾Í»áĞİÃß
-    ngx_msec_t                       loader_sleep;//proxy_cache_path´øÓĞloader_sleep=
-    //loader_thresholdÅäºÏÉÏÃæµÄlast£¬Ò²¾ÍÊÇloader±éÀúµÄĞİÃß¼ä¸ô¡£
-    ngx_msec_t                       loader_threshold;//proxy_cache_path´øÓĞloader_threshold=
-
-    //fastcgi_cache_path keys_zone=fcgi:10m;ÖĞµÄkeys_zone=fcgi:10mÖ¸¶¨¹²ÏíÄÚ´æÃû×ÖÒÑ¾­¹²ÏíÄÚ´æ¿Õ¼ä´óĞ¡
-    ngx_shm_zone_t                  *shm_zone;
-};
-
-
-ngx_int_t ngx_http_file_cache_new(ngx_http_request_t *r);
-ngx_int_t ngx_http_file_cache_create(ngx_http_request_t *r);
-void ngx_http_file_cache_create_key(ngx_http_request_t *r);
-ngx_int_t ngx_http_file_cache_open(ngx_http_request_t *r);
-ngx_int_t ngx_http_file_cache_set_header(ngx_http_request_t *r, u_char *buf);
-void ngx_http_file_cache_update(ngx_http_request_t *r, ngx_temp_file_t *tf);
-void ngx_http_file_cache_update_header(ngx_http_request_t *r);
-ngx_int_t ngx_http_cache_send(ngx_http_request_t *);
-void ngx_http_file_cache_free(ngx_http_cache_t *c, ngx_temp_file_t *tf);
-time_t ngx_http_file_cache_valid(ngx_array_t *cache_valid, ngx_uint_t status);
-
-char *ngx_http_file_cache_set_slot(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-char *ngx_http_file_cache_valid_set_slot(ngx_conf_t *cf, ngx_command_t *cmd,
-    void *conf);
-
-
-extern ngx_str_t  ngx_http_cache_status[];
-
-
-#endif /* _NGX_HTTP_CACHE_H_INCLUDED_ */
+valid_sec , valid_msec 
