@@ -14,24 +14,482 @@
 #include <ngx_http.h>
 
 /*
-Nginxé…ç½®æ–‡ä»¶è¯¦è§£
+NginxÅäÖÃÎÄ¼þÏê½â
 
-#è¿è¡Œç”¨æˆ· 
+#ÔËÐÐÓÃ»§ 
 user nobody nobody; 
-#å¯åŠ¨è¿›ç¨‹ 
+#Æô¶¯½ø³Ì 
 worker_processes 2; 
-#å…¨å±€é”™è¯¯æ—¥å¿—åŠPIDæ–‡ä»¶ 
+#È«¾Ö´íÎóÈÕÖ¾¼°PIDÎÄ¼þ 
 error_log logs/error.log notice; 
 pid logs/nginx.pid; 
-#å·¥ä½œæ¨¡å¼åŠè¿žæŽ¥æ•°ä¸Šé™ 
+#¹¤×÷Ä£Ê½¼°Á¬½ÓÊýÉÏÏÞ 
 events { 
 use epoll; 
 worker_connections 1024; 
 } 
-#è®¾å®šhttpæœåŠ¡å™¨ï¼Œåˆ©ç”¨å®ƒçš„åå‘ä»£ç†åŠŸèƒ½æä¾›è´Ÿè½½å‡è¡¡æ”¯æŒ 
+#Éè¶¨http·þÎñÆ÷£¬ÀûÓÃËüµÄ·´Ïò´úÀí¹¦ÄÜÌá¹©¸ºÔØ¾ùºâÖ§³Ö 
 http { 
-#è®¾å®šmimeç±»åž‹ 
+#Éè¶¨mimeÀàÐÍ 
 include conf/mime.types; 
 default_type application/octet-stream; 
-#è®¾å®šæ—¥å¿—æ ¼å¼ 
-log_format main â€˜$remote_addr 
+#Éè¶¨ÈÕÖ¾¸ñÊ½ 
+log_format main ¡®$remote_addr ¨C $remote_user [$time_local] ¡® 
+¡®¡±$request¡± $status $bytes_sent ¡® 
+¡®¡±$http_referer¡± ¡°$http_user_agent¡± ¡® 
+¡®¡±$gzip_ratio¡±¡®; 
+log_format download ¡®$remote_addr ¨C $remote_user [$time_local] ¡® 
+¡®¡±$request¡± $status $bytes_sent ¡® 
+¡®¡±$http_referer¡± ¡°$http_user_agent¡± ¡® 
+¡®¡±$http_range¡± ¡°$sent_http_content_range¡±¡®; 
+#Éè¶¨ÇëÇó»º³å 
+client_header_buffer_size 1k; 
+large_client_header_buffers 4 4k;
+
+#¿ªÆôgzipÄ£¿é 
+gzip on; 
+gzip_min_length 1100; 
+gzip_buffers 4 8k; 
+gzip_types text/plain; 
+output_buffers 1 32k; 
+postpone_output 1460; 
+#Éè¶¨access log 
+access_log logs/access.log main; 
+client_header_timeout 3m; 
+client_body_timeout 3m; 
+send_timeout 3m; 
+sendfile on; 
+tcp_nopush on; 
+tcp_nodelay on; 
+keepalive_timeout 65; 
+#Éè¶¨¸ºÔØ¾ùºâµÄ·þÎñÆ÷ÁÐ±í 
+upstream mysvr { 
+#weigth²ÎÊý±íÊ¾È¨Öµ£¬È¨ÖµÔ½¸ß±»·ÖÅäµ½µÄ¼¸ÂÊÔ½´ó 
+#±¾»úÉÏµÄSquid¿ªÆô3128¶Ë¿Ú 
+server 192.168.8.1:3128 weight=5; 
+server 192.168.8.2:80 weight=1; 
+server 192.168.8.3:80 weight=6; 
+} 
+
+#Éè¶¨ÐéÄâÖ÷»ú 
+server { 
+listen 80; 
+server_name 192.168.8.1 www.hahaer.com; 
+charset gb2312; 
+#Éè¶¨±¾ÐéÄâÖ÷»úµÄ·ÃÎÊÈÕÖ¾ 
+access_log logs/www.hahaer.com.access.log main; 
+#Èç¹û·ÃÎÊ /img/ *, /js/ *, /css/ * ×ÊÔ´£¬ÔòÖ±½ÓÈ¡±¾µØÎÄ¼þ£¬²»Í¨¹ýsquid 
+#Èç¹ûÕâÐ©ÎÄ¼þ½Ï¶à£¬²»ÍÆ¼öÕâÖÖ·½Ê½£¬ÒòÎªÍ¨¹ýsquidµÄ»º´æÐ§¹û¸üºÃ 
+location ~ ^/(img|js|css)/ { 
+root /data3/Html; 
+expires 24h; 
+}
+
+#¶Ô ¡°/¡± ÆôÓÃ¸ºÔØ¾ùºâ 
+location / { 
+proxy_pass http://mysvr; 
+proxy_redirect off; 
+proxy_set_header Host $host; 
+proxy_set_header X-Real-IP $remote_addr; 
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+client_max_body_size 10m; 
+client_body_buffer_size 128k; 
+proxy_connect_timeout 90; 
+proxy_send_timeout 90; 
+proxy_read_timeout 90; 
+proxy_buffer_size 4k; 
+proxy_buffers 4 32k; 
+proxy_busy_buffers_size 64k; 
+proxy_temp_file_write_size 64k; 
+}
+
+#Éè¶¨²é¿´Nginx×´Ì¬µÄµØÖ· 
+location /NginxStatus { 
+stub_status on; 
+access_log on; 
+auth_basic ¡°NginxStatus¡±; 
+auth_basic_user_file conf/htpasswd; 
+} 
+} 
+} 
+
+±¸×¢£ºconf/htpasswd ÎÄ¼þµÄÄÚÈÝÓÃ apache Ìá¹©µÄ htpasswd ¹¤¾ßÀ´²úÉú¼´¿É¡£
+
+3.) ²é¿´ Nginx ÔËÐÐ×´Ì¬
+
+ÊäÈëµØÖ· http://192.168.8.1/NginxStatus/£¬ÊäÈëÑéÖ¤ÕÊºÅÃÜÂë£¬¼´¿É¿´µ½ÀàËÆÈçÏÂÄÚÈÝ£º
+
+ 
+
+Active connections: 328 
+server accepts handled requests 
+9309 8982 28890 
+Reading: 1 Writing: 3 Waiting: 324 
+*/
+
+/*
+ÕâÊ±£¬HTTP¿ò¼Ü»áÎªËùÓÐµÄHTTPÄ£¿é½¨Á¢3¸öÊý×é£¬·Ö±ð´æ·ÅËùÓÐHTTPÄ£¿éµÄngx_http_module_tÖÐµÄ
+create_main_conf¡¢create_srv_conf¡¢create_loc_conf·½·¨·µ»ØµÄµØÖ·Ö¸Õë£¨¾ÍÏñ±¾ÕÂµÄÀý×Ó
+ÖÐmytestÄ£¿éÔÚcreate_loc_confÖÐÉú³ÉÁËngx_http_mytest_conf_t½á¹¹£¬²¢ÔÚcreate_lo_conf·½·¨·µ»ØÊ±½«Ö¸Õë´«µÝ¸øHTTP¿ò¼Ü£©¡£
+µ±È»£¬Èç¹ûHTTPÄ£¿é¶ÔÓÚÅäÖÃÏî²»¸ÐÐËÈ¤£¬
+ËüÃ»ÓÐÊµÏÖcreate_main_conf¡¢create_srv_conf¡¢create_loc_confµÈ·½·¨£¬ÄÇÃ´Êý×éÖÐÏàÓ¦Î»
+ÖÃ´æ´¢µÄÖ¸ÕëÊÇNULL¡£ngx_http_conf_ctx_tµÄ3¸ö³ÉÔ±main_conf¡¢srv_conf¡¢loc_conf·Ö
+±ðÖ¸ÏòÕâ3¸öÊý×é¡£ÏÂÃæ¿´Ò»¶Î¼ò»¯µÄ´úÂë£¬ÁË½âÈçºÎÉèÖÃcreate_loc_conf·µ»ØµÄµØÖ·¡£
+ngx_http_conf_ctx_t *ctx;
+//HTTP¿ò¼ÜÉú³ÉÁË1¸öngx_ht tp_conf_ctxt½á¹¹
+ctx=ngx_pcalloc (cf->pool,  sizeof (ngx_http_conf_ctx_t))j
+if (ctx==NULL){
+    return NGX_CONF_ERROR;
+)
+£¯£¯Éú³É1¸öÊý×é´æ´¢ËùÓÐµÄHTTPÄ£¿écreate_loc_conf·½·¨·µ»ØµÄµØÖ·
+ctx->loc_conf=ngx_pcalloc (cf->pool,  sizeof (void*)  * ngx_http_max_module);
+if (ctx->loc conf==NULL)  {
+    return NGX_CONF_ERROR;
+)
+*/
+/*µ±Nginx¼ì²âµ½http{£®£®£®£©Õâ¸ö¹Ø¼üÅäÖÃÏîÊ±£¬HTTPÅäÖÃÄ£ÐÍ¾ÍÆô¶¯ÁË£¬ÕâÊ±»áÊ×ÏÈ½¨Á¢1¸öngx_http_conf_ ctx_t½á¹¹¡£
+ÔÚhttp{£®£®£®£©¿éÖÐ¾ÍÍ¨¹ý1¸öngx_http_conf_ctx t½á¹¹±£´æÁËËùÓÐHTTPÄ£¿éµÄÅä
+ÖÃÊý¾Ý½á¹¹µÄÈë¿Ú¡£ÒÔºóÓöµ½ÈÎºÎserver{£®£®£®£©¿é»òÕßlocation{£®£®£®£©¿éÊ±£¬Ò²»á½¨Á¢ngx_http_
+conf_ctx_t½á¹¹£¬Éú³ÉÍ¬ÑùµÄÊý×éÀ´±£´æËùÓÐHTTPÄ£¿éÍ¨¹ýcreate_srv_ conf  create_loc_
+confµÈ·½·¨·µ»ØµÄÖ¸ÕëµØÖ·¡£ngx_http_conf_ctx_tÊÇÁË½âhttpÅäÖÃ¿éµÄ»ù´¡
+*/ //¸Ã½á¹¹ÖÐµÄ±äÁ¿Ö±½ÓÖ¸Ïòngx_http_module_tÖÐµÄÈý¸öcreate_main_conf  create_srv_conf  create_loc_conf
+/*
+  http {
+       xxxx
+       server {
+            location /xxx {
+            }
+       }
+  }
+  ÕâÖÖÇé¿öµÄÅäÖÃÎÄ¼þ£¬ÔÚÖ´ÐÐµ½httpµÄÊ±ºò¿ª±Ùngx_http_conf_ctx_t»á·Ö±ðµ÷ÓÃÒ»´Îmain srv loc_creat£¬Ö´ÐÐµ½serverÊ±¿ª±Ùngx_http_conf_ctx_t»áµ÷ÓÃsrv_creat loc_creat, Ö´ÐÐµ½locationÊ±¿ª±Ùngx_http_conf_ctx_t»áµ÷ÓÃÒ»´Îloc_creat
+  ËùÒÔÕâÖÖÇé¿ö»áµ÷ÓÃ1´Îmain_creat 2²Åsrv_creat 3´Îloc_creat¡£
+
+  http {
+       xxxx
+       server {
+            location /xxx {
+            }
+       }
+
+       server {
+            location /yyy {
+            }
+       }
+  }
+  ÕâÖÖÇé¿öµÄÅäÖÃÎÄ¼þ£¬ÔÚÖ´ÐÐµ½httpµÄÊ±ºò¿ª±Ùngx_http_conf_ctx_t»á·Ö±ðµ÷ÓÃÒ»´Îmain srv loc_creat£¬Ö´ÐÐµ½serverÊ±¿ª±Ùngx_http_conf_ctx_t»áµ÷ÓÃsrv_creat loc_creat, Ö´ÐÐµ½locationÊ±¿ª±Ùngx_http_conf_ctx_t»áµ÷ÓÃÒ»´Îloc_creat
+  ËùÒÔÕâÖÖÇé¿ö»áµ÷ÓÃ1´Îmain_creat 1+2²Åsrv_creat 1+2+2´Îloc_creat¡£
+*/
+
+/*
+http{}ÖÐ»áµ÷ÓÃmain_conf srv_conf loc_conf·ÖÅä¿Õ¼ä£¬¼ûngx_http_block¡£server{}ÖÐ»áµ÷ÓÃsrv_conf loc_conf´´
+½¨¿Õ¼ä,¼ûngx_http_core_server£¬ location{}ÖÐ»á´´½¨loc_conf¿Õ¼ä,¼ûngx_http_core_location
+Í¼ÐÎ»¯²Î¿¼:ÉîÈëÀí½âNGINXÖÐµÄÍ¼9-2(P302)  Í¼10-1(P353) Í¼10-1(P356) Í¼10-1(P359)  Í¼4-2(P145)
+
+ngx_http_conf_ctx_t¡¢ngx_http_core_main_conf_t¡¢ngx_http_core_srv_conf_t¡¢ngx_http_core_loc_conf_sºÍngx_cycle_s->conf_ctxµÄ¹ØÏµ¼û:
+NginxµÄhttpÅäÖÃ½á¹¹ÌåµÄ×éÖ¯½á¹¹:http://tech.uc.cn/?p=300
+*/ 
+typedef struct { //Ïà¹Ø¿Õ¼ä´´½¨ºÍ¸³Öµ¼ûngx_http_block, ¸Ã½á¹¹ÊÇngx_conf_t->ctx³ÉÔ±¡£ËùÓÐµÄÅäÖÃËù´¦ÄÚ´æµÄÔ´Í·ÔÚngx_cycle_t->conf_ctx,¼ûngx_init_cycle
+/* Ö¸ÏòÒ»¸öÖ¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿¸ö³ÉÔ±¶¼ÊÇÓÉËùÓÐHTTPÄ£¿éµÄcreate_main_conf·½·¨´´½¨µÄ´æ·ÅÈ«¾ÖÅäÖÃÏîµÄ½á¹¹Ìå£¬ËüÃÇ´æ·Å×Å½âÎöÖ±Êôhttp{}¿éÄÚµÄmain¼¶±ðµÄÅäÖÃÏî²ÎÊý */
+    void        **main_conf;  /* Ö¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿¸öÔªËØÖ¸ÏòËùÓÐHTTPÄ£¿éngx_http_module_t->create_main_conf·½·¨²úÉúµÄ½á¹¹Ìå */
+
+/* Ö¸ÏòÒ»¸öÖ¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿¸ö³ÉÔ±¶¼ÊÇÓÉËùÓÐHTTPÄ£¿éµÄcreate_srv_conf·½·¨´´½¨µÄÓëserverÏà¹ØµÄ½á¹¹Ìå£¬ËüÃÇ»ò´æ·Åmain¼¶±ðÅäÖÃÏî£¬
+»ò´æ·Åsrv¼¶±ðµÄserverÅäÖÃÏî£¬ÕâÓëµ±Ç°µÄngx_http_conf_ctx_tÊÇÔÚ½âÎöhttp{}»òÕßserver{}¿éÊ±´´½¨µÄÓÐ¹Ø */
+    void        **srv_conf;/* Ö¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿¸öÔªËØÖ¸ÏòËùÓÐHTTPÄ£¿éngx_http_module_t->create->srv->conf·½·¨²úÉúµÄ½á¹¹Ìå */
+
+/*
+Ö¸ÏòÒ»¸öÖ¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿¸ö³ÉÔ±¶¼ÊÇÓÉËùÓÐHTTPÄ£¿éµÄcreate_loc_conf·½·¨´´½¨µÄÓëlocationÏà¹ØµÄ½á¹¹Ìå£¬ËüÃÇ¿ÉÄÜ´æ·Å×Åmain¡¢srv¡¢loc¼¶
+±ðµÄÅäÖÃÏî£¬ÕâÓëµ±Ç°µÄngx_http_conf_ctx_tÊÇÔÚ½âÎöhttp{}¡¢server{}»òÕßlocation{}¿éÊ±´´½¨µÄÓÐ¹Ø´æ·Ålocation{}ÅäÖÃÏî
+*/
+    void        **loc_conf;/* Ö¸ÕëÊý×é£¬Êý×éÖÐµÄÃ¿½éÔªËØÖ¸ÏòËùÓÐHTTPÄ£¿éngx_http_module_t->create->loc->conf·½·¨²úÉúµÄ½á¹¹Ìå */
+} ngx_http_conf_ctx_t; //ctxÊÇcontentµÄ¼ò³Æ£¬±íÊ¾ÉÏÏÂÎÄ  
+//²Î¿¼:http://tech.uc.cn/?p=300   ngx_http_conf_ctx_t±äÁ¿µÄÖ¸Õëctx´æ´¢ÔÚngx_cycle_tµÄconf_ctxËùÖ¸ÏòµÄÖ¸ÕëÊý×é£¬ÒÔngx_http_moduleµÄindexÎªÏÂ±êµÄÊý×éÔªËØ
+//http://tech.uc.cn/?p=300²ÎÊý½âÎöÏà¹ØÊý¾Ý½á¹¹²Î¿¼
+
+/*
+Nginx°²×°Íê±Ïºó£¬»áÓÐÏìÓ¦µÄ°²×°Ä¿Â¼£¬°²×°Ä¿Â¼Àïnginx.confÎªnginxµÄÖ÷ÅäÖÃÎÄ¼þ£¬ginxÖ÷ÅäÖÃÎÄ¼þ·ÖÎª4²¿·Ö£¬main£¨È«¾ÖÅäÖÃ£©¡¢server£¨Ö÷»úÉèÖÃ£©¡¢upstream£¨¸ºÔØ¾ùºâ·þÎñÆ÷Éè£©ºÍlocation£¨URLÆ¥ÅäÌØ¶¨Î»ÖÃµÄÉèÖÃ£©£¬ÕâËÄÕß¹ØÏµÎª£ºserver¼Ì³Ðmain£¬location¼Ì³Ðserver£¬upstream¼È²»»á¼Ì³ÐÆäËûÉèÖÃÒ²²»»á±»¼Ì³Ð¡£
+
+Ò»¡¢NginxµÄmain£¨È«¾ÖÅäÖÃ£©ÎÄ¼þ
+
+[root@rhel6u3-7 server]# vim /usr/local/nginx/conf/nginx.conf 
+user nginx nginx; //Ö¸¶¨nginxÔËÐÐµÄÓÃ»§¼°ÓÃ»§×éÎªnginx£¬Ä¬ÈÏÎªnobody 
+worker_processes 2£» //¿ªÆôµÄ½ø³ÌÊý£¬Ò»°ã¸úÂß¼­cpuºËÊýÒ»ÖÂ 
+error_log logs/error.log notice; //¶¨ÓÚÈ«¾Ö´íÎóÈÕÖ¾ÎÄ¼þ£¬¼¶±ðÒÔnoticeÏÔÊ¾¡£»¹ÓÐdebug¡¢info¡¢warn¡¢error¡¢critÄ£Ê½£¬debugÊä³ö×î¶à£¬critÊä³ö×îÉÙ£¬¸ü¼ÓÊµ¼Ê»·¾³¶ø¶¨¡£ 
+pid logs/nginx.pid; //Ö¸¶¨½ø³ÌidµÄ´æ´¢ÎÄ¼þÎ»ÖÃ 
+worker_rlimit_nofile 65535; //Ö¸¶¨Ò»¸önginx½ø³Ì´ò¿ªµÄ×î¶àÎÄ¼þÃèÊö·ûÊýÄ¿£¬ÊÜÏµÍ³½ø³ÌµÄ×î´ó´ò¿ªÎÄ¼þÊýÁ¿ÏÞÖÆ 
+events { 
+use epoll; ÉèÖÃ¹¤×÷Ä£Ê½Îªepoll£¬³ý´ËÖ®Íâ»¹ÓÐselect¡¢poll¡¢kqueue¡¢rtsigºÍ/dev/pollÄ£Ê½ 
+worker_connections 65535; //¶¨ÒåÃ¿¸ö½ø³ÌµÄ×î´óÁ¬½ÓÊý ÊÜÏµÍ³½ø³ÌµÄ×î´ó´ò¿ªÎÄ¼þÊýÁ¿ÏÞÖÆ 
+} 
+¡­¡­.
+
+[root@rhel6u3-7 server]# cat /proc/cpuinfo | grep "processor" | wc ¨Cl //²é¿´Âß¼­CPUºËÊý 
+[root@rhel6u3-7 server]# ulimit -n 65535 //ÉèÖÃÏµÍ³½ø³ÌµÄ×î´ó´ò¿ªÎÄ¼þÊýÁ¿
+
+¶þ¡¢NginxµÄHTTP·þÎñÆ÷ÅäÖÃ£¬GzipÅäÖÃ¡£
+
+http { 
+*****************************ÒÔÏÂÊÇhttp·þÎñÆ÷È«¾ÖÅäÖÃ********************************* 
+include mime.types; //Ö÷Ä£¿éÖ¸Áî£¬ÊµÏÖ¶ÔÅäÖÃÎÄ¼þËù°üº¬µÄÎÄ¼þµÄÉè¶¨£¬¿ÉÒÔ¼õÉÙÖ÷ÅäÖÃÎÄ¼þµÄ¸´ÔÓ¶È£¬DNSÖ÷ÅäÖÃÎÄ¼þÖÐµÄzonerfc1912£¬acl»ù±¾ÉÏ¶¼ÊÇÓÃµÄincludeÓï¾ä 
+default_type application/octet-stream; //ºËÐÄÄ£¿éÖ¸Áî£¬ÕâÀïÄ¬ÈÏÉèÖÃÎª¶þ½øÖÆÁ÷£¬Ò²¾ÍÊÇµ±ÎÄ¼þÀàÐÍÎ´¶¨ÒåÊ±Ê¹ÓÃÕâÖÖ·½Ê½ 
+//ÏÂÃæ´úÂëÎªÈÕÖ¾¸ñÊ½µÄÉè¶¨£¬mainÎªÈÕÖ¾¸ñÊ½µÄÃû³Æ£¬¿É×ÔÐÐÉèÖÃ£¬ºóÃæÒýÓÃ¡£ 
+log_format main '$remote_addr - $remote_user [$time_local] "$request" ' 
+'$status $body_bytes_sent "$http_referer" ' 
+'"$http_user_agent" "$http_x_forwarded_for"'; 
+access_log logs/access.log main; //ÒýÓÃÈÕÖ¾main 
+client_max_body_size 20m; //ÉèÖÃÔÊÐí¿Í»§¶ËÇëÇóµÄ×î´óµÄµ¥¸öÎÄ¼þ×Ö½ÚÊý 
+client_header_buffer_size 32k; //Ö¸¶¨À´×Ô¿Í»§¶ËÇëÇóÍ·µÄheadebuffer´óÐ¡ 
+client_body_temp_path /dev/shm/client_body_temp; //Ö¸¶¨Á¬½ÓÇëÇóÊÔÍ¼Ð´Èë»º´æÎÄ¼þµÄÄ¿Â¼Â·¾¶ 
+large_client_header_buffers 4 32k; //Ö¸¶¨¿Í»§¶ËÇëÇóÖÐ½Ï´óµÄÏûÏ¢Í·µÄ»º´æ×î´óÊýÁ¿ºÍ´óÐ¡£¬Ä¿Ç°ÉèÖÃÎª4¸ö32KB 
+sendfile on; //¿ªÆô¸ßÐ§ÎÄ¼þ´«ÊäÄ£Ê½ 
+tcp_nopush on; //¿ªÆô·ÀÖ¹ÍøÂç×èÈû 
+tcp_nodelay on; //¿ªÆô·ÀÖ¹ÍøÂç×èÈû 
+keepalive_timeout 65; //ÉèÖÃ¿Í»§¶ËÁ¬½Ó±£´æ»î¶¯µÄ³¬Ê±Ê±¼ä 
+client_header_timeout 10; //ÓÃÓÚÉèÖÃ¿Í»§¶ËÇëÇó¶ÁÈ¡³¬Ê±Ê±¼ä 
+client_body_timeout 10; //ÓÃÓÚÉèÖÃ¿Í»§¶ËÇëÇóÖ÷Ìå¶ÁÈ¡³¬Ê±Ê±¼ä 
+send_timeout 10; //ÓÃÓÚÉèÖÃÏàÓ¦¿Í»§¶ËµÄ³¬Ê±Ê±¼ä 
+//ÒÔÏÂÊÇhttpGzipÄ£¿éÅäÖÃ 
+#httpGzip modules 
+gzip on; //¿ªÆôgzipÑ¹Ëõ 
+gzip_min_length 1k; //ÉèÖÃÔÊÐíÑ¹ËõµÄÒ³Ãæ×îÐ¡×Ö½ÚÊý 
+gzip_buffers 4 16k; //ÉêÇë4¸öµ¥Î»Îª16KµÄÄÚ´æ×÷ÎªÑ¹Ëõ½á¹ûÁ÷»º´æ 
+gzip_http_version 1.1; //ÉèÖÃÊ¶±ðhttpÐ­ÒéµÄ°æ±¾,Ä¬ÈÏÊÇ1.1 
+gzip_comp_level 2; //Ö¸¶¨gzipÑ¹Ëõ±È,1-9 Êý×ÖÔ½Ð¡,Ñ¹Ëõ±ÈÔ½Ð¡,ËÙ¶ÈÔ½¿ì. 
+gzip_types text/plain application/x-javascript text/css application/xml; //Ö¸¶¨Ñ¹ËõµÄÀàÐÍ 
+gzip_vary on; //ÈÃÇ°¶ËµÄ»º´æ·þÎñÆ÷´æ¾­¹ýgzipÑ¹ËõµÄÒ³Ãæ
+
+Èý¡¢nginxµÄserverÐéÄâÖ÷»úÅäÖÃ
+
+Á½ÖÖ·½Ê½Ò»ÖÖÊÇÖ±½ÓÔÚÖ÷ÅäÖÃÎÄ¼þÖÐÉèÖÃserver×Ö¶ÎÅäÖÃÐéÄâÖ÷»ú£¬ÁíÍâÒ»ÖÖÊÇÊ¹ÓÃinclude×Ö¶ÎÉèÖÃÐéÄâÖ÷»ú£¬ÕâÑù¿ÉÒÔ¼õÉÙÖ÷ÅäÖÃÎÄ¼þµÄ¸´ÔÓÐÔ¡£
+
+*****************************ÒÔÏÂÊÇserverÖ÷»úÉèÖÃ********************************* 
+server { 
+listen 80; //¼àÌý¶Ë¿ÚÎª80 
+server_name www.88181.com; //ÉèÖÃÖ÷»úÓòÃû 
+charset gb2312; //ÉèÖÃ·ÃÎÊµÄÓïÑÔ±àÂë 
+access_log logs/www.88181.com.access.log main; //ÉèÖÃÐéÄâÖ÷»ú·ÃÎÊÈÕÖ¾µÄ´æ·ÅÂ·¾¶¼°ÈÕÖ¾µÄ¸ñÊ½Îªmain 
+location / { //ÉèÖÃÐéÄâÖ÷»úµÄ»ù±¾ÐÅÏ¢ 
+root sites/www; //ÉèÖÃÐéÄâÖ÷»úµÄÍøÕ¾¸ùÄ¿Â¼ 
+index index.html index.htm; //ÉèÖÃÐéÄâÖ÷»úÄ¬ÈÏ·ÃÎÊµÄÍøÒ³ 
+} 
+location /status { // ²é¿´nginxµ±Ç°µÄ×´Ì¬Çé¿ö,ÐèÒªÄ£¿é ¡°--with-http_stub_status_module¡±Ö§³Ö 
+stub_status on; 
+access_log /usr/local/nginx/logs/status.log; 
+auth_basic "NginxStatus"; } 
+} 
+include /usr/local/nginx/server/www1.88181.com; //Ê¹ÓÃinclude×Ö¶ÎÉèÖÃserver,ÄÚÈÝÈçÏÂ 
+[root@rhel6u3-7 ~]# cat /usr/local/nginx/server/www1.88181.com 
+server { 
+listen 80; 
+server_name www1.88181.com; 
+location / { 
+root sites/www1; 
+index index.html index.htm; 
+} 
+}
+±¾ÆªÎÄÕÂÀ´Ô´ÓÚ Linux¹«ÉçÍøÕ¾(www.linuxidc.com)  Ô­ÎÄÁ´½Ó£ºhttp://www.linuxidc.com/Linux/2013-02/80069p2.htm
+*/
+/*
+HTTP¿ò¼ÜÔÚ¶ÁÈ¡¡¢ÖØÔØÅäÖÃÎÄ¼þÊ±¶¨ÒåÁËÓÉngx_http_module_t½Ó¿ÚÃèÊöµÄ8¸ö½×¶Î£¬HTTP¿ò¼ÜÔÚÆô¶¯¹ý³ÌÖÐ»áÔÚÃ¿¸ö½×¶ÎÖÐµ÷ÓÃngx_http_module_t
+ÖÐÏàÓ¦µÄ·½·¨¡£µ±È»£¬Èç¹ûngx_http_module_tÖÐµÄÄ³¸ö»Øµ÷·½·¨ÉèÎªNULL¿ÕÖ¸Õë£¬ÄÇÃ´HTTP¿ò¼ÜÊÇ²»»áµ÷ÓÃËüµÄ¡£
+*/
+/*
+²»¹ý£¬Õâ8¸ö½×¶ÎµÄµ÷ÓÃË³ÐòÓëÉÏÊö¶¨ÒåµÄË³ÐòÊÇ²»Í¬µÄ¡£ÔÚNginxÆô¶¯¹ý³ÌÖÐ£¬HTTP¿ò¼Üµ÷ÓÃÕâÐ©»Øµ÷·½·¨µÄÊµ¼ÊË³ÐòÓÐ¿ÉÄÜÊÇÕâÑùµÄ£¨Óënginx.confÅäÖÃÏîÓÐ¹Ø£©£º
+1£©create_main_conf
+2£©create_srv_conf
+3£©create_loc_conf
+4£©preconfiguration
+5£©init_main_conf
+6£©merge_srv_conf
+7£©merge_loc_conf
+8£©postconfiguration
+µ±Óöµ½http{}ÅäÖÃ¿éÊ±£¬HTTP¿ò¼Ü»áµ÷ÓÃËùÓÐHTTPÄ£¿é¿ÉÄÜÊµÏÖµÄcreate main conf¡¢create_srv_conf¡¢
+create_loc_conf·½·¨Éú³É´æ´¢main¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå£»ÔÚÓöµ½servero{}¿éÊ±»áÔÙ´Îµ÷ÓÃËùÓÐHTTPÄ£
+¿éµÄcreate_srv conf¡¢create loc_conf»Øµ÷·½·¨Éú³É´æ´¢srv¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå£»ÔÚÓöµ½location{}Ê±
+Ôò»áÔÙ´Îµ÷ÓÃcreate_loc_conf»Øµ÷·½·¨Éú³É´æ´¢loc¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå¡£
+ÀýÈçÈçÏÂÅäÖÃ:
+{
+  http {
+     server{
+        location xx {
+            mytest;
+        }
+     }
+  }
+}
+ÔòÔÚ½âÎöµ½http{}µÄÊ±ºò»áµ÷ÓÃÒ»´Î
+location{}ÖÐ£¬ÔòÔÚ½âÎöµ½http{}µÄÊ±ºòµ÷ÓÃÒ»´Îcreate_loc_conf£¬½âÎöµ½server{}µÄÊ±ºò»áµ÷ÓÃÒ»´Îcreate_loc_conf
+½âÎöµ½location{}µÄÊ±ºò»¹»áµ÷ÓÃÒ»´Îcreate_loc_conf
+
+ÊÂÊµÉÏ£¬NginxÔ¤ÉèµÄÅäÖÃÏîºÏ²¢·½·¨ÓÐ10¸ö£¬ËüÃÇµÄÐÐÎªÓëÉÏÊöµÄngx_conf_merge_
+str- valueÊÇÏàËÆµÄ¡£NginxÒÑ¾­ÊµÏÖºÃµÄ10¸ö¼òµ¥µÄÅäÖÃÏîºÏ²¢ºê£¬ËüÃÇµÄ
+²ÎÊýÀàÐÍÓëngx_conf_merge_str_ value -ÖÂ£¬¶øÇÒ³ýÁËngx_conf_merge_bufs valueÍâ£¬ËüÃÇ
+¶¼½«½ÓÊÕ3¸ö²ÎÊý£¬·Ö±ð±íÊ¾¸¸ÅäÖÃ¿é²ÎÊý¡¢×ÓÅäÖÃ¿é²ÎÊý¡¢Ä¬ÈÏÖµ¡£
+  NginxÔ¤ÉèµÄ10ÖÖÅäÖÃÏîºÏ²¢ºê
+©³©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©·
+©§    ÅäÖÃÏîºÏ²¢Èû          ©§    ÒâÒå                                                                  ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢¿ÉÒÔÊ¹ÓÃµÈºÅ(=)Ö±½Ó¸³ÖµµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate loc confµÈ·Ö      ©§
+©§ngx_conf_merge_value      ©§Åä·½·¨ÖÐ³õÊ¼»¯ÎªNGX CONF UNSET£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_           ©§
+©§                          ©§merge_valueºÏ²¢ºê                                                         ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢Ö¸ÕëÀàÐÍµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate loc confµÈ·ÖÅä·½·¨ÖÐ³õÊ¼»¯Îª     ©§
+©§ngx_conf_merge_ptr_value  ©§NGX CONF UNSET PTR£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_merge_ptr_value        ©§
+©§                          ©§ºÏ²¢ºê                                                                    ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢ÕûÊýÀàÐÍµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate loc confµÈ·ÖÅä·½·¨ÖÐ³õÊ¼»¯Îª     ©§
+©§ngx_conf_merge_uint_value ©§NGX CONF UNSET UINT£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_merge_uint_           ©§
+©§                          ©§ valueºÏ²¢ºê                                                              ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢±íÊ¾ºÁÃëµÄngx_msec_tÀàÐÍµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate loc confµÈ·Ö     ©§
+©§ngx_conf_merge_msec_value ©§Åä·½·¨ÖÐ³õÊ¼»¯ÎªNGX CONF UNSET MSEC£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_           ©§
+©§                          ©§conf_merge_msec_valueºÏ²¢ºê                                               ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  Éá²¢±íÊ¾ÃëµÄtimejÀàÐÍµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate loc confµÈ·ÖÅä·½·¨ÖÐ    ©§
+©§ngx_conf_merge_sec_value  ©§³õÊ¼»¯ÎªNGX CONF UNSET£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_merge_sec_         ©§
+©§                          ©§valueºÏ²¢ºê                                                               ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢size-tµÈ±íÊ¾¿Õ¼ä³¤¶ÈµÄ±äÁ¿£¬²¢ÇÒ¸Ã±äÁ¿ÔÚcreate- loc_ confµÈ·ÖÅä·½   ©§
+©§ngx_conf_merge_size_value ©§·¨ÖÐ³õÊ¼»¯ÎªNGX¡£CONF UNSET SIZE£¬ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_         ©§
+©§                          ©§merge_size_valueºÏ²¢ºê                                                    ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ºÏ²¢offµÈ±íÊ¾Æ«ÒÆÁ¿µÄ±äÁ¿£¬²¢ÇÒ¸Ã±ä×îÔÚcreate loc confµÈ·ÖÅä·½·¨ÖÐ      ©§
+©§ngx_conf_merge_off_value  ©§³õÊ¼»¯ÎªNGX CONF UNSET£®ÕâÑùÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_merge_off_         ©§
+©§                          ©§valueºÏ²¢ºê                                                               ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ngx_str_tÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf_merge_str_valueºÏ²¢£¬ÕâÊ±´«ÈËµÄ     ©§
+©§ngx_conf_merge_str_value  ©§                                                                          ©§
+©§                          ©§default²ÎÊý±ØÐëÊÇÒ»¸öcharË®×Ö·û´®                                         ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§                          ©§  ngx_bufs tÀàÐÍµÄ³ÉÔ±¿ÉÒÔÊ¹ÓÃngx_conf merge_str_valueÉá²¢ºê£¬ÕâÊ±´«ÈËµÄ  ©§
+©§ngx_conf_merge_bufs_value ©§                                                                          ©§
+©§                          ©§default²ÎÊýÊÇÁ½¸ö£¬ÒòÎªngx_bufsjÀàÐÍÓÐÁ½¸ö³ÉÔ±£¬ËùÒÔÐèÒª´«ÈËÁ½¸öÄ¬ÈÏÖµ    ©§
+©Ç©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ï©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©Ï
+©§ngx_conf_merge_bitmask_   ©§  ÒÔ¶þ½øÖÆÎ»À´±íÊ¾±êÖ¾Î»µÄÕûÐÍ³ÉÔ±£¬¿ÉÒÔÊ¹ÓÃngx_conf_merge_bitmask_       ©§
+©§value                     ©§valueºÏ²¢ºê                                                               ©§
+©»©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©ß©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¿
+*/ 
+
+/*
+µ±Óöµ½http{}ÅäÖÃ¿éÊ±£¬HTTP¿ò¼Ü»áµ÷ÓÃËùÓÐHTTPÄ£¿é¿ÉÄÜÊµÏÖµÄcreate main conf¡¢create_srv_conf¡¢
+create_loc_conf·½·¨Éú³É´æ´¢main¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå£»ÔÚÓöµ½servero{}¿éÊ±»áÔÙ´Îµ÷ÓÃËùÓÐHTTPÄ£
+¿éµÄcreate_srv conf¡¢create loc_conf»Øµ÷·½·¨Éú³É´æ´¢srv¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå£»ÔÚÓöµ½location{}Ê±
+Ôò»áÔÙ´Îµ÷ÓÃcreate_loc_conf»Øµ÷·½·¨Éú³É´æ´¢loc¼¶±ðÅäÖÃ²ÎÊýµÄ½á¹¹Ìå¡£
+ÀýÈçÈçÏÂÅäÖÃ:
+{
+  http {
+     server{
+        location xx { //locationÖ÷ÒªÓÃÓÚuriÇëÇóÆ¥Åä
+            mytest;
+        }
+     }
+  }
+}
+ÔòÔÚ½âÎöµ½http{}µÄÊ±ºò»áµ÷ÓÃÒ»´Î
+location{}ÖÐ£¬ÔòÔÚ½âÎöµ½http{}µÄÊ±ºòµ÷ÓÃÒ»´Îcreate_loc_conf£¬½âÎöµ½server{}µÄÊ±ºò»áµ÷ÓÃÒ»´Îcreate_loc_conf
+½âÎöµ½location{}µÄÊ±ºò»¹»áµ÷ÓÃÒ»´Îcreate_loc_conf
+
+ÒÔngx_http_mytest_config_moduleÎªÀý:
+HTTP¿ò¼ÜÔÚ½âÎönginx.confÎÄ¼þÊ±Ö»ÒªÓöµ½http{}¡¢server{}¡¢location{}ÅäÖÃ¿é¾Í»áÁ¢¿Ì·ÖÅäÒ»¸ö
+http_mytest_conf_t½á¹¹Ìå¡£
+*/
+
+//ËùÓÐµÄºËÐÄÄ£¿éNGX_CORE_MODULE¶ÔÓ¦µÄÉÏÏÂÎÄctxÎªngx_core_module_t£¬×ÓÄ£¿é£¬ÀýÈçhttp{} NGX_HTTP_MODULEÄ£¿é¶ÔÓ¦µÄÎªÉÏÏÂÎÄÎªngx_http_module_t
+//events{} NGX_EVENT_MODULEÄ£¿é¶ÔÓ¦µÄÎªÉÏÏÂÎÄÎªngx_event_module_t
+
+//ginxÖ÷ÅäÖÃÎÄ¼þ·ÖÎª4²¿·Ö£¬main£¨È«¾ÖÅäÖÃ£©¡¢server£¨Ö÷»úÉèÖÃ£©¡¢upstream£¨¸ºÔØ¾ùºâ·þÎñÆ÷Éè£©ºÍlocation£¨URLÆ¥ÅäÌØ¶¨Î»ÖÃµÄÉèÖÃ£©£¬ÕâËÄÕß¹ØÏµÎª£ºserver¼Ì³Ðmain£¬location¼Ì³Ðserver£¬upstream¼È²»»á¼Ì³ÐÆäËûÉèÖÃÒ²²»»á±»¼Ì³Ð¡£
+//³ÉÔ±ÖÐµÄcreateÒ»°ãÔÚ½âÎöÇ°Ö´ÐÐº¯Êý£¬mergeÔÚº¯ÊýºóÖ´ÐÐ
+typedef struct { //×¢ÒâºÍngx_http_conf_ctx_t½á¹¹ÅäºÏ        ³õÊ¼»¯¸³ÖµÖ´ÐÐ£¬Èç¹ûÎª"http{}"ÖÐµÄÅäÖÃ£¬ÔÚngx_http_blockÖÐ, ,ËùÓÐµÄNGX_HTTP_MODULEÄ£¿é¶¼ÔÚngx_http_blockÖÐÖ´ÐÐ
+    ngx_int_t   (*preconfiguration)(ngx_conf_t *cf); //½âÎöÅäÖÃÎÄ¼þÇ°µ÷ÓÃ
+    //Ò»°ãÓÃÀ´°Ñ¶ÔÓ¦µÄÄ£¿é¼ÓÈëµ½11¸ö½×¶Î¶ÔÓ¦µÄ½×¶ÎÈ¥ngx_http_phases,ÀýÈçngx_http_realip_moduleµÄngx_http_realip_init
+    ngx_int_t   (*postconfiguration)(ngx_conf_t *cf); //Íê³ÉÅäÖÃÎÄ¼þµÄ½âÎöºóµ÷ÓÃ  
+
+/*µ±ÐèÒª´´½¨Êý¾Ý½á¹¹ÓÃÓÚ´æ´¢main¼¶±ð£¨Ö±ÊôÓÚhttp{...}¿éµÄÅäÖÃÏî£©µÄÈ«¾ÖÅäÖÃÏîÊ±£¬¿ÉÒÔÍ¨¹ýcreate_main_conf»Øµ÷·½·¨´´½¨´æ´¢È«¾ÖÅäÖÃÏîµÄ½á¹¹Ìå*/
+    void       *(*create_main_conf)(ngx_conf_t *cf);
+    char       *(*init_main_conf)(ngx_conf_t *cf, void *conf);//³£ÓÃÓÚ³õÊ¼»¯main¼¶±ðÅäÖÃÏî
+
+/*µ±ÐèÒª´´½¨Êý¾Ý½á¹¹ÓÃÓÚ´æ´¢srv¼¶±ð£¨Ö±ÊôÓÚÐéÄâÖ÷»úserver{...}¿éµÄÅäÖÃÏî£©µÄÅäÖÃÏîÊ±£¬¿ÉÒÔÍ¨¹ýÊµÏÖcreate_srv_conf»Øµ÷·½·¨´´½¨´æ´¢srv¼¶±ðÅäÖÃÏîµÄ½á¹¹Ìå*/
+    void       *(*create_srv_conf)(ngx_conf_t *cf);
+// merge_srv_conf»Øµ÷·½·¨Ö÷ÒªÓÃÓÚºÏ²¢main¼¶±ðºÍsrv¼¶±ðÏÂµÄÍ¬ÃûÅäÖÃÏî
+    char       *(*merge_srv_conf)(ngx_conf_t *cf, void *prev, void *conf);
+
+    /*µ±ÐèÒª´´½¨Êý¾Ý½á¹¹ÓÃÓÚ´æ´¢loc¼¶±ð£¨Ö±ÊôÓÚlocation{...}¿éµÄÅäÖÃÏî£©µÄÅäÖÃÏîÊ±£¬¿ÉÒÔÊµÏÖcreate_loc_conf»Øµ÷·½·¨*/
+    void       *(*create_loc_conf)(ngx_conf_t *cf);
+
+    /*
+    typedef struct {
+           void * (*create_loc_conf) (ngx_conf_t *cf) ;
+          char*(*merge_loc_conf) (ngx_conf_t *cf, void *prev,
+    }ngx_http_module_t
+        ÉÏÃæÕâ¶Î´úÂë¶¨ÒåÁËcreate loc_conf·½·¨£¬ÒâÎ¶×ÅHTTP¿ò¼Ü»á½¨Á¢loc¼¶±ðµÄÅäÖÃ¡£
+    Ê²Ã´ÒâË¼ÄØ£¿¾ÍÊÇËµ£¬Èç¹ûÃ»ÓÐÊµÏÖmerge_loc_conf·½·¨£¬Ò²¾ÍÊÇÔÚ¹¹Ôìngx_http_module_t
+    Ê±½«merge_loc_confÉèÎªNULLÁË£¬ÄÇÃ´ÔÚ4.1½ÚµÄÀý×ÓÖÐserver¿é»òÕßhttp¿éÄÚ³öÏÖµÄ
+    ÅäÖÃÏî¶¼²»»áÉúÐ§¡£Èç¹ûÎÒÃÇÏ£ÍûÔÚserver¿é»òÕßhttp¿éÄÚµÄÅäÖÃÏîÒ²ÉúÐ§£¬ÄÇÃ´¿ÉÒÔÍ¨¹ý
+    merge_loc_conf·½·¨À´ÊµÏÖ¡£merge_loc_conf»á°ÑËùÊô¸¸ÅäÖÃ¿éµÄÅäÖÃÏîÓë×ÓÅäÖÃ¿éµÄÍ¬Ãû
+    ÅäÖÃÏîºÏ²¢£¬µ±È»£¬ÈçºÎºÏ²¢È¡¾öÓÚ¾ßÌåµÄmerge_loc_confÊµÏÖ¡£
+        merge_loc_confÓÐ3¸ö²ÎÊý£¬µÚ1¸ö²ÎÊýÈÔÈ»ÊÇngx_conf_t *cf£¬Ìá¹©Ò»Ð©»ù±¾µÄÊý¾Ý
+    ½á¹¹£¬ÈçÄÚ´æ³Ø¡¢ÈÕÖ¾µÈ¡£ÎÒÃÇÐèÒª¹Ø×¢µÄÊÇµÚ2¡¢µÚ3¸ö²ÎÊý£¬ÆäÖÐµÚ2¸ö²ÎÊývoid *prev
+    ÐüÖ¸½âÎö¸¸ÅäÖÃ¿éÊ±Éú³ÉµÄ½á¹¹Ìå£¬¶øµÚ3¸ö²ÎÊývoid:-leconfÔòÖ¸³öµÄÊÇ±£´æ×ÓÅäÖÃ¿éµÄ½á
+    ¹¹Ìå¡£
+    */
+    // merge_loc_conf»Øµ÷·½·¨Ö÷ÒªÓÃÓÚºÏ²¢srv¼¶±ðºÍloc¼¶±ðÏÂµÄÍ¬ÃûÅäÖÃÏî
+    char       *(*merge_loc_conf)(ngx_conf_t *cf, void *prev, void *conf); //nginxÌá¹©ÁË10¸öÔ¤ÉèºÏ²¢ºê£¬¼ûÉÏÃæ
+} ngx_http_module_t; //
+
+//ËùÓÐµÄºËÐÄÄ£¿éNGX_CORE_MODULE¶ÔÓ¦µÄÉÏÏÂÎÄctxÎªngx_core_module_t£¬×ÓÄ£¿é£¬ÀýÈçhttp{} NGX_HTTP_MODULEÄ£¿é¶ÔÓ¦µÄÎªÉÏÏÂÎÄÎªngx_http_module_t
+//events{} NGX_EVENT_MODULEÄ£¿é¶ÔÓ¦µÄÎªÉÏÏÂÎÄÎªngx_event_module_t
+//http{}ÄÚ²¿µÄËùÓÐÊôÐÔ¶¼ÊôÓÚNGX_HTTP_MODULE
+#define NGX_HTTP_MODULE           0x50545448   /* "HTTP" */
+
+/*
+NGX_MAIN_CONF£ºÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚÈ«¾ÖÅäÖÃÖÐ£¬¼´²»ÊôÓÚÈÎºÎ{}ÅäÖÃ¿é¡£
+NGX_EVET_CONF£ºÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚevents{}¿éÄÚ¡£
+NGX_HTTP_MAIN_CONF£º ÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚhttp{}¿éÄÚ¡£
+NGX_HTTP_SRV_CONF:£ºÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚserver{}¿éÄÚ£¬¸Ãserver¿é±ØÐèÊôÓÚhttp{}¿é¡£
+NGX_HTTP_LOC_CONF£ºÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚlocation{}¿éÄÚ£¬¸Ãlocation¿é±ØÐèÊôÓÚserver{}¿é¡£
+NGX_HTTP_UPS_CONF£º ÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚupstream{}¿éÄÚ£¬¸Ãlocation¿é±ØÐèÊôÓÚhttp{}¿é¡£
+NGX_HTTP_SIF_CONF£ºÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚserver{}¿éÄÚµÄif{}¿éÖÐ¡£¸Ãif¿é±ØÐëÊôÓÚhttp{}¿é¡£
+NGX_HTTP_LIF_CONF: ÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚlocation{}¿éÄÚµÄif{}¿éÖÐ¡£¸Ãif¿é±ØÐëÊôÓÚhttp{}¿é¡£
+NGX_HTTP_LMT_CONF: ÅäÖÃÏî¿ÉÒÔ³öÏÖÔÚlimit_except{}¿éÄÚ,¸Ãlimit_except¿é±ØÐëÊôÓÚhttp{}¿é¡£
+*/
+#define NGX_HTTP_MAIN_CONF        0x02000000
+#define NGX_HTTP_SRV_CONF         0x04000000
+#define NGX_HTTP_LOC_CONF         0x08000000
+#define NGX_HTTP_UPS_CONF         0x10000000
+#define NGX_HTTP_SIF_CONF         0x20000000
+#define NGX_HTTP_LIF_CONF         0x40000000 
+#define NGX_HTTP_LMT_CONF         0x80000000
+
+
+#define NGX_HTTP_MAIN_CONF_OFFSET  offsetof(ngx_http_conf_ctx_t, main_conf)
+#define NGX_HTTP_SRV_CONF_OFFSET   offsetof(ngx_http_conf_ctx_t, srv_conf)
+#define NGX_HTTP_LOC_CONF_OFFSET   offsetof(ngx_http_conf_ctx_t, loc_conf)
+
+
+//×¢Òângx_http_get_module_main_conf ngx_http_get_module_loc_confºÍngx_http_get_module_ctxµÄÇø±ð
+
+//»ñÈ¡¸ÃÌõrequest¶ÔÓ¦µÄ×Ô¼ºËù´¦µÄmain,ÀýÈçhttp{}µÄ¶ÔÓ¦Ä£¿éµÄÅäÖÃÐÅÏ¢
+#define ngx_http_get_module_main_conf(r, module)                             \
+    (r)->main_conf[module.ctx_index]
+//»ñÈ¡¸ÃÌõrequest¶ÔÓ¦µÄ×Ô¼ºËù´¦µÄsrv£¬ÀýÈçserver{} upstream{}µÄ¶ÔÓ¦Ä£¿éµÄÅäÖÃÐÅÏ¢
+#define ngx_http_get_module_srv_conf(r, module)  (r)->srv_conf[module.ctx_index]
+
+//ngx_http_get_module_ctx´æ´¢ÔËÐÐ¹ý³ÌÖÐµÄ¸÷ÖÖ×´Ì¬(ÀýÈç¶ÁÈ¡ºó¶ËÊý¾Ý£¬¿ÉÄÜÐèÒª¶à´Î¶ÁÈ¡)  ngx_http_get_module_loc_conf»ñÈ¡¸ÃÄ£¿éÔÚlocal{}ÖÐµÄÅäÖÃÐÅÏ¢
+//»ñÈ¡¸ÃÌõrequest¶ÔÓ¦µÄ×Ô¼ºËù´¦µÄloc£¬ÀýÈçlocation{} µÄ¶ÔÓ¦Ä£¿éµÄÅäÖÃÐÅÏ¢
+#define ngx_http_get_module_loc_conf(r, module)  (r)->loc_conf[module.ctx_index]
+
+
+#define ngx_http_conf_get_module_main_conf(cf, module)                        \
+    ((ngx_http_conf_ctx_t *) cf->ctx)->main_conf[module.ctx_index]
+#define ngx_http_conf_get_module_srv_conf(cf, module)                         \
+    ((ngx_http_conf_ctx_t *) cf->ctx)->srv_conf[module.ctx_index]
+#define ngx_http_conf_get_module_loc_conf(cf, module)                         \
+    ((ngx_http_conf_ctx_t *) cf->ctx)->loc_conf[module.ctx_index]
+
+#define ngx_http_cycle_get_module_main_conf(cycle, module)                    \
+    (cycle->conf_ctx[ngx_http_module.index] ?                                 \
+        ((ngx_http_conf_ctx_t *) cycle->conf_ctx[ngx_http_module.index])      \
+            ->main_conf[module.ctx_index]:                                    \
+        NULL)
+
+
+#endif /* _NGX_HTTP_CONFIG_H_INCLUDED_ */

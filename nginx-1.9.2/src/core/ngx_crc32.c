@@ -101,4 +101,30 @@ uint32_t  ngx_crc32_table256[] = {
 
 uint32_t *ngx_crc32_table_short = ngx_crc32_table16;
 
-//璋
+//调用ngx_crc32_table_init()初始化CRC表(后续的CRC校验通过查表进行，效率高)；
+ngx_int_t
+ngx_crc32_table_init(void)
+{
+    void  *p;
+
+    if (((uintptr_t) ngx_crc32_table_short
+          & ~((uintptr_t) ngx_cacheline_size - 1))
+        == (uintptr_t) ngx_crc32_table_short)
+    {
+        return NGX_OK;
+    }
+
+    p = ngx_alloc(16 * sizeof(uint32_t) + ngx_cacheline_size, ngx_cycle->log);
+    if (p == NULL) {
+        return NGX_ERROR;
+    }
+
+    p = ngx_align_ptr(p, ngx_cacheline_size);
+
+    ngx_memcpy(p, ngx_crc32_table16, 16 * sizeof(uint32_t));
+
+    ngx_crc32_table_short = p;
+
+    return NGX_OK;
+}
+
